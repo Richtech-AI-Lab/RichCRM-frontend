@@ -1,20 +1,19 @@
 import React, { useEffect } from "react";
-import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { loginRequest } from "../../../redux/actions/authActions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import TextInput from "../../../components/TextInput";
 import XButton from "../../../components/button/XButton";
 import { toast } from "react-toastify";
 import XSpinnerLoader from "../../../components/spinnerLoader/XSpinnerLoader";
+import { loginRequest } from "../../../redux/actions/authActions";
 
 const Login = () => {
   const dispatch = useDispatch();
   let navigate = useNavigate();
 
-  const { loading, error, user } = useSelector((state) => state.auth);
+  const { loading, user } = useSelector((state) => state.auth);
   const initialValues = {
     email: "",
     password: "",
@@ -39,16 +38,17 @@ const Login = () => {
   useEffect(() => {
     if (user) {
       toast("User has successfully logged in");
-      navigate("/dashboard");
+      navigate("/rich-crm/dashboard");
     }
   }, [user, navigate]);
+
   return (
     <>
       <XSpinnerLoader loading={loading} size="lg" />
-      <Container>
-        <Row className="justify-content-center">
-          <Col md={6}>
-            <h2 className="text-center mt-5 mb-3">Login</h2>
+      <div className="container mx-auto">
+        <div className="flex justify-center">
+          <div className="w-full md:w-1/2">
+            <h2 className="text-center mt-5 mb-3 text-2xl">Login</h2>
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
@@ -63,7 +63,7 @@ const Login = () => {
                 handleSubmit,
                 isSubmitting,
               }) => (
-                <Form noValidate onSubmit={handleSubmit} className="login-form">
+                <form onSubmit={handleSubmit} className="login-form">
                   <TextInput
                     name="email"
                     type="email"
@@ -86,7 +86,7 @@ const Login = () => {
                     form={{ errors, touched }}
                     label="Password"
                   />
-                  <div className="text-center">
+                  <div className="text-center mt-4">
                     <XButton
                       variant="primary"
                       type="submit"
@@ -96,12 +96,12 @@ const Login = () => {
                       {isSubmitting ? "Logging in..." : "Login"}
                     </XButton>
                   </div>
-                </Form>
+                </form>
               )}
             </Formik>
-          </Col>
-        </Row>
-      </Container>
+          </div>
+        </div>
+      </div>
     </>
   );
 };
