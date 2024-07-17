@@ -3,11 +3,9 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import TextInput from "../../../components/TextInput";
-import XButton from "../../../components/button/XButton";
 import { toast } from "react-toastify";
-import XSpinnerLoader from "../../../components/spinnerLoader/XSpinnerLoader";
 import { loginRequest } from "../../../redux/actions/authActions";
+import { TextInput, XButton, XSpinnerLoader } from "../../../components";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -42,13 +40,17 @@ const Login = () => {
     }
   }, [user, navigate]);
 
+  const handleRegisterClick = () => {
+    navigate("/register");
+  };
+
   return (
     <>
       <XSpinnerLoader loading={loading} size="lg" />
       <div className="container mx-auto">
         <div className="flex justify-center">
           <div className="w-full md:w-1/2">
-            <h2 className="text-center mt-5 mb-3 text-2xl">Login</h2>
+            <h2 className="text-center mt-5 mb-3 text-2xl">Sign In</h2>
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
@@ -86,14 +88,21 @@ const Login = () => {
                     form={{ errors, touched }}
                     label="Password"
                   />
-                  <div className="text-center mt-4">
+                  <div className="flex justify-between items-center mt-4">
                     <XButton
                       variant="primary"
                       type="submit"
                       disabled={isSubmitting}
                       className="login-button"
                     >
-                      {isSubmitting ? "Logging in..." : "Login"}
+                      {isSubmitting ? "Logging in..." : "Sign In"}
+                    </XButton>
+                    <XButton
+                      variant="secondary"
+                      onClick={handleRegisterClick}
+                      className="register-button"
+                    >
+                      Sign Up
                     </XButton>
                   </div>
                 </form>

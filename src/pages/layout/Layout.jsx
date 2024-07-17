@@ -4,6 +4,7 @@ import { Header, SideNav } from "../../components";
 
 const Layout = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [title, setTitle] = useState('Dashboard');
 
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
@@ -11,13 +12,12 @@ const Layout = () => {
   return (
     <div className="h-screen flex">
 
-      <SideNav isDrawerOpen={isDrawerOpen} toggleDrawer={toggleDrawer}/>
+      <SideNav isDrawerOpen={isDrawerOpen} toggleDrawer={toggleDrawer} setTitle={setTitle}/>
       {/* Main content area */}
-      <div className={`${isDrawerOpen ? 'w-[calc(100%-264px)]' : 'w-full'} p-6`}>
-        {/* SideNav */}
+      <div className={`${isDrawerOpen ? 'ml-[264px]' : 'ml-0'} p-6 w-full main-content`}>
 
         {/* Main content wrapper */}
-        <Header toggleDrawer={toggleDrawer} />
+        <Header toggleDrawer={toggleDrawer} title={title}/>
         <main className="mt-14">
           <Content />
         </main>

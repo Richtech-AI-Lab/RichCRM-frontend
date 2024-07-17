@@ -3,12 +3,12 @@ import { IMAGES } from "../../constants/imagePath";
 import { GiHamburgerMenu } from "react-icons/gi";
 
 
-const Header = ({ toggleDrawer }) => {
+const Header = ({ toggleDrawer, title }) => {
   return (
     <div className="flex justify-between items-center">
       <h1 className="flex items-center text-[28px] text-title font-medium leading-9">
       <span onClick={toggleDrawer} className="cursor-pointer mr-1"><GiHamburgerMenu /></span>
-        Dashboard
+        {title}
       </h1>
       <div className="flex items-center">
         <div className="relative">
