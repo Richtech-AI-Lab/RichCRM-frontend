@@ -16,8 +16,14 @@
 
 @layer components {
   .sidebar {
+    @apply transition-all overflow-hidden;
+    transition-duration: 400ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.6, 1);
+    transition-delay: 10ms;
+  }
+  .main-content {
     @apply transition-all;
-    transition-duration: 195ms;
+    transition-duration: 500ms;
     transition-timing-function: cubic-bezier(0.4, 0, 0.6, 1);
     transition-delay: 10ms;
   }
@@ -25,7 +31,7 @@
     @apply bg-transparent;
   }
   .sidebar-items ul li a {
-    @apply text-base font-medium text-secondary-500 p-[18px];
+    @apply text-base font-medium text-secondary-500 p-[18px] min-w-full inline-flex;
   }
   .sidebar-items ul li a svg {
     @apply text-black;
@@ -39,7 +45,13 @@
   .sidebar-toggle {
     @apply w-[0] !important;
   }
-  .sidebar-toggle > div {
-    @apply p-[0];
+  .listing-border {
+    @apply border-b border-b-border;
+  }
+  .listing-border:last-child {
+    @apply border-b-0;
+  }
+  .badge {
+    @apply rounded-2xl px-2 py-1 text-sm text-secondary-100 font-semibold leading-[18px];
   }
 }

@@ -3,6 +3,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import Layout from "../pages/layout/Layout";
 import Login from "../pages/auth/login";
 import { useEffect } from "react";
+import Signup from "../pages/auth/signup";
 
 const Routing = () => {
   useEffect(() => {
@@ -12,6 +13,7 @@ const Routing = () => {
   return (
     <Routes>
       <Route path="/" element={<Login />} />
+      <Route path="/register" element={<Signup />} />
       <Route element={<ProtectedRoute />}>
         <Route path="/rich-crm/*" element={<Layout />} />
       </Route>

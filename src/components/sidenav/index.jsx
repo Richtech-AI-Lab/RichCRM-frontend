@@ -1,51 +1,54 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { Drawer, Sidebar } from "flowbite-react";
-import {
-  HiChartPie,
-  HiInbox,
-  HiShoppingBag,
-  HiUser,
-  HiViewBoards,
-} from "react-icons/hi";
+import { Link, useLocation } from "react-router-dom";
+import { Sidebar } from "flowbite-react";
+import { PiLayout, PiUsersThree, PiFolderSimple, PiLinkSimpleHorizontal  } from "react-icons/pi";
+import { BiCalendar } from "react-icons/bi";
+import { IoSettingsOutline } from "react-icons/io5";
+import { FiFileText } from "react-icons/fi";
 
-const SideNav = ({ isDrawerOpen, toggleDrawer }) => {
+const SideNav = ({ isDrawerOpen, toggleDrawer, setTitle }) => {
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const isActive = (path) => currentPath === path;
+
+  const handleTitleChange = (title) => {
+    setTitle(title);
+    // if (toggleDrawer) {
+    //   toggleDrawer();
+    // }
+  };
+
   return (
-    // <Drawer open={isDrawerOpen} onClose={toggleDrawer}>
-    // <Drawer.Header title="MG Law Group" titleIcon={() => <></>} />
-    // <Drawer.Items>
-    <Sidebar className={`w-[264px] sidebar ${isDrawerOpen ? '' : 'sidebar-toggle'}`}>
-      <h1 className="text-secondary-400 text-xl font-bold pt-5 pb-3 px-4">MG Law Group</h1>
+    <Sidebar className={`w-[264px] sidebar ${isDrawerOpen ? '' : 'sidebar-toggle'} fixed bg-bg-body`}>
+      <h1 className="text-secondary-400 text-xl font-bold pt-5 pb-3 px-4 whitespace-nowrap">MG Law Group</h1>
       <Sidebar.Items className="mt-10 sidebar-items flex flex-col justify-between h-[calc(100vh-140px)]">
         <Sidebar.ItemGroup>
-          <Sidebar.Item as={Link} to="/rich-crm/dashboard" icon={HiChartPie} className="active-item">
+          <Sidebar.Item as={Link} to="/rich-crm/dashboard" icon={PiLayout} className={isActive("/rich-crm/dashboard") ? "active-item" : ""} onClick={() => handleTitleChange('Dashboard')}>
             Dashboard
           </Sidebar.Item>
-          <Sidebar.Item as={Link} to="/rich-crm/cases" icon={HiViewBoards}>
+          <Sidebar.Item as={Link} to="/rich-crm/cases" icon={FiFileText}  className={isActive("/rich-crm/cases") ? "active-item" : ""} onClick={() => handleTitleChange('Cases')}>
             Cases
           </Sidebar.Item>
-          <Sidebar.Item as={Link} to="/rich-crm/calendar" icon={HiInbox}>
+          <Sidebar.Item as={Link} to="/rich-crm/calendar" icon={BiCalendar} className={isActive("/rich-crm/calendar") ? "active-item" : ""} onClick={() => handleTitleChange('Calendar')}>
             Calender
           </Sidebar.Item>
-          <Sidebar.Item as={Link} to="/rich-crm/contacts" icon={HiUser}>
+          <Sidebar.Item as={Link} to="/rich-crm/contacts" icon={PiUsersThree} className={isActive("/rich-crm/contacts") ? "active-item" : ""} onClick={() => handleTitleChange('Contacts')}>
             Contacts
           </Sidebar.Item>
-          <Sidebar.Item as={Link} to="/rich-crm/documents" icon={HiShoppingBag}>
+          <Sidebar.Item as={Link} to="/rich-crm/documents" icon={PiFolderSimple} className={isActive("/rich-crm/documents") ? "active-item" : ""} onClick={() => handleTitleChange('Documents')}>
             Documents
           </Sidebar.Item>
         </Sidebar.ItemGroup>
         <Sidebar.ItemGroup>
-          <Sidebar.Item as={Link} to="/rich-crm/links" icon={HiChartPie}>
+          <Sidebar.Item as={Link} to="/rich-crm/links" icon={PiLinkSimpleHorizontal} className={isActive("/rich-crm/links") ? "active-item" : ""} onClick={() => handleTitleChange('External Links')}>
             External Links
           </Sidebar.Item>
-          <Sidebar.Item as={Link} to="/rich-crm/settings" icon={HiViewBoards}>
+          <Sidebar.Item as={Link} to="/rich-crm/settings" icon={IoSettingsOutline} className={isActive("/rich-crm/settings") ? "active-item" : ""} onClick={() => handleTitleChange('Settings')}>
             Settings
           </Sidebar.Item>
         </Sidebar.ItemGroup>
       </Sidebar.Items>
     </Sidebar>
-    // </Drawer.Items>
-    // </Drawer>
   );
 };
 
