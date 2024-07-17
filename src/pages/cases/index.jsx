@@ -1,9 +1,12 @@
 import React from "react";
+import { Actionbar, CardGrid } from "../../components";
+import { casesCardData } from "../../constants/constants";
 
 const Cases = () => {
   return (
-    <div className="Case-page">
-      <p>Cases Page.</p>
+    <div>
+      <Actionbar />
+      <CardGrid cards={casesCardData} />
     </div>
   );
 };

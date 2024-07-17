@@ -9,13 +9,17 @@ const SelectInput = ({
   options,
   error,
   touched,
+  inputClassName,
+  labelClassName,
+  defaultLabel,
+  className
 }) => {
   return (
-    <div className="mb-4">
+    <div className={className}>
       {label && (
         <label
           htmlFor={name}
-          className="block text-sm font-medium text-gray-700"
+          className={labelClassName}
         >
           {label}
         </label>
@@ -25,11 +29,9 @@ const SelectInput = ({
         value={value}
         onChange={onChange}
         onBlur={onBlur}
-        className={`mt-1 block w-full pl-3 pr-10 py-2 text-base border ${
-          error && touched ? "border-red-500" : "border-gray-300"
-        } rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+        className={inputClassName}
       >
-        <option value="" label="Select role" />
+        <option value="" disabled className="bg-bg-input" label={defaultLabel} />
         {options.map((option) => (
           <option key={option.value} value={option.value} label={option.label}>
             {option.label}

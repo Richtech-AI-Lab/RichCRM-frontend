@@ -90,20 +90,15 @@ const Login = () => {
                   />
                   <div className="flex justify-between items-center mt-4">
                     <XButton
-                      variant="primary"
                       type="submit"
+                      text={isSubmitting ? "Logging in..." : "Sign In"}
                       disabled={isSubmitting}
-                      className="login-button"
-                    >
-                      {isSubmitting ? "Logging in..." : "Sign In"}
-                    </XButton>
+                    />
+                    
                     <XButton
-                      variant="secondary"
                       onClick={handleRegisterClick}
-                      className="register-button"
-                    >
-                      Sign Up
-                    </XButton>
+                      text="Sign Up"
+                      />
                   </div>
                 </form>
               )}

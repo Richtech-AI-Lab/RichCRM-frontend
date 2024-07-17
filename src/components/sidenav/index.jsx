@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Sidebar } from "flowbite-react";
 import { PiLayout, PiUsersThree, PiFolderSimple, PiLinkSimpleHorizontal  } from "react-icons/pi";
@@ -11,8 +11,17 @@ const SideNav = ({ isDrawerOpen, toggleDrawer, setTitle }) => {
   const currentPath = location.pathname;
   const isActive = (path) => currentPath === path;
 
+  useEffect(() => {
+    const storedTitle = localStorage.getItem("headerTitle");
+    if (storedTitle) {
+      setTitle(storedTitle);
+    }
+  }, [setTitle]);
+
+  
   const handleTitleChange = (title) => {
     setTitle(title);
+    localStorage.setItem("headerTitle", title);
     // if (toggleDrawer) {
     //   toggleDrawer();
     // }

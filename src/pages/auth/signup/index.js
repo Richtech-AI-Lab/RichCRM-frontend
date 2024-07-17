@@ -120,16 +120,21 @@ const Signup = () => {
                     error={errors.role}
                     touched={touched.role}
                     label="Role"
+                    inputClassName={`mt-1 block w-full pl-3 pr-10 py-2 text-base border ${
+                      errors.role && touched.role
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    } rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+                    labelClassName="block text-sm font-medium text-gray-700"
+                    defaultLabel="Select role"
+                    className="mt-4"
                   />
                   <div className="text-center w-full mt-4">
                     <XButton
-                      variant="primary"
                       type="submit"
                       disabled={isSubmitting}
-                      className="signup-button"
-                    >
-                      {isSubmitting ? "Signing up..." : "Submit"}
-                    </XButton>
+                      text={isSubmitting ? "Signing up..." : "Submit"}
+                    />
                   </div>
                 </form>
               )}

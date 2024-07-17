@@ -10,6 +10,7 @@ import Badge from "./badge";
 import CardItem from "./carditem";
 import CardData from "./carddata";
 import CardGrid from "./cardgrid";
+import Actionbar from "./actionbar";
 
 export {
   Header,
@@ -24,4 +25,5 @@ export {
   CardItem,
   CardData,
   CardGrid,
+  Actionbar
 };

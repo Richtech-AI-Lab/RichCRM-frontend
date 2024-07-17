@@ -1,10 +1,14 @@
 import React from "react";
-import { Button } from "flowbite-react";
-const XButton = ({ color, onClick, children, className, type }) => {
+
+const XButton = ({ text, onClick, type }) => {
   return (
-    <Button color={color} onClick={onClick} className={className} type={type}>
-      {children}
-    </Button>
+    <button
+      type={type}
+      className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px]"
+      onClick={onClick}
+    >
+      {text}
+    </button>
   );
 };
 
