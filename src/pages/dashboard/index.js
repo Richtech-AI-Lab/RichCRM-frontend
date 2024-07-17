@@ -182,7 +182,7 @@ const Dashboard = () => {
         </div>
       </div>
       <div>
-      <CardGrid cards={cardsData} />
+      <CardGrid cards={cardsData} includeClasses={true} />
       </div>
     </>
   );
