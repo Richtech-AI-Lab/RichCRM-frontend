@@ -54,4 +54,20 @@
   .badge {
     @apply rounded-2xl px-2 py-1 text-sm text-secondary-100 font-semibold leading-[18px];
   }
+  .card-details li {
+    @apply flex items-center justify-between border-b border-b-border pb-2 mb-2
+  }
+  .card-details li:last-child {
+    @apply border-b-0 pb-0 mb-0
+  }
+  .card-details li span.left-txt {
+    @apply text-base text-label 
+  }
+  .card-details .profile {
+    @apply justify-start
+  }
+  .card-details .profile .left-txt {
+    @apply text-xl
+  }
+  
 }

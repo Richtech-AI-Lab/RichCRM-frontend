@@ -11,6 +11,11 @@ import CardItem from "./carditem";
 import CardData from "./carddata";
 import CardGrid from "./cardgrid";
 import Actionbar from "./actionbar";
+import LabelCard from "./labelcard";
+import LabelText from "./labeltext";
+import PageHeader from "./pageheader";
+import DetailItem from "./detailitem";
+import CaseDetailsCard from "./casedetailscard";
 
 export {
   Header,
@@ -25,5 +30,10 @@ export {
   CardItem,
   CardData,
   CardGrid,
-  Actionbar
+  Actionbar,
+  LabelCard,
+  LabelText,
+  PageHeader,
+  DetailItem,
+  CaseDetailsCard
 };

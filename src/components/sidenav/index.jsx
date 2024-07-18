@@ -9,7 +9,18 @@ import { FiFileText } from "react-icons/fi";
 const SideNav = ({ isDrawerOpen, toggleDrawer, setTitle }) => {
   const location = useLocation();
   const currentPath = location.pathname;
-  const isActive = (path) => currentPath === path;
+  const isActive = (path) => {
+    const casesPaths = [
+      "/rich-crm/cases",
+      "/rich-crm/casesdata",
+      "/rich-crm/casescategory",
+    ];
+
+    if (casesPaths.includes(currentPath)) {
+      return path === "/rich-crm/cases";
+    }
+    return currentPath === path;
+  };
 
   useEffect(() => {
     const storedTitle = localStorage.getItem("headerTitle");

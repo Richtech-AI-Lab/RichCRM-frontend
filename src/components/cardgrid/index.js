@@ -1,7 +1,7 @@
 import React from "react";
 import CardData from "../carddata";
 
-const CardGrid = ({ cards, includeClasses }) => {
+const CardGrid = ({ cards, includeClasses,onCardClick }) => {
   return (
     <div className={includeClasses ? "bg-white p-6 rounded-3xl mb-6" : ""}>
       {includeClasses && (
@@ -18,6 +18,7 @@ const CardGrid = ({ cards, includeClasses }) => {
             count={card.count}
             items={card.items}
             cardClass={includeClasses ? "bg-card-100" : "bg-card-200"}
+            onClick={onCardClick}        
           />
         ))}
       </div>
