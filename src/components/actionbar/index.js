@@ -20,7 +20,7 @@ const Actionbar = () => {
   };
   return (
     <div className="flex justify-between items-center mb-6">
-      <XButton text="+ Create a case" />
+      <XButton text="+ Create a case" className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px]" />
       <div className="flex items-center">
         <a>
           <BsFillGrid3X2GapFill className="text-[28px] mr-4" />

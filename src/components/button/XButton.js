@@ -1,10 +1,10 @@
 import React from "react";
 
-const XButton = ({ text, onClick, type }) => {
+const XButton = ({ text, onClick, type,className }) => {
   return (
     <button
       type={type}
-      className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px]"
+      className={className }
       onClick={onClick}
     >
       {text}

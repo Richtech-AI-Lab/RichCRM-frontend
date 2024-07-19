@@ -50,6 +50,7 @@ module.exports = {
       'progress': '#F1F2F4',
       'progress-active': '#BAD4FF',
       'text-purple': '#65558F',
+      'badge-gray': '#E5E5E5',
       ...colors,
     },
   },

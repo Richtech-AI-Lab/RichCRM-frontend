@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useSelector } from "react-redux";
@@ -9,6 +9,7 @@ import {
   XSpinnerLoader,
 } from "../../../components";
 import { useNavigate } from "react-router-dom";
+import { IoIosArrowRoundBack } from "react-icons/io";
 
 const Signup = () => {
   const { loading, user } = useSelector((state) => state.auth);
@@ -44,7 +45,9 @@ const Signup = () => {
         navigate("/rich-crm/dashboard");
     }
   };
-  
+  const handleBackIcon=()=>{
+    navigate("/")
+  }
   return (
     <>
       <XSpinnerLoader loading={loading} size="lg" />
@@ -128,12 +131,14 @@ const Signup = () => {
                     labelClassName="block text-sm font-medium text-gray-700"
                     defaultLabel="Select role"
                     className="mt-4"
-                  />
-                  <div className="text-center w-full mt-4">
+                  />    
+                  <div className="flex justify-center items-center w-full mt-4">
+                  <span className="mr-3"><IoIosArrowRoundBack className="text-2xl inline-block" style={{cursor:'pointer'}} onClick={handleBackIcon}/> Back</span>
                     <XButton
                       type="submit"
                       disabled={isSubmitting}
                       text={isSubmitting ? "Signing up..." : "Submit"}
+                      className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px]"
                     />
                   </div>
                 </form>

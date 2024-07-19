@@ -16,6 +16,11 @@ import LabelText from "./labeltext";
 import PageHeader from "./pageheader";
 import DetailItem from "./detailitem";
 import CaseDetailsCard from "./casedetailscard";
+import ContactCard from "./contactcard";
+import ContactDetailItem from "./contactdetailitem";
+import Label from "./label";
+import CaseCardDetails from "./casecarddetails";
+import CardListItem from "./cardlistitem";
 
 export {
   Header,
@@ -35,5 +40,10 @@ export {
   LabelText,
   PageHeader,
   DetailItem,
-  CaseDetailsCard
+  CaseDetailsCard,
+  ContactCard,
+  ContactDetailItem,
+  Label,
+  CardListItem,
+  CaseCardDetails
 };
