@@ -93,11 +93,13 @@ const Login = () => {
                       type="submit"
                       text={isSubmitting ? "Logging in..." : "Sign In"}
                       disabled={isSubmitting}
+                      className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px]"
                     />
                     
                     <XButton
                       onClick={handleRegisterClick}
                       text="Sign Up"
+                      className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px]"
                       />
                   </div>
                 </form>

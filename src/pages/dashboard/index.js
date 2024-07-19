@@ -140,7 +140,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <>
+    <div className="mt-14">
       <div className="grid grid-cols-12 gap-6 mb-6">
         <div className="col-span-8 md">
           <div className="grid grid-cols-2 gap-6">
@@ -184,7 +184,7 @@ const Dashboard = () => {
       <div>
       <CardGrid cards={cardsData} includeClasses={true} />
       </div>
-    </>
+    </div>
   );
 };
 

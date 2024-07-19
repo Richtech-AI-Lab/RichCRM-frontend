@@ -31,7 +31,7 @@ const SelectInput = ({
         onBlur={onBlur}
         className={inputClassName}
       >
-        <option value="" disabled className="bg-bg-input" label={defaultLabel} />
+        {defaultLabel && <option value="" disabled className="bg-bg-input" label={defaultLabel} />}
         {options.map((option) => (
           <option key={option.value} value={option.value} label={option.label}>
             {option.label}

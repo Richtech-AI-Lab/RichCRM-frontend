@@ -7,7 +7,11 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}", flowbite.content()],
 
   theme: {
-    extend: {},
+    extend: {
+      boxShadow: {
+        'full': 'rgba(0, 0, 0, 0.2) 0px 0px 6px',
+      }
+    },
     colors: {
       'primary': '#375398',
       'title': "#092C4C",
@@ -20,6 +24,7 @@ module.exports = {
         100: "#2B40FF",
         200: "#514EF3",
         300: '#8785FA',
+        400: '#178EFB',
       },
       'secondary': {
         100: "#2A343D",
@@ -39,6 +44,13 @@ module.exports = {
       'badge-yellow': '#FFD08A',
       'badge-blue': '#95DEE3',
       'badge-pink': '#D3B3E7',
+      'select': '#F7F2FA',
+      'select-text': '#49454F',
+      'bg-pink': '#E8DEF8',
+      'progress': '#F1F2F4',
+      'progress-active': '#BAD4FF',
+      'text-purple': '#65558F',
+      'badge-gray': '#E5E5E5',
       ...colors,
     },
   },

@@ -1,8 +1,8 @@
 import React from "react";
 import Badge from "../badge";
 
-const CardItem = ({ badgeColor, badgeText, caseDetails }) => (
-  <div className="card rounded-lg mb-2">
+const CardItem = ({ badgeColor, badgeText, caseDetails,onClick }) => (
+  <div className="card rounded-lg mb-2" onClick={onClick} style={{ cursor: 'pointer' }}>
     <Badge color={badgeColor}>{badgeText}</Badge>
     <p className="text-sm text-secondary-100 font-semibold mt-3">
       {caseDetails}
