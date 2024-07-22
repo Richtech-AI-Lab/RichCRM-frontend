@@ -1,7 +1,7 @@
 const flowbite = require("flowbite-react/tailwind");
 const colors = require("tailwindcss/colors");
 
-/** @type {import('tailwindcss').Config} */
+/**   @type {import('tailwindcss').Config} */
 
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}", flowbite.content()],
@@ -10,10 +10,12 @@ module.exports = {
     extend: {
       boxShadow: {
         'full': 'rgba(0, 0, 0, 0.2) 0px 0px 6px',
+        'card': '0px 3px 8px rgba(0, 14, 73, 0.15);'
       }
     },
     colors: {
       'primary': '#375398',
+      'primary2': '#366093',
       'title': "#092C4C",
       'label': "#49454F",
       'bg-input': "#E6E9EE",
@@ -33,12 +35,16 @@ module.exports = {
         400: '#606060',
         500: '#1D192B',
         600: '#919191',
+        700: '#42474F',
+        800: '#1A1C1F',
+        900: '#8D919A',
       },
       'border': '#D2D2D2',
       'stroke': '#79747E',
       'card': {
         100: '#F2F2F2',
         200: '#ECECEC',
+        300: '#E8E8EC',
       },
       'badge-green': '#ABE8AE',
       'badge-yellow': '#FFD08A',
@@ -51,6 +57,7 @@ module.exports = {
       'progress-active': '#BAD4FF',
       'text-purple': '#65558F',
       'badge-gray': '#E5E5E5',
+      'input-surface': '#F3F3F8',
       ...colors,
     },
   },
