@@ -10,8 +10,10 @@ const CaseCardDetails = ({ title, items }) => (
           key={index}
           label={item.label}
           value={item.value}
+          icon={item.icon}
           isCheckbox={item.isCheckbox}
           checkboxOptions={item.checkboxOptions}
+          nestedItems={item.nestedItems}
         />
       ))}
     </ul>
