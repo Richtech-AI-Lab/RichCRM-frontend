@@ -158,7 +158,7 @@ const Dashboard = () => {
         </div>
         <div className="col-span-4">
           <div className="grid grid-cols-1">
-            <div className="card">
+            <div className="card shadow-card">
               <div className="flex justify-between items-center mb-6">
                 <span className="text-xl leading-[30px] font-medium">
                   Upcoming Events

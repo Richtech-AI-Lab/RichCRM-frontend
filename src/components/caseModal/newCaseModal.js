@@ -20,76 +20,172 @@
 
 // export default NewCaseModal
 
-"use client";
+// "use client";
 
 import { Button, Checkbox, Label, Modal, TextInput } from "flowbite-react";
 import { useState } from "react";
-import AuthFormContainer from '../authContainer';
-import SelectInput from '../selectinput';
-// import TextInput from '../TextInput';
-import XButton from '../button/XButton';
-import XSpinnerLoader from '../spinnerLoader/XSpinnerLoader';
+import * as Yup from "yup";
+import { Formik } from "formik";
+import AuthFormContainer from "../authContainer";
+import XButton from "../button/XButton";
+import XSpinnerLoader from "../spinnerLoader/XSpinnerLoader";
+import SelectInput from "../selectinput";
 
-export const NewCaseModal = () => {
-    const [openModal, setOpenModal] = useState(true);
-    const [email, setEmail] = useState('');
+const NewCaseModal = ({ onClose }) => {
 
-    function onCloseModal() {
-        setOpenModal(false);
-        setEmail('');
-    }
+    const initialValues = {
+        caseType: "",
+        clientFirstName: "",
+        clientLastName: "",
+        address: "",
+        addressLine2: "",
+        city: "",
+        state: ""
+    };
+    const validationSchema = Yup.object({
+        caseType: Yup.string().required('Case Type is required'),
+        clientFirstName: Yup.string().required('Client First Name is required'),
+        clientLastName: Yup.string().required('Client Last Name is required'),
+        address: Yup.string().required('Address is required'),
+        addressLine2: Yup.string(),
+        city: Yup.string().required('City is required'),
+        state: Yup.string().required('State is required'),
+    });
 
     return (
-        <>
-            <Button onClick={() => setOpenModal(true)}>Toggle modal</Button>
-            <Modal show={openModal} size="md" onClose={onCloseModal} popup>
-                <Modal.Header />
-                <Modal.Body>
-                    <AuthFormContainer title="New Case" subtitle="Create a new case by filling the basic information.">
-                        <div className="space-y-6">
-                            <h3 className="text-xl font-medium text-gray-900 dark:text-white">Sign in to our platform</h3>
-                            <div>
-                                <div className="mb-2 block">
-                                    <Label htmlFor="email" value="Your email" />
+        <Modal show={true} size="md" onClose={onClose} popup>
+            <Modal.Header />
+            <Modal.Body>
+                <AuthFormContainer title="New Case" subtitle="Create a new case by filling the basic information.">
+                    <Formik
+                        initialValues={initialValues}
+                        validationSchema={validationSchema}>
+                        {({
+                            values,
+                            errors,
+                            touched,
+                            handleChange,
+                            handleBlur,
+                            handleSubmit,
+                            isSubmitting,
+                        }) => (
+                            <form onSubmit={handleSubmit} className="login-form">
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <div className="mb-2 block">
+                                            <Label htmlFor="caseType" value="Case Type" />
+                                            <SelectInput
+                                                name=""
+                                                value=""
+                                                onChange={(e) => console.log(e.target.value)}
+                                                options={[
+                                                    { value: "PremiseSelling", label: "Premise Selling" },
+                                                    { value: "Selling", label: "Selling" },
+                                                ]}
+                                                inputClassName="border-none rounded-lg py-[6px] px-[16px] bg-select text-select-text leading-5 font-semibold shadow-full"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div className="mb-2 block">
+                                            <Label htmlFor="ClientInfo" value="Client Information" />
+                                            <TextInput
+                                                name="fName"
+                                                type="text"
+                                                placeholder="Client Fist name"
+                                                value={values.clientFirstName}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                field={{ name: "fName" }}
+                                                form={{ errors, touched }}
+                                            />
+                                            <TextInput
+                                                name="lName"
+                                                type="text"
+                                                placeholder="Client Last Name"
+                                                value={values.clientLastName}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                field={{ name: "lName" }}
+                                                form={{ errors, touched }}
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
-                                <TextInput
-                                    id="email"
-                                    placeholder="name@company.com"
-                                    value={email}
-                                    onChange={(event) => setEmail(event.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <div className="mb-2 block">
-                                    <Label htmlFor="password" value="Your password" />
+                                <div>
+                                    <div className="mb-2 block">
+                                        <Label htmlFor="ClientInfo" value="Premise Information" />
+                                        <TextInput
+                                            name="address"
+                                            type="text"
+                                            placeholder="Address"
+                                            value={values.address}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            field={{ name: "Address" }}
+                                            form={{ errors, touched }}
+                                        />
+                                        <TextInput
+                                            name="addressLine2"
+                                            type="text"
+                                            placeholder="Address Line 2"
+                                            value={values.addressLine2}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            field={{ name: "Address Line 2" }}
+                                            form={{ errors, touched }}
+                                        />
+                                        <TextInput
+                                            name="city"
+                                            type="text"
+                                            placeholder="City"
+                                            value={values.confirmPassword}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            field={{ name: "city" }}
+                                            form={{ errors, touched }}
+                                        />
+                                        <TextInput
+                                            name="state"
+                                            type="text"
+                                            placeholder="State"
+                                            value={values.state}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            field={{ name: "state" }}
+                                            form={{ errors, touched }}
+                                        />
+                                    </div>
                                 </div>
-                                <TextInput id="password" type="password" required />
-                            </div>
-                            <div className="flex justify-between">
-                                <div className="flex items-center gap-2">
-                                    <Checkbox id="remember" />
-                                    <Label htmlFor="remember">Remember me</Label>
+                                <div className="text-center mb-8 mt-6">
+                                    <XButton
+                                        type="submit"
+                                        text={"Cancel"}
+                                        disabled={isSubmitting}
+                                        className="bg-primary text-sm text-white py-[10px] px-6 w-[145px] rounded-[100px]"
+                                    />
+                                    <XButton
+                                        type="submit"
+                                        text={"Next"}
+                                        disabled={isSubmitting}
+                                        className="bg-primary text-sm text-white py-[10px] px-6 w-[145px] rounded-[100px]"
+                                    />
+
+                                    {/* <XButton
+                    onClick={handleRegisterClick}
+                    text="Sign Up"
+                    className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px]"
+                  /> */}
                                 </div>
-                                <a href="#" className="text-sm text-cyan-700 hover:underline dark:text-cyan-500">
-                                    Lost Password?
-                                </a>
-                            </div>
-                            <div className="w-full">
-                                <Button>Log in to your account</Button>
-                            </div>
-                            <div className="flex justify-between text-sm font-medium text-gray-500 dark:text-gray-300">
-                                Not registered?&nbsp;
-                                <a href="#" className="text-cyan-700 hover:underline dark:text-cyan-500">
-                                    Create account
-                                </a>
-                            </div>
-                        </div>
-                    </AuthFormContainer>
-                </Modal.Body>
-            </Modal>
-        </>
+                                {/* <p className="text-center text-sm font-medium text-secondary-700">Already have an account? <a className="ml-6 text-primary2" onClick={handleBackIcon}>Log in here</a></p> */}
+                            </form>
+                        )}
+                    </Formik>
+                </AuthFormContainer>
+
+            </Modal.Body>
+        </Modal >
     );
 };
 
-export default NewCaseModal
+export default NewCaseModal;

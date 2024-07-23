@@ -40,7 +40,7 @@
     @apply bg-active rounded-[100px] !important;
   }
   .card {
-    @apply bg-white p-4 rounded-2xl;
+    @apply bg-white p-4 rounded-3xl;
   }
   .sidebar-toggle {
     @apply w-[0] !important;
@@ -94,5 +94,17 @@
     @apply text-secondary-700
   }
 
+  .list-w-full {
+    @apply block !important
+  }
+  .list-w-full li {
+    @apply border-b-0 mb-2 pb-2 !important
+  }
+  .list-w-full li:last-child {
+    @apply mb-0 pb-0 !important
+  }
+  .right-listing li {
+    @apply pb-5 mb-5
+  }
   
 }

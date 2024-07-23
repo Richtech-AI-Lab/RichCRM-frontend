@@ -1,7 +1,7 @@
 const flowbite = require("flowbite-react/tailwind");
 const colors = require("tailwindcss/colors");
 
-/** @type {import('tailwindcss').Config} */
+/**   @type {import('tailwindcss').Config} */
 
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}", flowbite.content()],
@@ -37,12 +37,14 @@ module.exports = {
         600: '#919191',
         700: '#42474F',
         800: '#1A1C1F',
+        900: '#8D919A',
       },
       'border': '#D2D2D2',
       'stroke': '#79747E',
       'card': {
         100: '#F2F2F2',
         200: '#ECECEC',
+        300: '#E8E8EC',
       },
       'badge-green': '#ABE8AE',
       'badge-yellow': '#FFD08A',
