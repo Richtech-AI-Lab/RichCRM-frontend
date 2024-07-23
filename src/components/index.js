@@ -21,6 +21,7 @@ import ContactDetailItem from "./contactdetailitem";
 import Label from "./label";
 import CaseCardDetails from "./casecarddetails";
 import CardListItem from "./cardlistitem";
+import AuthFormContainer from "./authContainer";
 
 export {
   Header,
@@ -45,5 +46,6 @@ export {
   ContactDetailItem,
   Label,
   CardListItem,
-  CaseCardDetails
+  CaseCardDetails,
+  AuthFormContainer
 };

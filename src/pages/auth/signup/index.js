@@ -3,6 +3,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { useSelector } from "react-redux";
 import {
+  AuthFormContainer,
   SelectInput,
   TextInput,
   XButton,
@@ -41,112 +42,102 @@ const Signup = () => {
 
   const handleSignup = (values, { setSubmitting }) => {
     setSubmitting(false);
-    if(values){
-        navigate("/rich-crm/dashboard");
+    if (values) {
+      navigate("/rich-crm/dashboard");
     }
   };
-  const handleBackIcon=()=>{
+  const handleBackIcon = () => {
     navigate("/")
   }
   return (
     <>
       <XSpinnerLoader loading={loading} size="lg" />
-      <div className="container mx-auto">
-        <div className="flex justify-center">
-          <div className="w-full md:w-1/2">
-            <h2 className="text-center mt-5 mb-3 text-2xl">Sign Up</h2>
-            <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmit={handleSignup}
-            >
-              {({
-                values,
-                errors,
-                touched,
-                handleChange,
-                handleBlur,
-                handleSubmit,
-                isSubmitting,
-              }) => (
-                <form onSubmit={handleSubmit} className="signup-form">
-                  <TextInput
-                    name="username"
-                    type="text"
-                    placeholder="Enter username"
-                    value={values.username}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    field={{ name: "username" }}
-                    form={{ errors, touched }}
-                    label="Username"
-                  />
-                  <TextInput
-                    name="email"
-                    type="email"
-                    placeholder="Enter email"
-                    value={values.email}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    field={{ name: "email" }}
-                    form={{ errors, touched }}
-                    label="Email"
-                  />
-                  <TextInput
-                    name="password"
-                    type="password"
-                    placeholder="Password"
-                    value={values.password}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    field={{ name: "password" }}
-                    form={{ errors, touched }}
-                    label="Password"
-                  />
-                  <TextInput
-                    name="confirmPassword"
-                    type="password"
-                    placeholder="Confirm password"
-                    value={values.confirmPassword}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    field={{ name: "confirmPassword" }}
-                    form={{ errors, touched }}
-                    label="Confirm Password"
-                  />
-                  <SelectInput
-                    name="role"
-                    value={values.role}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    options={[{ value: "admin", label: "Admin" }]}
-                    error={errors.role}
-                    touched={touched.role}
-                    label="Role"
-                    inputClassName={`mt-1 block w-full pl-3 pr-10 py-2 text-base border ${
-                      errors.role && touched.role
-                        ? "border-red-500"
-                        : "border-gray-300"
-                    } rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
-                    labelClassName="block text-sm font-medium text-gray-700"
-                    defaultLabel="Select role"
-                    className="mt-4"
-                  />    
-                  <div className="flex justify-center items-center w-full mt-4">
-                  <span className="mr-3"><IoIosArrowRoundBack className="text-2xl inline-block" style={{cursor:'pointer'}} onClick={handleBackIcon}/> Back</span>
-                    <XButton
-                      type="submit"
-                      disabled={isSubmitting}
-                      text={isSubmitting ? "Signing up..." : "Submit"}
-                      className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px]"
-                    />
-                  </div>
-                </form>
-              )}
-            </Formik>
-          </div>
-        </div>
-      </div>
+      <AuthFormContainer title={'Sign up'} subtitle={'Create your account by filling the form below.'}>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+        >
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            isSubmitting,
+          }) => (
+            <form onSubmit={handleSubmit} className="login-form">
+              <div className="grid grid-cols-2 gap-4">
+                <TextInput
+                  name="fName"
+                  type="text"
+                  placeholder="First Name"
+                  value={values.username}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  field={{ name: "fName" }}
+                  form={{ errors, touched }}
+                />
+                <TextInput
+                  name="lName"
+                  type="text"
+                  placeholder="Last Name"
+                  value={values.username}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  field={{ name: "lName" }}
+                  form={{ errors, touched }}
+                />
+              </div>
+              <TextInput
+                name="email"
+                type="email"
+                placeholder="Enter email"
+                value={values.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                field={{ name: "email" }}
+                form={{ errors, touched }}
+              />
+              <TextInput
+                name="password"
+                type="password"
+                placeholder="Password"
+                value={values.password}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                field={{ name: "password" }}
+                form={{ errors, touched }}
+              />
+              <TextInput
+                name="confirmPassword"
+                type="password"
+                placeholder="Confirm password"
+                value={values.confirmPassword}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                field={{ name: "confirmPassword" }}
+                form={{ errors, touched }}
+              />
+              <div className="text-center mb-8 mt-6">
+                <XButton
+                  type="submit"
+                  text={isSubmitting ? "Signup in..." : "Sign up"}
+                  disabled={isSubmitting}
+                  className="bg-primary text-sm text-white py-[10px] px-6 w-[145px] rounded-[100px]"
+                />
+
+                {/* <XButton
+                    onClick={handleRegisterClick}
+                    text="Sign Up"
+                    className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px]"
+                  /> */}
+              </div>
+              <p className="text-center text-sm font-medium text-secondary-700">Already have an account? <a className="ml-6 text-primary2" onClick={handleBackIcon}>Log in here</a></p>
+            </form>
+          )}
+        </Formik>
+      </AuthFormContainer>
     </>
   );
 };

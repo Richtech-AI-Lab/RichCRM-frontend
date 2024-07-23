@@ -10,10 +10,12 @@ module.exports = {
     extend: {
       boxShadow: {
         'full': 'rgba(0, 0, 0, 0.2) 0px 0px 6px',
+        'card': '0px 3px 8px rgba(0, 14, 73, 0.15);'
       }
     },
     colors: {
       'primary': '#375398',
+      'primary2': '#366093',
       'title': "#092C4C",
       'label': "#49454F",
       'bg-input': "#E6E9EE",
@@ -33,6 +35,8 @@ module.exports = {
         400: '#606060',
         500: '#1D192B',
         600: '#919191',
+        700: '#42474F',
+        800: '#1A1C1F',
       },
       'border': '#D2D2D2',
       'stroke': '#79747E',
@@ -51,6 +55,7 @@ module.exports = {
       'progress-active': '#BAD4FF',
       'text-purple': '#65558F',
       'badge-gray': '#E5E5E5',
+      'input-surface': '#F3F3F8',
       ...colors,
     },
   },
