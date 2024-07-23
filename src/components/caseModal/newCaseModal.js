@@ -1,41 +1,18 @@
-// import React from 'react'
-// import { useState } from 'react';
-// import { Formik } from "formik";
-// import AuthFormContainer from '../authContainer';
-// import SelectInput from '../selectinput';
-// import TextInput from '../TextInput';
-// import XButton from '../button/XButton';
-// import XSpinnerLoader from '../spinnerLoader/XSpinnerLoader';
-
-// export const NewCaseModal = () => {
-
-
-//     return (
-//         <div>
-//             <AuthFormContainer title={'New Case'} subtitle={'Create a new case by filling the basic information.'}>
-//             </AuthFormContainer>
-//         </div>
-//     )
-// }
-
-// export default NewCaseModal
-
-// "use client";
-
-import { Button, Checkbox, Label, Modal, TextInput } from "flowbite-react";
-import { useState } from "react";
+import React from "react";
 import * as Yup from "yup";
 import { Formik } from "formik";
+import { Label, Modal } from "flowbite-react";
 import AuthFormContainer from "../authContainer";
+import TextInput from "../TextInput";
 import XButton from "../button/XButton";
-import XSpinnerLoader from "../spinnerLoader/XSpinnerLoader";
 import SelectInput from "../selectinput";
+import { useNavigate } from "react-router-dom";
 
 const NewCaseModal = ({ onClose }) => {
-
+    const navigate = useNavigate()
     const initialValues = {
         caseType: "",
-        clientFirstName: "",
+        clientfirstName: "",
         clientLastName: "",
         address: "",
         addressLine2: "",
@@ -44,10 +21,10 @@ const NewCaseModal = ({ onClose }) => {
     };
     const validationSchema = Yup.object({
         caseType: Yup.string().required('Case Type is required'),
-        clientFirstName: Yup.string().required('Client First Name is required'),
+        clientfirstName: Yup.string().required('Client First Name is required'),
         clientLastName: Yup.string().required('Client Last Name is required'),
         address: Yup.string().required('Address is required'),
-        addressLine2: Yup.string(),
+        addressLine2: Yup.string().required('Address Line 2 is required'),
         city: Yup.string().required('City is required'),
         state: Yup.string().required('State is required'),
     });
@@ -75,38 +52,42 @@ const NewCaseModal = ({ onClose }) => {
                                         <div className="mb-2 block">
                                             <Label htmlFor="caseType" value="Case Type" />
                                             <SelectInput
-                                                name=""
-                                                value=""
-                                                onChange={(e) => console.log(e.target.value)}
+                                                name="caseType"
+                                                value={values.caseType}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
                                                 options={[
                                                     { value: "PremiseSelling", label: "Premise Selling" },
                                                     { value: "Selling", label: "Selling" },
                                                 ]}
                                                 inputClassName="border-none rounded-lg py-[6px] px-[16px] bg-select text-select-text leading-5 font-semibold shadow-full"
                                             />
+                                            {touched.caseType && errors.caseType ? (
+                                                <div className="text-red-500 text-sm">{errors.caseType}</div>
+                                            ) : null}
                                         </div>
                                     </div>
                                     <div>
                                         <div className="mb-2 block">
-                                            <Label htmlFor="ClientInfo" value="Client Information" />
+                                            <Label htmlFor="clientFirstName" value="Client Information" />
                                             <TextInput
-                                                name="fName"
+                                                name="clientfirstName"
                                                 type="text"
-                                                placeholder="Client Fist name"
-                                                value={values.clientFirstName}
+                                                placeholder="Client First Name"
+                                                value={values.clientfirstName}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
-                                                field={{ name: "fName" }}
+                                                field={{ name: "clientfirstName" }}
                                                 form={{ errors, touched }}
                                             />
                                             <TextInput
-                                                name="lName"
+                                                name="clientLastName"
                                                 type="text"
                                                 placeholder="Client Last Name"
                                                 value={values.clientLastName}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
-                                                field={{ name: "lName" }}
+                                                field={{ name: "clientLastName" }}
                                                 form={{ errors, touched }}
                                             />
                                         </div>
@@ -114,7 +95,7 @@ const NewCaseModal = ({ onClose }) => {
                                 </div>
                                 <div>
                                     <div className="mb-2 block">
-                                        <Label htmlFor="ClientInfo" value="Premise Information" />
+                                        <Label htmlFor="premiseInfo" value="Premise Information" />
                                         <TextInput
                                             name="address"
                                             type="text"
@@ -122,7 +103,7 @@ const NewCaseModal = ({ onClose }) => {
                                             value={values.address}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            field={{ name: "Address" }}
+                                            field={{ name: "address" }}
                                             form={{ errors, touched }}
                                         />
                                         <TextInput
@@ -132,7 +113,7 @@ const NewCaseModal = ({ onClose }) => {
                                             value={values.addressLine2}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            field={{ name: "Address Line 2" }}
+                                            field={{ name: "address" }}
                                             form={{ errors, touched }}
                                         />
                                         <TextInput
@@ -159,7 +140,6 @@ const NewCaseModal = ({ onClose }) => {
                                 </div>
                                 <div className="text-center mb-8 mt-6">
                                     <XButton
-                                        type="submit"
                                         text={"Cancel"}
                                         disabled={isSubmitting}
                                         className="bg-primary text-sm text-white py-[10px] px-6 w-[145px] rounded-[100px]"
@@ -170,14 +150,7 @@ const NewCaseModal = ({ onClose }) => {
                                         disabled={isSubmitting}
                                         className="bg-primary text-sm text-white py-[10px] px-6 w-[145px] rounded-[100px]"
                                     />
-
-                                    {/* <XButton
-                    onClick={handleRegisterClick}
-                    text="Sign Up"
-                    className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px]"
-                  /> */}
                                 </div>
-                                {/* <p className="text-center text-sm font-medium text-secondary-700">Already have an account? <a className="ml-6 text-primary2" onClick={handleBackIcon}>Log in here</a></p> */}
                             </form>
                         )}
                     </Formik>
