@@ -112,5 +112,10 @@
   .right-listing li {
     @apply pb-5 mb-5
   }
-  
+  .new-case-modal > div{
+    @apply max-w-[624px]
+  }
+  .new-case-modal > div > div{
+    @apply rounded-3xl
+  }
 }

@@ -36,10 +36,15 @@ const NewCaseModal = ({ onClose }) => {
     }
 
     return (
-        <Modal show={true} size="md" onClose={onClose} popup>
-            <Modal.Header />
+        <Modal show={true} size="md" onClose={onClose} className="new-case-modal">
+            <Modal.Header className="border-b-0">
+                <div>
+                <h2 className="mb-2 text-[28px] leading-9 font-medium text-secondary-800">New Case</h2>
+                <p className="text-sm leading-5 text-secondary-700">Create a new case by filling the basic information.</p>
+                </div>
+            </Modal.Header>
             <Modal.Body>
-                <AuthFormContainer title="New Case" subtitle="Create a new case by filling the basic information.">
+                {/* <AuthFormContainer title="New Case" subtitle="Create a new case by filling the basic information."> */}
                     <Formik
                         initialValues={initialValues}
                         // validationSchema={validationSchema}
@@ -54,9 +59,9 @@ const NewCaseModal = ({ onClose }) => {
                             handleSubmit,
                             isSubmitting,
                         }) => (
-                            <form onSubmit={handleSubmit} className="login-form">
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
+                            <form onSubmit={handleSubmit} className="">
+                                <div>
+                                    <div className="mb-8">
                                         <div className="mb-2 block">
                                             <Label htmlFor="caseType" value="Case Type" />
                                             <SelectInput
@@ -68,16 +73,18 @@ const NewCaseModal = ({ onClose }) => {
                                                     { value: "PremiseSelling", label: "Premise Selling" },
                                                     { value: "Selling", label: "Selling" },
                                                 ]}
-                                                inputClassName="border-none rounded-lg py-[6px] px-[16px] bg-select text-select-text leading-5 font-semibold shadow-full"
+                                                inputClassName="bg-input-surface rounded-[40px] border-0 py-2 px-4 text-sm leading-6 mt-3"
                                             />
                                             {touched.caseType && errors.caseType ? (
                                                 <div className="text-red-500 text-sm">{errors.caseType}</div>
                                             ) : null}
                                         </div>
                                     </div>
-                                    <div>
+                                    <div className="mb-8">
+                                    <Label htmlFor="clientFirstName" value="Client Information" />
+                                    <div className="grid grid-cols-2 gap-4">
                                         <div className="mb-2 block">
-                                            <Label htmlFor="clientFirstName" value="Client Information" />
+                                            
                                             <TextInput
                                                 name="clientfirstName"
                                                 type="text"
@@ -88,6 +95,9 @@ const NewCaseModal = ({ onClose }) => {
                                                 field={{ name: "clientfirstName" }}
                                                 form={{ errors, touched }}
                                             />
+                                        </div>
+                                        <div className="mb-2 block">
+                                            
                                             <TextInput
                                                 name="clientLastName"
                                                 type="text"
@@ -100,10 +110,12 @@ const NewCaseModal = ({ onClose }) => {
                                             />
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
                                 <div>
                                     <div className="mb-2 block">
                                         <Label htmlFor="premiseInfo" value="Premise Information" />
+                                        
                                         <TextInput
                                             name="address"
                                             type="text"
@@ -124,6 +136,7 @@ const NewCaseModal = ({ onClose }) => {
                                             field={{ name: "address" }}
                                             form={{ errors, touched }}
                                         />
+                                        <div className="grid grid-cols-2 gap-4">
                                         <TextInput
                                             name="city"
                                             type="text"
@@ -144,25 +157,26 @@ const NewCaseModal = ({ onClose }) => {
                                             field={{ name: "state" }}
                                             form={{ errors, touched }}
                                         />
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="text-center mb-8 mt-6">
+                                <div className="text-end mt-8">
                                     <XButton
                                         text={"Cancel"}
                                         disabled={isSubmitting}
-                                        className="bg-primary text-sm text-white py-[10px] px-6 w-[145px] rounded-[100px]"
+                                        className="bg-card-300 text-sm text-secondary-800 py-[10px] px-6 rounded-[100px]"
                                     />
                                     <XButton
                                         type="submit"
                                         text={"Next"}
                                         disabled={isSubmitting}
-                                        className="bg-primary text-sm text-white py-[10px] px-6 w-[145px] rounded-[100px]"
+                                        className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px] ml-4"
                                     />
                                 </div>
                             </form>
                         )}
                     </Formik>
-                </AuthFormContainer>
+                {/* </AuthFormContainer> */}
 
             </Modal.Body>
         </Modal >
