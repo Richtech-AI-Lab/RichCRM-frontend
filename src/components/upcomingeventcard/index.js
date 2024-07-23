@@ -9,8 +9,8 @@ const UpcomingEventCard = ({ title, description, time }) => {
         <p className="text-[14px] leading-5 text-secondary-800 font-medium">AUG</p>
       </div>
       <div>
-      <p className="text-base leading-6 text-secondary-800 font-medium">{title}</p>
-      <p className="text-sm leading-5 text-secondary-700 mb-3">
+      <p className="text-base leading-6 text-secondary-800 font-medium mb-1">{title}</p>
+      <p className="text-sm leading-5 text-secondary-700 mb-1">
         {description}
       </p>
       <p className="text-base text-secondary-800 font-medium">{time}</p>

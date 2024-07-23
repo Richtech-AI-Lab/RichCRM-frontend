@@ -28,6 +28,12 @@ const NewCaseModal = ({ onClose }) => {
         city: Yup.string().required('City is required'),
         state: Yup.string().required('State is required'),
     });
+    const handleNewCaseInfo = (values) => {
+        console.log("exe")
+        if (values) {
+            navigate("/rich-crm/newcaseinfo");
+        }
+    }
 
     return (
         <Modal show={true} size="md" onClose={onClose} popup>
@@ -36,7 +42,9 @@ const NewCaseModal = ({ onClose }) => {
                 <AuthFormContainer title="New Case" subtitle="Create a new case by filling the basic information.">
                     <Formik
                         initialValues={initialValues}
-                        validationSchema={validationSchema}>
+                        // validationSchema={validationSchema}
+                        onSubmit={handleNewCaseInfo}
+                        >
                         {({
                             values,
                             errors,
