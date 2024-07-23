@@ -4,6 +4,7 @@ import Cases from "../cases";
 import CaseCardData from "../cases/casecarddata";
 import CasesCategory from "../cases/casescategory";
 import CaseDetails from "../cases/casedetails";
+import NewCaseInfo from "../cases/newcaseinfo";
 
 const Content = () => {
   return (
@@ -13,6 +14,7 @@ const Content = () => {
       <Route path="/casescategory" element={<CasesCategory />} />
       <Route path="/casesdata" element={<CaseCardData />} />
       <Route path="/casedetails" element={<CaseDetails />} />
+      <Route path="/newcaseinfo" element={<NewCaseInfo />} />
 
       <Route path="/*" element={404} />
     </Routes>

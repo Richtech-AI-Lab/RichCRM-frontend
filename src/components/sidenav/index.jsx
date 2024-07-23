@@ -15,6 +15,7 @@ const SideNav = ({ isDrawerOpen, toggleDrawer, setTitle }) => {
       "/rich-crm/casesdata",
       "/rich-crm/casedetails",
       "/rich-crm/casescategory",
+      "rich-crm/newcaseinfo"
     ];
 
     if (casesPaths.includes(currentPath)) {
@@ -40,8 +41,8 @@ const SideNav = ({ isDrawerOpen, toggleDrawer, setTitle }) => {
   };
 
   return (
-    <Sidebar className={`w-[264px] sidebar ${isDrawerOpen ? '' : 'sidebar-toggle'} fixed bg-bg-body`}>
-      <h1 className="text-secondary-400 text-xl font-bold pt-5 pb-3 px-4 whitespace-nowrap">MG Law Group</h1>
+    <Sidebar className={`w-[264px] sidebar ${isDrawerOpen ? '' : 'sidebar-toggle'} fixed bg-input-surface`}>
+      <h1 className="text-secondary-700 text-xl font-bold pt-5 pb-3 px-4 whitespace-nowrap">MG Law Group</h1>
       <Sidebar.Items className="mt-10 sidebar-items flex flex-col justify-between h-[calc(100vh-140px)]">
         <Sidebar.ItemGroup>
           <Sidebar.Item as={Link} to="/rich-crm/dashboard" icon={PiLayout} className={isActive("/rich-crm/dashboard") ? "active-item" : ""} onClick={() => handleTitleChange('Dashboard')}>
@@ -61,9 +62,9 @@ const SideNav = ({ isDrawerOpen, toggleDrawer, setTitle }) => {
           </Sidebar.Item>
         </Sidebar.ItemGroup>
         <Sidebar.ItemGroup>
-          <Sidebar.Item as={Link} to="/rich-crm/links" icon={PiLinkSimpleHorizontal} className={isActive("/rich-crm/links") ? "active-item" : ""} onClick={() => handleTitleChange('External Links')}>
+          {/* <Sidebar.Item as={Link} to="/rich-crm/links" icon={PiLinkSimpleHorizontal} className={isActive("/rich-crm/links") ? "active-item" : ""} onClick={() => handleTitleChange('External Links')}>
             External Links
-          </Sidebar.Item>
+          </Sidebar.Item> */}
           <Sidebar.Item as={Link} to="/rich-crm/settings" icon={IoSettingsOutline} className={isActive("/rich-crm/settings") ? "active-item" : ""} onClick={() => handleTitleChange('Settings')}>
             Settings
           </Sidebar.Item>

@@ -5,6 +5,7 @@ import XButton from "../button/XButton";
 import SelectInput from "../selectinput";
 import NewCaseModal from "../caseModal/newCaseModal";
 import { SORT_OPTIONS } from "../../constants/constants";
+import { FiPlus } from "react-icons/fi";
 
 const Actionbar = () => {
   const [sortBy, setSortBy] = useState("");
@@ -26,12 +27,7 @@ const Actionbar = () => {
   };
 
   return (
-    <div className="flex justify-between items-center mb-6">
-      <XButton
-        text="+ Create a case"
-        className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px]"
-        onClick={toggleModal}
-      />
+    <div className="flex justify-between items-center mb-6">      
       <div className="flex items-center">
         <a>
           <BsFillGrid3X2GapFill className="text-[28px] mr-4" />
@@ -39,12 +35,18 @@ const Actionbar = () => {
         <a>
           <FaList className="text-xl mr-8" />
         </a>
+        {/* <div>  
+        <a>
+          <FaList className="text-xl mr-8" />
+        </a> 
+        <p>filter</p>
+        </div> */}
         <SelectInput
-          inputClassName="border border-stroke rounded-lg py-[6px] px-[16px] bg-transparent text-base leading-5 font-semibold text-label"
+          inputClassName="border border-stroke rounded-lg py-[6px] px-[16px] bg-white text-base leading-5 font-semibold text-label"
           labelClassName="ext-label mr-3"
-          label="Sort by"
+          // label="Sort by"
           name="sortBy"
-          defaultLabel="Label"
+          defaultLabel="Sort by:Last edit"
           value={sortBy}
           onChange={handleSortChange}
           options={sortOptions.map((option) => ({
@@ -53,6 +55,7 @@ const Actionbar = () => {
           }))}
         />
       </div>
+      <XButton text="New case" icon={<FiPlus className="text-base mr-2 inline-block" />} className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium" onClick={toggleModal} />
       {isModalOpen && <NewCaseModal onClose={toggleModal} />}
     </div>
   );

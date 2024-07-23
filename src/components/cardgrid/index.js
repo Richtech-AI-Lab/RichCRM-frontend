@@ -18,7 +18,8 @@ const CardGrid = ({ cards, includeClasses,onCardClick }) => {
             count={card.count}
             items={card.items}
             cardClass={includeClasses ? "bg-white p-0" : "bg-card-300"}
-            onClick={onCardClick}        
+            onClick={onCardClick}
+            includeClasses={includeClasses}        
           />
         ))}
       </div>

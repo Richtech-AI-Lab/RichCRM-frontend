@@ -9,50 +9,82 @@ const CasesCategory = () => {
   const startedItems = [
     {
       badgeColor: "yellow",
-      badgeText: "Set up",
+      badgeText: "Setting up",
       caseDetails: "Client’s Name - Case Type",
     },
     {
       badgeColor: "yellow",
-      badgeText: "Set up",
+      badgeText: "Setting up",
       caseDetails: "Client’s Name - Case Type",
     },
     {
       badgeColor: "yellow",
-      badgeText: "Set up",
+      badgeText: "Setting up",
       caseDetails: "Client’s Name - Case Type",
     },
   ];
 
   const confirmingItems = [
     {
-      badgeColor: "green",
+      badgeColor: "gray",
       badgeText: "Confirming",
       caseDetails: "Client’s Name - Case Type",
     },
     {
-      badgeColor: "green",
+      badgeColor: "gray",
       badgeText: "Confirming",
       caseDetails: "Client’s Name - Case Type",
     },
     {
-      badgeColor: "green",
+      badgeColor: "gray",
       badgeText: "Confirming",
       caseDetails: "Client’s Name - Case Type",
     },
     {
-      badgeColor: "green",
+      badgeColor: "gray",
       badgeText: "Confirming",
       caseDetails: "Client’s Name - Case Type",
     },
     {
-      badgeColor: "green",
+      badgeColor: "gray",
       badgeText: "Confirming",
       caseDetails: "Client’s Name - Case Type",
     },
     {
-      badgeColor: "green",
+      badgeColor: "gray",
       badgeText: "Confirming",
+      caseDetails: "Client’s Name - Case Type",
+    },
+  ];
+  const readyItems = [
+    {
+      badgeColor: "green",
+      badgeText: "Confirmed",
+      caseDetails: "Client’s Name - Case Type",
+    },
+    {
+      badgeColor: "green",
+      badgeText: "Confirmed",
+      caseDetails: "Client’s Name - Case Type",
+    },
+    {
+      badgeColor: "green",
+      badgeText: "Confirmed",
+      caseDetails: "Client’s Name - Case Type",
+    },
+    {
+      badgeColor: "green",
+      badgeText: "Confirmed",
+      caseDetails: "Client’s Name - Case Type",
+    },
+    {
+      badgeColor: "green",
+      badgeText: "Confirmed",
+      caseDetails: "Client’s Name - Case Type",
+    },
+    {
+      badgeColor: "green",
+      badgeText: "Confirmed",
       caseDetails: "Client’s Name - Case Type",
     },
   ];
@@ -69,6 +101,8 @@ const CasesCategory = () => {
       <CasesCategoryCard
         startedItems={startedItems}
         confirmingItems={confirmingItems}
+        readyItems={readyItems}
+
         onCardClick={handleCaseCardClick}
       />
     </div>

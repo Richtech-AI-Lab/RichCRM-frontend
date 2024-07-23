@@ -10,7 +10,8 @@ module.exports = {
     extend: {
       boxShadow: {
         'full': 'rgba(0, 0, 0, 0.2) 0px 0px 6px',
-        'card': '0px 3px 8px rgba(0, 14, 73, 0.15);'
+        'card': '0px 3px 8px rgba(0, 14, 73, 0.15);',
+        'shadow-light': '0px 1px 4px 0px rgba(0, 14, 73, 0.15)',
       }
     },
     colors: {
@@ -30,7 +31,7 @@ module.exports = {
       },
       'secondary': {
         100: "#2A343D",
-        200: "#3F3F3F",
+        200: "#002110",
         300: "#858585",
         400: '#606060',
         500: '#1D192B',
@@ -46,8 +47,8 @@ module.exports = {
         200: '#ECECEC',
         300: '#E8E8EC',
       },
-      'badge-green': '#ABE8AE',
-      'badge-yellow': '#FFD08A',
+      'badge-green': '#A4EDBB',
+      'badge-yellow': '#FFD187',
       'badge-blue': '#95DEE3',
       'badge-pink': '#D3B3E7',
       'select': '#F7F2FA',
@@ -56,8 +57,14 @@ module.exports = {
       'progress': '#F1F2F4',
       'progress-active': '#BAD4FF',
       'text-purple': '#65558F',
-      'badge-gray': '#E5E5E5',
+      'badge-gray': '#E2E2E7',
       'input-surface': '#F3F3F8',
+      'active-blue': '#C5DCFF',
+      'active-blue-text': '#033B6B',
+      'bg-gray': {
+        100: '#E2E2E7',
+      },
+      'error': '#CF0505',
       ...colors,
     },
   },

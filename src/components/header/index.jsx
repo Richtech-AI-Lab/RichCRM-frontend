@@ -26,9 +26,9 @@ const Header = ({ toggleDrawer, title }) => {
       </h1>
       <div className="flex items-center">
         <div className="relative">
-          <input
-            className="text-base text-label font-normal leading-6 bg-bg-input py-2 px-6 rounded-[28px] w-[360px]"
-            placeholder="Hinted search text"
+        <input
+            className="text-base text-secondary-700 font-normal leading-6 bg-bg-gray-100 py-2 px-6 rounded-[28px] w-[360px]"
+            placeholder="Search case, contact or address"
           />
           <img
             src={IMAGES.searchIcon}
