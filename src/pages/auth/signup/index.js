@@ -17,14 +17,16 @@ const Signup = () => {
   let navigate = useNavigate();
 
   const initialValues = {
-    username: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     confirmPassword: "",
     role: "",
   };
   const validationSchema = Yup.object({
-    username: Yup.string().required("Username is required"),
+    firstName: Yup.string().required("firstName is required"),
+    lastName: Yup.string().required("lastName is required"),
     email: Yup.string()
       .email("Invalid email address")
       .required("Email is required"),
@@ -45,7 +47,8 @@ const Signup = () => {
     if (values) {
       navigate("/rich-crm/dashboard");
     }
-  };
+  }
+
   const handleBackIcon = () => {
     navigate("/")
   }
@@ -69,23 +72,23 @@ const Signup = () => {
             <form onSubmit={handleSubmit} className="login-form">
               <div className="grid grid-cols-2 gap-4">
                 <TextInput
-                  name="fName"
+                  name="firstName"
                   type="text"
                   placeholder="First Name"
-                  value={values.username}
+                  value={values.firstName}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  field={{ name: "fName" }}
+                  field={{ name: "firstName" }}
                   form={{ errors, touched }}
                 />
                 <TextInput
-                  name="lName"
+                  name="lastName"
                   type="text"
                   placeholder="Last Name"
-                  value={values.username}
+                  value={values.lastName}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  field={{ name: "lName" }}
+                  field={{ name: "lastName" }}
                   form={{ errors, touched }}
                 />
               </div>
