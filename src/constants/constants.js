@@ -17,7 +17,7 @@ export  const casesCardData = [
         },
         {
           badgeColor: "yellow",
-          badgeText: "Set up",
+          badgeText: "Setting up",
           caseDetails: "Client’s Name - Location",
         },
         {
@@ -27,12 +27,12 @@ export  const casesCardData = [
         },
         {
           badgeColor: "yellow",
-          badgeText: "Set up",
+          badgeText: "Setting up",
           caseDetails: "Client’s Name - Location",
         },
         {
           badgeColor: "yellow",
-          badgeText: "Set up",
+          badgeText: "Setting up",
           caseDetails: "Client’s Name - Location",
         },
         {
@@ -42,7 +42,7 @@ export  const casesCardData = [
         },
         {
           badgeColor: "yellow",
-          badgeText: "Set up",
+          badgeText: "Setting up",
           caseDetails: "Client’s Name - Location",
         },
       ],
@@ -58,7 +58,7 @@ export  const casesCardData = [
         },
         {
           badgeColor: "yellow",
-          badgeText: "Set up",
+          badgeText: "Setting up",
           caseDetails: "Client’s Name - Location",
         },
         {
@@ -68,7 +68,7 @@ export  const casesCardData = [
         },
         {
           badgeColor: "yellow",
-          badgeText: "Set up",
+          badgeText: "Setting up",
           caseDetails: "Client’s Name - Location",
         },
         {
@@ -78,7 +78,7 @@ export  const casesCardData = [
         },
         {
           badgeColor: "yellow",
-          badgeText: "Set up",
+          badgeText: "Setting up",
           caseDetails: "Client’s Name - Location",
         },
       ],
@@ -94,7 +94,7 @@ export  const casesCardData = [
         },
         {
           badgeColor: "yellow",
-          badgeText: "Set up",
+          badgeText: "Setting up",
           caseDetails: "Client’s Name - Location",
         },
         {
@@ -104,12 +104,12 @@ export  const casesCardData = [
         },
         {
           badgeColor: "yellow",
-          badgeText: "Set up",
+          badgeText: "Setting up",
           caseDetails: "Client’s Name - Location",
         },
         {
           badgeColor: "yellow",
-          badgeText: "Set up",
+          badgeText: "Setting up",
           caseDetails: "Client’s Name - Location",
         },
         {
@@ -119,7 +119,7 @@ export  const casesCardData = [
         },
         {
           badgeColor: "yellow",
-          badgeText: "Set up",
+          badgeText: "Setting up",
           caseDetails: "Client’s Name - Location",
         },
       ],
@@ -135,7 +135,7 @@ export  const casesCardData = [
         },
         {
           badgeColor: "yellow",
-          badgeText: "Set up",
+          badgeText: "Setting up",
           caseDetails: "Client’s Name - Location",
         },
         {
@@ -145,7 +145,7 @@ export  const casesCardData = [
         },
         {
           badgeColor: "yellow",
-          badgeText: "Set up",
+          badgeText: "Setting up",
           caseDetails: "Client’s Name - Location",
         },
       ],

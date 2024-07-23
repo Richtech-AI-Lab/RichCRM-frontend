@@ -21,7 +21,7 @@ const TextInput = ({ field, form, type, label, ...props }) => {
           {...field}
           {...props}
           type={type === "password" && !showPassword ? "password" : "text"}
-          className="input w-full px-3 py-2 rounded-md border-gray-300 focus:outline-none focus:border-indigo-500"
+          className="form-input w-full bg-input-surface rounded-[40px] border-0 py-3 px-4 text-base leading-6"
         />
         {type === "password" && (
           <span
@@ -30,7 +30,7 @@ const TextInput = ({ field, form, type, label, ...props }) => {
           >
             <FontAwesomeIcon
               icon={showPassword ? faEyeSlash : faEye}
-              className="text-gray-500"
+              className="text-secondary-800"
             />
           </span>
         )}
