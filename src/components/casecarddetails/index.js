@@ -2,7 +2,7 @@ import React from "react";
 import CardListItem from "../cardlistitem";
 
 const CaseCardDetails = ({ title, items }) => (
-  <div className="bg-white py-4 px-6 rounded-lg mb-5">
+  <div className="bg-white py-4 rounded-2xl mb-5">
     {title && <p className="mb-2">{title}</p>}
     <ul className="card-details">
       {items?.map((item, index) => (
@@ -14,6 +14,12 @@ const CaseCardDetails = ({ title, items }) => (
           isCheckbox={item.isCheckbox}
           checkboxOptions={item.checkboxOptions}
           nestedItems={item.nestedItems}
+          floor={item.floor}
+          inputProps={{
+            type: "text",
+            // onChange: handleChange,
+            placeholder: item.placeholder ,
+          }}
         />
       ))}
     </ul>

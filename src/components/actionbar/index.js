@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { BsFillGrid3X2GapFill } from "react-icons/bs";
-import { FaList } from "react-icons/fa";
 import XButton from "../button/XButton";
 import SelectInput from "../selectinput";
 import NewCaseModal from "../caseModal/newCaseModal";
 import { SORT_OPTIONS } from "../../constants/constants";
 import { FiPlus } from "react-icons/fi";
+import { IoFilterSharp } from "react-icons/io5";
 
 const Actionbar = () => {
   const [sortBy, setSortBy] = useState("");
@@ -29,20 +28,13 @@ const Actionbar = () => {
   return (
     <div className="flex justify-between items-center mb-6">      
       <div className="flex items-center">
-        <a>
-          <BsFillGrid3X2GapFill className="text-[28px] mr-4" />
-        </a>
-        <a>
-          <FaList className="text-xl mr-8" />
-        </a>
-        {/* <div>  
-        <a>
-          <FaList className="text-xl mr-8" />
-        </a> 
-        <p>filter</p>
-        </div> */}
+         <div className="bg-white shadow-shadow-light py-[10px] px-5 rounded-full flex items-center mr-4">  
+          <IoFilterSharp className="text-xl mr-2 inline-block" />
+
+        <span className="text-base font-medium text-secondary-800">filter</span>
+        </div>
         <SelectInput
-          inputClassName="border border-stroke rounded-lg py-[6px] px-[16px] bg-white text-base leading-5 font-semibold text-label"
+          inputClassName="bg-white shadow-shadow-light py-[12px] px-6 rounded-full border-0 text-base leading-5 font-semibold text-label"
           labelClassName="ext-label mr-3"
           // label="Sort by"
           name="sortBy"

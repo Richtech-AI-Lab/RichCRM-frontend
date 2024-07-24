@@ -163,7 +163,7 @@ const Dashboard = () => {
                 <span className="text-xl leading-[30px] font-medium">
                   Upcoming Events
                 </span>
-                <a className="text-text-blue-200 text-base font-medium">
+                <a className="text-primary2 text-base font-medium">
                   View All
                 </a>
               </div>

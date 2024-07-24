@@ -54,7 +54,7 @@ const CaseCardData = () => {
           <XButton
             text="Edit Case Details"
             icon={<FaRegEdit className="text-base mr-2 inline-block" />}
-            className="bg-active-blue text-active-blue-text shadow-shadow-light rounded-full text-sm font-medium w-full py-3 px-3 mb-7"
+            className="bg-active-blue text-active-blue-text shadow-shadow-light rounded-full text-sm font-medium w-full py-3 px-3 mb-7 flex items-center justify-center"
             onClick={handleCaseDetails}
           />
           {/* <ContactCard

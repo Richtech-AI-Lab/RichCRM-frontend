@@ -1,8 +1,8 @@
 import React from "react";
-import { MdModeEdit, MdEmail, MdCall } from "react-icons/md";
+import { MdModeEdit, MdOutlineEmail, MdOutlinePhone } from "react-icons/md";
 import { IoLogoWechat } from "react-icons/io5";
-import { HiLocationMarker } from "react-icons/hi";
 import ContactDetailItem from "../contactdetailitem";
+import { GrLocation } from "react-icons/gr";
 
 const ContactCard = ({
    contactData 
@@ -15,22 +15,23 @@ const ContactCard = ({
   // address,
 }) => {
   return (
-    <div className="bg-white py-4 px-6 rounded-lg mb-5">
-      <div className="flex justify-between items-center mb-6">
+    <div className="bg-white py-4 rounded-2xl mb-5">
+      <div className="flex justify-between items-center mb-6 px-4">
         <span className="text-xl text-title font-medium">Contacts</span>
         <MdModeEdit />
       </div>
       {contactData.map((data, index) => (
         <React.Fragment key={index}>
       <ul className="card-details">
-        <li className="profile">
+        <li className="profile content-between">
+          <div className="flex items-center">
           <img src={data.profileImage} alt="Profile" className="mr-8" />
-          <div>
             <span className="left-txt">{data.name}</span>
             {/* <p>{notes}</p> */}
           </div>
+          <ContactDetailItem  isInput={true} />
         </li>
-        <ContactDetailItem label="Type" isInput={true} />
+        
         <ContactDetailItem
           label="Referred by"
           content="Add a referral"
@@ -38,25 +39,25 @@ const ContactCard = ({
           className="text-text-blue-400 font-semibold"
         />
         <ContactDetailItem
-          icon={<MdEmail className="text-black" />}
+          icon={<MdOutlineEmail className="text-xl"/>}
           label="Email"
           content={data.email}
           isInput={false}
         />
         <ContactDetailItem
-          icon={<MdCall className="text-black" />}
+          icon={<MdOutlinePhone className="text-xl"/>}
           label="Cell Phone"
           content={data.phone}
           isInput={false}
         />
         <ContactDetailItem
-          icon={<IoLogoWechat className="text-black" />}
+          icon={<IoLogoWechat className="text-xl" />}
           label="WeChat"
           content={data.weChat}
           isInput={false}
         />
         <ContactDetailItem
-          icon={<HiLocationMarker className="text-black" />}
+          icon={<GrLocation className="text-xl"/>}
           label="Address"
           content={data.address}
           isInput={false}

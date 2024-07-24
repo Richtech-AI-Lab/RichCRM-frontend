@@ -7,7 +7,7 @@ const CardGrid = ({ cards, includeClasses,onCardClick }) => {
       {includeClasses && (
         <div className="flex justify-between items-center mb-6">
           <span className="text-lg leading-[30px] font-bold">Cases</span>
-          <a className="text-text-blue-200 text-base font-medium">View All</a>
+          <a className="text-primary2 text-base font-medium">View All</a>
         </div>
       )}
       <div className="grid grid-cols-4 gap-2">

@@ -18,7 +18,7 @@ const Layout = () => {
 
         {/* Main content wrapper */}
         <Header toggleDrawer={toggleDrawer} title={title}/>
-        <main className="mt-9">
+        <main className="mt-9 pb-6">
           <Content />
         </main>
       </div>
