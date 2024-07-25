@@ -13,7 +13,7 @@ const ChecklistItem = ({ icon, label, options, checkboxId }) => {
           {label}
         </Label>
       </div>
-      <div>
+      {/* <div>
         <p className="text-end mb-2">
           <span className="bg-badge-yellow text-secondary-100 text-sm font-semibold px-4 py-1 rounded-full inline-block">
             Unfinished
@@ -26,7 +26,7 @@ const ChecklistItem = ({ icon, label, options, checkboxId }) => {
           options={options}
           inputClassName="border-border rounded-full py-[10px] px-[16px] bg-transparent text-secondary-700 leading-5 font-semibold"
         />
-      </div>
+      </div> */}
     </li>
   );
 };
