@@ -1,7 +1,7 @@
 import React from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   AuthFormContainer,
   SelectInput,
@@ -10,11 +10,12 @@ import {
   XSpinnerLoader,
 } from "../../../components";
 import { useNavigate } from "react-router-dom";
-import { IoIosArrowRoundBack } from "react-icons/io";
+import { registerRequest } from "../../../redux/actions/authActions";
 
 const Signup = () => {
-  const { loading, user } = useSelector((state) => state.auth);
+  const { loading, user } = useSelector((state) => state.auth.register);
   let navigate = useNavigate();
+  const dispatch=useDispatch();
 
   const initialValues = {
     firstName: "",
@@ -43,6 +44,7 @@ const Signup = () => {
   });
 
   const handleSignup = (values, { setSubmitting }) => {
+    dispatch(registerRequest(values));
     setSubmitting(false);
     if (values) {
       navigate("/rich-crm/dashboard");
@@ -59,6 +61,7 @@ const Signup = () => {
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
+          onSubmit={handleSignup}
         >
           {({
             values,
@@ -122,6 +125,23 @@ const Signup = () => {
                 field={{ name: "confirmPassword" }}
                 form={{ errors, touched }}
               />
+              <SelectInput
+                    name="role"
+                    value={values.role}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    options={[{ value: "admin", label: "Admin" }]}
+                    error={errors.role}
+                    touched={touched.role}
+                    inputClassName={` bg-input-surface  w-full py-[14px] px-6 ${
+                      errors.role && touched.role
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    } rounded-full border-0 focus:outline-none focus:ring-transparent sm:text-sm`}
+                    labelClassName="block text-sm font-medium text-gray-700"
+                    defaultLabel="Select role"
+                    className="mt-4"
+                  />    
               <div className="text-center mb-8 mt-6">
                 <XButton
                   type="submit"

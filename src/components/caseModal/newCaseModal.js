@@ -29,7 +29,6 @@ const NewCaseModal = ({ onClose }) => {
         state: Yup.string().required('State is required'),
     });
     const handleNewCaseInfo = (values) => {
-        console.log("exe")
         if (values) {
             navigate("/rich-crm/newcaseinfo");
         }

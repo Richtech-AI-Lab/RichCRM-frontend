@@ -10,6 +10,7 @@ import { PiFolderLight } from "react-icons/pi";
 import { FaCircle } from "react-icons/fa";
 import { CgFolder } from "react-icons/cg";
 import { BiMessageAltCheck } from "react-icons/bi";
+import { LuUpload } from "react-icons/lu";
 
 const StagesChecklist = ({label}) => {
   const checklistItems = [
@@ -105,11 +106,18 @@ const StagesChecklist = ({label}) => {
             <XButton text="Move to next stage" className="btn-theme btn-disabled" />
         </div>
       </div>
-      <XButton
-        text="One Drive"
-        icon={<CgFolder className="text-base mr-2 inline-block font-medium"/>}
-        className="bg-white shadow-shadow-light text-secondary-800 py-3 px-6 rounded-full font-medium"
-      />
+       <div className="grid gap-4 grid-cols-6">
+        <XButton
+          text="One Drive"
+          icon={<CgFolder className="text-base mr-2 inline-block font-medium" />}
+          className="bg-white shadow-shadow-light text-secondary-800 py-3 px-6 rounded-full font-medium"
+        />
+        <XButton
+          text="Upload File"
+          icon={<LuUpload className="text-base mr-2 inline-block font-medium" />}
+          className="bg-white shadow-shadow-light text-secondary-800 py-3 px-6 rounded-full font-medium"
+        />
+      </div>
     </div>
   );
 };

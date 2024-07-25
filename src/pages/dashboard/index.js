@@ -79,7 +79,7 @@ const Dashboard = () => {
           caseDetails: "Client’s Name - Case Type",
         },
         {
-          badgeColor: "blue",
+          badgeColor: "gray",
           badgeText: "Signing",
           caseDetails: "Client’s Name - Case Type",
         },
@@ -95,7 +95,7 @@ const Dashboard = () => {
           caseDetails: "Client’s Name - Case Type",
         },
         {
-          badgeColor: "pink",
+          badgeColor: "green",
           badgeText: "Clear",
           caseDetails: "Client’s Name - Case Type",
         },
@@ -105,7 +105,7 @@ const Dashboard = () => {
           caseDetails: "Client’s Name - Case Type",
         },
         {
-          badgeColor: "pink",
+          badgeColor: "green",
           badgeText: "Clear",
           caseDetails: "Client’s Name - Case Type",
         },

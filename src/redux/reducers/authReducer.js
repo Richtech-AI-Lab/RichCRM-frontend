@@ -1,12 +1,35 @@
-import { LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT } from "../type";
+import { combineReducers } from "redux";
+import { 
+  LOGIN_REQUEST, 
+  LOGIN_SUCCESS, 
+  LOGIN_FAILURE, 
+  LOGOUT, 
+  REGISTER_REQUEST, 
+  REGISTER_SUCCESS, 
+  REGISTER_FAILURE, 
+  FORGOT_PASSWORD_REQUEST,
+  FORGOT_PASSWORD_SUCCESS,
+  FORGOT_PASSWORD_FAILURE
+} from "../type";
 
-const initialState = {
+const initialLoginState = {
   user: null,
   loading: false,
   error: null,
 };
 
-const authReducer = (state = initialState, action) => {
+const initialRegisterState = {
+  user: null,
+  loading: false,
+  error: null,
+};
+
+const initialForgotPasswordState = {
+  loading: false,
+  error: null,
+  success: false,
+};
+const loginReducer = (state = initialLoginState, action) => {
   switch (action.type) {
     case LOGIN_REQUEST:
       return {
@@ -28,15 +51,71 @@ const authReducer = (state = initialState, action) => {
         error: action.payload,
       };
     case LOGOUT:
+      return initialLoginState; 
+    default:
+      return state;
+  }
+};
+
+const registerReducer = (state = initialRegisterState, action) => {
+  switch (action.type) {
+    case REGISTER_REQUEST:
       return {
         ...state,
-        user: null,
-        loading: false,
+        loading: true,
         error: null,
+      };
+    case REGISTER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        user: action.payload,
+        error: null,
+      };
+    case REGISTER_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
       };
     default:
       return state;
   }
 };
+
+const forgotPasswordReducer = (state = initialForgotPasswordState, action) => {
+  switch (action.type) {
+    case FORGOT_PASSWORD_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+        success: false,
+      };
+    case FORGOT_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        success: true,
+        error: null,
+      };
+    case FORGOT_PASSWORD_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        success: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+const authReducer = combineReducers({
+  login: loginReducer,
+  register: registerReducer,
+  forgotPassword: forgotPasswordReducer,
+
+});
 
 export default authReducer;
