@@ -19,67 +19,70 @@ const CaseDetails = () => {
     },
   ];
   const sellerItems = [
-    { label: "Seller", value: "Alexander Reed" },
-    { label: "SSN", value: "xxx xx xxxx" },
-    { label: "Email", value: "xxxxxx@xxx.xxx", icon: <MdOutlineEmail /> },
+    { label: "Seller", placeholder: "Enter seller name" },
+    { label: "SSN", placeholder: "Enter a SSN" },
+    { label: "Email",icon: <MdOutlineEmail className="text-xl"/>, placeholder: "Enter a Email Address" },
     {
       label: "Cell Phone",
-      value: "(+1) xxx xxx xxxx",
-      icon: <MdOutlinePhone />,
+      icon: <MdOutlinePhone className="text-xl"/>,
+      placeholder: "Enter a Phone Number",
     },
     {
       label: "Work Phone",
-      value: "(+1) xxx xxx xxxx",
-      icon: <MdOutlinePhone />,
+      icon: <MdOutlinePhone className="text-xl"/>,
+      placeholder: "Enter a Phone Number",
     },
+    { label: "WeChat", placeholder: "Enter a WeChat Number", icon: <IoLogoWechat className="text-xl"/> },
     {
       label: "Address",
-      value: "137 Maple Avenue Brooklyn, NY 11215",
-      icon: <GrLocation />,
+      icon: <GrLocation className="text-xl"/>,
+      placeholder: "Enter Address",
     },
   ];
 
   const buyerItems = [
-    { label: "Purchaser", value: "Jack Fu" },
-    { label: "SSN", value: "xxx xx xxxx" },
-    { label: "Email", value: "xxxxxx@xxx.xxx", icon: <MdOutlineEmail /> },
+    { label: "Purchaser", placeholder: "Add a purchaser" },
+    { label: "SSN", placeholder: "Enter a SSN" },
+    { label: "Email",icon: <MdOutlineEmail className="text-xl"/>, placeholder: "Enter a Email Address" },
     {
       label: "Cell Phone",
-      value: "(+1) xxx xxx xxxx",
-      icon: <MdOutlinePhone />,
+      icon: <MdOutlinePhone className="text-xl"/>,
+      placeholder: "Enter a Phone Number",
     },
     {
       label: "Work Phone",
-      value: "(+1) xxx xxx xxxx",
-      icon: <MdOutlinePhone />,
+      icon: <MdOutlinePhone className="text-xl"/>,
+      placeholder: "Enter a Phone Number",
     },
-    { label: "WeChat", value: "(+1) xxx xxx xxxx", icon: <IoLogoWechat /> },
+    { label: "WeChat", icon: <IoLogoWechat className="text-xl"/>, placeholder: "Enter a WeChat Number" },
     {
       label: "Address",
-      value: "2000 Panorama Blvd Apt 3605 New York, NY 10022",
-      icon: <GrLocation />,
+      icon: <GrLocation className="text-xl"/>,
+      placeholder: "Enter address",
     },
   ];
 
   const financialItems = [
-    { label: "Purchase Price", value: "$xxx,xxx,xxx" },
-    { label: "Down Payment", value: "$xxx,xxx,xxx" },
-    { label: "Mortgage Amount", value: "$xxx,xxx,xxx" },
-    { label: "Annual Property Tax", value: "$xxx,xxx,xxx" },
-    { label: "Seller’s Concession", value: "$xxx,xxx,xxx" },
-  ];
-  const attorneyItems = [
-    { label: "Seller Attorney", value: "xxxxxxxxxxxx" },
-    { label: "Purchaser Attorney", value: "xxxxxxxxxxxx" },
+    { label: "Purchase Price", placeholder: "Enter an Amount" },
+    { label: "Down Payment", placeholder: "Enter an Amount" },
+    { label: "Mortgage Amount", placeholder: "Enter an Amount" },
+    { label: "Annual Property Tax", placeholder: "Enter an Amount" },
+    { label: "Seller’s Concession", placeholder: "Enter an Amount" },
   ];
 
+  const attorneyItems = [
+    { label: "Seller Attorney",  placeholder: "Enter an attorney" },
+    { label: "Purchaser Attorney",  placeholder: "Enter an attorney" },
+  ];
+
+
   const brokersItems = [
-    { label: "Brokers Sale", value: "$xxx,xxx,xxx" },
-    { label: "Brokers Listing", value: "$xxx,xxx,xxx" },
-    { label: "Referred by", value: "Add a referral" },
-    { label: "Bank (L/O)", value: "Add content" },
-    { label: "Personal Property", value: "Add content" },
-    { label: "Excluded Property", value: "Add content" },
+    { label: "Brokers Sale",  placeholder: "Enter an Amount" },
+    { label: "Brokers Listing",  placeholder: "Enter an Amount" },
+    { label: "Referred by",  placeholder: "Add a referral" },
+    { label: "Bank (L/O)",  placeholder: "Add content" },
+    { label: "Personal Property",  placeholder: "Add content" },
+    { label: "Excluded Property",  placeholder: "Add content" },
   ];
   const lowerSectionItems = [
     {
@@ -92,11 +95,11 @@ const CaseDetails = () => {
     },
     {
       label: "Premise Address",
-      value: "1500 Skyline Avenue Apt 2503 New York, NY 10019",
+      placeholder: "Enter premise address",
     },
-    { label: "Block", value: "xxxxxxxxxxxx" },
-    { label: "Lot", value: "xxxxxxxxxxxx" },
-    { label: "Section", value: "xxxxxxxxxxxx" },
+    { label: "Block", placeholder: "Enter a block" },
+    { label: "Lot", placeholder: "Enter a lot" },
+    { label: "Section", placeholder: "Enter a section" },
     {
       label: "Type",
       isCheckbox: true,
@@ -139,12 +142,12 @@ const CaseDetails = () => {
         { id: "parkingNo", label: "No", defaultChecked: true },
       ],
     },
-    { label: "Parking Space Number", value: "2" },
-    { label: "Maintenance fee", value: "$xxxxx" },
+    { label: "Parking Space Number", placeholder:"Enter parking space no" },
+    { label: "Maintenance fee", placeholder:"Enter an Amount"},
 
-    { label: "Assessments", value: "$xxxxx" },
-    { label: "Paid by", value: "xxxxxxx" },
-    { label: "Managing Company", value: "xxxxxxx" },
+    { label: "Assessments", placeholder:"Enter an Amount" },
+    { label: "Paid by", placeholder:"Enter an Amount" },
+    { label: "Managing Company", placeholder:"Enter an Amount" },
     {
       label: "Component",
       isCheckbox: true,
@@ -156,10 +159,11 @@ const CaseDetails = () => {
     },
     {
       label: "1st Floor",
+      floor:true,
       nestedItems: [
-        { label: "Tenant Name", value: "Name" },
-        { label: "Rent", value: "$xxxxx" },
-        { label: "Sec.", value: "$xxxxx" },
+        { label: "Tenant Name", placeholder:"Enter name" },
+        { label: "Rent",  placeholder:"Enter rent" },
+        { label: "Sec.", placeholder:"Enter sec" },
         {
           label: "Lease",
           isCheckbox: true,
@@ -172,10 +176,11 @@ const CaseDetails = () => {
     },
     {
       label: "2nd Floor",
+      floor:true,
       nestedItems: [
-        { label: "Tenant Name", value: "Name" },
-        { label: "Rent", value: "$xxxxx" },
-        { label: "Sec.", value: "$xxxxx" },
+        { label: "Tenant Name", placeholder:"Enter name" },
+        { label: "Rent", placeholder:"Enter rent" },
+        { label: "Sec.", placeholder:"Enter sec"},
         {
           label: "Lease",
           isCheckbox: true,
@@ -193,7 +198,7 @@ const CaseDetails = () => {
       isCheckbox: true,
       checkboxOptions: [
         { id: "accept1", defaultChecked: true, label: "on/about" },
-        { id: "accept2", defaultChecked: true, label: "before" },
+        { id: "accept2", defaultChecked: true, label: "Before" },
         { id: "accept3", defaultChecked: true, label: "T.O.E." },
         { id: "accept4", defaultChecked: true, label: "June 05,2024" },
       ],
@@ -209,8 +214,8 @@ const CaseDetails = () => {
         { id: "accept5", defaultChecked: true, label: "No" },
       ],
     },
-    { label: "Scheduled Date", value: "June 05, 2024" },
-    { label: "Received Date", value: "Month Day, Year" },
+    { label: "Scheduled Date", placeholder:"Enter Scheduled Date" },
+    { label: "Received Date",placeholder:"Enter Received Date" },
   ];
   const termitesInspectionItems = [
     {
@@ -239,17 +244,18 @@ const CaseDetails = () => {
           <CaseCardDetails items={closingDateItems} />
           <CaseCardDetails items={inspectionItems} />
           <CaseCardDetails items={termitesInspectionItems} />
+          
         </div>
       </div>
-      <div className="flex justify-end">
+      <div className="flex justify-end mt-6">
         <XButton
           text="Cancel"
-          className="bg-bg-pink text-sm text-primary py-[10px] px-6 rounded-[100px]"
+          className="bg-badge-gray font-medium text-base text-primary py-[10px] px-6 rounded-[100px] shadow-shadow-light"
         />
         <XButton
           type="submit"
           text="Save"
-          className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px]"
+          className="bg-primary text-base text-white py-[10px] px-6 rounded-[100px] ml-4"
         />
       </div>
     </div>

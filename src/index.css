@@ -67,10 +67,13 @@
     @apply border-b-0 pb-0 mb-0
   }
   .card-details li span.left-txt {
-    @apply text-base text-title
+    @apply text-base text-secondary-800 font-medium
   }
   .card-details .profile {
     @apply justify-start
+  }
+  .card-details .profile.content-between {
+    @apply justify-between
   }
   .card-details .profile .left-txt {
     @apply text-xl
@@ -79,19 +82,22 @@
     @apply flex-1
   }
   .custom-progress {
-    @apply h-10 rounded-lg bg-progress !important
+    @apply h-10 rounded-lg bg-badge-gray !important
   }
   .custom-progress>div {
-    @apply h-10 rounded-lg bg-progress-active text-label leading-10 !important
+    @apply h-10 rounded-lg bg-primary2 text-white text-xs leading-10 !important
   }
-  .custom-checkbox input {
-    @apply text-text-purple
+  .custom-radio input {
+    @apply text-primary2 focus:ring-transparent
   }
   .btn-theme {
     @apply bg-primary text-sm text-white py-[10px] px-6 rounded-[100px]
   }
   .btn-disabled {
     @apply bg-bg-input text-secondary-300
+  }
+  .btn-theme.btn-gray {
+    @apply bg-badge-gray text-secondary-800
   }
   .btm-border-0 {
     @apply border-b-0 !important
@@ -104,7 +110,7 @@
     @apply block !important
   }
   .list-w-full li {
-    @apply border-b-0 mb-2 pb-2 !important
+    @apply border-b-0 mb-2 pb-2 px-0 !important
   }
   .list-w-full li:last-child {
     @apply mb-0 pb-0 !important
@@ -117,5 +123,20 @@
   }
   .new-case-modal > div > div{
     @apply rounded-3xl
+  }
+  .task-checklist {
+    @apply border-b border-b-border pl-6 pr-4
+  }
+  .task-checklist:last-child {
+    @apply border-b-0
+  }
+  .task-checklist input[type="checkbox"] {
+    @apply bg-white border-black
+  }
+  .task-checklist input[type="checkbox"]:checked {
+    @apply bg-primary2 border-primary2
+  }
+  .task-checklist input[type="checkbox"]:focus {
+    @apply ring-transparent
   }
 }

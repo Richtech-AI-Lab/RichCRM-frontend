@@ -18,7 +18,7 @@ const ContactDetailItem = ({ icon, label, content, isInput, className }) => {
               { value: "Purchaser", label: "Purchaser" },
               { value: "Seller", label: "Seller" },
             ]}
-            inputClassName="border-none rounded-lg py-[6px] px-[16px] bg-select text-select-text leading-5 font-semibold shadow-full"
+            inputClassName="border-border rounded-full py-[10px] px-[16px] bg-transparent text-secondary-700 leading-5 font-semibold"
           />
         ) : (
           <span className={`text-right ${className || ""} text-title`}>

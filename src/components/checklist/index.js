@@ -5,10 +5,10 @@ import SelectInput from "../selectinput";
 
 const ChecklistItem = ({ icon, label, options, checkboxId }) => {
   return (
-    <li className="flex justify-between items-center mb-10">
-      <div className="flex items-center gap-2 custom-checkbox">
+    <li className="flex justify-between items-center mb-5 pb-5 task-checklist">
+      <div className="flex items-center gap-2 custom-radio">
         <Checkbox id={checkboxId} defaultChecked className="mr-6" />
-        <Label htmlFor={checkboxId} className="flex items-center text-lg">
+        <Label htmlFor={checkboxId} className="flex items-center text-lg text-title font-medium">
           {icon && <span className="mr-2">{icon}</span>}
           {label}
         </Label>
@@ -24,7 +24,7 @@ const ChecklistItem = ({ icon, label, options, checkboxId }) => {
           value=""
           onChange={(e) => console.log(e.target.value)}
           options={options}
-          inputClassName="border-none rounded-lg py-[6px] px-[16px] bg-select text-select-text leading-5 font-semibold shadow-full"
+          inputClassName="border-border rounded-full py-[10px] px-[16px] bg-transparent text-secondary-700 leading-5 font-semibold"
         />
       </div>
     </li>

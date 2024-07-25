@@ -40,7 +40,7 @@ const NewCaseInfo = () => {
           <XButton
             text="Edit Case Details"
             icon={<FaRegEdit className="text-base mr-2 inline-block" />}
-            className="bg-active-blue text-active-blue-text shadow-shadow-light rounded-full text-sm font-medium w-full py-3 px-3 mb-7"
+            className="bg-active-blue text-active-blue-text shadow-shadow-light rounded-full text-sm font-medium w-full py-3 px-3 mb-7 flex items-center justify-center"
             onClick={handleCaseDetails}
           />
           <div className="bg-white py-4 rounded-2xl mb-5">
@@ -56,7 +56,7 @@ const NewCaseInfo = () => {
                 text="Create a New Contact"
                 className="btn-theme w-full"
               />
-              <XButton text="Add from Contacts" className="btn-theme w-full" />
+              <XButton text="Add from Contacts" className="btn-theme btn-gray w-full" />
             </div>
           </div>
         </div>
