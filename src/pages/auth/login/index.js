@@ -11,7 +11,7 @@ const Login = () => {
   const dispatch = useDispatch();
   let navigate = useNavigate();
 
-  const { loading, user } = useSelector((state) => state.auth);
+  const { loading, user } = useSelector((state) => state.auth.login);
   const initialValues = {
     email: "",
     password: "",
@@ -29,6 +29,7 @@ const Login = () => {
   });
 
   const handleLogin = (values, { setSubmitting }) => {
+    // dispatch(loginRequest());
     dispatch(loginRequest(values));
     setSubmitting(false);
   };
@@ -43,6 +44,10 @@ const Login = () => {
   const handleRegisterClick = () => {
     navigate("/register");
   };
+
+  const handleForgotPassword=()=>{
+    navigate("/forgot-password");
+  }
 
   return (
     <>
@@ -85,7 +90,7 @@ const Login = () => {
                 form={{ errors, touched }}
               // label="Password"
               />
-              <p className="text-end mb-6"><a className="text-primary2 text-sm leading-5 font-medium mt-2">Forgot password?</a></p>
+              <p className="text-end mb-6"><a className="text-primary2 text-sm leading-5 font-medium mt-2" onClick={handleForgotPassword}>Forgot password?</a></p>
               <div className="text-center mb-8">
                 <XButton
                   type="submit"

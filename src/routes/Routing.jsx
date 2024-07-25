@@ -1,9 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
-import Layout from "../pages/layout/Layout";
-import Login from "../pages/auth/login";
 import { useEffect } from "react";
-import Signup from "../pages/auth/signup";
+import { ForgotPassword, Layout, Login, Signup } from "../pages";
 
 const Routing = () => {
   useEffect(() => {
@@ -14,6 +12,8 @@ const Routing = () => {
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/register" element={<Signup />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+
       <Route element={<ProtectedRoute />}>
         <Route path="/rich-crm/*" element={<Layout />} />
       </Route>

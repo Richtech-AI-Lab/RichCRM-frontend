@@ -89,7 +89,6 @@ const CasesCategory = () => {
     },
   ];
   const handleCaseCardClick = () => {
-    console.log("hello");
     navigate("/rich-crm/casesdata");
   };
   return (
