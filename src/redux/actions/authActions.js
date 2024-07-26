@@ -1,4 +1,5 @@
 import {
+  CLEAR_DATA,
   FORGOT_PASSWORD_FAILURE,
   FORGOT_PASSWORD_REQUEST,
   FORGOT_PASSWORD_SUCCESS,
@@ -59,4 +60,9 @@ export const forgotPasswordSuccess = () => ({
 export const forgotPasswordFailure = (error) => ({
   type: FORGOT_PASSWORD_FAILURE,
   payload: error,
+});
+
+//For clear data
+export const clearData = () => ({
+  type: CLEAR_DATA,
 });

@@ -1,6 +1,6 @@
 export const API_ENDPOINTS = {
     FETCH_DATA: '/users',
-    REGISTER:'/register',
-    LOGIN:'/login',
+    REGISTER:'/auth/register',
+    LOGIN:'/auth/login',
     FORGOT_PASSWORD: "/forgot-password",
   };

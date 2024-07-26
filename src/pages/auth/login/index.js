@@ -4,42 +4,48 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { loginRequest } from "../../../redux/actions/authActions";
+import { clearData, loginRequest } from "../../../redux/actions/authActions";
 import { TextInput, XButton, XSpinnerLoader, AuthFormContainer } from "../../../components";
 
 const Login = () => {
   const dispatch = useDispatch();
   let navigate = useNavigate();
 
-  const { loading, user } = useSelector((state) => state.auth.login);
+  const { loading, user ,error} = useSelector((state) => state.auth.login);
   const initialValues = {
-    email: "",
+    emailAddress: "",
     password: "",
   };
   const validationSchema = Yup.object({
-    email: Yup.string()
+    emailAddress: Yup.string()
       .email("Invalid email address")
       .required("Email is required"),
     password: Yup.string()
       .required("Password is required")
-      .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-        "Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special case character"
-      ),
+      // .matches(
+      //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+      //   "Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special case character"
+      // )
+      ,
   });
 
-  const handleLogin = (values, { setSubmitting }) => {
-    // dispatch(loginRequest());
+  const handleLogin = (values, { setSubmitting, resetForm }) => {
     dispatch(loginRequest(values));
     setSubmitting(false);
+    resetForm();
   };
 
   useEffect(() => {
-    if (user) {
-      toast("User has successfully logged in");
+    if (user && user?.status === 'success') {
+      toast(user?.message);
       navigate("/rich-crm/dashboard");
-    }
-  }, [user, navigate]);
+    }  
+      else if (error && error?.status === 'failed') {
+          toast(error?.message)
+        }
+        dispatch(clearData());
+
+  }, [user, error,navigate]);
 
   const handleRegisterClick = () => {
     navigate("/register");
@@ -69,15 +75,14 @@ const Login = () => {
           }) => (
             <form onSubmit={handleSubmit} className="login-form">
               <TextInput
-                name="email"
+                name="emailAddress"
                 type="email"
                 placeholder="Enter email"
-                value={values.email}
+                value={values.emailAddress}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                field={{ name: "email" }}
+                field={{ name: "emailAddress" }}
                 form={{ errors, touched }}
-              // label="Email"
               />
               <TextInput
                 name="password"

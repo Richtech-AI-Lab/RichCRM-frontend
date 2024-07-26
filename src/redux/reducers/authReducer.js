@@ -9,7 +9,8 @@ import {
   REGISTER_FAILURE, 
   FORGOT_PASSWORD_REQUEST,
   FORGOT_PASSWORD_SUCCESS,
-  FORGOT_PASSWORD_FAILURE
+  FORGOT_PASSWORD_FAILURE,
+  CLEAR_DATA
 } from "../type";
 
 const initialLoginState = {
@@ -52,6 +53,8 @@ const loginReducer = (state = initialLoginState, action) => {
       };
     case LOGOUT:
       return initialLoginState; 
+      case CLEAR_DATA:
+      return initialLoginState;
     default:
       return state;
   }
@@ -78,6 +81,8 @@ const registerReducer = (state = initialRegisterState, action) => {
         loading: false,
         error: action.payload,
       };
+      case CLEAR_DATA:
+      return initialRegisterState;
     default:
       return state;
   }
@@ -106,6 +111,8 @@ const forgotPasswordReducer = (state = initialForgotPasswordState, action) => {
         success: false,
         error: action.payload,
       };
+      case CLEAR_DATA:
+      return initialForgotPasswordState
     default:
       return state;
   }
