@@ -4,6 +4,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { Dropdown } from "flowbite-react";
 import { IoIosLogOut } from "react-icons/io";
 import { logout } from "../../redux/actions/authActions";
+import { deleteUserRequest } from "../../redux/actions/authActions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -15,6 +16,8 @@ const Header = ({ toggleDrawer, title }) => {
     dispatch(logout());
     navigate("/");
   };
+
+  console.log(localStorage.getItem('authToken'), "tokendata")
 
   return (
     <div className="flex justify-between items-center">

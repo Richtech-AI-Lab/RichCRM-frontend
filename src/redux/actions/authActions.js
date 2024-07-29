@@ -1,4 +1,5 @@
 import {
+  CLEAR_DATA,
   FORGOT_PASSWORD_FAILURE,
   FORGOT_PASSWORD_REQUEST,
   FORGOT_PASSWORD_SUCCESS,
@@ -9,6 +10,9 @@ import {
   REGISTER_FAILURE,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
+  DELETE_USER_REQUEST,
+  DELETE_USER_SUCCESS,
+  DELETE_USER_FAILURE
 } from "../type";
 
 export const loginRequest = (payload) => ({
@@ -58,5 +62,25 @@ export const forgotPasswordSuccess = () => ({
 
 export const forgotPasswordFailure = (error) => ({
   type: FORGOT_PASSWORD_FAILURE,
+  payload: error,
+});
+
+//For clear data
+export const clearData = () => ({
+  type: CLEAR_DATA,
+});
+
+//Delete User Actions
+export const deleteUserRequest = (payload) => ({
+  type: DELETE_USER_REQUEST,
+  payload,
+});
+
+export const deleteUserSuccess = () => ({
+  type: DELETE_USER_SUCCESS,
+});
+
+export const deleteUserFailure = (error) => ({
+  type: DELETE_USER_FAILURE,
   payload: error,
 });

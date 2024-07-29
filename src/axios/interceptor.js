@@ -1,8 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  //   baseURL: "https://some-domain.com/api/",
-  baseURL: "https://jsonplaceholder.typicode.com",
+  baseURL:`http://richcrm-backend-dev.us-east-2.elasticbeanstalk.com/`,
   headers: {
     "Content-Type": "application/json",
   },

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,47 +10,80 @@ import {
   XSpinnerLoader,
 } from "../../../components";
 import { useNavigate } from "react-router-dom";
-import { registerRequest } from "../../../redux/actions/authActions";
+import { toast } from "react-toastify";
+import { clearData, registerRequest } from "../../../redux/actions/authActions";
+
+const userRole = {
+  ADMIN: 0,
+  ATTORNEY: 1,
+  CLIENT: 2,
+};
+
+const roleOptions = [
+  { value: userRole.ADMIN, label: "Admin" },
+  { value: userRole.ATTORNEY, label: "Attorney" },
+  { value: userRole.CLIENT, label: "Client" },
+];
 
 const Signup = () => {
-  const { loading, user } = useSelector((state) => state.auth.register);
+  const { loading, user,error } = useSelector((state) => state.auth.register);
   let navigate = useNavigate();
   const dispatch=useDispatch();
 
   const initialValues = {
-    firstName: "",
-    lastName: "",
-    email: "",
+    // firstName: "",
+    // lastName: "",
+    userName: "",
+    emailAddress: "",
     password: "",
-    confirmPassword: "",
+    // confirmPassword: "",
     role: "",
   };
   const validationSchema = Yup.object({
-    firstName: Yup.string().required("firstName is required"),
-    lastName: Yup.string().required("lastName is required"),
-    email: Yup.string()
+    userName: Yup.string().required("User name is required"),
+
+    // firstName: Yup.string().required("firstName is required"),
+    // lastName: Yup.string().required("lastName is required"),
+    emailAddress: Yup.string()
       .email("Invalid email address")
       .required("Email is required"),
     password: Yup.string()
       .required("Password is required")
-      .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-        "Password must contain at least 8 characters, one uppercase, one lowercase, one number, and one special character"
-      ),
-    confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match")
-      .required("Confirm password is required"),
+      // .matches(
+      //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+      //   "Password must contain at least 8 characters, one uppercase, one lowercase, one number, and one special character"
+      // )
+      ,
+    // confirmPassword: Yup.string()
+    //   .oneOf([Yup.ref("password"), null], "Passwords must match")
+    //   .required("Confirm password is required"),
     role: Yup.string().required("Role is required"),
   });
 
-  const handleSignup = (values, { setSubmitting }) => {
-    dispatch(registerRequest(values));
+  const handleSignup = (values, { setSubmitting , resetForm }) => {
+    const payload = {
+      emailAddress: values.emailAddress,
+      password: values.password,
+      userName: values.userName,
+      role: parseInt(values.role),
+    };
+    dispatch(registerRequest(payload));
     setSubmitting(false);
-    if (values) {
-      navigate("/rich-crm/dashboard");
-    }
+    resetForm();
+
   }
 
+  useEffect(() => {
+    if (user && user?.status === 'success') {
+      toast(user?.message);
+      navigate("/rich-crm/dashboard");
+    }  
+      else if (error && error?.status === 'failed') {
+          toast(error?.message)
+        }
+        dispatch(clearData());
+
+  }, [user, error,navigate]);
   const handleBackIcon = () => {
     navigate("/")
   }
@@ -73,7 +106,7 @@ const Signup = () => {
             isSubmitting,
           }) => (
             <form onSubmit={handleSubmit} className="login-form">
-              <div className="grid grid-cols-2 gap-4">
+              {/* <div className="grid grid-cols-2 gap-4">
                 <TextInput
                   name="firstName"
                   type="text"
@@ -94,15 +127,25 @@ const Signup = () => {
                   field={{ name: "lastName" }}
                   form={{ errors, touched }}
                 />
-              </div>
+              </div> */}
               <TextInput
-                name="email"
-                type="email"
-                placeholder="Enter email"
-                value={values.email}
+                name="userName"
+                type="text"
+                placeholder="Enter Username"
+                value={values.userName}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                field={{ name: "email" }}
+                field={{ name: "userName" }}
+                form={{ errors, touched }}
+              />
+              <TextInput
+                name="emailAddress"
+                type="email"
+                placeholder="Enter email"
+                value={values.emailAddress}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                field={{ name: "emailAddress" }}
                 form={{ errors, touched }}
               />
               <TextInput
@@ -115,7 +158,7 @@ const Signup = () => {
                 field={{ name: "password" }}
                 form={{ errors, touched }}
               />
-              <TextInput
+              {/* <TextInput
                 name="confirmPassword"
                 type="password"
                 placeholder="Confirm password"
@@ -124,13 +167,13 @@ const Signup = () => {
                 onBlur={handleBlur}
                 field={{ name: "confirmPassword" }}
                 form={{ errors, touched }}
-              />
+              /> */}
               <SelectInput
                     name="role"
                     value={values.role}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    options={[{ value: "admin", label: "Admin" }]}
+                    options={roleOptions}
                     error={errors.role}
                     touched={touched.role}
                     inputClassName={` bg-input-surface  w-full py-[14px] px-6 ${
