@@ -3,11 +3,11 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { TextInput, XButton, AuthFormContainer } from "../../../components";
 import { useNavigate } from "react-router-dom";
-import { IoChevronBackOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { forgotPasswordRequest } from "../../../redux/actions/authActions";
+import StepIndicator from "./StepIndicator";
 
-const ForgotPassword = () => {
+const ForgotPasswordOne = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const forgotPassword = useSelector((state) => state.auth.forgotPassword);
@@ -24,7 +24,8 @@ const ForgotPassword = () => {
 
   const handleSubmit = (values, { setSubmitting }) => {
     console.log(values, "Here values");
-    dispatch(forgotPasswordRequest(values));
+    // dispatch(forgotPasswordRequest(values));
+    navigate('/forgot-password-two')
   };
 
   const handleLoginClick = () => {
@@ -33,8 +34,9 @@ const ForgotPassword = () => {
 
   return (
     <AuthFormContainer
-      title="Forgot Password"
-      subtitle="Enter your email and we'll send you a link to reset your password."
+      title="Forgot Password?"
+      subtitle="Enter the email address associated with your account and we’ll send you reset instructions."
+      stepIndicator={<StepIndicator currentStep={0} />}
     >
       <Formik
         initialValues={initialValues}
@@ -54,7 +56,7 @@ const ForgotPassword = () => {
             <TextInput
               name="email"
               type="email"
-              placeholder="Enter email"
+              placeholder="Email"
               value={values.email}
               onChange={handleChange}
               onBlur={handleBlur}
@@ -64,19 +66,14 @@ const ForgotPassword = () => {
             <div className="text-center mb-8 mt-8">
               <XButton
                 type="submit"
-                text="Continue"
+                text="Reset password"
                 disabled={isSubmitting}
-                className="bg-primary text-sm text-white py-[10px] px-6 w-[145px] rounded-[100px]"
+                className="bg-primary text-sm text-white py-[10px] px-6 w-[165px] rounded-[100px]"
               />
             </div>
-
             <p className="text-center text-sm font-medium text-secondary-700">
-              <a
-                className="flex items-center justify-center  text-primary2"
-                onClick={handleLoginClick}
-              >
-                <IoChevronBackOutline className="mr-2 text-lg" />
-                Back to Login
+              <a className="flex items-center justify-center  text-primary2" onClick={handleLoginClick}>
+                Back to log in
               </a>
             </p>
           </form>
@@ -86,4 +83,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default ForgotPasswordOne;
