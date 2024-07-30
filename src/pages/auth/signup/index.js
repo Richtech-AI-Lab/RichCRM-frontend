@@ -131,7 +131,7 @@ const Signup = () => {
               <TextInput
                 name="userName"
                 type="text"
-                placeholder="Enter Username"
+                placeholder="Username"
                 value={values.userName}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -141,7 +141,7 @@ const Signup = () => {
               <TextInput
                 name="emailAddress"
                 type="email"
-                placeholder="Enter email"
+                placeholder="Email"
                 value={values.emailAddress}
                 onChange={handleChange}
                 onBlur={handleBlur}

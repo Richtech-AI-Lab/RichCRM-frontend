@@ -15,7 +15,7 @@ const SideNav = ({ isDrawerOpen, toggleDrawer, setTitle }) => {
       "/rich-crm/casesdata",
       "/rich-crm/casedetails",
       "/rich-crm/casescategory",
-      "rich-crm/newcaseinfo"
+      "/rich-crm/newcaseinfo"
     ];
 
     if (casesPaths.includes(currentPath)) {

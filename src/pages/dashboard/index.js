@@ -39,27 +39,27 @@ const Dashboard = () => {
 
    const cardsData = [
     {
-      title: "Case Start",
+      title: "Started",
       count: 11,
       items: [
         {
-          badgeColor: "green",
-          badgeText: "Confirming",
-          caseDetails: "Client’s Name - Case Type",
-        },
-        {
           badgeColor: "yellow",
-          badgeText: "Set up",
+          badgeText: "Setting up",
           caseDetails: "Client’s Name - Case Type",
         },
         {
-          badgeColor: "green",
+          badgeColor: "gray",
           badgeText: "Confirming",
           caseDetails: "Client’s Name - Case Type",
         },
         {
           badgeColor: "green",
-          badgeText: "Confirming",
+          badgeText: "Confirmed",
+          caseDetails: "Client’s Name - Case Type",
+        },
+        {
+          badgeColor: "green",
+          badgeText: "Confirmed",
           caseDetails: "Client’s Name - Case Type",
         },
       ],
@@ -74,13 +74,18 @@ const Dashboard = () => {
           caseDetails: "Client’s Name - Case Type",
         },
         {
-          badgeColor: "green",
-          badgeText: "Go over",
+          badgeColor: "yellow",
+          badgeText: "Preparing",
           caseDetails: "Client’s Name - Case Type",
         },
         {
-          badgeColor: "gray",
+          badgeColor: "yellow",
           badgeText: "Signing",
+          caseDetails: "Client’s Name - Case Type",
+        },
+        {
+          badgeColor: "green",
+          badgeText: "Fully Signed",
           caseDetails: "Client’s Name - Case Type",
         },
       ],
@@ -95,18 +100,18 @@ const Dashboard = () => {
           caseDetails: "Client’s Name - Case Type",
         },
         {
-          badgeColor: "green",
-          badgeText: "Clear",
-          caseDetails: "Client’s Name - Case Type",
-        },
-        {
-          badgeColor: "green",
-          badgeText: "Commitment",
+          badgeColor: "gray",
+          badgeText: "Pending",
           caseDetails: "Client’s Name - Case Type",
         },
         {
           badgeColor: "green",
           badgeText: "Clear",
+          caseDetails: "Client’s Name - Case Type",
+        },
+        {
+          badgeColor: "gray",
+          badgeText: "Pending",
           caseDetails: "Client’s Name - Case Type",
         },
       ],
@@ -127,12 +132,12 @@ const Dashboard = () => {
         },
         {
           badgeColor: "yellow",
-          badgeText: "Preparing",
+          badgeText: "All Done",
           caseDetails: "Client’s Name - Case Type",
         },
         {
           badgeColor: "yellow",
-          badgeText: "Preparing",
+          badgeText: "All Done",
           caseDetails: "Client’s Name - Case Type",
         },
       ],

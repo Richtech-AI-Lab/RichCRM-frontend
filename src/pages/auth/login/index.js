@@ -52,7 +52,7 @@ const Login = () => {
   };
 
   const handleForgotPassword=()=>{
-    navigate("/forgot-password");
+    navigate("/forgot-password-one");
   }
 
   return (
@@ -77,7 +77,7 @@ const Login = () => {
               <TextInput
                 name="emailAddress"
                 type="email"
-                placeholder="Enter email"
+                placeholder="Email"
                 value={values.emailAddress}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -95,14 +95,14 @@ const Login = () => {
                 form={{ errors, touched }}
               // label="Password"
               />
-              <p className="text-end mb-6"><a className="text-primary2 text-sm leading-5 font-medium mt-2" onClick={handleForgotPassword}>Forgot password?</a></p>
-              <div className="text-center mb-8">
+              <div className="text-center mb-8 mt-8">
                 <XButton
                   type="submit"
                   text={isSubmitting ? "Logging in..." : "Log in"}
                   disabled={isSubmitting}
                   className="bg-primary text-sm text-white py-[10px] px-6 w-[145px] rounded-[100px]"
                 />
+                <p className="text-center mb-6 mt-6"><a className="text-primary2 text-sm leading-5 font-medium mt-2" onClick={handleForgotPassword}>Forgot password?</a></p>
 
                 {/* <XButton
                     onClick={handleRegisterClick}

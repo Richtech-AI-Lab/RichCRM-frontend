@@ -26,19 +26,27 @@ const Actionbar = () => {
   };
 
   return (
-    <div className="flex justify-between items-center mb-6">      
-      <div className="flex items-center">
-         <div className="bg-white shadow-shadow-light py-[10px] px-5 rounded-full flex items-center mr-4">  
+    <div className="flex justify-between items-center mb-6">
+      <div className="relative flex items-center">
+        <div className="relative flex items-center justify-center w-[200px] h-[44px] rounded-full overflow-hidden shadow-shadow-light mr-4">
+          <div className="absolute top-0 left-0 w-1/2 h-full  bg-active-blue flex items-center justify-center">
+            <span className="text-base font-medium text-active-blue-text">Open</span>
+          </div>
+          <div className="absolute top-0 right-0 w-1/2 h-full bg-white flex items-center justify-center">
+            <span className="text-base font-medium text-secondary-800">Closed</span>
+          </div>
+        </div>
+        <div className="bg-white shadow-shadow-light py-[10px] px-5 rounded-full flex items-center mr-4">
           <IoFilterSharp className="text-xl mr-2 inline-block" />
 
-        <span className="text-base font-medium text-secondary-800">filter</span>
+        <span className="text-base font-medium text-secondary-800">Filter</span>
         </div>
         <SelectInput
           inputClassName="bg-white shadow-shadow-light py-[12px] px-6 rounded-full border-0 text-base leading-5 font-semibold text-label"
           labelClassName="ext-label mr-3"
           // label="Sort by"
           name="sortBy"
-          defaultLabel="Sort by:Last edit"
+          defaultLabel="Sort by: Status"
           value={sortBy}
           onChange={handleSortChange}
           options={sortOptions.map((option) => ({
