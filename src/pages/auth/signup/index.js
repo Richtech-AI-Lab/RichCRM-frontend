@@ -12,6 +12,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { clearData, registerRequest } from "../../../redux/actions/authActions";
+import { ROUTES } from "../../../constants/api";
 
 const userRole = {
   ADMIN: 0,
@@ -76,7 +77,7 @@ const Signup = () => {
   useEffect(() => {
     if (user && user?.status === 'success') {
       toast(user?.message);
-      navigate("/rich-crm/dashboard");
+      navigate(ROUTES.DASHBOARD);
     }  
       else if (error && error?.status === 'failed') {
           toast(error?.message)
@@ -85,7 +86,7 @@ const Signup = () => {
 
   }, [user, error,navigate]);
   const handleBackIcon = () => {
-    navigate("/")
+    navigate(ROUTES.LOGIN)
   }
   return (
     <>

@@ -8,8 +8,15 @@ import SelectInput from "../selectinput";
 import { useNavigate } from "react-router-dom";
 import { IoIosAdd } from "react-icons/io";
 import { IoIosClose } from "react-icons/io";
+import { fetchPremisesRequest, registerPremisesRequest } from "../../redux/actions/premisesActions";
+import { caseCreateRequest } from "../../redux/actions/caseAction";
+import { toast } from "react-toastify";
+import { clearData } from "../../redux/actions/authActions";
+import { useDispatch } from "react-redux";
+import { ROUTES } from "../../constants/api";
 
 const NewCaseModal = ({ onClose }) => {
+    const dispatch=useDispatch();
     const [showClientFields, setShowClientFields] = useState(false);
 
     const handleAddClientClick = () => {
@@ -58,11 +65,57 @@ const NewCaseModal = ({ onClose }) => {
             })
         ),
     });
-    const handleNewCaseInfo = (values) => {
-        if (values) {
-            navigate("/rich-crm/newcaseinfo");
-        }
-    }
+    const handleNewCaseInfo = async (values) => {
+      const client = values.clients[0];
+      const payload = {
+        name: `${client.clientfirstName} ${client.clientLastName}`,
+        addressId: `${values.address}`,
+        propertyType: 1,
+      };
+
+      navigate(ROUTES.NEW_CASE_INFO);
+
+    //   try {
+    //     const registerResponse = await dispatch(
+    //       registerPremisesRequest(payload)
+    //     );
+    //     if (registerResponse.status === 200) {
+    //       toast.success("Premises successfully registered!");
+    //       const fetchResponse = await dispatch(
+    //         fetchPremisesRequest({ addressId: values.address })
+    //       );
+
+    //       if (fetchResponse.status === 200) {
+    //         const casePayload = {
+    //           premisesId: "b394ec2a-24c0-4913-b065-09bcaecbeb9a",
+    //           creatorId: "test1@gmail.com",
+    //           stage: 0,
+    //           clientType: 0,
+    //           buyerId: "f3117eaa-e3a7-4b3e-88fb-37a8741a181e",
+    //         };
+    //         const createCaseResponse = await dispatch(
+    //           caseCreateRequest(casePayload)
+    //         );
+
+    //         if (createCaseResponse.status === 200) {
+    //           toast.success("Case created successfully!");
+    //           navigate("/rich-crm/newcaseinfo");
+    //         } else {
+    //           toast.error("Failed to create case.");
+    //         }
+    //       } else {
+    //         toast.error("Failed to fetch premises.");
+    //       }
+    //     } else {
+    //       toast.error("Failed to register premises.");
+    //     }
+    //     dispatch(clearData());
+    //   } catch (error) {
+    //     console.error("Error while handling new case information", error);
+    //     toast.error("An error occurred while creating the case.");
+    //   }
+    };
+    
 
     return (
         <Modal show={true} size="md" onClose={onClose} className="new-case-modal">

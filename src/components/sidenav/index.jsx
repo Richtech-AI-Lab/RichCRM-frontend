@@ -5,21 +5,22 @@ import { PiLayout, PiUsersThree, PiFolderSimple, PiLinkSimpleHorizontal  } from 
 import { BiCalendar } from "react-icons/bi";
 import { IoSettingsOutline } from "react-icons/io5";
 import { FiFileText } from "react-icons/fi";
+import { ROUTES } from "../../constants/api";
 
 const SideNav = ({ isDrawerOpen, toggleDrawer, setTitle }) => {
   const location = useLocation();
   const currentPath = location.pathname;
   const isActive = (path) => {
     const casesPaths = [
-      "/rich-crm/cases",
-      "/rich-crm/casesdata",
-      "/rich-crm/casedetails",
-      "/rich-crm/casescategory",
-      "/rich-crm/newcaseinfo"
+      ROUTES.CASES,
+      ROUTES.CASES_DATA,
+      ROUTES.CASES_DETAILS,
+      ROUTES.CASES_CATEGORY,
+      ROUTES.NEW_CASE_INFO
     ];
 
     if (casesPaths.includes(currentPath)) {
-      return path === "/rich-crm/cases";
+      return path === ROUTES.CASES;
     }
     return currentPath === path;
   };
@@ -45,19 +46,19 @@ const SideNav = ({ isDrawerOpen, toggleDrawer, setTitle }) => {
       <h1 className="text-secondary-700 text-xl font-bold pt-5 pb-3 px-4 whitespace-nowrap">MG Law Group</h1>
       <Sidebar.Items className="mt-10 sidebar-items flex flex-col justify-between h-[calc(100vh-140px)]">
         <Sidebar.ItemGroup>
-          <Sidebar.Item as={Link} to="/rich-crm/dashboard" icon={PiLayout} className={isActive("/rich-crm/dashboard") ? "active-item" : ""} onClick={() => handleTitleChange('Dashboard')}>
+          <Sidebar.Item as={Link} to={ROUTES.DASHBOARD} icon={PiLayout} className={isActive(ROUTES.DASHBOARD) ? "active-item" : ""} onClick={() => handleTitleChange('Dashboard')}>
             Dashboard
           </Sidebar.Item>
-          <Sidebar.Item as={Link} to="/rich-crm/cases" icon={FiFileText}  className={isActive("/rich-crm/cases") ? "active-item" : ""} onClick={() => handleTitleChange('Cases')}>
+          <Sidebar.Item as={Link} to={ROUTES.CASES} icon={FiFileText}  className={isActive(ROUTES.CASES) ? "active-item" : ""} onClick={() => handleTitleChange('Cases')}>
             Cases
           </Sidebar.Item>
-          <Sidebar.Item as={Link} to="/rich-crm/calendar" icon={BiCalendar} className={isActive("/rich-crm/calendar") ? "active-item" : ""} onClick={() => handleTitleChange('Calendar')}>
+          <Sidebar.Item as={Link} to={ROUTES.CALENDAR} icon={BiCalendar} className={isActive(ROUTES.CALENDAR) ? "active-item" : ""} onClick={() => handleTitleChange('Calendar')}>
             Calender
           </Sidebar.Item>
-          <Sidebar.Item as={Link} to="/rich-crm/contacts" icon={PiUsersThree} className={isActive("/rich-crm/contacts") ? "active-item" : ""} onClick={() => handleTitleChange('Contacts')}>
+          <Sidebar.Item as={Link} to={ROUTES.CONTACTS} icon={PiUsersThree} className={isActive(ROUTES.CONTACTS) ? "active-item" : ""} onClick={() => handleTitleChange('Contacts')}>
             Contacts
           </Sidebar.Item>
-          <Sidebar.Item as={Link} to="/rich-crm/documents" icon={PiFolderSimple} className={isActive("/rich-crm/documents") ? "active-item" : ""} onClick={() => handleTitleChange('Documents')}>
+          <Sidebar.Item as={Link} to={ROUTES.DOCUMENTS} icon={PiFolderSimple} className={isActive(ROUTES.DOCUMENTS) ? "active-item" : ""} onClick={() => handleTitleChange('Documents')}>
             Documents
           </Sidebar.Item>
         </Sidebar.ItemGroup>
@@ -65,7 +66,7 @@ const SideNav = ({ isDrawerOpen, toggleDrawer, setTitle }) => {
           {/* <Sidebar.Item as={Link} to="/rich-crm/links" icon={PiLinkSimpleHorizontal} className={isActive("/rich-crm/links") ? "active-item" : ""} onClick={() => handleTitleChange('External Links')}>
             External Links
           </Sidebar.Item> */}
-          <Sidebar.Item as={Link} to="/rich-crm/settings" icon={IoSettingsOutline} className={isActive("/rich-crm/settings") ? "active-item" : ""} onClick={() => handleTitleChange('Settings')}>
+          <Sidebar.Item as={Link} to={ROUTES.SETTINGS} icon={IoSettingsOutline} className={isActive(ROUTES.SETTINGS) ? "active-item" : ""} onClick={() => handleTitleChange('Settings')}>
             Settings
           </Sidebar.Item>
         </Sidebar.ItemGroup>

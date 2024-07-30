@@ -7,6 +7,7 @@ import { logout } from "../../redux/actions/authActions";
 import { deleteUserRequest } from "../../redux/actions/authActions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../constants/api";
 
 const Header = ({ toggleDrawer, title }) => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const Header = ({ toggleDrawer, title }) => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate("/");
+    navigate(ROUTES.LOGIN);
   };
 
   console.log(localStorage.getItem('authToken'), "tokendata")

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL:`http://richcrm-backend-dev.us-east-2.elasticbeanstalk.com/`,
+  baseURL:process.env.REACT_APP_BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/actions/authActions";
 import { useNavigate } from "react-router-dom";
 import { Card, CardGrid, UpcomingEventCard } from "../../components";
+import { ROUTES } from "../../constants/api";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -11,7 +12,7 @@ const Dashboard = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate("/");
+    navigate(ROUTES.LOGIN);
   };
 
    const cardData = [

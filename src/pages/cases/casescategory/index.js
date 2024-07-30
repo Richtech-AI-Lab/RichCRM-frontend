@@ -3,6 +3,7 @@ import { Actionbar, PageHeader } from "../../../components";
 import CasesCategoryCard from "../../../components/casecategorycard";
 import { useNavigate } from "react-router-dom";
 import { SlArrowRight } from "react-icons/sl";
+import { ROUTES } from "../../../constants/api";
 
 const CasesCategory = () => {
   const navigate = useNavigate();
@@ -89,7 +90,7 @@ const CasesCategory = () => {
     },
   ];
   const handleCaseCardClick = () => {
-    navigate("/rich-crm/casesdata");
+    navigate(ROUTES.CASES_DATA);
   };
   return (
     <div>
