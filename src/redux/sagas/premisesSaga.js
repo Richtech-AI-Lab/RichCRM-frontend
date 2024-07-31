@@ -37,9 +37,8 @@ function* fetchPremises(action) {
   }
 }
 
-function* premisesSaga() {
+export function* premisesSaga() {
   yield takeLatest(REGISTER_PREMISES_REQUEST, registerPremises);
   yield takeLatest(FETCH_PREMISES_REQUEST, fetchPremises);
 }
 
-export default premisesSaga;

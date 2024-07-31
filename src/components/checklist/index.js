@@ -71,8 +71,8 @@ const ChecklistItem = ({ icon, label, options, action, actionInfo, optionsValue,
 
 
   return (
-    <div>
-      <li className="flex justify-between items-center mb-5 pb-5 task-checklist">
+    <div class="border-t-2 border-black-10">
+      <li className="flex justify-between items-center mb-5 pb-5 task-checklist mt-2">
         <div className="flex items-center gap-2 custom-radio">
           <Checkbox id={checkboxId} defaultChecked className="mr-6" />
           <Label htmlFor={checkboxId} className="flex items-center text-lg text-title font-medium">
@@ -103,6 +103,7 @@ const ChecklistItem = ({ icon, label, options, action, actionInfo, optionsValue,
         </div>
       </li>
     </div>
+    // </div>
   );
 };
 

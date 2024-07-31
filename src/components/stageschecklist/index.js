@@ -15,9 +15,9 @@ import StepperProgress from "../stepperProgress";
 
 const StagesChecklist = ({ label }) => {
   const [currentStep, setCurrentStep] = useState(0);
+  const [activeTab, setActiveTab] = useState('mortgage'); // State to track active tab
 
-
-  const stepperItems0 = [
+  const settingUpTasks = [
     {
       action: "Action",
       actionInfo: "Case set up",
@@ -30,9 +30,15 @@ const StagesChecklist = ({ label }) => {
       options: "Uploaded",
       checkboxId: "accept",
     },
-  ]
+    {
+      action: "Upload",
+      actionInfo: "Inspection report",
+      options: "Uploaded",
+      checkboxId: "accept",
+    },
+  ];
 
-  const stepperItems1 = [
+  const contractReviewingTasks = [
     {
       action: "Upload",
       actionInfo: "Initial contract",
@@ -45,9 +51,9 @@ const StagesChecklist = ({ label }) => {
       options: "Waiting",
       checkboxId: "accept",
     },
-  ]
+  ];
 
-  const stepperItems2 = [
+  const contractSigningTasks = [
     {
       action: "Action",
       actionInfo: "Confirm wire info with seller",
@@ -60,24 +66,40 @@ const StagesChecklist = ({ label }) => {
       options: "Finished",
       checkboxId: "accept",
     },
-  ]
+  ];
 
-  const stepperItems3 = [
+  // Separate items for Mortgage and Title tasks
+  const mortgageTasks = [
     {
       action: "Action",
-      actionInfo: "Set up mortgage due rate",
+      actionInfo: "Set up mortgage due date",
       options: "Finished",
       checkboxId: "accept",
     },
     {
       action: "Contact",
-      actionInfo: "Inform the client about upcoming timeline",
+      actionInfo: "Inform the client about the upcoming timeline",
       options: "No Response",
       checkboxId: "accept",
     },
-  ]
+  ];
 
-  const stepperItems4 = [
+  const titleTasks = [
+    {
+      action: "Upload",
+      actionInfo: "Upload title commitment",
+      options: "Unuploaded",
+      checkboxId: "accept",
+    },
+    {
+      action: "Contact",
+      actionInfo: "Contact title company",
+      options: "Not Started",
+      checkboxId: "accept",
+    },
+  ];
+
+  const closingTasks = [
     {
       action: "Action",
       actionInfo: "Schedule closing date",
@@ -90,7 +112,7 @@ const StagesChecklist = ({ label }) => {
       options: "Not Started",
       checkboxId: "accept",
     },
-  ]
+  ];
 
   const progressItems = [
     "Setting up",
@@ -101,43 +123,53 @@ const StagesChecklist = ({ label }) => {
   ];
 
   const stepperItems = [
-    stepperItems0,
-    stepperItems1,
-    stepperItems2,
-    stepperItems3,
-    stepperItems4,
+    settingUpTasks,
+    contractReviewingTasks,
+    contractSigningTasks,
+    // Include mortgageTasks and titleTasks as separate items for the Mortgage & Title step
+    { mortgageTasks, titleTasks },
+    closingTasks,
   ];
 
-  const getHeadLable = (currentStep) => {
+  const getHeadLabel = (currentStep) => {
     switch (currentStep) {
       case 0:
-        return "Setting up Tasks"
+        return "Setting up Tasks";
       case 1:
-        return "Contract Reviewing Tasks"
+        return "Contract Reviewing Tasks";
       case 2:
-        return "Contract Signing Tasks"
+        return "Contract Signing Tasks";
       case 3:
-        return "Mortgage Tasks"
+        return activeTab === 'mortgage' ? "Mortgage Tasks" : "Title Tasks"; // Update label based on active tab
       case 4:
-        return "Closing Tasks"
-      default: <></>
+        return "Closing Tasks";
+      default:
+        return <></>;
     }
-  }
-
-  const getLable = getHeadLable(currentStep)
+  };
 
   const handleNextStage = () => {
     if (currentStep < stepperItems.length - 1) {
       setCurrentStep(currentStep + 1);
+      setActiveTab('mortgage'); // Reset active tab to mortgage when changing step
     }
   };
 
   const handlePreviousStage = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
+      setActiveTab('mortgage'); // Reset active tab to mortgage when changing step
     }
   };
 
+  const getChecklistItems = () => {
+    if (currentStep === 3) {
+      // Return the active tab's items for the Mortgage & Title step
+      return activeTab === 'mortgage' ? stepperItems[currentStep].mortgageTasks : stepperItems[currentStep].titleTasks;
+    }
+    return stepperItems[currentStep];
+  };
+  console.log(currentStep, "step")
   return (
     <div className="col-span-8">
       <div className="bg-white py-4 rounded-2xl mb-5">
@@ -149,37 +181,50 @@ const StagesChecklist = ({ label }) => {
             <div className="flex gap-2 progress-bars">
               <StepperProgress steps={progressItems} currentStep={currentStep} />
             </div>
-            {/* {label && <span className="block mt-4 text-sm text-secondary-800 font-medium"><FaCircle className="inline-block text-[6px] mr-1" /> {label}</span>} */}
           </div>
         </div>
       </div>
       <div className="bg-white py-4 rounded-2xl mb-5">
         <div className="flex justify-between items-center mb-8 px-4">
-          <span className="ext-base text-secondary-800 font-medium">{getLable}</span>
-          {/* <span className="text-base text-text-purple font-medium">
-              + Add Item
-            </span> */}
+          {/* <span className="text-base text-secondary-800 font-medium">{getHeadLabel(currentStep)}</span> */}
+
+          {currentStep === 3 ? (
+            <div className="flex justify-start space-x-4">
+              <span
+                className={`py-0 px-3 cursor-pointer ${activeTab === 'mortgage' ? 'text-base text-secondary-800 font-medium border-b-2 border-black-600' : 'text-gray-400'}`}
+                onClick={() => setActiveTab('mortgage')}
+              >
+                Mortgage Task
+              </span>
+              <span
+                className={`py-0 px-3 cursor-pointer ${activeTab === 'title' ? 'text-base text-secondary-800 font-medium border-b-2 border-black-600' : 'text-gray-400'}`}
+                onClick={() => setActiveTab('title')}
+              >
+                Title Task
+              </span>
+            </div>
+          ) : (
+            <span className="text-base text-secondary-800 font-medium">{getHeadLabel(currentStep)}</span>
+          )}
           <div className="flex items-center gap-2">
             <FiPlus className="text-lg" />
             <BsThreeDotsVertical className="text-lg" />
           </div>
         </div>
         <ul className="mb-6 overflow-y-auto">
-          {stepperItems[currentStep].map((item, index) => (
+          {getChecklistItems().map((item, index) => (
             <ChecklistItem
               key={index}
               action={item.action}
               actionInfo={item.actionInfo}
               options={item.options}
               checkboxId={item.checkboxId}
-              currentStep={currentStep}
             />
           ))}
         </ul>
         <div className="flex justify-between items-center pt-5 px-4">
           <XButton
-            text="Back to previous stage
-"
+            text="Back to previous stage"
             className="btn-theme"
             onClick={handlePreviousStage}
             disabled={currentStep === 0}
@@ -201,9 +246,9 @@ const StagesChecklist = ({ label }) => {
           />
         </div>
       </div>
-
     </div>
   );
 };
+
 
 export default StagesChecklist;

@@ -25,3 +25,5 @@ const StepperProgress = ({ steps, currentStep }) => {
 };
 
 export default StepperProgress;
+
+
