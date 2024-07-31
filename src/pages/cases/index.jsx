@@ -2,11 +2,12 @@ import React from "react";
 import { Actionbar, CardGrid } from "../../components";
 import { casesCardData } from "../../constants/constants";
 import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../constants/api";
 
 const Cases = () => {
   const navigate = useNavigate();
   const handleCardClick = () => {
-    navigate("/rich-crm/casescategory");
+    navigate(ROUTES.CASES_CATEGORY);
   };
 
   return (

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { clearData, loginRequest } from "../../../redux/actions/authActions";
 import { TextInput, XButton, XSpinnerLoader, AuthFormContainer } from "../../../components";
+import { ROUTES } from "../../../constants/api";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -38,7 +39,7 @@ const Login = () => {
   useEffect(() => {
     if (user && user?.status === 'success') {
       toast(user?.message);
-      navigate("/rich-crm/dashboard");
+      navigate(ROUTES.DASHBOARD);
     }  
       else if (error && error?.status === 'failed') {
           toast(error?.message)
@@ -48,11 +49,11 @@ const Login = () => {
   }, [user, error,navigate]);
 
   const handleRegisterClick = () => {
-    navigate("/register");
+    navigate(ROUTES.REGISTER);
   };
 
   const handleForgotPassword=()=>{
-    navigate("/forgot-password-one");
+    navigate(ROUTES.FORGOT_PASSWORD_ONE);
   }
 
   return (

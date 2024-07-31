@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { forgotPasswordRequest } from "../../../redux/actions/authActions";
 import StepIndicator from "./StepIndicator";
+import { ROUTES } from "../../../constants/api";
 
 const ForgotPasswordOne = () => {
   const navigate = useNavigate();
@@ -25,11 +26,11 @@ const ForgotPasswordOne = () => {
   const handleSubmit = (values, { setSubmitting }) => {
     console.log(values, "Here values");
     // dispatch(forgotPasswordRequest(values));
-    navigate('/forgot-password-two')
+    navigate(ROUTES.FORGOT_PASSWORD_TWO)
   };
 
   const handleLoginClick = () => {
-    navigate("/");
+    navigate(ROUTES.LOGIN);
   };
 
   return (

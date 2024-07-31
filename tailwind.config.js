@@ -51,6 +51,7 @@ module.exports = {
       'badge-yellow': '#FFD187',
       'badge-blue': '#95DEE3',
       'badge-pink': '#D3B3E7',
+      'badge-red': '#ff9f94',
       'select': '#F7F2FA',
       'select-text': '#49454F',
       'bg-pink': '#E8DEF8',

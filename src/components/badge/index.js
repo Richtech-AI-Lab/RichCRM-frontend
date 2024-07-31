@@ -6,6 +6,7 @@ const badgeList = [
   { className: "bg-badge-yellow" },
   { className: "bg-badge-blue" },
   { className: "bg-badge-gray" },
+  { className: "bg-badge-red" },
 ];
 
 const Badge = ({ color, children }) => {

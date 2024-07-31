@@ -10,11 +10,12 @@ import { IMAGES } from "../../../constants/imagePath";
 import StagesChecklist from "../../../components/stageschecklist";
 import { useNavigate } from "react-router-dom";
 import { FaRegEdit } from "react-icons/fa";
+import { ROUTES } from "../../../constants/api";
 
 const CaseCardData = () => {
   const navigate=useNavigate();
   const handleCaseDetails=()=>{
-    navigate("/rich-crm/casedetails")
+    navigate(ROUTES.CASES_DETAILS)
   }
 
   const headerItems = [

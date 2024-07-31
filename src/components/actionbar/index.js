@@ -5,8 +5,11 @@ import NewCaseModal from "../caseModal/newCaseModal";
 import { SORT_OPTIONS } from "../../constants/constants";
 import { FiPlus } from "react-icons/fi";
 import { IoFilterSharp } from "react-icons/io5";
+import { useLocation } from "react-router-dom";
+import { ROUTES } from "../../constants/api";
 
 const Actionbar = () => {
+  const location = useLocation();
   const [sortBy, setSortBy] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -25,9 +28,14 @@ const Actionbar = () => {
     setIsModalOpen(!isModalOpen);
   };
 
+  const shouldShowOpenClosed = () => {
+    const pathsToShow = [ROUTES.CASES];
+    return pathsToShow.includes(location.pathname);
+  };
   return (
     <div className="flex justify-between items-center mb-6">
       <div className="relative flex items-center">
+        {shouldShowOpenClosed() && (
         <div className="relative flex items-center justify-center w-[200px] h-[44px] rounded-full overflow-hidden shadow-shadow-light mr-4">
           <div className="absolute top-0 left-0 w-1/2 h-full  bg-active-blue flex items-center justify-center">
             <span className="text-base font-medium text-active-blue-text">Open</span>
@@ -36,6 +44,7 @@ const Actionbar = () => {
             <span className="text-base font-medium text-secondary-800">Closed</span>
           </div>
         </div>
+        )}
         <div className="bg-white shadow-shadow-light py-[10px] px-5 rounded-full flex items-center mr-4">
           <IoFilterSharp className="text-xl mr-2 inline-block" />
 

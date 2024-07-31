@@ -11,11 +11,12 @@ import StagesChecklist from "../../../components/stageschecklist";
 import { useNavigate } from "react-router-dom";
 import { FaRegEdit } from "react-icons/fa";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { ROUTES } from "../../../constants/api";
 
 const NewCaseInfo = () => {
   const navigate = useNavigate();
   const handleCaseDetails = () => {
-    navigate("/rich-crm/casedetails");
+    navigate(ROUTES.CASES_DETAILS);
   };
 
   const headerItems = [

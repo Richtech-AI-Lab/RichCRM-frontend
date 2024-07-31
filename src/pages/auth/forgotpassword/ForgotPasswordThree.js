@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { forgotPasswordRequest } from "../../../redux/actions/authActions";
 import StepIndicator from "./StepIndicator";
+import { ROUTES } from "../../../constants/api";
 
 const ForgotPasswordThree = () => {
   const navigate = useNavigate();
@@ -27,11 +28,11 @@ const ForgotPasswordThree = () => {
   const handleSubmit = (values, { setSubmitting }) => {
     console.log(values, "Here values");
     // dispatch(forgotPasswordRequest(values));
-    navigate("/rich-crm/dashboard");
+    navigate(ROUTES.DASHBOARD);
   };
 
   const handleLoginClick = () => {
-    navigate("/");
+    navigate(ROUTES.LOGIN);
   };
 
   return (
