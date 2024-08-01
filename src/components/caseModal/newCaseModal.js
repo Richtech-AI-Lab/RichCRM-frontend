@@ -61,11 +61,11 @@ const NewCaseModal = ({ onClose }) => {
         // clientType: Yup.string().required('Client Type is required'),
         // clientfirstName: Yup.string().required('Client First Name is required'),
         // clientLastName: Yup.string().required('Client Last Name is required'),
-        // address: Yup.string().required('Address is required'),
+        address: Yup.string().required('Address is required'),
         // addressLine2: Yup.string('Address Line 2 is required'),
-        // city: Yup.string().required('City is required'),
-        // state: Yup.string().required('State is required'),
-        // zipCode: Yup.string().required('Zip code is required'),
+        city: Yup.string().required('City is required'),
+        state: Yup.string().required('State is required'),
+        zipCode: Yup.string().required('Zip code is required'),
         clients: Yup.array().of(
             Yup.object().shape({
                 // clientType: Yup.string().required('Client Type is required'),
@@ -73,7 +73,10 @@ const NewCaseModal = ({ onClose }) => {
                 clientLastName: Yup.string().required('Client Last Name is required'),
                 cellNumber: Yup.string()
                 .matches(/^[0-9]+$/, 'Cell number must be a number')
-                .required('Cell Number is required'),                email: Yup.string().email('Invalid email format').required('Email is required'),
+                // .required('Cell Number is required')
+                ,               
+                 email: Yup.string().email('Invalid email format')
+                //  .required('Email is required'),
             })
         ),
     });
@@ -82,14 +85,14 @@ const NewCaseModal = ({ onClose }) => {
       const clientPayload = {
         firstName: clientDetails.clientfirstName,
         lastName: clientDetails.clientLastName,
-        cellNumber: clientDetails.cellNumber,
-        email: clientDetails.email,
+        // cellNumber: clientDetails.cellNumber,
+        // email: clientDetails.email,
       };
 
 
       try {
         const clientResponse = await dispatch(registerClientRequest(clientPayload));
-        if (client && client?.status === "success") {
+        if (client?.status === "success") {
           toast.success("Client created successfully");
           navigate(ROUTES.NEW_CASE_INFO);
 
@@ -99,12 +102,12 @@ const NewCaseModal = ({ onClose }) => {
             state: values.state,
             zipCode: values.zipCode,
           };
-        //   const addressrResponse = await dispatch(
-        //     registerAddressRequest(addressPayload)
-        //   );
+          const addressrResponse = await dispatch(
+            registerAddressRequest(addressPayload)
+          );
 
-        //   if (address.status === "success") {
-        //     toast.success("Address successfully registered!");
+          if (address.status === "success") {
+            toast.success("Address successfully registered!");
         //     const premisesPayload = {
         //       name: `${clientDetails.clientfirstName} ${clientDetails.clientLastName}`,
         //       addressId:
@@ -138,17 +141,17 @@ const NewCaseModal = ({ onClose }) => {
         //     } else {
         //       toast.error("Failed to register premises.");
         //     }
-        //   } else {
-        //     toast.error("Failed to register address.");
-        //   }
+          } else {
+            toast.error("Failed to register address.");
+          }
         } else {
           toast.error("Failed to register client.");
         }
 
-        // dispatch(clearData());
+        dispatch(clearData());
       } catch (error) {
         console.error("Error while handling new case information", error);
-        toast.error("An error occurred while creating the case.");
+        // toast.error("An error occurred while creating the case.");
       }
     };
     

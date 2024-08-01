@@ -8,11 +8,10 @@ import { FiCheckCircle } from "react-icons/fi";
 
 const CasesCategoryCard = ({ startedItems, confirmingItems,readyItems, onCardClick }) => {
   return (
-    <div className="card bg-card-300">
-      <LabelText labelText="Started" count="11" />
-      <div className="grid grid-cols-3 gap-6">
+    <div className="card bg-card-300 p-0">
+      <LabelText labelText="Contract Preparing" count="11" />
+      <div className="grid grid-cols-4 gap-2 mx-2 my-[10px]">
         <div>
-          <LabelCard labelCardText="Unsolved" icon={<BsExclamationOctagon className="text-base mr-2 inline-block" />} />
           {startedItems.map((item, index) => (
             <CardItem
               key={index}
@@ -24,7 +23,6 @@ const CasesCategoryCard = ({ startedItems, confirmingItems,readyItems, onCardCli
           ))}
         </div>
         <div>
-          <LabelCard labelCardText="Processing"  icon={<BsHourglass className="text-base mr-2 inline-block" />}/>
           {confirmingItems.map((item, index) => (
             <CardItem
               key={index}
@@ -35,7 +33,16 @@ const CasesCategoryCard = ({ startedItems, confirmingItems,readyItems, onCardCli
           ))}
         </div>
         <div>
-          <LabelCard labelCardText="Ready"  icon={<FiCheckCircle  className="text-base mr-2 inline-block" />}/>
+          {readyItems.map((item, index) => (
+            <CardItem
+              key={index}
+              badgeColor={item.badgeColor}
+              badgeText={item.badgeText}
+              caseDetails={item.caseDetails}
+            />
+          ))}
+        </div>
+        <div>
           {readyItems.map((item, index) => (
             <CardItem
               key={index}

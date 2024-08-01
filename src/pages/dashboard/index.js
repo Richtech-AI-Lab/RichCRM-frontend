@@ -41,105 +41,105 @@ const Dashboard = () => {
    const cardsData = [
     {
       title: "Started",
-      count: 11,
+      // count: 11,
       items: [
         {
           badgeColor: "yellow",
           badgeText: "Setting up",
-          caseDetails: "Client’s Name - Case Type",
+          caseDetails: "Gee - 535 W 52nd St #9G coop",
         },
         {
           badgeColor: "gray",
           badgeText: "Confirming",
-          caseDetails: "Client’s Name - Case Type",
+          caseDetails: "Gee - 535 W 52nd St #9G coop",
         },
         {
           badgeColor: "green",
           badgeText: "Confirmed",
-          caseDetails: "Client’s Name - Case Type",
+          caseDetails: "Gee - 535 W 52nd St #9G coop",
         },
         {
           badgeColor: "green",
           badgeText: "Confirmed",
-          caseDetails: "Client’s Name - Case Type",
+          caseDetails: "Gee - 535 W 52nd St #9G coop",
         },
       ],
     },
     {
       title: "Contract",
-      count: 3,
+      // count: 3,
       items: [
         {
           badgeColor: "yellow",
           badgeText: "Preparing",
-          caseDetails: "Client’s Name - Case Type",
+          caseDetails: "Gee - 535 W 52nd St #9G coop",
         },
         {
           badgeColor: "yellow",
           badgeText: "Preparing",
-          caseDetails: "Client’s Name - Case Type",
+          caseDetails: "Gee - 535 W 52nd St #9G coop",
         },
         {
           badgeColor: "yellow",
           badgeText: "Signing",
-          caseDetails: "Client’s Name - Case Type",
+          caseDetails: "Gee - 535 W 52nd St #9G coop",
         },
         {
           badgeColor: "green",
           badgeText: "Fully Signed",
-          caseDetails: "Client’s Name - Case Type",
+          caseDetails: "Gee - 535 W 52nd St #9G coop",
         },
       ],
     },
     {
       title: "Mortgage & Title",
-      count: 14,
+      // count: 14,
       items: [
         {
           badgeColor: "yellow",
           badgeText: "Confirming",
-          caseDetails: "Client’s Name - Case Type",
+          caseDetails: "Gee - 535 W 52nd St #9G coop",
         },
         {
           badgeColor: "gray",
           badgeText: "Pending",
-          caseDetails: "Client’s Name - Case Type",
+          caseDetails: "Gee - 535 W 52nd St #9G coop",
         },
         {
           badgeColor: "green",
           badgeText: "Clear",
-          caseDetails: "Client’s Name - Case Type",
+          caseDetails: "Gee - 535 W 52nd St #9G coop",
         },
         {
           badgeColor: "gray",
           badgeText: "Pending",
-          caseDetails: "Client’s Name - Case Type",
+          caseDetails: "Gee - 535 W 52nd St #9G coop",
         },
       ],
     },
     {
       title: "Closing",
-      count: 10,
+      // count: 10,
       items: [
         {
           badgeColor: "yellow",
           badgeText: "Preparing",
-          caseDetails: "Client’s Name - Case Type",
+          caseDetails: "Gee - 535 W 52nd St #9G coop",
         },
         {
           badgeColor: "yellow",
           badgeText: "Preparing",
-          caseDetails: "Client’s Name - Case Type",
+          caseDetails: "Gee - 535 W 52nd St #9G coop",
         },
         {
-          badgeColor: "yellow",
+          badgeColor: "green",
           badgeText: "All Done",
-          caseDetails: "Client’s Name - Case Type",
+          caseDetails: "Gee - 535 W 52nd St #9G coop",
         },
         {
-          badgeColor: "yellow",
+          badgeColor: "green",
           badgeText: "All Done",
-          caseDetails: "Client’s Name - Case Type",
+          caseDetails: "Gee - 535 W 52nd St #9G coop",
         },
       ],
     },
