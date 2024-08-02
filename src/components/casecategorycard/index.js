@@ -6,7 +6,11 @@ import { BsExclamationOctagon } from "react-icons/bs";
 import { BsHourglass } from "react-icons/bs";
 import { FiCheckCircle } from "react-icons/fi";
 
-const CasesCategoryCard = ({ startedItems, confirmingItems,readyItems, onCardClick }) => {
+const CasesCategoryCard = ({ cases,onCardClick }) => {
+  const startedItems = cases.filter((item) => item.badgeText === "No Response");
+  const confirmingItems = cases.filter((item) => item.badgeText === "Unfinished");
+  const readyItems = cases.filter((item) => item.badgeText === "Done");
+  const waitingItems = cases.filter((item) => item.badgeText === "Waiting");
   return (
     <div className="card bg-card-300 p-0">
       <LabelText labelText="Contract Preparing" count="11" />
@@ -19,6 +23,7 @@ const CasesCategoryCard = ({ startedItems, confirmingItems,readyItems, onCardCli
               badgeText={item.badgeText}
               caseDetails={item.caseDetails}
               onClick={onCardClick}
+              caseTitle={item.caseTitle}
             />
           ))}
         </div>
@@ -29,6 +34,7 @@ const CasesCategoryCard = ({ startedItems, confirmingItems,readyItems, onCardCli
               badgeColor={item.badgeColor}
               badgeText={item.badgeText}
               caseDetails={item.caseDetails}
+              caseTitle={item.caseTitle}
             />
           ))}
         </div>
@@ -39,16 +45,18 @@ const CasesCategoryCard = ({ startedItems, confirmingItems,readyItems, onCardCli
               badgeColor={item.badgeColor}
               badgeText={item.badgeText}
               caseDetails={item.caseDetails}
+              caseTitle={item.caseTitle}
             />
           ))}
         </div>
         <div>
-          {readyItems.map((item, index) => (
+          {waitingItems.map((item, index) => (
             <CardItem
               key={index}
               badgeColor={item.badgeColor}
               badgeText={item.badgeText}
               caseDetails={item.caseDetails}
+              caseTitle={item.caseTitle}
             />
           ))}
         </div>
