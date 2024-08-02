@@ -7,102 +7,42 @@ import { ROUTES } from "../../../constants/api";
 
 const CasesCategory = () => {
   const navigate = useNavigate();
-  const startedItems = [
-    {
-      badgeColor: "yellow",
-      badgeText: "Setting up",
-      caseDetails: "Client’s Name - Case Type",
-    },
-    {
-      badgeColor: "yellow",
-      badgeText: "Setting up",
-      caseDetails: "Client’s Name - Case Type",
-    },
-    {
-      badgeColor: "yellow",
-      badgeText: "Setting up",
-      caseDetails: "Client’s Name - Case Type",
-    },
+  const headerItems = [
+    { text: "Cases", className: "mr-8" },
+    { text: "Contract Preparing", separator: <SlArrowRight className="inline mr-10" />},
   ];
-
-  const confirmingItems = [
-    {
-      badgeColor: "gray",
-      badgeText: "Confirming",
-      caseDetails: "Client’s Name - Case Type",
-    },
-    {
-      badgeColor: "gray",
-      badgeText: "Confirming",
-      caseDetails: "Client’s Name - Case Type",
-    },
-    {
-      badgeColor: "gray",
-      badgeText: "Confirming",
-      caseDetails: "Client’s Name - Case Type",
-    },
-    {
-      badgeColor: "gray",
-      badgeText: "Confirming",
-      caseDetails: "Client’s Name - Case Type",
-    },
-    {
-      badgeColor: "gray",
-      badgeText: "Confirming",
-      caseDetails: "Client’s Name - Case Type",
-    },
-    {
-      badgeColor: "gray",
-      badgeText: "Confirming",
-      caseDetails: "Client’s Name - Case Type",
-    },
-  ];
-  const readyItems = [
-    {
-      badgeColor: "green",
-      badgeText: "Confirmed",
-      caseDetails: "Client’s Name - Case Type",
-    },
-    {
-      badgeColor: "green",
-      badgeText: "Confirmed",
-      caseDetails: "Client’s Name - Case Type",
-    },
-    {
-      badgeColor: "green",
-      badgeText: "Confirmed",
-      caseDetails: "Client’s Name - Case Type",
-    },
-    {
-      badgeColor: "green",
-      badgeText: "Confirmed",
-      caseDetails: "Client’s Name - Case Type",
-    },
-    {
-      badgeColor: "green",
-      badgeText: "Confirmed",
-      caseDetails: "Client’s Name - Case Type",
-    },
-    {
-      badgeColor: "green",
-      badgeText: "Confirmed",
-      caseDetails: "Client’s Name - Case Type",
-    },
+  const cases = [
+    { badgeColor: "red", badgeText: "No Response",  caseDetails: "535 W 52nd St #9G coop",caseTitle: "Gee, First Name"},
+    { badgeColor: "red", badgeText: "No Response", caseDetails: "535 W 52nd St #9G coop" ,caseTitle: "Gee, First Name"},
+    { badgeColor: "red", badgeText: "No Response", caseDetails: "535 W 52nd St #9G coop" ,caseTitle: "Gee, First Name"},
+    { badgeColor: "red", badgeText: "No Response", caseDetails: "535 W 52nd St #9G coop" ,caseTitle: "Gee, First Name"},
+    { badgeColor: "yellow", badgeText: "Unfinished", caseDetails: "535 W 52nd St #9G coop" ,caseTitle: "Gee, First Name"},
+    { badgeColor: "yellow", badgeText: "Unfinished", caseDetails: "535 W 52nd St #9G coop",caseTitle: "Gee, First Name" },
+    { badgeColor: "yellow", badgeText: "Unfinished", caseDetails: "535 W 52nd St #9G coop",caseTitle: "Gee, First Name" },
+    { badgeColor: "yellow", badgeText: "Unfinished", caseDetails: "535 W 52nd St #9G coop" ,caseTitle: "Gee, First Name"},
+    { badgeColor: "yellow", badgeText: "Unfinished", caseDetails: "535 W 52nd St #9G coop" ,caseTitle: "Gee, First Name"},
+    { badgeColor: "yellow", badgeText: "Unfinished", caseDetails: "535 W 52nd St #9G coop" ,caseTitle: "Gee, First Name"},
+    { badgeColor: "yellow", badgeText: "Unfinished", caseDetails: "535 W 52nd St #9G coop",caseTitle: "Gee, First Name" },
+    { badgeColor: "gray", badgeText: "Done", caseDetails: "535 W 52nd St #9G coop",caseTitle: "Gee, First Name" },
+    { badgeColor: "gray", badgeText: "Done", caseDetails: "535 W 52nd St #9G coop" ,caseTitle: "Gee, First Name"},
+    { badgeColor: "gray", badgeText: "Waiting", caseDetails: "535 W 52nd St #9G coop" ,caseTitle: "Gee, First Name"},
+    { badgeColor: "gray", badgeText: "Waiting", caseDetails: "535 W 52nd St #9G coop" ,caseTitle: "Gee, First Name"},
+    { badgeColor: "gray", badgeText: "Waiting", caseDetails: "535 W 52nd St #9G coop" ,caseTitle: "Gee, First Name"},
+    { badgeColor: "gray", badgeText: "Waiting", caseDetails: "535 W 52nd St #9G coop" ,caseTitle: "Gee, First Name"},
+    { badgeColor: "gray", badgeText: "Waiting", caseDetails: "535 W 52nd St #9G coop" ,caseTitle: "Gee, First Name"},
+    { badgeColor: "gray", badgeText: "Waiting", caseDetails: "535 W 52nd St #9G coop" ,caseTitle: "Gee, First Name"},
+    { badgeColor: "gray", badgeText: "Waiting", caseDetails: "535 W 52nd St #9G coop" ,caseTitle: "Gee, First Name"},
+    { badgeColor: "gray", badgeText: "Waiting", caseDetails: "535 W 52nd St #9G coop" ,caseTitle: "Gee, First Name"},
   ];
   const handleCaseCardClick = () => {
     navigate(ROUTES.CASES_DATA);
   };
   return (
     <div>
-      <PageHeader mainText="Cases" secondaryText="Started">
-        <SlArrowRight className="inline mr-10" />
-      </PageHeader>
+      <PageHeader items={headerItems} />
       <Actionbar />
       <CasesCategoryCard
-        startedItems={startedItems}
-        confirmingItems={confirmingItems}
-        readyItems={readyItems}
-
+        cases={cases}
         onCardClick={handleCaseCardClick}
       />
     </div>
