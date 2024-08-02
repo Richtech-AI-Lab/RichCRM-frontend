@@ -6,13 +6,16 @@ const CaseCardDetails = ({ title, items }) => (
     {title && <p className="mb-2">{title}</p>}
     <ul className="card-details">
       {items?.map((item, index) => (
+        <>
         <CardListItem
           key={index}
           label={item.label}
           value={item.value}
           icon={item.icon}
           isCheckbox={item.isCheckbox}
+          isDropdown={item.isDropdown}
           checkboxOptions={item.checkboxOptions}
+          dropdownOptions={item.dropDownOptions}
           nestedItems={item.nestedItems}
           floor={item.floor}
           inputProps={{
@@ -21,6 +24,7 @@ const CaseCardDetails = ({ title, items }) => (
             placeholder: item.placeholder ,
           }}
         />
+        </>
       ))}
     </ul>
   </div>

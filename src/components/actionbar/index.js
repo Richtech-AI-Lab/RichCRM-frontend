@@ -34,18 +34,20 @@ const Actionbar = () => {
   };
   return (
     <div className="flex justify-between items-center mb-6">
-      <div className="relative flex items-center">
-        {shouldShowOpenClosed() && (
-        <div className="relative flex items-center justify-center w-[200px] h-[44px] rounded-full overflow-hidden shadow-shadow-light mr-4">
-          <div className="absolute top-0 left-0 w-1/2 h-full  bg-active-blue flex items-center justify-center">
-            <span className="text-base font-medium text-active-blue-text">Open</span>
+      <div>
+      {shouldShowOpenClosed() && (
+        <div className="flex">
+          <div className="bg-badge-gray px-4 py-2 rounded-full mr-4">
+            <span className="text-base font-medium text-secondary-800">Open</span>
           </div>
-          <div className="absolute top-0 right-0 w-1/2 h-full bg-white flex items-center justify-center">
+          <div className="px-4 py-2 rounded-full">
             <span className="text-base font-medium text-secondary-800">Closed</span>
           </div>
         </div>
         )}
-        <div className="bg-white shadow-shadow-light py-[10px] px-5 rounded-full flex items-center mr-4">
+      </div>
+      <div className="flex">
+      <div className="bg-white shadow-shadow-light py-[10px] px-5 rounded-full flex items-center mr-4">
           <IoFilterSharp className="text-xl mr-2 inline-block" />
 
         <span className="text-base font-medium text-secondary-800">Filter</span>
@@ -63,9 +65,9 @@ const Actionbar = () => {
             label: option.label,
           }))}
         />
-      </div>
-      <XButton text="New case" icon={<FiPlus className="text-base mr-2 inline-block" />} className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium" onClick={toggleModal} />
+      <XButton text="New case" icon={<FiPlus className="text-base mr-2 inline-block" />} className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium ml-4" onClick={toggleModal} />
       {isModalOpen && <NewCaseModal onClose={toggleModal} />}
+      </div>
     </div>
   );
 };

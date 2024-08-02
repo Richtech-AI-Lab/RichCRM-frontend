@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { SlArrowRight } from "react-icons/sl";
 import { CaseCardDetails, PageHeader, XButton } from "../../../components";
 import { MdOutlineEmail, MdOutlinePhone } from "react-icons/md";
 import { GrLocation } from "react-icons/gr";
 import { IoLogoWechat } from "react-icons/io5";
+import CasesActionbar from "../../../components/actionbar/casesActionBar";
+import { caseDetailTab } from "../../../constants/constants";
+import ParticipantCaseDetails from "./participantCaseDetails";
+import PremisesCaseDetails from "./premisesCaseDetails";
+import OthersCaseDetails from "./othersCaseDetails";
 
 const CaseDetails = () => {
+  const [activeTab, setActiveTab] = useState(caseDetailTab.PARTICIPANTS);
+
   const headerItems = [
     { text: "Cases", className: "mr-8" },
     {
@@ -39,7 +46,6 @@ const CaseDetails = () => {
       placeholder: "Enter Address",
     },
   ];
-
   const buyerItems = [
     { label: "Purchaser", placeholder: "Add a purchaser" },
     { label: "SSN", placeholder: "Enter a SSN" },
@@ -61,7 +67,6 @@ const CaseDetails = () => {
       placeholder: "Enter address",
     },
   ];
-
   const financialItems = [
     { label: "Purchase Price", placeholder: "Enter an Amount" },
     { label: "Down Payment", placeholder: "Enter an Amount" },
@@ -69,13 +74,17 @@ const CaseDetails = () => {
     { label: "Annual Property Tax", placeholder: "Enter an Amount" },
     { label: "Seller’s Concession", placeholder: "Enter an Amount" },
   ];
-
   const attorneyItems = [
     { label: "Seller Attorney",  placeholder: "Enter an attorney" },
     { label: "Purchaser Attorney",  placeholder: "Enter an attorney" },
+    { label: "Bank Attorney",  placeholder: "Enter an attorney" },
+    { label: "Co-op Attorney",  placeholder: "Enter an attorney" },
   ];
-
-
+  const companyTitleItems = [
+    { label: "Title Company",  placeholder: "Enter an title company" },
+    { label: "Title Number",  placeholder: "Enter an title number" },
+    { label: "Mortage",  placeholder: "Enter an mortage" },
+  ];
   const brokersItems = [
     { label: "Brokers Sale",  placeholder: "Enter an Amount" },
     { label: "Brokers Listing",  placeholder: "Enter an Amount" },
@@ -148,6 +157,9 @@ const CaseDetails = () => {
     { label: "Assessments", placeholder:"Enter an Amount" },
     { label: "Paid by", placeholder:"Enter an Amount" },
     { label: "Managing Company", placeholder:"Enter an Amount" },
+ 
+  ];
+  const premisesType=[
     {
       label: "Component",
       isCheckbox: true,
@@ -191,10 +203,10 @@ const CaseDetails = () => {
         },
       ],
     },
-  ];
+  ]
   const closingDateItems = [
     {
-      label: "Closing Date",
+      label: "Closing",
       isCheckbox: true,
       checkboxOptions: [
         { id: "accept1", defaultChecked: true, label: "on/about" },
@@ -203,8 +215,8 @@ const CaseDetails = () => {
         { id: "accept4", defaultChecked: true, label: "June 05,2024" },
       ],
     },
+    { label: "Closing date", placeholder:"Enter an date" },
   ];
-
   const inspectionItems = [
     {
       label: "Engineer Inspection",
@@ -227,12 +239,24 @@ const CaseDetails = () => {
       ],
     },
   ];
-
+  const renderActiveTab = (activeTab) => {
+    switch (activeTab) {
+      case caseDetailTab.PARTICIPANTS:
+        return <ParticipantCaseDetails />;
+      case caseDetailTab.PREMISES:
+        return <PremisesCaseDetails />;
+      case caseDetailTab.OTHERS:
+        return <OthersCaseDetails />;
+      default:
+        return <ParticipantCaseDetails />;
+    }
+  };
   return (
     <div>
       <PageHeader items={headerItems} />
-      <div className="grid grid-cols-12 gap-6">
-        <div className="col-span-6">
+      <CasesActionbar active={activeTab} setActive={setActiveTab}/>
+      {renderActiveTab(activeTab)}
+        {/* <div className="col-span-6">
           <CaseCardDetails items={sellerItems} />
           <CaseCardDetails items={buyerItems} />
           <CaseCardDetails items={financialItems} />
@@ -240,13 +264,15 @@ const CaseDetails = () => {
           <CaseCardDetails items={brokersItems} />
         </div>
         <div className="col-span-6">
+          <CaseCardDetails items={attorneyItems} />
+          <CaseCardDetails items={companyTitleItems} />
           <CaseCardDetails items={lowerSectionItems} />
           <CaseCardDetails items={closingDateItems} />
           <CaseCardDetails items={inspectionItems} />
           <CaseCardDetails items={termitesInspectionItems} />
           
-        </div>
-      </div>
+        </div> */}
+         
       <div className="flex justify-end mt-6">
         <XButton
           text="Cancel"
