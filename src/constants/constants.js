@@ -257,3 +257,8 @@ export const casesCardData = [
     ],
   },
 ];
+export const caseDetailTab = {
+  PARTICIPANTS: 1,
+  PREMISES: 2,
+  OTHERS: 3,
+};
