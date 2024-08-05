@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { CaseCardDetails } from "../../../components";
+import { FaCircleMinus } from "react-icons/fa6";
 
 
 const OthersCaseDetails = () => {
@@ -34,16 +35,16 @@ const OthersCaseDetails = () => {
 
   const otherItemss=[
     {
-      show: false, optional: true,  buttonText: "Add A Referred", label: "Referred",  placeholder: "Enter a referred",
+      show: false, optional: true, icon: <FaCircleMinus   className="text-xl"/>, buttonText: "Add A Referred", label: "Referred",  placeholder: "Enter a referred",
     },
     {
-      show: false, optional: true, buttonText: "Add A Bank (L/O)", label: "Bank",  placeholder: "Enter a bank",
+      show: false, optional: true, icon: <FaCircleMinus   className="text-xl"/>, buttonText: "Add A Bank (L/O)", label: "Bank",  placeholder: "Enter a bank",
     },
     {
-      show: false, optional: true, buttonText: "Add Notes as Personal Property", label: "Personal Property Notes",  placeholder: "Enter notes",
+      show: false, optional: true, icon: <FaCircleMinus   className="text-xl"/>, buttonText: "Add Notes as Personal Property", label: "Personal Property Notes",  placeholder: "Enter notes",
     },
     {
-      show: false, optional: true, buttonText: "Add Notes as Excluded Property", label: "Excluded Property Notes",  placeholder: "Enter notes",
+      show: false, optional: true, icon: <FaCircleMinus   className="text-xl"/>, buttonText: "Add Notes as Excluded Property", label: "Excluded Property Notes",  placeholder: "Enter notes",
     }
   ]
   return (

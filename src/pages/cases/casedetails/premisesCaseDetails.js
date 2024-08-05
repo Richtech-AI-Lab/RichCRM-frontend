@@ -96,41 +96,29 @@ const PremisesCaseDetails = () => {
             { id: "twoFamily", label: "2 Family", defaultChecked: true },
           ],
         },
+        { label: "1F Tenant", placeholder:"Enter name" },
+        { label: "1F Rent",  placeholder:"Enter rent" },
+        { label: "1F Sec.", placeholder:"Enter sec" },
+        {
+          label: "1F Lease",
+          isCheckbox: true,
+          checkboxOptions: [
+            { id: "leaseYes1", label: "Yes", defaultChecked: true },
+            { id: "leaseNo2", label: "No", defaultChecked: true },
+          ],
+        },
+        { label: "2F Tenant", placeholder:"Enter name" },
+        { label: "2F Rent", placeholder:"Enter rent" },
+        { label: "2F Sec.", placeholder:"Enter sec"},
+        {
+          label: "2F Lease",
+          isCheckbox: true,
+          checkboxOptions: [
+            { id: "leaseYes3", label: "Yes", defaultChecked: true },
+            { id: "leaseNo4", label: "No", defaultChecked: true },
+          ],
+        },
 
-        {
-          label: "1F",
-          floor:true,
-          nestedItems: [
-            { label: "1F Tenant", placeholder:"Enter name" },
-            { label: "1F Rent",  placeholder:"Enter rent" },
-            { label: "1F Sec.", placeholder:"Enter sec" },
-            {
-              label: "1F Lease",
-              isCheckbox: true,
-              checkboxOptions: [
-                { id: "leaseYes1", label: "Yes", defaultChecked: true },
-                { id: "leaseNo2", label: "No", defaultChecked: true },
-              ],
-            },
-          ],
-        },
-        {
-          label: "2F",
-          floor:true,
-          nestedItems: [
-            { label: "2F Tenant", placeholder:"Enter name" },
-            { label: "2F Rent", placeholder:"Enter rent" },
-            { label: "2F Sec.", placeholder:"Enter sec"},
-            {
-              label: "2F Lease",
-              isCheckbox: true,
-              checkboxOptions: [
-                { id: "leaseYes3", label: "Yes", defaultChecked: true },
-                { id: "leaseNo4", label: "No", defaultChecked: true },
-              ],
-            },
-          ],
-        },
       ];
       const inspectionItems = [
         {

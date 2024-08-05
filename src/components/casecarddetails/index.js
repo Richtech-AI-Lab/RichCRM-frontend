@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import CardListItem from "../cardlistitem";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { SlArrowRight } from "react-icons/sl";
+import { IoIosAddCircle } from "react-icons/io";
 
-const CaseCardDetails = ({ title, items }) => {
+const CaseCardDetails = ({ title, items, handle }) => {
   const [fields, setFields] = useState(items)
 
   const handleShowClick = (index) => {
@@ -36,7 +37,7 @@ const CaseCardDetails = ({ title, items }) => {
         (
             <>
               <span className="left-txt flex items-center" onClick={()=>handleShowClick(index)}>
-                <span className="icon mr-2 cursor-pointer">{<SlArrowRight className="inline mr-10 " />}
+                <span className="icon mr-2 cursor-pointer">{<IoIosAddCircle  className="text-xl ml-3" />}
                 </span>
                 {item.buttonText}
               </span>
@@ -50,6 +51,7 @@ const CaseCardDetails = ({ title, items }) => {
                 key={index}
                 label={item.label}
                 value={item.value}
+                name={item.name}
                 icon={item.icon}
                 isCheckbox={item.isCheckbox}
                 isDropdown={item.isDropdown}
@@ -59,7 +61,7 @@ const CaseCardDetails = ({ title, items }) => {
                 floor={item.floor}
                 inputProps={{
                   type: "text",
-                  // onChange: handleChange,
+                  onChange: handle,
                   placeholder: item.placeholder,
                 }}
               />

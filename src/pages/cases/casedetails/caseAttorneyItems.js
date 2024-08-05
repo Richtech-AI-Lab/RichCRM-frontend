@@ -6,6 +6,8 @@ import { IoLogoWechat } from "react-icons/io5";
 import { Button, Label, Modal, TextInput } from "flowbite-react";
 import { SlArrowRight } from "react-icons/sl";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { IoIosAddCircle } from "react-icons/io";
+import { FaCircleMinus } from "react-icons/fa6";
 
 const CaseAttorneyItems = ({ title }) => {
     const [attorneyItems, setAttorneyItems] = useState([]);
@@ -39,7 +41,7 @@ const CaseAttorneyItems = ({ title }) => {
                 {attorneyItems.map(item => (
                     <li className={"flex justify-between"}>
                         <span className="left-txt flex items-center">
-                            <span className="icon mr-2 cursor-pointer" onClick={() => removeAttorneyItem(item.id)}>delete{<SlArrowRight className="inline mr-10 " />}
+                            <span className="icon mr-2 cursor-pointer" onClick={() => removeAttorneyItem(item.id)}>{<FaCircleMinus className="inline " />}
                             </span>
                             {item.label}
                         </span>
@@ -51,8 +53,7 @@ const CaseAttorneyItems = ({ title }) => {
                 ))}
                 <li className={"flex justify-between"}>
                     <span className="left-txt flex items-center">
-                        <span className="icon mr-2 cursor-pointer" onClick={openModal}>Add
-                        </span>
+                        <span className="icon mr-2 cursor-pointer" onClick={openModal}><IoIosAddCircle  className="text-xl ml-3" /> Add a attorney</span>
                     </span>
                 </li>
 
