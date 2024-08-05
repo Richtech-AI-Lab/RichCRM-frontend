@@ -24,6 +24,7 @@ const CasesCategoryCard = ({ cases,onCardClick }) => {
               caseDetails={item.caseDetails}
               onClick={onCardClick}
               caseTitle={item.caseTitle}
+              caseCount={item.caseCount}
             />
           ))}
         </div>
@@ -35,6 +36,7 @@ const CasesCategoryCard = ({ cases,onCardClick }) => {
               badgeText={item.badgeText}
               caseDetails={item.caseDetails}
               caseTitle={item.caseTitle}
+              caseCount={item.caseCount}
             />
           ))}
         </div>
@@ -46,6 +48,7 @@ const CasesCategoryCard = ({ cases,onCardClick }) => {
               badgeText={item.badgeText}
               caseDetails={item.caseDetails}
               caseTitle={item.caseTitle}
+              caseCount={item.caseCount}
             />
           ))}
         </div>
@@ -57,6 +60,7 @@ const CasesCategoryCard = ({ cases,onCardClick }) => {
               badgeText={item.badgeText}
               caseDetails={item.caseDetails}
               caseTitle={item.caseTitle}
+              caseCount={item.caseCount}
             />
           ))}
         </div>

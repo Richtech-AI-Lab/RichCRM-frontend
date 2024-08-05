@@ -15,10 +15,10 @@ const Header = ({ toggleDrawer, title }) => {
 
   const handleLogout = () => {
     dispatch(logout());
+    localStorage.setItem("headerTitle", 'Dashboard');
     navigate(ROUTES.LOGIN);
   };
 
-  console.log(localStorage.getItem('authToken'), "tokendata")
 
   return (
     <div className="flex justify-between items-center">
