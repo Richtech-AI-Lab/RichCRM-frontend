@@ -6,72 +6,65 @@ import { IoLogoWechat } from "react-icons/io5";
 import CaseAttorneyItems from "./caseAttorneyItems";
 
 const ParticipantCaseDetails = () => {
-      const sellerItems = [
-        { label: "Seller", placeholder: "Enter seller name" },
-        { label: "SSN", placeholder: "Enter a SSN" },
-        { label: "Email",icon: <MdOutlineEmail className="text-xl"/>, placeholder: "Enter a Email Address" },
-        {
-          label: "Cell Phone",
-          icon: <MdOutlinePhone className="text-xl"/>,
-          placeholder: "Enter a Phone Number",
-        },
-        {
-          label: "Work Phone",
-          icon: <MdOutlinePhone className="text-xl"/>,
-          placeholder: "Enter a Phone Number",
-        },
-        { label: "WeChat", placeholder: "Enter a WeChat Number", icon: <IoLogoWechat className="text-xl"/> },
-        {
-          label: "Mailing Address",
-          icon: <GrLocation className="text-xl"/>,
-          placeholder: "Enter Address",
-        },
-      ];
-      const buyerItems = [
-        { label: "Purchaser", placeholder: "Add a purchaser" },
-        { label: "SSN", placeholder: "Enter a SSN" },
-        { label: "Email",icon: <MdOutlineEmail className="text-xl"/>, placeholder: "Enter a Email Address" },
-        {
-          label: "Cell Phone",
-          icon: <MdOutlinePhone className="text-xl"/>,
-          placeholder: "Enter a Phone Number",
-        },
-        {
-          label: "Work Phone",
-          icon: <MdOutlinePhone className="text-xl"/>,
-          placeholder: "Enter a Phone Number",
-        },
-        { label: "WeChat", icon: <IoLogoWechat className="text-xl"/>, placeholder: "Enter a WeChat Number" },
-        {
-          label: "Address",
-          icon: <GrLocation className="text-xl"/>,
-          placeholder: "Enter address",
-        },
-      ];
-      // const attorneyItems = [
-      //   { label: "Seller Attorney",  placeholder: "Enter an attorney" },
-      //   { label: "Purchaser Attorney",  placeholder: "Enter an attorney" },
-      //   { label: "Bank Attorney",  placeholder: "Enter an attorney" },
-      //   { label: "Co-op Attorney",  placeholder: "Enter an attorney" },
-      // ];
-      const companyTitleItems = [
-        { label: "Title Company",  placeholder: "Enter an title company" },
-        { label: "Title Number",  placeholder: "Enter an title number" },
-        { label: "Mortage",  placeholder: "Enter an mortage" },
-      ];
-    return (
-        <div className="grid grid-cols-12 gap-6">
-            <div className="col-span-6">
-                <CaseCardDetails items={sellerItems} />
-                <CaseCardDetails items={buyerItems} />
-            </div>
-            <div className="col-span-6">
-                <CaseAttorneyItems />
-                {/* <CaseCardDetails items={attorneyItems} /> */}
-                <CaseCardDetails items={companyTitleItems} />
-            </div>
-        </div >
-    );
+  const sellerItems = [
+    { label: "Name", placeholder: "Enter seller name" },
+    { label: "SSN", placeholder: "Enter a SSN" },
+    { label: "Email", placeholder: "Enter a Email Address" },
+    {
+      show: false, optional: true,  buttonText: "add Work Phone", label: "Work Phone",  placeholder: "Enter a work phone",
+    },
+    {
+      show: false, optional: true, buttonText: "add We Chat", label: "We Chat",  placeholder: "Enter a we chat",
+    },
+    {
+      show: false, optional: true, buttonText: "add WhatsApp", label: "WhatsApp",  placeholder: "Enter a whatsApp",
+    },
+    {
+      show: false, optional: true, buttonText: "add Line", label: "Line",  placeholder: "Enter a Line",
+    },
+    {
+      label: "Mailing Address",
+      placeholder: "Enter Address",
+    },
+  ];
+  const buyerItems = [
+    { label: "Name", placeholder: "Add a purchaser" },
+    { label: "SSN", placeholder: "Enter a SSN" },
+    { label: "Email", placeholder: "Enter a Email Address" },
+    {
+      show: false, optional: true,  buttonText: "add Work Phone", label: "Work Phone",  placeholder: "Enter a work phone",
+    },
+    {
+      show: false, optional: true, buttonText: "add We Chat", label: "We Chat",  placeholder: "Enter a we chat",
+    },
+    {
+      show: false, optional: true, buttonText: "add WhatsApp", label: "WhatsApp",  placeholder: "Enter a whatsApp",
+    },
+    {
+      show: false, optional: true, buttonText: "add Line", label: "Line",  placeholder: "Enter a Line",
+    },
+    {
+      label: "Mailing Address", placeholder: "Enter Address",
+    },
+  ];
+  const companyTitleItems = [
+    { label: "Title Company", placeholder: "Enter an title company" },
+    { label: "Title Number", placeholder: "Enter an title number" },
+    { label: "Mortage", placeholder: "Enter an mortage" },
+  ];
+  return (
+    <div className="grid grid-cols-12 gap-6">
+      <div className="col-span-6">
+        <CaseCardDetails items={sellerItems} title="Seller" />
+        <CaseCardDetails items={buyerItems} title="Puchaser" />
+      </div>
+      <div className="col-span-6">
+        <CaseAttorneyItems title="Attorneys" />
+        {/* <CaseCardDetails items={attorneyItems} /> */}
+        <CaseCardDetails items={companyTitleItems} title="Title & Mortgage" />
+      </div>
+    </div >
+  );
 };
 
 export default ParticipantCaseDetails;

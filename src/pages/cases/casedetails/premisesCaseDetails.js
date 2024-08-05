@@ -5,11 +5,11 @@ import { CaseCardDetails } from "../../../components";
 const PremisesCaseDetails = () => {
     const lowerSectionItems = [
         {
-          label: "Premise Status",
+          label: "Premises Type",
           isDropdown: true,
           dropDownOptions: [
-            { id: "soldYes", label: "Being sold", defaultChecked: true },
-            { id: "boughtYes", label: "Being bought", defaultChecked: true },
+            { id: "soldYes", label: "Selling", defaultChecked: true },
+            { id: "boughtYes", label: "Purchasing", defaultChecked: true },
           ],
         },
         {
@@ -32,6 +32,7 @@ const PremisesCaseDetails = () => {
             { id: "India", label: "India", defaultChecked: true },
           ],
         },
+        { label: "Zip Code", placeholder: "Enter a zip code" },
         { label: "Block", placeholder: "Enter a block" },
         { label: "Lot", placeholder: "Enter a lot" },
         { label: "Section", placeholder: "Enter a section" },
@@ -85,9 +86,9 @@ const PremisesCaseDetails = () => {
         { label: "Managing Company", placeholder:"Enter an Amount" },
      
       ];
-      const premisesType=[
+      const premisesComposition=[
         {
-          label: "Premises Type",
+          label: "Type",
           isDropdown: true,
           dropDownOptions: [
             { id: "newConstruction", label: "New Const.", defaultChecked: true },
@@ -156,12 +157,12 @@ const PremisesCaseDetails = () => {
     return (
         <div className="grid grid-cols-12 gap-6">
             <div className="col-span-6">
-                <CaseCardDetails items={lowerSectionItems} />
+                <CaseCardDetails items={lowerSectionItems} title="Premises Info" />
             </div>
             <div className="col-span-6">
-                <CaseCardDetails items={premisesType} />
-                <CaseCardDetails items={inspectionItems} />
-                <CaseCardDetails items={termitesInspectionItems} />
+                <CaseCardDetails items={premisesComposition} title="Premises Composition"/>
+                <CaseCardDetails items={inspectionItems} title="Engineer Inspection" />
+                <CaseCardDetails items={termitesInspectionItems} title="Termites Inspection"/>
             </div>
         </div >
     );

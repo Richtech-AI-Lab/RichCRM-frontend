@@ -13,14 +13,14 @@ const OthersCaseDetails = () => {
   const brokersItems = [
     { label: "Brokers Sale", placeholder: "Enter an Amount" },
     { label: "Brokers Listing", placeholder: "Enter an Amount" },
-    { label: "Referred by", placeholder: "Add a referral" },
-    { label: "Bank (L/O)", placeholder: "Add content" },
-    { label: "Personal Property", placeholder: "Add content" },
-    { label: "Excluded Property", placeholder: "Add content" },
+    // { label: "Referred by", placeholder: "Add a referral" },
+    // { label: "Bank (L/O)", placeholder: "Add content" },
+    // { label: "Personal Property", placeholder: "Add content" },
+    // { label: "Excluded Property", placeholder: "Add content" },
   ];
   const closingDateItems = [
     {
-      label: "Closing",
+      label: "Schedule",
       isDropdown: true,
       dropDownOptions: [
         { id: "accept1", defaultChecked: true, label: "on/about" },
@@ -31,15 +31,31 @@ const OthersCaseDetails = () => {
     },
     { label: "Closing date", placeholder: "Month Day, Year" },
   ];
+
+  const otherItemss=[
+    {
+      show: false, optional: true,  buttonText: "Add A Referred", label: "Referred",  placeholder: "Enter a referred",
+    },
+    {
+      show: false, optional: true, buttonText: "Add A Bank (L/O)", label: "Bank",  placeholder: "Enter a bank",
+    },
+    {
+      show: false, optional: true, buttonText: "Add Notes as Personal Property", label: "Personal Property Notes",  placeholder: "Enter notes",
+    },
+    {
+      show: false, optional: true, buttonText: "Add Notes as Excluded Property", label: "Excluded Property Notes",  placeholder: "Enter notes",
+    }
+  ]
   return (
     <div className="grid grid-cols-12 gap-6">
       <div className="col-span-6">
-        <CaseCardDetails items={financialItems} />
-        <CaseCardDetails items={brokersItems} />
+        <CaseCardDetails items={financialItems}  title="Prices" />
+        <CaseCardDetails items={brokersItems}  title="Brokers" />
 
       </div>
       <div className="col-span-6">
-        <CaseCardDetails items={closingDateItems} />
+        <CaseCardDetails items={closingDateItems}  title="Closing"/>
+        <CaseCardDetails items={otherItemss}  title="Others"/>
       </div>
     </div >
   );

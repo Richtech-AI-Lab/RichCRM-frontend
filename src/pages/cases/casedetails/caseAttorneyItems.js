@@ -5,8 +5,9 @@ import { GrLocation } from "react-icons/gr";
 import { IoLogoWechat } from "react-icons/io5";
 import { Button, Label, Modal, TextInput } from "flowbite-react";
 import { SlArrowRight } from "react-icons/sl";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
-const CaseAttorneyItems = () => {
+const CaseAttorneyItems = ({ title }) => {
     const [attorneyItems, setAttorneyItems] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newLabel, setNewLabel] = useState('');
@@ -25,6 +26,15 @@ const CaseAttorneyItems = () => {
     };
     return (
         <div className="bg-white py-4 rounded-2xl mb-5">
+            {title &&
+
+                <div className="flex justify-between items-center mb-5 px-4">
+                    <span className="text-base text-secondary-800 font-medium">{title}</span>
+                    <div className="flex items-center gap-2">
+                        <BsThreeDotsVertical className="text-lg" />
+                    </div>
+                </div>
+            }
             <ul className="card-details">
                 {attorneyItems.map(item => (
                     <li className={"flex justify-between"}>
