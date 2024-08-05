@@ -14,7 +14,7 @@ const CardGrid = ({ cards, includeClasses,onCardClick }) => {
           <a className="text-primary2 text-base font-medium">View All</a>
         </div>
       )}
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid grid-cols-5 gap-2">
         {isDashboardRoute ? (
           <>
             {cards.map((card, index) => (

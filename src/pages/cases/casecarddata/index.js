@@ -39,6 +39,14 @@ const CaseCardData = () => {
       weChat: "(+1) xxx xxx xxxx",
     address: "137 Maple Avenue Brooklyn, NY 11215",
     },
+    {
+      profileImage: IMAGES.profile,
+      name: "ABC Attorney",
+      email: "xxxxxx@xxx.xxx",
+      phone: "(+1) xxx xxx xxxx",
+      weChat: "(+1) xxx xxx xxxx",
+    address: "137 Maple Avenue Brooklyn, NY 11215",
+    },
   ];
   return (
     <div>
@@ -53,8 +61,8 @@ const CaseCardData = () => {
             address="1500 Skyline Avenue Apt 2503 Apt 2503"
           />
           <XButton
-            text="Edit Case Details"
-            icon={<FaRegEdit className="text-base mr-2 inline-block" />}
+            text="Case Details"
+            // icon={<FaRegEdit className="text-base mr-2 inline-block" />}
             className="bg-active-blue text-active-blue-text shadow-shadow-light rounded-full text-sm font-medium w-full py-3 px-3 mb-7 flex items-center justify-center"
             onClick={handleCaseDetails}
           />

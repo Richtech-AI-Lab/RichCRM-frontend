@@ -12,18 +12,18 @@ const ParticipantCaseDetails = () => {
         { label: "Email",icon: <MdOutlineEmail className="text-xl"/>, placeholder: "Enter a Email Address" },
         {
           label: "Cell Phone",
-          icon: <MdOutlinePhone className="text-xl"/>,
+          // icon: <MdOutlinePhone className="text-xl"/>,
           placeholder: "Enter a Phone Number",
         },
         {
           label: "Work Phone",
-          icon: <MdOutlinePhone className="text-xl"/>,
+          // icon: <MdOutlinePhone className="text-xl"/>,
           placeholder: "Enter a Phone Number",
         },
         { label: "WeChat", placeholder: "Enter a WeChat Number", icon: <IoLogoWechat className="text-xl"/> },
         {
           label: "Mailing Address",
-          icon: <GrLocation className="text-xl"/>,
+          // icon: <GrLocation className="text-xl"/>,
           placeholder: "Enter Address",
         },
       ];
@@ -33,18 +33,18 @@ const ParticipantCaseDetails = () => {
         { label: "Email",icon: <MdOutlineEmail className="text-xl"/>, placeholder: "Enter a Email Address" },
         {
           label: "Cell Phone",
-          icon: <MdOutlinePhone className="text-xl"/>,
+          // icon: <MdOutlinePhone className="text-xl"/>,
           placeholder: "Enter a Phone Number",
         },
         {
           label: "Work Phone",
-          icon: <MdOutlinePhone className="text-xl"/>,
+          // icon: <MdOutlinePhone className="text-xl"/>,
           placeholder: "Enter a Phone Number",
         },
         { label: "WeChat", icon: <IoLogoWechat className="text-xl"/>, placeholder: "Enter a WeChat Number" },
         {
           label: "Address",
-          icon: <GrLocation className="text-xl"/>,
+          // icon: <GrLocation className="text-xl"/>,
           placeholder: "Enter address",
         },
       ];

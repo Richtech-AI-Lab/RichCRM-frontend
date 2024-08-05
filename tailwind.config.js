@@ -66,6 +66,7 @@ module.exports = {
         100: '#E2E2E7',
       },
       'error': '#CF0505',
+      'light-purple': '#F9F9FE',
       ...colors,
     },
   },

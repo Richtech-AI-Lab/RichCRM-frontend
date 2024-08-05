@@ -31,9 +31,9 @@ const StagesChecklist = ({ label }) => {
       checkboxId: "accept",
     },
     {
-      action: "Upload",
-      actionInfo: "Inspection report",
-      options: "Uploaded",
+      action: "Contact",
+      actionInfo: "Confirm case details with client",
+      options: "Not Started",
       checkboxId: "accept",
     },
   ];
@@ -51,6 +51,31 @@ const StagesChecklist = ({ label }) => {
       options: "Waiting",
       checkboxId: "accept",
     },
+    {
+      action: "Action",
+      actionInfo: "Contract review",
+      options: "Unfinished",
+      checkboxId: "accept",
+    },
+    {
+      action: "Contact",
+      actionInfo: "Collect signed contract and deposit from client",
+      options: "Not Started",
+      checkboxId: "accept",
+    },
+    {
+      action: "Upload",
+      actionInfo: "Initial contract",
+      options: "Unuploaded",
+      checkboxId: "accept",
+    },
+    {
+      action: "Upload",
+      actionInfo: "Deposit",
+      options: "Unuploaded",
+      checkboxId: "accept",
+    },
+
   ];
 
   const contractSigningTasks = [
@@ -66,10 +91,28 @@ const StagesChecklist = ({ label }) => {
       options: "Finished",
       checkboxId: "accept",
     },
+    {
+      action: "Contact",
+      actionInfo: "Inform the seller about the sending, and request the fully signed contract",
+      options: "Completed",
+      checkboxId: "accept",
+    },
+    {
+      action: "Upload",
+      actionInfo: "Fully signed contract",
+      options: "Uploaded",
+      checkboxId: "accept",
+    },
   ];
 
   // Separate items for Mortgage and Title tasks
   const mortgageTasks = [
+    {
+      action: "Action",
+      actionInfo: "Set up mortgage due date",
+      options: "Finished",
+      checkboxId: "accept",
+    },
     {
       action: "Action",
       actionInfo: "Set up mortgage due date",
@@ -82,19 +125,49 @@ const StagesChecklist = ({ label }) => {
       options: "No Response",
       checkboxId: "accept",
     },
-  ];
-
-  const titleTasks = [
     {
       action: "Upload",
-      actionInfo: "Upload title commitment",
+      actionInfo: "Commitment Letter",
       options: "Unuploaded",
       checkboxId: "accept",
     },
     {
       action: "Contact",
-      actionInfo: "Contact title company",
+      actionInfo: "Send the commitment to title company and seller ",
       options: "Not Started",
+      checkboxId: "accept",
+    },
+    {
+      action: "Upload",
+      actionInfo: "Bank CTC",
+      options: "Unuploaded",
+      checkboxId: "accept",
+    },
+  ];
+
+  const titleTasks = [
+    {
+      action: "Action",
+      actionInfo: "Order title",
+      options: "Finished",
+      checkboxId: "accept",
+    },
+    {
+      action: "Upload",
+      actionInfo: "Title report",
+      options: "Unuploaded",
+      checkboxId: "accept",
+    },
+    {
+      action: "Contact",
+      actionInfo: "Confirm the title with client",
+      options: "Not Started",
+      checkboxId: "accept",
+    },
+    {
+      action: "Upload",
+      actionInfo: "All Cleared Title",
+      options: "Unuploaded",
       checkboxId: "accept",
     },
   ];
@@ -109,6 +182,30 @@ const StagesChecklist = ({ label }) => {
     {
       action: "Contact",
       actionInfo: "Inform closing information to everyone engaged",
+      options: "Not Started",
+      checkboxId: "accept",
+    },
+    {
+      action: "Contact",
+      actionInfo: "Calculate the checks needed and inform the client",
+      options: "Not Started",
+      checkboxId: "accept",
+    },
+    {
+      action: "Action",
+      actionInfo: "Closing event",
+      options: "Unfinished",
+      checkboxId: "accept",
+    },
+    {
+      action: "Upload",
+      actionInfo: "All closing files",
+      options: "Unuploaded",
+      checkboxId: "accept",
+    },
+    {
+      action: "Contact",
+      actionInfo: "Collect feedbacks from the client",
       options: "Not Started",
       checkboxId: "accept",
     },
@@ -175,7 +272,7 @@ const StagesChecklist = ({ label }) => {
       <div className="bg-white py-4 rounded-2xl mb-5">
         <div className="px-4">
           <div className="mb-6">
-            <span className="text-base text-secondary-800 font-medium">Stage Tracking</span>
+            <span className="text-base text-secondary-800 font-medium">Stage</span>
           </div>
           <div className="w-full">
             <div className="flex gap-2 progress-bars">
@@ -204,11 +301,11 @@ const StagesChecklist = ({ label }) => {
               </span>
             </div>
           ) : (
-            <span className="text-base text-secondary-800 font-medium">{getHeadLabel(currentStep)}</span>
+            <span className="text-base text-secondary-800 font-medium">{`${getHeadLabel(currentStep)} (2/3)`}</span>
           )}
           <div className="flex items-center gap-2">
-            <FiPlus className="text-lg" />
-            <BsThreeDotsVertical className="text-lg" />
+            <FiPlus className="text-lg opacity-40" />
+            <BsThreeDotsVertical className="text-lg opacity-40" />
           </div>
         </div>
         <ul className="mb-6 overflow-y-auto">
@@ -223,13 +320,13 @@ const StagesChecklist = ({ label }) => {
           ))}
         </ul>
         <div className="flex justify-between items-center pt-5 px-4">
-          <XButton
+        <XButton
             text="Back to previous stage"
-            className="btn-theme"
+            className="bg-card-300 text-secondary-300 rounded-full text-sm font-medium py-[10px] px-6"
             onClick={handlePreviousStage}
             disabled={currentStep === 0}
           />
-          <XButton text="Move to next stage" className="btn-theme" onClick={handleNextStage} />
+          <XButton text="Move to next stage" className="bg-active-blue text-active-blue-text shadow-shadow-light rounded-full text-sm font-medium py-[10px] px-6" onClick={handleNextStage} />
         </div>
       </div>
       <div className="flex justify-end justify-content:flex-end">

@@ -139,4 +139,10 @@
   .task-checklist input[type="checkbox"]:focus {
     @apply ring-transparent
   }
+  .contact-accordian-title svg {
+    @apply opacity-40
+  }
+  .contact-accordian-body li {
+    @apply px-0
+  }
 }
