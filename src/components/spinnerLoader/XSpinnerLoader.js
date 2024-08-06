@@ -1,5 +1,4 @@
 import React from "react";
-import "./XSpinnerLoader.css";
 import { Spinner } from "flowbite-react";
 
 const XSpinnerLoader = ({ size = "md", loading }) => {

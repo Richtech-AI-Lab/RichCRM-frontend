@@ -177,7 +177,7 @@ const Signup = () => {
                     options={roleOptions}
                     error={errors.role}
                     touched={touched.role}
-                    inputClassName={` bg-input-surface  w-full py-[14px] px-6 ${
+                    inputClassName={` select-input-arrow bg-input-surface  w-full py-[14px] px-6 ${
                       errors.role && touched.role
                         ? "border-red-500"
                         : "border-gray-300"

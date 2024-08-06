@@ -11,16 +11,18 @@ const CaseDetailsCard = ({
   createdOn,
   address,
 }) => (
-  <div className="bg-white py-4 rounded-2xl mb-5">
-    <div className="flex justify-between items-center mb-6 px-4">
-      <span className="text-[22px] leading-7 text-secondary-800 font-medium">{title}</span>
-      <BsThreeDotsVertical />
+  <div className="bg-white p-4 rounded-2xl mb-5">
+    <div className="flex justify-between items-center mb-6 ">
+    <div>
+        <span className="text-[22px] block mb-2 leading-7 text-secondary-800 font-medium">{title}</span>
+        <p className="text-base leading-6 text-secondary-800 font-medium">1500 Skyline Avenue</p>
+      </div>      <BsThreeDotsVertical className="opacity-40"/>
     </div>
     <ul className="card-details">
       <DetailItem label="Client Name" value={clientName} />
       <DetailItem label="Case Type" value={caseType} />
       <DetailItem label="Created on" value={createdOn} />
-      <DetailItem label="Address" value={address} />
+      <DetailItem label="Premises Address" value={address} />
       {/* <li>
         <span className="left-txt">Stage</span>
         <SelectInput
