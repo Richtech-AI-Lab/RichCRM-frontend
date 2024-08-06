@@ -1,37 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import { Radio } from "flowbite-react";
 import Label from "../label";
 import SelectInput from "../selectinput";
+import DateInput from "../datePicker";
 
 const CardListItem = ({
+  type,
   funcHandleHideClick,
   label,
   name,
   value,
   optional,
-  isCheckbox = false,
-  checkboxOptions = [],
-  isDropdown = false,
-  dropdownOptions = [],
-  nestedItems = [],
+  options = [],
   icon,
-  isInput = false,
   inputProps,
   floor
-}) => (
+}) => {
+  const [selectedDate, setSelectedDate] = useState(value);
+  
+return(
 
   <li className={floor ? "list-w-full" : "flex justify-between"}>
-    {isCheckbox && (
+    {type === "checkboxes" && (
       <div
         className="flex justify-between items-center w-full"
       >
         <span className="left-txt w-full">{label}</span>
 
         <div className="flex justify-end items-center w-full gap-7">
-          <div className="grid grid-cols-2 gap-3">
-            {checkboxOptions.map((option, index) => (
+          <div className="grid grid-cols-2 gap-x-12">
+            {options.map((option, index) => (
               <div
-                className="flex items-center gap-2 custom-radio w-[160px]"
+                className="flex items-center gap-2 custom-radio "
                 key={index}
               >
                 <Radio
@@ -52,7 +52,7 @@ const CardListItem = ({
         </div>
       </div>
     )}
-    {isDropdown && (
+    {type === "dropdown" && (
       <div
         className="flex justify-between items-center w-full"
       >
@@ -61,10 +61,10 @@ const CardListItem = ({
         <div className="flex justify-end items-center w-full gap-7">
           <div className="grid gap-3">
             <SelectInput
-              inputClassName="bg-white shadow-shadow-light py-[12px] px-6 rounded-full border-0 text-base leading-5 font-semibold text-label"
+              inputClassName="bg-input-surface py-[6px] px-4 rounded-full border-0 text-sm leading-5 font-semibold text-label"
               labelClassName="ext-label mr-3"
               name={label}
-              options={dropdownOptions.map((option) => ({
+              options={options.map((option) => ({
                 value: option.id,
                 label: option.label,
               }))}
@@ -73,13 +73,34 @@ const CardListItem = ({
         </div>
       </div>
     )}
-    {(!isDropdown && !isCheckbox)  && (
+    {type === "datepicker" && (
       <>
-        <span className="left-txt flex items-center" onClick={optional=== true && funcHandleHideClick}>
-          {icon && <span className="icon mr-2">{icon}</span>} {label}
+        <span className={`${optional === true ? "cursor-pointer" : ""} left-txt flex items-center`} onClick={optional === true ? funcHandleHideClick : null}>
+          {icon && <span className="icon mr-2"><img
+                  src={icon}
+                  alt="icon"
+                /></span>}{label}
+        </span>
+        <DateInput value={selectedDate} onChange={setSelectedDate} />
+        {/* <input
+          className="text-right border-none focus:ring-transparent"
+          value={value}
+          name={name}
+          field={{ name: name }}
+          {...inputProps}
+        /> */}
+      </>
+    )}
+    {type === "text" && (
+      <>
+        <span className={`${optional === true ? "cursor-pointer" : ""} left-txt flex items-center`} onClick={optional === true ? funcHandleHideClick : null}>
+          {icon && <span className="icon mr-2"><img
+                  src={icon}
+                  alt="icon"
+                /></span>}{label}
         </span>
         <input
-          className="text-right border-none focus:ring-transparent"
+          className="text-right p-0 border-none focus:ring-transparent"
           value={value}
           name={name}
           field={{ name: name }}
@@ -94,6 +115,36 @@ const CardListItem = ({
 
       </>
     )}
+    {
+      type==="inputdropdown"  && (
+        <>
+          <span className={`${optional === true ? "cursor-pointer" : ""} left-txt flex items-center`} onClick={optional === true ? funcHandleHideClick : null}>
+            {icon && <span className="icon mr-2"><img
+                  src={icon}
+                  alt="icon"
+                /></span>}{label}
+          </span>
+          <div className="flex">
+          <input
+            className="text-right p-0 border-none focus:ring-transparent"
+            value={value}
+            name={name}
+            field={{ name: name }}
+            {...inputProps}
+          />
+           <SelectInput
+              inputClassName="bg-input-surface ml-3 py-[6px] px-4 rounded-full border-0 text-sm leading-5 font-semibold text-label"
+              labelClassName="ext-label mr-3"
+              name={label}
+              options={options.map((option) => ({
+                value: option.id,
+                label: option.label,
+              }))}
+            />
+            </div>
+        </>
+      )
+    }
     {/* {nestedItems.length > 0 && (
       <ul className="mt-4">
         {nestedItems.map((nestedItem, index) => (
@@ -102,6 +153,6 @@ const CardListItem = ({
       </ul>
     )} */}
   </li>
-);
+)};
 
 export default CardListItem;

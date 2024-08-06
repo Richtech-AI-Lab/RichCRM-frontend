@@ -61,7 +61,10 @@
     @apply rounded-2xl px-2 py-1 text-sm text-secondary-100 font-semibold leading-[18px];
   }
   .card-details li {
-    @apply flex items-center justify-between border-b border-b-border pb-3 mb-3 px-4
+    @apply flex items-center justify-between border-b border-b-border pb-3 mb-3
+  }
+  .add-attorney {
+    @apply border-b border-b-border pb-3 mb-3
   }
   .card-details li:last-child {
     @apply border-b-0 pb-0 mb-0

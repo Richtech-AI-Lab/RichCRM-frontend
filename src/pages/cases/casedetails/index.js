@@ -273,17 +273,17 @@ const CaseDetails = () => {
           
         </div> */}
          
-      <div className="flex justify-end mt-6">
+      {/* <div className="flex justify-end mt-6">
         <XButton
           text="Cancel"
           className="bg-badge-gray font-medium text-base text-primary py-[10px] px-6 rounded-[100px] shadow-shadow-light"
         />
         <XButton
           type="submit"
-          text="Save"
+          text="Save Changes"
           className="bg-primary text-base text-white py-[10px] px-6 rounded-[100px] ml-4"
         />
-      </div>
+      </div> */}
     </div>
   );
 };

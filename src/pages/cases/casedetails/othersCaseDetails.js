@@ -22,7 +22,7 @@ const OthersCaseDetails = () => {
   const closingDateItems = [
     {
       label: "Schedule",
-      isDropdown: true,
+      type:"dropdown",
       dropDownOptions: [
         { id: "accept1", defaultChecked: true, label: "on/about" },
         { id: "accept2", defaultChecked: true, label: "Before" },
@@ -30,10 +30,10 @@ const OthersCaseDetails = () => {
         { id: "accept4", defaultChecked: true, label: "June 05,2024" },
       ],
     },
-    { label: "Closing date", placeholder: "Month Day, Year" },
+    { type:"datepicker", label: "Closing date", placeholder: "Month Day, Year" },
   ];
 
-  const otherItemss=[
+  const otherItems=[
     {
       show: false, optional: true, icon: <FaCircleMinus   className="text-xl"/>, buttonText: "Add A Referred", label: "Referred",  placeholder: "Enter a referred",
     },
@@ -56,7 +56,7 @@ const OthersCaseDetails = () => {
       </div>
       <div className="col-span-6">
         <CaseCardDetails items={closingDateItems}  title="Closing"/>
-        <CaseCardDetails items={otherItemss}  title="Others"/>
+        <CaseCardDetails items={otherItems}  title="Others"/>
       </div>
     </div >
   );
