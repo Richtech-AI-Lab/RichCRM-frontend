@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { CaseCardDetails } from "../../../components";
+import { CaseCardDetails, XButton } from "../../../components";
 import { FaCircleMinus } from "react-icons/fa6";
+import { Formik } from "formik";
+import { IMAGES } from "../../../constants/imagePath";
 
 
 const OthersCaseDetails = () => {
@@ -35,22 +37,39 @@ const OthersCaseDetails = () => {
 
   const otherItems=[
     {
-      show: false, optional: true, icon: <FaCircleMinus   className="text-xl"/>, buttonText: "Add A Referred", label: "Referred",  placeholder: "Enter a referred",
+      show: false, optional: true, icon: IMAGES.removeIcon, buttonText: "Add A Referred", label: "Referred",  placeholder: "Enter a referred",
     },
     {
-      show: false, optional: true, icon: <FaCircleMinus   className="text-xl"/>, buttonText: "Add A Bank (L/O)", label: "Bank",  placeholder: "Enter a bank",
+      show: false, optional: true, icon: IMAGES.removeIcon, buttonText: "Add A Bank (L/O)", label: "Bank",  placeholder: "Enter a bank",
     },
     {
-      show: false, optional: true, icon: <FaCircleMinus   className="text-xl"/>, buttonText: "Add Notes as Personal Property", label: "Personal Property Notes",  placeholder: "Enter notes",
+      show: false, optional: true, icon: IMAGES.removeIcon, buttonText: "Add Notes as Personal Property", label: "Personal Property Notes",  placeholder: "Enter notes",
     },
     {
-      show: false, optional: true, icon: <FaCircleMinus   className="text-xl"/>, buttonText: "Add Notes as Excluded Property", label: "Excluded Property Notes",  placeholder: "Enter notes",
+      show: false, optional: true, icon: IMAGES.removeIcon, buttonText: "Add Notes as Excluded Property", label: "Excluded Property Notes",  placeholder: "Enter notes",
     }
   ]
+  let handleSubmit = (x) => {
+    console.log(x)
+  }
+  const initialValues = {
+    
+  };
   return (
+    <Formik
+    initialValues={initialValues}
+    onSubmit={handleSubmit}
+  >
+    {({
+      handleChange,
+      handleSubmit,
+      isSubmitting,
+      values
+    }) => (
+      <form onSubmit={handleSubmit} className="pemises-form">
     <div className="grid grid-cols-12 gap-6">
       <div className="col-span-6">
-        <CaseCardDetails items={financialItems}  title="Prices" />
+        <CaseCardDetails items={financialItems}  title="Prices"  />
         <CaseCardDetails items={brokersItems}  title="Brokers" />
 
       </div>
@@ -59,6 +78,20 @@ const OthersCaseDetails = () => {
         <CaseCardDetails items={otherItems}  title="Others"/>
       </div>
     </div >
+    <div className="flex justify-end mt-6">
+            <XButton
+              text="Cancel"
+              className="bg-badge-gray font-medium text-base text-primary py-[10px] px-6 rounded-[100px] shadow-shadow-light"
+            />
+            <XButton
+              type="submit"
+              text="Save Changes"
+              className="bg-primary text-base text-white py-[10px] px-6 rounded-[100px] ml-4"
+            />
+          </div>
+        </form>
+      )}
+    </Formik>
   );
 };
 

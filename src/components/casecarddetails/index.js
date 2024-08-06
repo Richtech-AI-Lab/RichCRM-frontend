@@ -5,7 +5,7 @@ import { IMAGES } from "../../constants/imagePath";
 import { useFormikContext } from "formik";
 
 const CaseCardDetails = ({ title, items, handle }) => {
-  // const { setFieldValue } = useFormikContext();
+  const { setFieldValue } = useFormikContext();
   const [fields, setFields] = useState(items)
 
   const handleShowClick = (index) => {
@@ -17,7 +17,7 @@ const CaseCardDetails = ({ title, items, handle }) => {
   };
 
   const handleHideClick = (index, item) => {
-    // setFieldValue(item.name, "")
+    setFieldValue(item.name, "")
     setFields(prevFields => {
       const newFields = [...prevFields];
       newFields[index].show = false;
@@ -37,7 +37,7 @@ const CaseCardDetails = ({ title, items, handle }) => {
       <ul className="card-details">
         {fields?.map((item, index) => item.show === false ?
           (
-            <li>
+            <li key={index}>
               <span className="left-txt flex items-center" onClick={() => handleShowClick(index)}>
                 <span className="icon mr-2 cursor-pointer">          
                   <img

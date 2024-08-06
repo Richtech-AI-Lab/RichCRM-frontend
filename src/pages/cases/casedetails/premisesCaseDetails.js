@@ -8,29 +8,29 @@ const PremisesCaseDetails = () => {
     {
       label: "Premises Type",
       type: "dropdown",
-      name: "premisesType", 
+      name: "premisesType",
       dropDownOptions: [
         { id: "soldYes", label: "Selling", defaultChecked: true },
         { id: "boughtYes", label: "Purchasing", defaultChecked: true },
       ],
     },
     {
-      name: "premisesAddress", 
+      name: "premisesAddress",
       label: "Address",
       placeholder: "Enter address",
     },
     {
-      name: "premisesAddress2", 
+      name: "premisesAddress2",
       label: "Address Line 2",
       placeholder: "Enter address",
     },
     {
-      name: "premisesCity", 
+      name: "premisesCity",
       label: "City",
       placeholder: "Enter city",
     },
     {
-      name: "premisesState", 
+      name: "premisesState",
       label: "State",
       type: "dropdown",
       dropDownOptions: [
@@ -38,14 +38,14 @@ const PremisesCaseDetails = () => {
         { id: "India", label: "India", defaultChecked: true },
       ],
     },
-    { label: "Zip Code", name: "premisesZipcode",  placeholder: "Enter a zip code" },
-    { label: "Block",  name: "premisesBlock",  placeholder: "Enter a block" },
-    { label: "Lot", name: "premisesLot",  placeholder: "Enter a lot" },
-    { label: "Section", name: "premisesSection",  placeholder: "Enter a section" },
+    { label: "Zip Code", name: "premisesZipcode", placeholder: "Enter a zip code" },
+    { label: "Block", name: "premisesBlock", placeholder: "Enter a block" },
+    { label: "Lot", name: "premisesLot", placeholder: "Enter a lot" },
+    { label: "Section", name: "premisesSection", placeholder: "Enter a section" },
     {
       label: "Type",
       type: "dropdown",
-      name: "premisesType2", 
+      name: "premisesType2",
       dropDownOptions: [
         { id: "coop", label: "Co-op", defaultChecked: true },
         { id: "townhouse", label: "Townhouse", defaultChecked: true },
@@ -56,7 +56,7 @@ const PremisesCaseDetails = () => {
     {
       label: "Vacant at closing",
       type: "checkboxes",
-      name: "premisesVacant", 
+      name: "premisesVacant",
       checkboxOptions: [
         { id: "vacantYes", label: "Yes", defaultChecked: true },
         { id: "vacantNo", label: "No", defaultChecked: true },
@@ -65,7 +65,7 @@ const PremisesCaseDetails = () => {
     {
       label: "Subject to Tenancy",
       type: "checkboxes",
-      name: "premisesSubject", 
+      name: "premisesSubject",
       checkboxOptions: [
         { id: "tenancyYes", label: "Yes", defaultChecked: true },
         { id: "tenancyNo", label: "No", defaultChecked: true },
@@ -74,7 +74,7 @@ const PremisesCaseDetails = () => {
     {
       label: "H.O.A",
       type: "checkboxes",
-      name: "premisesHOA", 
+      name: "premisesHOA",
       checkboxOptions: [
         { id: "hoaYes", label: "Yes", defaultChecked: true },
         { id: "hoaNo", label: "No", defaultChecked: true },
@@ -83,7 +83,7 @@ const PremisesCaseDetails = () => {
     {
       label: "Parking Space",
       type: "dropdown",
-      name: "premisesParking", 
+      name: "premisesParking",
       dropDownOptions: [
         { id: "1", label: "1", defaultChecked: true },
         { id: "2", label: "2", defaultChecked: true },
@@ -91,7 +91,7 @@ const PremisesCaseDetails = () => {
     },
     // { label: "Parking Space Number", placeholder:"Enter parking space no" },
     {
-      label: "Maintenance fee", name: "premisesMaintenace",  type: "inputdropdown", placeholder: "Enter an Amount", dropDownOptions: [
+      label: "Maintenance fee", name: "premisesMaintenace", type: "inputdropdown", placeholder: "Enter an Amount", dropDownOptions: [
         { id: "1", label: "yearly", defaultChecked: true },
         { id: "2", label: "monthly", defaultChecked: true },
       ],
@@ -145,8 +145,8 @@ const PremisesCaseDetails = () => {
         { id: "accept5", defaultChecked: true, label: "No" },
       ],
     },
-    { type: "datepicker", label: "Scheduled Date", placeholder: "Month Day, Year" },
-    { type: "datepicker", label: "Received Date", placeholder: "Month Day, Year" },
+    { type: "datepicker", name: "scheduleDate", label: "Scheduled Date", placeholder: "Month Day, Year" },
+    { type: "datepicker", name: "receivedDate", label: "Received Date", placeholder: "Month Day, Year" },
   ];
   const termitesInspectionItems = [
     {
@@ -161,9 +161,11 @@ const PremisesCaseDetails = () => {
   let handleSubmit = (x) => {
     console.log(x)
   }
-    const initialValues = {
+  const initialValues = {
+    scheduleDate: "",
+    receivedDate: "",
     premisesType: "",
-    premisesAddress:"",
+    premisesAddress: "",
     premisesAddress2: "",
     premisesCity: "",
     premisesState: "",
