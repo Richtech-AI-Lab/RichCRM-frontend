@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import CardListItem from "../cardlistitem";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { SlArrowRight } from "react-icons/sl";
-import { IoIosAddCircle } from "react-icons/io";
+import { IMAGES } from "../../constants/imagePath";
+import { useFormikContext } from "formik";
 
 const CaseCardDetails = ({ title, items, handle }) => {
+  const { setFieldValue } = useFormikContext();
   const [fields, setFields] = useState(items)
 
   const handleShowClick = (index) => {
@@ -15,7 +16,8 @@ const CaseCardDetails = ({ title, items, handle }) => {
     });
   };
 
-  const handleHideClick = (index) => {
+  const handleHideClick = (index, item) => {
+    setFieldValue(item.name, "")
     setFields(prevFields => {
       const newFields = [...prevFields];
       newFields[index].show = false;
@@ -23,51 +25,57 @@ const CaseCardDetails = ({ title, items, handle }) => {
     });
   };
   return (
-    <div className="bg-white py-4 rounded-2xl mb-5">
+    <div className="bg-white p-4 rounded-2xl mb-5">
       {title &&
-        <div className="flex justify-between items-center mb-5 px-4">
+        <div className="flex justify-between items-center mb-5">
           <span className="text-base text-secondary-800 font-medium">{title}</span>
           <div className="flex items-center gap-2">
-            <BsThreeDotsVertical className="text-lg" />
+            <BsThreeDotsVertical className="text-lg opacity-40" />
           </div>
         </div>
       }
       <ul className="card-details">
-        {fields?.map((item, index) => item.show === false ? 
-        (
-            <>
-              <span className="left-txt flex items-center" onClick={()=>handleShowClick(index)}>
-                <span className="icon mr-2 cursor-pointer">{<IoIosAddCircle  className="text-xl ml-3" />}
+        {fields?.map((item, index) => item.show === false ?
+          (
+            <li key={index}>
+              <span className="left-txt flex items-center" onClick={() => handleShowClick(index)}>
+                <span className="icon mr-2 cursor-pointer">          
+                  <img
+                  src={IMAGES.addIcon}
+                  alt="icon"
+                />
                 </span>
                 {item.buttonText}
               </span>
-            </>
-          ):
+            </li>
+          ) :
           (
             <>
               <CardListItem
-                optional={item.optional}
-                funcHandleHideClick={() => handleHideClick(index)}
                 key={index}
                 label={item.label}
-                value={item.value}
                 name={item.name}
-                icon={item.icon}
-                isCheckbox={item.isCheckbox}
-                isDropdown={item.isDropdown}
-                checkboxOptions={item.checkboxOptions}
-                dropdownOptions={item.dropDownOptions}
-                nestedItems={item.nestedItems}
-                floor={item.floor}
+                value={item.value}
+                type={item.type ? item.type : "text"}
+                options={
+                  item.type === "checkboxes"
+                    ? item.checkboxOptions
+                    : item.type === "dropdown" || item.type === "inputdropdown"
+                      ? item.dropDownOptions
+                      : []
+                }
                 inputProps={{
                   type: "text",
                   onChange: handle,
                   placeholder: item.placeholder,
                 }}
+                icon={item.icon}
+                optional={item.optional}
+                funcHandleHideClick={() => handleHideClick(index,item)}
               />
             </>
           )
-          )}
+        )}
       </ul>
     </div>
   )

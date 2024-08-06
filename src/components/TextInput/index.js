@@ -35,7 +35,7 @@ const TextInput = ({ field, form, type, label, ...props }) => {
           </span>
         )}
       </div>
-      {form.errors[field.name] && form.touched[field.name] && (
+      {form?.errors[field.name] && form?.touched[field.name] && (
         <span className="text-sm text-red-500">{form.errors[field.name]}</span>
       )}
     </div>
