@@ -5,11 +5,11 @@ import { CaseCardDetails } from "../../../components";
 const PremisesCaseDetails = () => {
     const lowerSectionItems = [
         {
-          label: "Premise Status",
+          label: "Premises Type",
           isDropdown: true,
           dropDownOptions: [
-            { id: "soldYes", label: "Being sold", defaultChecked: true },
-            { id: "boughtYes", label: "Being bought", defaultChecked: true },
+            { id: "soldYes", label: "Selling", defaultChecked: true },
+            { id: "boughtYes", label: "Purchasing", defaultChecked: true },
           ],
         },
         {
@@ -32,6 +32,7 @@ const PremisesCaseDetails = () => {
             { id: "India", label: "India", defaultChecked: true },
           ],
         },
+        { label: "Zip Code", placeholder: "Enter a zip code" },
         { label: "Block", placeholder: "Enter a block" },
         { label: "Lot", placeholder: "Enter a lot" },
         { label: "Section", placeholder: "Enter a section" },
@@ -85,9 +86,9 @@ const PremisesCaseDetails = () => {
         { label: "Managing Company", placeholder:"Enter an Amount" },
      
       ];
-      const premisesType=[
+      const premisesComposition=[
         {
-          label: "Premises Type",
+          label: "Type",
           isDropdown: true,
           dropDownOptions: [
             { id: "newConstruction", label: "New Const.", defaultChecked: true },
@@ -95,41 +96,29 @@ const PremisesCaseDetails = () => {
             { id: "twoFamily", label: "2 Family", defaultChecked: true },
           ],
         },
+        { label: "1F Tenant", placeholder:"Enter name" },
+        { label: "1F Rent",  placeholder:"Enter rent" },
+        { label: "1F Sec.", placeholder:"Enter sec" },
+        {
+          label: "1F Lease",
+          isCheckbox: true,
+          checkboxOptions: [
+            { id: "leaseYes1", label: "Yes", defaultChecked: true },
+            { id: "leaseNo2", label: "No", defaultChecked: true },
+          ],
+        },
+        { label: "2F Tenant", placeholder:"Enter name" },
+        { label: "2F Rent", placeholder:"Enter rent" },
+        { label: "2F Sec.", placeholder:"Enter sec"},
+        {
+          label: "2F Lease",
+          isCheckbox: true,
+          checkboxOptions: [
+            { id: "leaseYes3", label: "Yes", defaultChecked: true },
+            { id: "leaseNo4", label: "No", defaultChecked: true },
+          ],
+        },
 
-        {
-          label: "1F",
-          floor:true,
-          nestedItems: [
-            { label: "1F Tenant", placeholder:"Enter name" },
-            { label: "1F Rent",  placeholder:"Enter rent" },
-            { label: "1F Sec.", placeholder:"Enter sec" },
-            {
-              label: "1F Lease",
-              isCheckbox: true,
-              checkboxOptions: [
-                { id: "leaseYes1", label: "Yes", defaultChecked: true },
-                { id: "leaseNo2", label: "No", defaultChecked: true },
-              ],
-            },
-          ],
-        },
-        {
-          label: "2F",
-          floor:true,
-          nestedItems: [
-            { label: "2F Tenant", placeholder:"Enter name" },
-            { label: "2F Rent", placeholder:"Enter rent" },
-            { label: "2F Sec.", placeholder:"Enter sec"},
-            {
-              label: "2F Lease",
-              isCheckbox: true,
-              checkboxOptions: [
-                { id: "leaseYes3", label: "Yes", defaultChecked: true },
-                { id: "leaseNo4", label: "No", defaultChecked: true },
-              ],
-            },
-          ],
-        },
       ];
       const inspectionItems = [
         {
@@ -156,12 +145,12 @@ const PremisesCaseDetails = () => {
     return (
         <div className="grid grid-cols-12 gap-6">
             <div className="col-span-6">
-                <CaseCardDetails items={lowerSectionItems} />
+                <CaseCardDetails items={lowerSectionItems} title="Premises Info" />
             </div>
             <div className="col-span-6">
-                <CaseCardDetails items={premisesType} />
-                <CaseCardDetails items={inspectionItems} />
-                <CaseCardDetails items={termitesInspectionItems} />
+                <CaseCardDetails items={premisesComposition} title="Premises Composition"/>
+                <CaseCardDetails items={inspectionItems} title="Engineer Inspection" />
+                <CaseCardDetails items={termitesInspectionItems} title="Termites Inspection"/>
             </div>
         </div >
     );

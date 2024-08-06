@@ -4,8 +4,11 @@ import Label from "../label";
 import SelectInput from "../selectinput";
 
 const CardListItem = ({
+  funcHandleHideClick,
   label,
+  name,
   value,
+  optional,
   isCheckbox = false,
   checkboxOptions = [],
   isDropdown = false,
@@ -72,30 +75,32 @@ const CardListItem = ({
     )}
     {(!isDropdown && !isCheckbox)  && (
       <>
-        <span className="left-txt flex items-center">
+        <span className="left-txt flex items-center" onClick={optional=== true && funcHandleHideClick}>
           {icon && <span className="icon mr-2">{icon}</span>} {label}
         </span>
+        <input
+          className="text-right border-none focus:ring-transparent"
+          value={value}
+          name={name}
+          field={{ name: name }}
+          {...inputProps}
+        />
         {/* {isInput ? ( */}
-        {nestedItems.length === 0 &&
-          <input
-            className="text-right border-none focus:ring-transparent"
-            value={value}
-            {...inputProps}
-          />
-        }
+        {/* {nestedItems.length === 0 &&
+        } */}
         {/* ) : (
           <span className="text-right">{value}</span>
         )} */}
 
       </>
     )}
-    {nestedItems.length > 0 && (
+    {/* {nestedItems.length > 0 && (
       <ul className="mt-4">
         {nestedItems.map((nestedItem, index) => (
           <CardListItem key={index} {...nestedItem} />
         ))}
       </ul>
-    )}
+    )} */}
   </li>
 );
 

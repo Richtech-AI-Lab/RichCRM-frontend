@@ -254,7 +254,7 @@ const CaseDetails = () => {
   return (
     <div>
       <PageHeader items={headerItems} />
-      <CasesActionbar active={activeTab} setActive={setActiveTab}/>
+      <CasesActionbar active={activeTab} setActive={setActiveTab}/> 
       {renderActiveTab(activeTab)}
         {/* <div className="col-span-6">
           <CaseCardDetails items={sellerItems} />
