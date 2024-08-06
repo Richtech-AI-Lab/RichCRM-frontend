@@ -8,10 +8,11 @@ import { IoFilterSharp } from "react-icons/io5";
 import { useLocation } from "react-router-dom";
 import { ROUTES } from "../../constants/api";
 
-const Actionbar = () => {
+const Actionbar = ({ onFilterChange }) => {
   const location = useLocation();
   const [sortBy, setSortBy] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeFilter, setActiveFilter] = useState("Open");
 
   const sortOptions = [
     { value: SORT_OPTIONS.CASE_START, label: SORT_OPTIONS.CASE_START },
@@ -28,6 +29,13 @@ const Actionbar = () => {
     setIsModalOpen(!isModalOpen);
   };
 
+  const handleFilterChange = (filter) => {
+    setActiveFilter(filter);
+    if (onFilterChange) {
+      onFilterChange(filter);
+    }
+  };
+
   const shouldShowOpenClosed = () => {
     const pathsToShow = [ROUTES.CASES];
     return pathsToShow.includes(location.pathname);
@@ -37,10 +45,16 @@ const Actionbar = () => {
       <div>
       {shouldShowOpenClosed() && (
         <div className="flex">
-          <div className="bg-badge-gray px-4 py-2 rounded-full mr-4">
+          <div
+            onClick={() => handleFilterChange("Open")}
+            className={`px-4 py-2 rounded-full mr-4 cursor-pointer ${activeFilter === "Open" ? "bg-badge-gray" : ""}`}
+          >
             <span className="text-base font-medium text-secondary-800">Open</span>
           </div>
-          <div className="px-4 py-2 rounded-full">
+          <div
+            onClick={() => handleFilterChange("Closed")}
+            className={`px-4 py-2 rounded-full cursor-pointer ${activeFilter === "Closed" ? "bg-badge-gray" : ""}`}
+          >
             <span className="text-base font-medium text-secondary-800">Closed</span>
           </div>
         </div>
@@ -54,7 +68,7 @@ const Actionbar = () => {
         </div>
         <SelectInput
           inputClassName="bg-white shadow-shadow-light py-[12px] px-6 rounded-full border-0 text-base leading-5 font-semibold text-label"
-          labelClassName="ext-label mr-3"
+          labelClassName="text-label mr-3"
           // label="Sort by"
           name="sortBy"
           defaultLabel="Sort by: Status"

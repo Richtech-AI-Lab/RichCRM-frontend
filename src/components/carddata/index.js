@@ -5,9 +5,9 @@ import { IoIosArrowForward } from "react-icons/io";
 const CardData = ({ title, count, items, cardClass, onClick ,includeClasses}) => {
   return (
     <div className={`card ${cardClass} h-max p-0`} >
-      <div className="flex justify-between items-center mb-[10px] p-4 bg-white rounded-tl-3xl rounded-tr-3xl shadow-shadow-light">
+      <div className="flex justify-between items-center mb-[10px] p-4 bg-white rounded-tl-3xl rounded-tr-3xl shadow-shadow-light" style={{ cursor: 'pointer'}} onClick={onClick}>
         <div className="flex">
-          <p className="text-secondary-800 text-base leading-[30px] font-semibold mr-2" style={{ cursor: 'pointer' }} onClick={onClick}>
+          <p className="text-secondary-800 text-base leading-[30px] font-semibold mr-2"  >
             {title}
           </p>
           <span className="text-secondary-800 font-semibold text-sm bg-badge-gray rounded-full w-8 h-8 p-1 inline-block text-center leading-[22px]">

@@ -37,6 +37,7 @@ const CasesCategoryCard = ({ cases,onCardClick }) => {
               caseDetails={item.caseDetails}
               caseTitle={item.caseTitle}
               caseCount={item.caseCount}
+              onClick={onCardClick}
             />
           ))}
         </div>
@@ -49,6 +50,7 @@ const CasesCategoryCard = ({ cases,onCardClick }) => {
               caseDetails={item.caseDetails}
               caseTitle={item.caseTitle}
               caseCount={item.caseCount}
+              onClick={onCardClick}
             />
           ))}
         </div>
@@ -61,6 +63,7 @@ const CasesCategoryCard = ({ cases,onCardClick }) => {
               caseDetails={item.caseDetails}
               caseTitle={item.caseTitle}
               caseCount={item.caseCount}
+              onClick={onCardClick}
             />
           ))}
         </div>

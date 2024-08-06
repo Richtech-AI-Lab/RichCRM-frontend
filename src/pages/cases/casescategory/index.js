@@ -8,8 +8,8 @@ import { ROUTES } from "../../../constants/api";
 const CasesCategory = () => {
   const navigate = useNavigate();
   const headerItems = [
-    { text: "Cases", className: "mr-8" },
-    { text: "Contract Preparing", separator: <SlArrowRight className="inline mr-10" />},
+    { text: "Cases", className: "mr-4" },
+    { text: "Contract Preparing", separator: <SlArrowRight className="inline mr-4" />},
   ];
   const cases = [
     { badgeColor: "red", badgeText: "No Response",  caseDetails: "535 W 52nd St #9G coop",caseTitle: "Gee, First Name",caseCount: "1/3",},
@@ -23,8 +23,8 @@ const CasesCategory = () => {
     { badgeColor: "yellow", badgeText: "Unfinished", caseDetails: "535 W 52nd St #9G coop" ,caseTitle: "Gee, First Name",caseCount: "1/3",},
     { badgeColor: "yellow", badgeText: "Unfinished", caseDetails: "535 W 52nd St #9G coop" ,caseTitle: "Gee, First Name",caseCount: "1/3",},
     { badgeColor: "yellow", badgeText: "Unfinished", caseDetails: "535 W 52nd St #9G coop",caseTitle: "Gee, First Name" ,caseCount: "1/3",},
-    { badgeColor: "gray", badgeText: "Done", caseDetails: "535 W 52nd St #9G coop",caseTitle: "Gee, First Name" ,caseCount: "1/3",},
-    { badgeColor: "gray", badgeText: "Done", caseDetails: "535 W 52nd St #9G coop" ,caseTitle: "Gee, First Name",caseCount: "1/3",},
+    { badgeColor: "green", badgeText: "Done", caseDetails: "535 W 52nd St #9G coop",caseTitle: "Gee, First Name" ,caseCount: "1/3",},
+    { badgeColor: "green", badgeText: "Done", caseDetails: "535 W 52nd St #9G coop" ,caseTitle: "Gee, First Name",caseCount: "1/3",},
     { badgeColor: "gray", badgeText: "Waiting", caseDetails: "535 W 52nd St #9G coop" ,caseTitle: "Gee, First Name",caseCount: "1/3",},
     { badgeColor: "gray", badgeText: "Waiting", caseDetails: "535 W 52nd St #9G coop" ,caseTitle: "Gee, First Name",caseCount: "1/3",},
     { badgeColor: "gray", badgeText: "Waiting", caseDetails: "535 W 52nd St #9G coop" ,caseTitle: "Gee, First Name",caseCount: "1/3",},

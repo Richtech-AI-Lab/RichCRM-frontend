@@ -20,7 +20,7 @@ const CaseCardData = () => {
 
   const headerItems = [
     { text: "Cases", className: "mr-8" },
-    { text: "Fu - Skyline #5712", separator: <SlArrowRight className="inline mr-10" />},
+    { text: "Fu, Jack - 1500 Skyline Avenue ", separator: <SlArrowRight className="inline mr-10" />},
   ];
   const contactData = [
     {
@@ -56,9 +56,9 @@ const CaseCardData = () => {
           <CaseDetailsCard
             title="Fu - Skyline #5712"
             clientName="Jack Fu"
-            caseType="Purchasing"
+            caseType="Condo Purchasing"
             createdOn="June 10, 2024"
-            address="1500 Skyline Avenue Apt 2503 Apt 2503"
+            address="1500 Skyline Avenue Apt 2503 New York, NY 10019"
           />
           <XButton
             text="Case Details"

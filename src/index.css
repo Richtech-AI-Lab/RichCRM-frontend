@@ -12,6 +12,9 @@
     font-family: "Noto Sans", sans-serif;
     background: #F3F3F8;
   }
+  .select-input-arrow {
+    background-position: right 1.48rem center !important;
+  }
 }
 
 @layer components {
@@ -61,7 +64,7 @@
     @apply rounded-2xl px-2 py-1 text-sm text-secondary-100 font-semibold leading-[18px];
   }
   .card-details li {
-    @apply flex items-center justify-between border-b border-b-border pb-3 mb-3 px-4
+    @apply flex items-center justify-between border-b border-b-border pb-3 mb-3
   }
   .card-details li:last-child {
     @apply border-b-0 pb-0 mb-0
@@ -144,5 +147,14 @@
   }
   .contact-accordian-body li {
     @apply px-0
+  }
+  .spinner-overlay {
+    @apply fixed top-0 left-0 w-full h-full bg-black bg-opacity-40 backdrop-blur-sm flex justify-center items-center z-[9999]
+  }
+  .spinner-container {
+    @apply relative
+  }
+  .spinner-container svg {
+    @apply w-[50px] h-[50px] fill-primary
   }
 }
