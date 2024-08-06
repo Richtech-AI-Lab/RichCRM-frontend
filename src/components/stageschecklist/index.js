@@ -286,15 +286,14 @@ const StagesChecklist = ({ label }) => {
           {/* <span className="text-base text-secondary-800 font-medium">{getHeadLabel(currentStep)}</span> */}
 
           {currentStep === 3 ? (
-            <div className="flex justify-start space-x-4">
+            <div className="flex justify-start gap-x-8">
               <span
-                className={`py-0 px-3 cursor-pointer ${activeTab === 'mortgage' ? 'text-base text-secondary-800 font-medium border-b-2 border-black-600' : 'text-gray-400'}`}
-                onClick={() => setActiveTab('mortgage')}
+                className={`pb-4 cursor-pointer ${activeTab === 'mortgage' ? 'text-base text-secondary-800 font-medium border-b-[3px] border-primary' : 'text-gray-400'}`}                onClick={() => setActiveTab('mortgage')}
               >
                 Mortgage Task
               </span>
               <span
-                className={`py-0 px-3 cursor-pointer ${activeTab === 'title' ? 'text-base text-secondary-800 font-medium border-b-2 border-black-600' : 'text-gray-400'}`}
+                className={`pb-4 cursor-pointer ${activeTab === 'title' ? 'text-base text-secondary-800 font-medium border-b-[3px] border-primary' : 'text-gray-400'}`}
                 onClick={() => setActiveTab('title')}
               >
                 Title Task
