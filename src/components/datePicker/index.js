@@ -12,6 +12,7 @@ const DateInput = ({ name, value, onSelectedDateChanged }) => {
   };
 
   return (
+    <div className="custom-datepicker">
       <Datepicker
         name={name}
         selected={startDate}
@@ -27,6 +28,7 @@ const DateInput = ({ name, value, onSelectedDateChanged }) => {
           />
         }
       />
+      </div>
   );
 };
 export default DateInput;

@@ -2,60 +2,18 @@ import React, { useState } from "react";
 import { CaseCardDetails, XButton } from "../../../components";
 import CaseAttorneyItems from "./caseAttorneyItems";
 import { Formik } from "formik";
-import { IMAGES } from "../../../constants/imagePath";
+import { sellerItems, buyerItems, titleMortgageItems } from "../../../utils/formItem";
+import FormButton from "../../../components/formButton";
+import * as Yup from "yup";
 
 
 const ParticipantCaseDetails = () => {
-  const sellerItems = [
-    { label: "Name", name: "sellerName", placeholder: "Enter seller name" },
-    { label: "SSN", name: "sellerSSN", placeholder: "Enter a SSN" },
-    { label: "Email", name: "sellerEmail", placeholder: "Enter a Email Address" },
-    { label: "Cell Phone", name: "sellerCellPhone", placeholder: "Enter a Cell Phone" },
-    {
-      show: false, optional: true, buttonText: "add Work Phone", icon:IMAGES.removeIcon, name: "sellerWorkPhone", label: "Work Phone", placeholder: "Enter a work phone",
-    },
-    {
-      show: false, optional: true, buttonText: "add We Chat", icon:IMAGES.removeIcon, name: "sellerWeChat", label: "We Chat", placeholder: "Enter a we chat",
-    },
-    {
-      show: false, optional: true, buttonText: "add WhatsApp", icon:IMAGES.removeIcon, name: "sellerWhatsApp", label: "WhatsApp", placeholder: "Enter a whatsApp",
-    },
-    {
-      show: false, optional: true, buttonText: "add Line", icon:IMAGES.removeIcon, name: "sellerLine", label: "Line", placeholder: "Enter a Line",
-    },
-    {
-      label: "Mailing Address", name: "sellerMailingAddress", placeholder: "Enter Address",
-    },
-  ];
-  const buyerItems = [
-    { label: "Name", name: "purchaserName", placeholder: "Enter purchaser name" },
-    { label: "SSN", name: "purchaserSSN", placeholder: "Enter a SSN" },
-    { label: "Email", name: "purchaserEmail", placeholder: "Enter a Email Address" },
-    { label: "Cell Phone", name: "purchaserCellPhone", placeholder: "Enter a Cell Phone" },
-    {
-      show: false, optional: true, buttonText: "add Work Phone", icon:IMAGES.removeIcon, name: "purchaserWorkPhone", label: "Work Phone", placeholder: "Enter a work phone",
-    },
-    {
-      show: false, optional: true, buttonText: "add We Chat", icon:IMAGES.removeIcon, name: "purchaserWeChat", label: "We Chat", placeholder: "Enter a we chat",
-    },
-    {
-      show: false, optional: true, buttonText: "add WhatsApp", icon:IMAGES.removeIcon, name: "purchaserWhatsApp", label: "WhatsApp", placeholder: "Enter a whatsApp",
-    },
-    {
-      show: false, optional: true, buttonText: "add Line", icon:IMAGES.removeIcon, name: "purchaserLine", label: "Line", placeholder: "Enter a Line",
-    },
-    {
-      label: "Mailing Address", name: "purchaserMailingAddress", placeholder: "Enter Address",
-    },
-  ];
-  const TitleMortgageItems = [
-    { label: "Title Company", name: "titleCompany", placeholder: "Enter an title company" },
-    { label: "Title Number", name: "titleNumber", placeholder: "Enter an title number" },
-    { label: "Mortage", name: "titleMortgage", placeholder: "Enter an mortage" },
-  ];
-  let handleSubmit = (x) => {
+  const handleSubmit = (x) => {
     console.log(x)
   }
+  const handleAttorneysChange = (attorneys, handleChange) => {
+    handleChange({ target: { name: 'attorneys', value: attorneys } });
+  };
   const initialValues = {
     sellerName: "",
     sellerSSN: "",
@@ -76,50 +34,69 @@ const ParticipantCaseDetails = () => {
     purchaserLine: "",
     purchaserMailingAddress: "",
     attorneys: [],
-    titleCompany:"",
-    titleNumber:"",
-    titleMortgage:"",
+    titleCompany: "",
+    titleNumber: "",
+    titleMortgage: "",
   };
+  const validationSchema = Yup.object({
+    // sellerName: Yup.string().required("name is required"),
+    // sellerSSN: Yup.string().required("ssn is required"),
+    // sellerEmail: Yup.string().required("email is required"),
+    // sellerCellPhone: Yup.string().required("cellphone is required"),
+    // sellerWorkPhone: Yup.string()
+    //     .nullable()
+    //     .notRequired()
+    //     .matches(/^[0-9]{10}$/, "Work phone must be a valid 10-digit number"),
+    // sellerWeChat: Yup.string().required("wechat is required"),
+    // sellerWhatsApp: Yup.string().required("whatsapp is required"),
+    // sellerLine: Yup.string().required("line is required"),
+    // sellerMailingAddress: Yup.string().required("mailing address is required"),
+    // purchaserName: Yup.string().required("name is required"),
+    // purchaserSSN: Yup.string().required("ssn is required"),
+    // purchaserEmail: Yup.string().required("email is required"),
+    // purchaserCellPhone: Yup.string().required("cellphone is required"),
+    // purchaserWorkPhone: Yup.string().required("workphone is required"),
+    // purchaserWeChat: Yup.string().required("wechat is required"),
+    // purchaserWhatsApp: Yup.string().required("whatsapp is required"),
+    // purchaserLine: Yup.string().required("line is required"),
+    // purchaserMailingAddress: Yup.string().required("mailing is required"),
+    // attorneys: Yup.array().of(
+    //   Yup.object().shape({
+    //     label: Yup.string().required("label label is required"),
+    //     value: Yup.string().required("value value is required"),
+    //   })
+    // ).required("At least one attorney is required"),
+    // titleCompany: Yup.string().required("title company is required"),
+    // titleNumber: Yup.string().required("title number is required"),
+    // titleMortgage: Yup.string().required("title mortage is required"),
+  });
+
   return (
     <Formik
       initialValues={initialValues}
       onSubmit={handleSubmit}
+      // validationSchema={validationSchema}
     >
       {({
         handleChange,
         handleSubmit,
-        isSubmitting,
-        values
+        values,
+        errors,
+        touched
       }) => (
         <form onSubmit={handleSubmit} className="login-form">
-        <div className="grid grid-cols-12 gap-6">
+          <div className="grid grid-cols-12 gap-6">
             <div className="col-span-6">
-              <CaseCardDetails items={sellerItems} title="Seller" handle={handleChange} />
-              <CaseCardDetails items={buyerItems} title="Puchaser" handle={handleChange} />
+              <CaseCardDetails items={sellerItems} title="Seller" handle={handleChange} form={{ errors, touched }} />
+              <CaseCardDetails items={buyerItems} title="Puchaser" handle={handleChange} form={{ errors, touched }} />
             </div>
             <div className="col-span-6">
-              <CaseAttorneyItems
-                title="Attorneys"
-                attorneys={values.attorneys}
-                setAttorneys={(attorneys) => {
-                  values.attorneys = attorneys;
-                  handleChange({ target: { name: 'attorneys', value: attorneys } });
-                }} />
-              <CaseCardDetails items={TitleMortgageItems} title="Title & Mortgage" handle={handleChange} />
-              {/* <CaseCardDetails items={attorneyItems} /> */}
+              <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys}  errors={errors.attorneys || []} 
+                touched={touched.attorneys || []} setAttorneys={(attorneys) => handleAttorneysChange(attorneys, handleChange)} />
+              <CaseCardDetails items={titleMortgageItems} title="Title & Mortgage" handle={handleChange} />
             </div>
           </div >
-          <div className="flex justify-end mt-6">
-        <XButton
-          text="Cancel"
-          className="bg-badge-gray font-medium text-base text-primary py-[10px] px-6 rounded-[100px] shadow-shadow-light"
-        />
-        <XButton
-          type="submit"
-          text="Save Changes"
-          className="bg-primary text-base text-white py-[10px] px-6 rounded-[100px] ml-4"
-        />
-      </div>
+          <FormButton onSave={handleSubmit} />
         </form>
       )}
     </Formik>

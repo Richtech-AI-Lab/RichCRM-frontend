@@ -163,4 +163,7 @@
   .stepper-li:last-child {
     @apply w-auto after:hidden
   }
+  .custom-datepicker input {
+    @apply bg-input-surface py-[10px] pl-9 pr-4 rounded-full border-0 text-sm leading-5 font-semibold text-label
+  }
 }
