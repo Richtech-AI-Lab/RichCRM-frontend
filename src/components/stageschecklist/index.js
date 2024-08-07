@@ -290,13 +290,13 @@ const StagesChecklist = ({ label }) => {
               <span
                 className={`pb-4 cursor-pointer ${activeTab === 'mortgage' ? 'text-base text-secondary-800 font-medium border-b-[3px] border-primary' : 'text-gray-400'}`}                onClick={() => setActiveTab('mortgage')}
               >
-                Mortgage Task
+                Mortgage Task (1/5)
               </span>
               <span
                 className={`pb-4 cursor-pointer ${activeTab === 'title' ? 'text-base text-secondary-800 font-medium border-b-[3px] border-primary' : 'text-gray-400'}`}
                 onClick={() => setActiveTab('title')}
               >
-                Title Task
+                Title Task (1/4)
               </span>
             </div>
           ) : (
@@ -321,11 +321,13 @@ const StagesChecklist = ({ label }) => {
         <div className="flex justify-between items-center pt-5 px-4">
         <XButton
             text="Back to previous stage"
-            className="bg-card-300 text-secondary-300 rounded-full text-sm font-medium py-[10px] px-6"
+            className={`bg-card-300 rounded-full text-sm font-medium py-[10px] px-6 ${currentStep === 0 ? 'opacity-50 cursor-not-allowed text-secondary-300' : 'text-secondary-800'}`}
             onClick={handlePreviousStage}
             disabled={currentStep === 0}
           />
-          <XButton text="Move to next stage" className="bg-active-blue text-active-blue-text shadow-shadow-light rounded-full text-sm font-medium py-[10px] px-6" onClick={handleNextStage} />
+          <XButton 
+          text={currentStep === stepperItems?.length - 1 ? "Close Case" : "Move to next stage"}
+          className="bg-active-blue text-active-blue-text shadow-shadow-light rounded-full text-sm font-medium py-[10px] px-6" onClick={handleNextStage} />
         </div>
       </div>
       <div className="flex justify-end justify-content:flex-end">

@@ -160,4 +160,7 @@
   .spinner-container svg {
     @apply w-[50px] h-[50px] fill-primary
   }
+  .stepper-li:last-child {
+    @apply w-auto after:hidden
+  }
 }
