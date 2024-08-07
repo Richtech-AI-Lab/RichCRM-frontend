@@ -19,7 +19,10 @@ const CardListItem = ({
 }) => {
   const { setFieldValue } = useFormikContext();
   const [selectedDate, setSelectedDate] = useState(value ? new Date(value) : null);
-
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    setFieldValue(name, date);
+  };
   return (
 
     <li className={floor ? "list-w-full" : "flex justify-between"}>
@@ -98,6 +101,7 @@ const CardListItem = ({
               setSelectedDate(date);
               setFieldValue(name, date);
             }}
+            onSelectedDateChanged={handleDateChange}
           />
           {/* <DateInput value={selectedDate} onChange={setSelectedDate} /> */}
           {/* <input

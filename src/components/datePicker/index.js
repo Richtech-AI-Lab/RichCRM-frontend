@@ -2,19 +2,20 @@ import React, { useState } from 'react';
 import { format, parse } from 'date-fns';
 import { Datepicker } from 'flowbite-react';
 
-const DateInput = ({ name, value, onChange }) => {
+const DateInput = ({ name, value, onSelectedDateChanged }) => {
+
   const [startDate, setStartDate] = useState(value ? new Date(value) : null);
 
   const handleDateChange = (date) => {
     setStartDate(date);
-    onChange(date);
+    onSelectedDateChanged(date);
   };
 
   return (
       <Datepicker
         name={name}
         selected={startDate}
-        onChange={handleDateChange}
+        onSelectedDateChanged={handleDateChange}
         dateFormat="MMMM dd, yyyy"
         customInput={
           <input
