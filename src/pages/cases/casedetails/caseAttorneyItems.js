@@ -7,7 +7,7 @@ import { FieldArray, useFormikContext } from "formik";
 import { Label, TextInput, XButton } from "../../../components";
 import { IMAGES } from "../../../constants/imagePath";
 
-const CaseAttorneyItems = ({ title, attorneys, setAttorneys }) => {
+const CaseAttorneyItems = ({ title, attorneys, setAttorneys, errors, touched }) => {
     const { values, setFieldValue } = useFormikContext();
     // const [attorneyItems, setAttorneyItems] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -53,10 +53,10 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys }) => {
                                 <li key={item.id} className="flex justify-between">
                                     <span className="left-txt flex items-center">
                                         <span className="icon mr-2 cursor-pointer" onClick={() => remove(index)}>
-                                        <img
-                                            src={IMAGES.removeIcon}
-                                            alt="icon"
-                                        />
+                                            <img
+                                                src={IMAGES.removeIcon}
+                                                alt="icon"
+                                            />
                                         </span>
                                         {item.label}
                                     </span>
@@ -70,6 +70,11 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys }) => {
                                             setFieldValue("attorneys", updatedAttorneys);
                                         }}
                                     />
+                                    {/* {touched[index] && errors[index] && (
+                                        <div className="text-red-500 text-sm">
+                                            {errors[index]}
+                                        </div>
+                                    )} */}
                                 </li>
                             ))}
                             <li className={"flex justify-between add-attorney"}>

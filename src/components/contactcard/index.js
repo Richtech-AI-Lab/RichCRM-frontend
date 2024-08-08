@@ -27,7 +27,7 @@ const ContactCard = ({
         <span className="text-xl text-title font-medium">Contacts</span>
         <BsThreeDotsVertical className="text-secondary-800 opacity-40" />
       </div>
-      <Accordion alwaysOpen={true} className="border-0">
+      <Accordion className="border-0">
         {contactData.map((data, index) => (
           <AccordionPanel key={index}>
             <AccordionTitle className="py-3 px-4 border-t border-badge-gray rounded-none first:rounded-t-none bg-white hover:bg-white focus:ring-transparent contact-accordian-title">

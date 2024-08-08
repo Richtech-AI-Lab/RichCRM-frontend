@@ -4,7 +4,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { IMAGES } from "../../constants/imagePath";
 import { useFormikContext } from "formik";
 
-const CaseCardDetails = ({ title, items, handle }) => {
+const CaseCardDetails = ({ title, items, handle,form }) => {
   const { setFieldValue } = useFormikContext();
   const [fields, setFields] = useState(items)
 
@@ -24,16 +24,16 @@ const CaseCardDetails = ({ title, items, handle }) => {
       return newFields;
     });
   };
+
   return (
     <div className="bg-white p-4 rounded-2xl mb-5">
-      {title &&
-        <div className="flex justify-between items-center mb-5">
+      { title && <div className="flex justify-between items-center mb-5">
           <span className="text-base text-secondary-800 font-medium">{title}</span>
           <div className="flex items-center gap-2">
             <BsThreeDotsVertical className="text-lg opacity-40" />
           </div>
-        </div>
-      }
+        </div>}
+      
       <ul className="card-details">
         {fields?.map((item, index) => item.show === false ?
           (
@@ -52,6 +52,7 @@ const CaseCardDetails = ({ title, items, handle }) => {
           (
             <>
               <CardListItem
+                formerror={form}
                 key={index}
                 label={item.label}
                 name={item.name}

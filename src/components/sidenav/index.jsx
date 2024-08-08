@@ -6,6 +6,7 @@ import { BiCalendar } from "react-icons/bi";
 import { IoSettingsOutline } from "react-icons/io5";
 import { FiFileText } from "react-icons/fi";
 import { ROUTES } from "../../constants/api";
+import { IMAGES } from "../../constants/imagePath";
 
 const SideNav = ({ isDrawerOpen, toggleDrawer, setTitle }) => {
   const location = useLocation();
@@ -43,7 +44,13 @@ const SideNav = ({ isDrawerOpen, toggleDrawer, setTitle }) => {
 
   return (
     <Sidebar className={`w-[264px] sidebar ${isDrawerOpen ? '' : 'sidebar-toggle'} fixed bg-input-surface`}>
-      <h1 className="text-secondary-700 text-xl font-bold pt-5 pb-3 px-4 whitespace-nowrap">MG Law Group</h1>
+      {/* <h1 className="text-secondary-700 text-xl font-bold pt-5 pb-3 px-4 whitespace-nowrap">MG Law Group</h1> */}
+      {/* <img src={logo}/> */}
+      <img
+                  src={IMAGES.logo}
+                  alt="logo"
+                  className="mr-4 w-15 ml-5 mt-5"
+                />
       <Sidebar.Items className="mt-10 sidebar-items flex flex-col justify-between h-[calc(100vh-140px)]">
         <Sidebar.ItemGroup>
           <Sidebar.Item as={Link} to={ROUTES.DASHBOARD} icon={PiLayout} className={isActive(ROUTES.DASHBOARD) ? "active-item" : ""} onClick={() => handleTitleChange('Dashboard')}>

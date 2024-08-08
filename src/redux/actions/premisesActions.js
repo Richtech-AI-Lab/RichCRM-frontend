@@ -7,9 +7,10 @@ import {
   REGISTER_PREMISES_SUCCESS,
 } from "../type";
 
-export const registerPremisesRequest = (premises) => ({
+export const registerPremisesRequest = (premises,navigate) => ({
   type: REGISTER_PREMISES_REQUEST,
   payload: premises,
+  navigate
 });
 
 export const registerPremisesSuccess = (response) => ({

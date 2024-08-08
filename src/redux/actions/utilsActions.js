@@ -4,9 +4,10 @@ import {
   REGISTER_ADDRESS_SUCCESS,
 } from "../type";
 
-export const registerAddressRequest = (address) => ({
+export const registerAddressRequest = (address,navigate) => ({
   type: REGISTER_ADDRESS_REQUEST,
   payload: address,
+  navigate
 });
 
 export const registerAddressSuccess = (response) => ({

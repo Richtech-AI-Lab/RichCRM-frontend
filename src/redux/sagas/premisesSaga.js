@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { postRequest } from "../../axios/interceptor";
-import { API_ENDPOINTS } from "../../constants/api";
+import { API_ENDPOINTS, ROUTES } from "../../constants/api";
 import {
   fetchPremisesFailure,
   fetchPremisesSuccess,
@@ -8,18 +8,23 @@ import {
   registerPremisesSuccess,
 } from "../actions/premisesActions";
 import { FETCH_PREMISES_REQUEST, REGISTER_PREMISES_REQUEST } from "../type";
+import { toast } from "react-toastify";
 
 //Register Premises Saga
 function* registerPremises(action) {
   try {
-    const { payload } = action;
+    const { payload,navigate } = action;
     const response = yield call(() =>
       postRequest(API_ENDPOINTS.REGISTER_PREMISES, payload)
     );
-    console.log("Register Premises Response:", response);
     yield put(registerPremisesSuccess(response.data));
+    if(response.status==200){
+      toast.success("Premises successfully registered!");
+      navigate(ROUTES.NEW_CASE_INFO);
+    }
   } catch (error) {
     yield put(registerPremisesFailure(error.response?.data || error));
+    toast.error("Failed to register premises.");
   }
 }
 

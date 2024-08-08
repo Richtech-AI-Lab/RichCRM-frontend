@@ -1,163 +1,11 @@
 import React, { useState } from "react";
 import { CaseCardDetails, XButton } from "../../../components";
 import { Formik } from "formik";
-
+import { inspectionItems, lowerSectionItems, premisesComposition, termitesInspectionItems } from "../../../utils/formItem";
+import FormButton from "../../../components/formButton";
+import * as Yup from "yup";
 
 const PremisesCaseDetails = () => {
-  const lowerSectionItems = [
-    {
-      label: "Premises Type",
-      type: "dropdown",
-      name: "premisesType",
-      dropDownOptions: [
-        { id: "soldYes", label: "Selling", defaultChecked: true },
-        { id: "boughtYes", label: "Purchasing", defaultChecked: true },
-      ],
-    },
-    {
-      name: "premisesAddress",
-      label: "Address",
-      placeholder: "Enter address",
-    },
-    {
-      name: "premisesAddress2",
-      label: "Address Line 2",
-      placeholder: "Enter address",
-    },
-    {
-      name: "premisesCity",
-      label: "City",
-      placeholder: "Enter city",
-    },
-    {
-      name: "premisesState",
-      label: "State",
-      type: "dropdown",
-      dropDownOptions: [
-        { id: "Newyork", label: "New York", defaultChecked: true },
-        { id: "India", label: "India", defaultChecked: true },
-      ],
-    },
-    { label: "Zip Code", name: "premisesZipcode", placeholder: "Enter a zip code" },
-    { label: "Block", name: "premisesBlock", placeholder: "Enter a block" },
-    { label: "Lot", name: "premisesLot", placeholder: "Enter a lot" },
-    { label: "Section", name: "premisesSection", placeholder: "Enter a section" },
-    {
-      label: "Type",
-      type: "dropdown",
-      name: "premisesType2",
-      dropDownOptions: [
-        { id: "coop", label: "Co-op", defaultChecked: true },
-        { id: "townhouse", label: "Townhouse", defaultChecked: true },
-        { id: "condo", label: "Condo", defaultChecked: true },
-        { id: "vacantLand", label: "Vacant Land", defaultChecked: true },
-      ],
-    },
-    {
-      label: "Vacant at closing",
-      type: "checkboxes",
-      name: "premisesVacant",
-      checkboxOptions: [
-        { id: "vacantYes", label: "Yes", defaultChecked: true },
-        { id: "vacantNo", label: "No", defaultChecked: true },
-      ],
-    },
-    {
-      label: "Subject to Tenancy",
-      type: "checkboxes",
-      name: "premisesSubject",
-      checkboxOptions: [
-        { id: "tenancyYes", label: "Yes", defaultChecked: true },
-        { id: "tenancyNo", label: "No", defaultChecked: true },
-      ],
-    },
-    {
-      label: "H.O.A",
-      type: "checkboxes",
-      name: "premisesHOA",
-      checkboxOptions: [
-        { id: "hoaYes", label: "Yes", defaultChecked: true },
-        { id: "hoaNo", label: "No", defaultChecked: true },
-      ],
-    },
-    {
-      label: "Parking Space",
-      type: "dropdown",
-      name: "premisesParking",
-      dropDownOptions: [
-        { id: "1", label: "1", defaultChecked: true },
-        { id: "2", label: "2", defaultChecked: true },
-      ],
-    },
-    // { label: "Parking Space Number", placeholder:"Enter parking space no" },
-    {
-      label: "Maintenance fee", name: "premisesMaintenace", type: "inputdropdown", placeholder: "Enter an Amount", dropDownOptions: [
-        { id: "1", label: "yearly", defaultChecked: true },
-        { id: "2", label: "monthly", defaultChecked: true },
-      ],
-    },
-
-    { label: "Assessments", name: "premisesAssessment", placeholder: "Enter an Amount" },
-    { label: "Paid by", name: "premisesPaidby", placeholder: "Enter an Amount" },
-    { label: "Managing Company", name: "premisesManaging", placeholder: "Enter an Amount" },
-
-  ];
-  const premisesComposition = [
-    {
-      label: "Type",
-      type: "dropdown",
-      dropDownOptions: [
-        { id: "newConstruction", label: "New Const.", defaultChecked: true },
-        { id: "oneFamily", label: "1 Family", defaultChecked: true },
-        { id: "twoFamily", label: "2 Family", defaultChecked: true },
-      ],
-    },
-    { label: "1F Tenant", placeholder: "Enter name" },
-    { label: "1F Rent", placeholder: "Enter rent" },
-    { label: "1F Sec.", placeholder: "Enter sec" },
-    {
-      label: "1F Lease",
-      type: "checkboxes",
-      checkboxOptions: [
-        { id: "leaseYes1", label: "Yes", defaultChecked: true },
-        { id: "leaseNo2", label: "No", defaultChecked: true },
-      ],
-    },
-    { label: "2F Tenant", placeholder: "Enter name" },
-    { label: "2F Rent", placeholder: "Enter rent" },
-    { label: "2F Sec.", placeholder: "Enter sec" },
-    {
-      label: "2F Lease",
-      type: "checkboxes",
-      checkboxOptions: [
-        { id: "leaseYes3", label: "Yes", defaultChecked: true },
-        { id: "leaseNo4", label: "No", defaultChecked: true },
-      ],
-    },
-
-  ];
-  const inspectionItems = [
-    {
-      label: "Engineer Inspection",
-      type: "checkboxes",
-      checkboxOptions: [
-        { id: "accept4", defaultChecked: true, label: "Yes" },
-        { id: "accept5", defaultChecked: true, label: "No" },
-      ],
-    },
-    { type: "datepicker", name: "scheduleDate", label: "Scheduled Date", placeholder: "Month Day, Year" },
-    { type: "datepicker", name: "receivedDate", label: "Received Date", placeholder: "Month Day, Year" },
-  ];
-  const termitesInspectionItems = [
-    {
-      label: "Termites Inspection",
-      type: "checkboxes",
-      checkboxOptions: [
-        { id: "accept6", defaultChecked: true, label: "Yes" },
-        { id: "accept7", defaultChecked: true, label: "No" },
-      ],
-    },
-  ];
   let handleSubmit = (x) => {
     console.log(x)
   }
@@ -178,21 +26,72 @@ const PremisesCaseDetails = () => {
     premisesSubject: "",
     premisesHOA: "",
     premisesParking: "",
-    premisesMaintenace: "",
+    premisesMaintenace: {
+      amount: '',
+      period: '', 
+    },
     premisesAssessment: "",
     premisesPaidby: "",
     premisesManaging: "",
+    premisesComposition: "",
+    premisesonetenant: "",
+    premisesonerent: "",
+    premisesonesec: "",
+    premisesonelease: "",
+    premisestwotenant: "",
+    premisestworent: "",
+    premisestwosec: "",
+    premisestwolease: "",
+    premisesinspection: "",
+    premisesScheduleDate: "",
+    premisesRecievedDate: "",
+    premisesTermites: "",
   };
+
+  // const validationSchema = Yup.object().shape({
+  //   scheduleDate: Yup.date().required('Schedule date is required'),
+  //   receivedDate: Yup.date().required('Received date is required'),
+  //   premisesType: Yup.string().required('Premises type is required'),
+  //   premisesAddress: Yup.string().required('Premises address is required'),
+  //   premisesAddress2: Yup.string(),
+  //   premisesCity: Yup.string().required('Premises city is required'),
+  //   premisesState: Yup.string().required('Premises state is required'),
+  //   premisesZipcode: Yup.string().required('Premises zipcode is required'),
+  //   premisesBlock: Yup.string().required('Premises block is required'),
+  //   premisesLot: Yup.string().required('Premises lot is required'),
+  //   premisesSection: Yup.string().required('Premises section is required'),
+  //   premisesType2: Yup.string().required('Premises type2 is required'),
+  //   premisesVacant: Yup.boolean().required('Premises vacant status is required'),
+  //   premisesSubject: Yup.boolean().required('Premises subject status is required'),
+  //   premisesHOA: Yup.boolean().required('Premises HOA status is required'),
+  //   premisesParking: Yup.number().required('Premises parking space is required').integer().min(1, 'Must be at least 1'),
+  //   // premisesMaintenace: Yup.object({
+  //   //   amount: Yup.number().required('Amount is required').positive('Amount must be positive'),
+  //   //   period: Yup.string().required('Currency is required'),
+  //   // }),
+  //   premisesAssessment: Yup.number().required('Premises assessment is required').min(0, 'Must be a positive number'),
+  //   premisesPaidby: Yup.string().required('Premises paid by is required'),
+  //   premisesManaging: Yup.string().required('Premises managing company is required'),
+  //   premisesComposition: Yup.string().required('Premises composition type is required'),
+  //   premisesonetenant: Yup.string().required('1F Tenant name is required'),
+  //   premisesonerent: Yup.number().required('1F Rent is required').min(0, 'Must be a positive number'),
+  //   premisesonesec: Yup.number().required('1F Sec. is required').min(0, 'Must be a positive number'),
+  //   premisesonelease: Yup.boolean().required('1F Lease status is required'),
+  //   premisestwotenant: Yup.string().required('2F Tenant name is required'),
+  //   premisestworent: Yup.number().required('2F Rent is required').min(0, 'Must be a positive number'),
+  //   premisestwosec: Yup.number().required('2F Sec. is required').min(0, 'Must be a positive number'),
+  //   premisestwolease: Yup.boolean().required('2F Lease status is required'),
+  //   premisesinspection: Yup.boolean().required('Engineer inspection status is required'),
+  //   premisesScheduleDate: Yup.date().required('Premises schedule date is required'),
+  //   premisesRecievedDate: Yup.date().required('Premises received date is required'),
+  //   premisesTermites: Yup.boolean().required('Termites inspection status is required'),
+  // });
+  
   return (
-    <Formik
-      initialValues={initialValues}
-      onSubmit={handleSubmit}
-    >
+    <Formik initialValues={initialValues}  onSubmit={handleSubmit} >
       {({
         handleChange,
-        handleSubmit,
-        isSubmitting,
-        values
+        handleSubmit
       }) => (
         <form onSubmit={handleSubmit} className="pemises-form">
           <div className="grid grid-cols-12 gap-6">
@@ -200,22 +99,12 @@ const PremisesCaseDetails = () => {
               <CaseCardDetails items={lowerSectionItems} title="Premises Info" handle={handleChange} />
             </div>
             <div className="col-span-6">
-              <CaseCardDetails items={premisesComposition} title="Premises Composition" />
-              <CaseCardDetails items={inspectionItems} title="Engineer Inspection" />
-              <CaseCardDetails items={termitesInspectionItems} title="Termites Inspection" />
+              <CaseCardDetails items={premisesComposition} title="Premises Composition" handle={handleChange} />
+              <CaseCardDetails items={inspectionItems} title="Engineer Inspection" handle={handleChange} />
+              <CaseCardDetails items={termitesInspectionItems} title="Termites Inspection" handle={handleChange} />
             </div>
           </div >
-          <div className="flex justify-end mt-6">
-            <XButton
-              text="Cancel"
-              className="bg-badge-gray font-medium text-base text-primary py-[10px] px-6 rounded-[100px] shadow-shadow-light"
-            />
-            <XButton
-              type="submit"
-              text="Save Changes"
-              className="bg-primary text-base text-white py-[10px] px-6 rounded-[100px] ml-4"
-            />
-          </div>
+          <FormButton onSave={handleSubmit}/> 
         </form>
       )}
     </Formik>

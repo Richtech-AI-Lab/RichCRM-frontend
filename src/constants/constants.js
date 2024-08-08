@@ -1,3 +1,4 @@
+
 export const SORT_OPTIONS = {
   CASE_START: "Case Start",
   CONTRACT: "Contract",
@@ -410,4 +411,20 @@ export const caseDetailTab = {
   PARTICIPANTS: 1,
   PREMISES: 2,
   OTHERS: 3,
+};
+
+export const contactTab ={
+  PARTNERS:1,
+  CLIENTS:2,
+  OTHERS:3,
+}
+export const userRole = {
+  ADMIN: 0,
+  ATTORNEY: 1,
+  CLIENT: 2,
+};
+
+export const clientType = {
+  BUYER: 0,
+  SELLER: 1,
 };
