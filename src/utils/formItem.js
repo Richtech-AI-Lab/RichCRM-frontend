@@ -1,6 +1,7 @@
 // participant.js
 
 import { IMAGES } from "../constants/imagePath";
+import states from "../constants/states.json"
 
 export const sellerItems = [
     { label: "Name", name: "sellerName", placeholder: "Enter seller name" },
@@ -78,10 +79,7 @@ export const lowerSectionItems = [
         name: "premisesState",
         label: "State",
         type: "dropdown",
-        dropDownOptions: [
-            { id: "Newyork", label: "New York", defaultChecked: true },
-            { id: "India", label: "India", defaultChecked: true },
-        ],
+        dropDownOptions: states,
     },
     { label: "Zip Code", name: "premisesZipcode", placeholder: "Enter a zip code" },
     { label: "Block", name: "premisesBlock", placeholder: "Enter a block" },
