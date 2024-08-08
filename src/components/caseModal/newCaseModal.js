@@ -116,14 +116,14 @@ const NewCaseModal = ({ onClose }) => {
         zipCode: values.zipCode,
       },
        premisesPayload : {
-          name: `${client?.clientfirstName} ${client?.clientLastName}`,
+          name: `Rich CRM`,
           propertyType: 2,
         }
     };
 
     try {
-      dispatch(registerClientRequest(combinedPayload.clientDetails))
-      dispatch(registerAddressRequest(combinedPayload,navigate))
+      dispatch(registerClientRequest(combinedPayload,navigate))
+
       // if (client?.status === "success") {
       //   toast.success("Client created successfully");
 

@@ -4,9 +4,10 @@ import {
   REGISTER_CLIENT_SUCCESS,
 } from "../type";
 
-export const registerClientRequest = (clientData) => ({
+export const registerClientRequest = (clientData,navigate) => ({
   type: REGISTER_CLIENT_REQUEST,
   payload: clientData,
+  navigate
 });
 
 export const registerClientSuccess = (response) => ({
