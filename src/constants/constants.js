@@ -418,3 +418,13 @@ export const contactTab ={
   CLIENTS:2,
   OTHERS:3,
 }
+export const userRole = {
+  ADMIN: 0,
+  ATTORNEY: 1,
+  CLIENT: 2,
+};
+
+export const clientType = {
+  BUYER: 0,
+  SELLER: 1,
+};
