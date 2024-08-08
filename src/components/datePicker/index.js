@@ -10,10 +10,16 @@ const DateInput = ({ name, value, onSelectedDateChanged }) => {
     setStartDate(date);
     onSelectedDateChanged(date);
   };
-
+  const customtheme= {
+    "popup": {
+      "root": {
+        "base": "absolute right-0 top-10 z-50 block pt-2",
+      },
+    },}
   return (
     <div className="custom-datepicker">
       <Datepicker
+      theme={customtheme}
         name={name}
         selected={startDate}
         onSelectedDateChanged={handleDateChange}

@@ -166,4 +166,13 @@
   .custom-datepicker input {
     @apply bg-input-surface py-[10px] pl-9 pr-4 rounded-full border-0 text-sm leading-5 font-semibold text-label
   }
+  .contacts-table {
+    @apply rounded-2xl shadow-shadow-light px-4 bg-white
+  }
+  .contacts-table th {
+    @apply py-[14px] bg-white text-sm text-secondary-800 capitalize font-medium px-4 first:pl-0 last:pr-0
+  }
+  .contacts-table td {
+    @apply py-2 text-sm text-secondary-800 font-medium px-4 first:pl-0 last:pr-0
+  }
 }

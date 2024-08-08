@@ -6,6 +6,7 @@ import {
 } from "../actions/clientActions";
 import { REGISTER_CLIENT_REQUEST } from "../type";
 import { postRequest } from "../../axios/interceptor";
+import { toast } from "react-toastify";
 
 function* registerClient(action) {
   try {
@@ -14,8 +15,12 @@ function* registerClient(action) {
       postRequest(API_ENDPOINTS.REGISTER_CLIENT, payload)
     );
     yield put(registerClientSuccess(response.data));
+    if(response.status ==200){
+      toast.success("Client created successfully");
+    }
   } catch (error) {
     yield put(registerClientFailure(error.response?.data || error));
+    toast.error("Failed to create case.");
   }
 }
 

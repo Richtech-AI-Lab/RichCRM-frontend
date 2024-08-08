@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { Formik, FieldArray, ErrorMessage, Field } from "formik";
 import { Label, Modal } from "flowbite-react";
@@ -90,79 +90,93 @@ const NewCaseModal = ({ onClose }) => {
       })
     ),
   });
+  // useEffect(() => {
+  //   const addressId = address?.data[0]?.addressId;
+  //   const premisesPayload = {
+  //     name: `${client?.clientfirstName} ${client?.clientLastName}`,
+  //     addressId: addressId,
+  //     propertyType: 2,
+  //   };
+  //   dispatch(registerPremisesRequest(premisesPayload));
+  // }, [address])
+
   const handleNewCaseInfo = async (values) => {
     const clientDetails = values.clients[0];
-    const clientPayload = {
-      firstName: clientDetails.clientfirstName,
-      lastName: clientDetails.clientLastName,
-      // cellNumber: clientDetails.cellNumber,
-      // email: clientDetails.email,
+    const combinedPayload = {
+      clientDetails: {
+        firstName: clientDetails.clientfirstName,
+        lastName: clientDetails.clientLastName,
+        // cellNumber: clientDetails.cellNumber,
+        // email: clientDetails.email,
+      },
+      addressDetails: {
+        addressLine1: values.address,
+        city: values.city,
+        state: values.state,
+        zipCode: values.zipCode,
+      },
+       premisesPayload : {
+          name: `${client?.clientfirstName} ${client?.clientLastName}`,
+          propertyType: 2,
+        }
     };
 
     try {
-      const clientResponse = await dispatch(
-        registerClientRequest(clientPayload)
-      );
-      console.log(client,"client")
-      if (client?.status === "success") {
-        toast.success("Client created successfully");
+      dispatch(registerClientRequest(combinedPayload.clientDetails))
+      dispatch(registerAddressRequest(combinedPayload,navigate))
+      // if (client?.status === "success") {
+      //   toast.success("Client created successfully");
 
-        const addressPayload = {
-          addressLine1: values.address,
-          city: values.city,
-          state: values.state,
-          zipCode: values.zipCode,
-        };
-        const addressrResponse = await dispatch(
-          registerAddressRequest(addressPayload)
-        );
-        console.log(address,"addresst")
+      //   const addressrResponse = await dispatch(
+      //     registerAddressRequest(addressPayload)
+      //   );
+      //   console.log(address,"addresst")
 
-        if (address?.status === "success" && address?.data?.length > 0) {
-          toast.success("Address successfully registered!");
-          const addressId = address?.data[0]?.addressId;
-          const premisesPayload = {
-            name: `${clientDetails.clientfirstName} ${clientDetails.clientLastName}`,
-            addressId: addressId,
-            propertyType: 2,
-          };
-          const fetchResponse = await dispatch(
-            registerPremisesRequest(premisesPayload)
-          );
-          console.log(premises,"premises")
-          if (premises?.status === "success" && premises?.data?.length > 0) {
-            toast.success("Premises successfully registered!");
-            navigate(ROUTES.NEW_CASE_INFO);
+      //   if (address?.status === "success" && address?.data?.length > 0) {
+      //     toast.success("Address successfully registered!");
+      //     const addressId = address?.data[0]?.addressId;
+      //     const premisesPayload = {
+      //       name: `${clientDetails.clientfirstName} ${clientDetails.clientLastName}`,
+      //       addressId: addressId,
+      //       propertyType: 2,
+      //     };
+      //     const fetchResponse = await dispatch(
+      //       registerPremisesRequest(premisesPayload)
+      //     );
+      //     console.log(premises,"premises")
+      //     if (premises?.status === "success" && premises?.data?.length > 0) {
+      //       toast.success("Premises successfully registered!");
+      //       navigate(ROUTES.NEW_CASE_INFO);
 
-            const premisesId = premises.data[0]?.premisesId;
-            //   const casePayload = {
-            //     premisesId: premisesId,
-            //     creatorId: "test1@gmail.com",
-            //     stage: 0,
-            //     clientType: clientDetails.clientType,
-            //     buyerId: "f3117eaa-e3a7-4b3e-88fb-37a8741a181e",
-            //   };
-            //   const createCaseResponse = await dispatch(
-            //     caseCreateRequest(casePayload)
-            //   );
+      //       const premisesId = premises.data[0]?.premisesId;
+      //       //   const casePayload = {
+      //       //     premisesId: premisesId,
+      //       //     creatorId: "test1@gmail.com",
+      //       //     stage: 0,
+      //       //     clientType: clientDetails.clientType,
+      //       //     buyerId: "f3117eaa-e3a7-4b3e-88fb-37a8741a181e",
+      //       //   };
+      //       //   const createCaseResponse = await dispatch(
+      //       //     caseCreateRequest(casePayload)
+      //       //   );
 
-            //   if (cases.status === "success") {
-            //     toast.success("Case created successfully!");
-            //     navigate("/rich-crm/newcaseinfo");
-            //   } else {
-            //     toast.error("Failed to create case.");
-            //   }
-          } else {
-              toast.error("Failed to register premises.");
-          }
-        } else {
-          toast.error("Failed to register address.");
-        }
-      } else {
-          toast.error("Failed to register client.");
-      }
+      //       //   if (cases.status === "success") {
+      //       //     toast.success("Case created successfully!");
+      //       //     navigate("/rich-crm/newcaseinfo");
+      //       //   } else {
+      //       //     toast.error("Failed to create case.");
+      //       //   }
+      //     } else {
+      //         toast.error("Failed to register premises.");
+      //     }
+      //   } else {
+      //     toast.error("Failed to register address.");
+      //   }
+      // } else {
+      //     toast.error("Failed to register client.");
+      // }
 
-      // dispatch(clearData());
+      dispatch(clearData());
     } catch (error) {
       console.error("Error while handling new case information", error);
       // toast.error("An error occurred while creating the case.");

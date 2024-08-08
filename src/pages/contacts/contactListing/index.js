@@ -12,7 +12,7 @@ const ContactListing = ({ active }) => {
     navigate(ROUTES.CONTACT_PARTNER);
   }
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto contacts-table">
       <Table>
         <Table.Head>
           {header.map(key=>{
