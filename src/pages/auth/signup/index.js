@@ -13,12 +13,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { clearData, registerRequest } from "../../../redux/actions/authActions";
 import { ROUTES } from "../../../constants/api";
+import { userRole } from "../../../constants/constants";
 
-const userRole = {
-  ADMIN: 0,
-  ATTORNEY: 1,
-  CLIENT: 2,
-};
 
 const roleOptions = [
   { value: userRole.ADMIN, label: "Admin" },

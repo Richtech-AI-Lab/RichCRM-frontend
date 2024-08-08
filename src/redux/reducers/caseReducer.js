@@ -17,25 +17,25 @@ import {
 } from "../type";
 
 const initialCreateCaseState = {
-    user: null,
+    cases: null,
     loading: false,
     error: null,
 };
 
 const initialGetCaseState = {
-    user: null,
+    cases: null,
     loading: false,
     error: null,
 };
 
 const initialUpdateCaseState = {
-    user: null,
+    cases: null,
     loading: false,
     error: null,
 };
 
 const initialDeleteCaseState = {
-    user: null,
+    cases: null,
     loading: false,
     error: null,
 };
@@ -52,7 +52,7 @@ const createCaseReducer = (state = initialCreateCaseState, action) => {
             return {
                 ...state,
                 loading: false,
-                user: action.payload,
+                cases: action.payload,
                 error: null,
             };
         case POST_CASE_FAILURE:
@@ -68,7 +68,7 @@ const createCaseReducer = (state = initialCreateCaseState, action) => {
     }
 };
 
-const getCaseReducer = (state = initialCreateCaseState, action) => {
+const getCaseReducer = (state = initialGetCaseState, action) => {
     switch (action.type) {
         case GET_CASE_REQUEST:
             return {
@@ -80,7 +80,7 @@ const getCaseReducer = (state = initialCreateCaseState, action) => {
             return {
                 ...state,
                 loading: false,
-                user: action.payload,
+                cases: action.payload,
                 error: null,
             };
         case GET_CASE_FAILURE:
@@ -96,7 +96,7 @@ const getCaseReducer = (state = initialCreateCaseState, action) => {
     }
 };
 
-const updateCaseReducer = (state = initialCreateCaseState, action) => {
+const updateCaseReducer = (state = initialUpdateCaseState, action) => {
     switch (action.type) {
         case UPDATE_CASE_REQUEST:
             return {
@@ -108,7 +108,7 @@ const updateCaseReducer = (state = initialCreateCaseState, action) => {
             return {
                 ...state,
                 loading: false,
-                user: action.payload,
+                cases: action.payload,
                 error: null,
             };
         case UPDATE_CASE_FAILURE:
@@ -124,7 +124,7 @@ const updateCaseReducer = (state = initialCreateCaseState, action) => {
     }
 };
 
-const deleteCaseReducer = (state = initialCreateCaseState, action) => {
+const deleteCaseReducer = (state = initialDeleteCaseState, action) => {
     switch (action.type) {
         case DELETE_CASE_REQUEST:
             return {
@@ -136,7 +136,7 @@ const deleteCaseReducer = (state = initialCreateCaseState, action) => {
             return {
                 ...state,
                 loading: false,
-                user: action.payload,
+                cases: action.payload,
                 error: null,
             };
         case DELETE_CASE_FAILURE:
