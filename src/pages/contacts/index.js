@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import CasesActionbar from "../../components/actionbar/casesActionBar";
-import { caseDetailTab } from "../../constants/constants";
+import { contactTab } from "../../constants/constants";
+import ContactsActionbar from "../../components/actionbar/contactsActionBar";
+import ContactListing from "./contactListing";
 
 const Contacts = () => {
-  const [activeTab, setActiveTab] = useState(caseDetailTab.PARTICIPANTS);
+  const [activeTab, setActiveTab] = useState(contactTab.PARTNERS);
 
   return (
     <div className="mt-14">
-      <CasesActionbar active={activeTab} setActive={setActiveTab} />
+      <ContactsActionbar active={activeTab} setActive={setActiveTab} />
+      <ContactListing active={activeTab} />
     </div>
   );
 };

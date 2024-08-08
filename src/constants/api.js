@@ -25,6 +25,7 @@ export const ROUTES = {
   CASES_DATA: "/rich-crm/casesdata",
   CALENDAR: "/rich-crm/calendar",
   CONTACTS: "/rich-crm/contacts",
+  CONTACT_PARTNER: "/rich-crm/contactpartner",
   DOCUMENTS: "/rich-crm/documents",
   SETTINGS: "/rich-crm/settings",
   FORGOT_PASSWORD_ONE: "/forgot-password-one",

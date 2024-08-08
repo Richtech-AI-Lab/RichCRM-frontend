@@ -6,6 +6,8 @@ import CasesCategory from "../cases/casescategory";
 import CaseDetails from "../cases/casedetails";
 import NewCaseInfo from "../cases/newcaseinfo";
 import Contacts from "../contacts";
+import ContactPartner from "../contacts/contactPartner";
+
 
 const Content = () => {
   return (
@@ -17,7 +19,7 @@ const Content = () => {
       <Route path="/casedetails" element={<CaseDetails />} />
       <Route path="/newcaseinfo" element={<NewCaseInfo />} />
       <Route path="/contacts" element={<Contacts />} />
-
+      <Route path="/contactpartner" element={<ContactPartner />} />
       <Route path="/*" element={404} />
     </Routes>
   );

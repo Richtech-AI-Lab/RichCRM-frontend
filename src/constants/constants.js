@@ -1,3 +1,4 @@
+
 export const SORT_OPTIONS = {
   CASE_START: "Case Start",
   CONTRACT: "Contract",
@@ -411,3 +412,9 @@ export const caseDetailTab = {
   PREMISES: 2,
   OTHERS: 3,
 };
+
+export const contactTab ={
+  PARTNERS:1,
+  CLIENTS:2,
+  OTHERS:3,
+}
