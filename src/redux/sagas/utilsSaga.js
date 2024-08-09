@@ -12,16 +12,21 @@ import { toast } from "react-toastify";
 function* registerAddress(action) {
   try {
     const { payload,navigate } = action;
+    console.log(payload,"paylaod")
     const response = yield call(() =>
-      postRequest(API_ENDPOINTS.REGISTER_ADDRESS, payload)
+      postRequest(API_ENDPOINTS.REGISTER_ADDRESS, payload.addressDetails)
     );
     yield put(registerAddressSuccess(response.data));
     if(response.status ==200){
-      const premisesPayload= {
-        addressId :response.data?.data[0]?.addressId,
-        ...payload.premisesPayload,
-      }
-      yield put(registerPremisesRequest(premisesPayload,navigate));
+      const updatedPayload = {
+        ...payload, // Spread the existing payload object
+        premisesPayload: {
+          ...payload.premisesPayload, // Spread the existing premisesPayload object
+          addressId: response.data?.data[0]?.addressId, // Add the addressId here
+        }
+      };
+      console.log(updatedPayload,"updatedPayload")
+      yield put(registerPremisesRequest(updatedPayload, navigate));
       toast.success("Address successfully registered!");
       // action.navigate(ROUTES.NEW_CASE_INFO);
     }

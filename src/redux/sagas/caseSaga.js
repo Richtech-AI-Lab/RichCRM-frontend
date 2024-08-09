@@ -2,16 +2,29 @@ import { takeLatest, put, call } from "redux-saga/effects";
 import { caseCreateSuccess, caseCreateFailure, getCaseSuccess, getCaseFailure, updateCaseSuccess, updateCaseFailure, deleteCaseSuccess, deleteCaseFailure } from "../actions/caseAction";
 import { POST_CASE_REQUEST, GET_CASE_REQUEST, UPDATE_CASE_REQUEST, DELETE_CASE_REQUEST } from "../type";
 import { postRequest, getRequest } from "../../axios/interceptor";
-import { API_ENDPOINTS } from "../../constants/api";
+import { API_ENDPOINTS, ROUTES } from "../../constants/api";
+import { toast } from "react-toastify";
 
 
 function* createCase(action) {
     try {
-        const { payload } = action;
-        const response = yield call(() => postRequest(API_ENDPOINTS.CREATE_CASE, payload));
+        const { payload,navigate } = action;
+        const updatedPayload = {
+            ...payload, 
+            casePayload: {
+              ...payload.casePayload, 
+              clientType: parseInt(payload.casePayload.clientType)
+            }
+          };
+        const response = yield call(() => postRequest(API_ENDPOINTS.CREATE_CASE, updatedPayload.casePayload));
         yield put(caseCreateSuccess(response.data));
+        if(response.status==200){
+            toast.success("Cases successfully registered!");
+             navigate(ROUTES.NEW_CASE_INFO);
+        }
     } catch (error) {
         yield put(caseCreateFailure(error.response.data || error));
+        toast.error("Failed to register cases.");
     }
 }
 
