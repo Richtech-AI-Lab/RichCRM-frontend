@@ -13,7 +13,7 @@ function* registerAddress(action) {
   try {
     const { payload,navigate } = action;
     const response = yield call(() =>
-      postRequest(API_ENDPOINTS.REGISTER_ADDRESS, payload.addressDetails)
+      postRequest(API_ENDPOINTS.REGISTER_ADDRESS, payload)
     );
     yield put(registerAddressSuccess(response.data));
     if(response.status ==200){
