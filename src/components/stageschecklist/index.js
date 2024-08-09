@@ -266,7 +266,6 @@ const StagesChecklist = ({ label }) => {
     }
     return stepperItems[currentStep];
   };
-  console.log(currentStep, "step")
   return (
     <div className="col-span-8">
       <div className="bg-white py-4 rounded-2xl mb-5">

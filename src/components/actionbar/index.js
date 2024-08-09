@@ -10,15 +10,23 @@ import { ROUTES } from "../../constants/api";
 
 const Actionbar = ({ onFilterChange }) => {
   const location = useLocation();
-  const [sortBy, setSortBy] = useState("");
+  const [sortBy, setSortBy] = useState("Status");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState("Open");
+  const [dropdownFilter, setDropdownFilter] = useState("Warning");
 
   const sortOptions = [
-    { value: SORT_OPTIONS.CASE_START, label: SORT_OPTIONS.CASE_START },
-    { value: SORT_OPTIONS.CONTRACT, label: SORT_OPTIONS.CONTRACT },
-    { value: SORT_OPTIONS.MORTGAGE_TITLE, label: SORT_OPTIONS.MORTGAGE_TITLE },
-    { value: SORT_OPTIONS.CLOSING, label: SORT_OPTIONS.CLOSING },
+    { value: SORT_OPTIONS.STATUS, label: SORT_OPTIONS.STATUS },
+    { value: SORT_OPTIONS.PROGRESS, label: SORT_OPTIONS.PROGRESS },
+  ];
+
+  const filterOptions = [
+    { value: "Warning", label: "Warning" },
+    { value: "Unsolved", label: "Unsolved" },
+    { value: "Waiting", label: "Waiting" },
+    { value: "Finished", label: "Finished" },
+    { value: "Selling", label: "Selling" },
+    { value: "Purchasing", label: "Purchasing" },
   ];
 
   const handleSortChange = (e) => {
@@ -35,7 +43,13 @@ const Actionbar = ({ onFilterChange }) => {
       onFilterChange(filter);
     }
   };
-
+  const handleDropdownFilterChange = (e) => {
+    const value = e.target.value;
+    setDropdownFilter(value);
+    if (onFilterChange) {
+      onFilterChange(value);
+    }
+  };
   const shouldShowOpenClosed = () => {
     const pathsToShow = [ROUTES.CASES];
     return pathsToShow.includes(location.pathname);
@@ -61,10 +75,21 @@ const Actionbar = ({ onFilterChange }) => {
         )}
       </div>
       <div className="flex">
-      <div className="bg-white shadow-shadow-light py-[10px] px-5 rounded-full flex items-center mr-4">
+      <div className="bg-white shadow-shadow-light  px-5 rounded-full flex items-center mr-4">
           <IoFilterSharp className="text-xl mr-2 inline-block" />
-
-        <span className="text-base font-medium text-secondary-800">Filter</span>
+           <SelectInput
+            inputClassName=" px-0 py-[12px] border-0 text-base leading-5 font-semibold text-label focus:ring-transparent"
+            labelClassName="text-label mr-3"
+            name="filterBy"
+            defaultLabel={`${dropdownFilter}`}
+            value={dropdownFilter}
+            onChange={handleDropdownFilterChange}
+            options={filterOptions.map((option) => ({
+              value: option.value,
+              label: option.label,
+            }))}
+          />
+        {/* <span className="text-base font-medium text-secondary-800">Filter</span> */}
         </div>
         <SelectInput
           inputClassName="bg-white shadow-shadow-light py-[12px] px-6 rounded-full border-0 text-base leading-5 font-semibold text-label"
@@ -76,7 +101,7 @@ const Actionbar = ({ onFilterChange }) => {
           onChange={handleSortChange}
           options={sortOptions.map((option) => ({
             value: option.value,
-            label: option.label,
+            label: `Sort by: ${option.label}`,
           }))}
         />
       <XButton text="New case" icon={<FiPlus className="text-base mr-2 inline-block" />} className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium ml-4" onClick={toggleModal} />
