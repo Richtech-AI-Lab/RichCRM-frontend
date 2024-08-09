@@ -9,7 +9,7 @@ import NewCaseModal from "../caseModal/newCaseModal";
 import { useLocation } from "react-router-dom";
 
 
-const ContactsActionbar = ({ active="", setActive="" }) => {
+const ContactsActionbar = ({ active="", setActive="" , isAddFromContactModal}) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -65,6 +65,48 @@ const ContactsActionbar = ({ active="", setActive="" }) => {
           </div>
         </div>}
 
+        {
+          isAddFromContactModal &&
+          (
+            <div className="flex justify-between items-center mb-6">
+            <div className="flex">
+              <div
+                onClick={() => {
+                  setActive(contactTab.PARTNERS);
+                }}
+                className={`${active === contactTab.PARTNERS ? "bg-badge-gray" : ""
+                  } px-4 py-2 rounded-full mr-4 cursor-pointer`}
+              >
+                <span className="text-base font-medium text-secondary-800">
+                  Partners
+                </span>
+              </div>
+              <div
+                onClick={() => {
+                  setActive(contactTab.CLIENTS);
+                }}
+                className={`${active === contactTab.CLIENTS ? "bg-badge-gray" : ""
+                  } px-4 py-2 rounded-full mr-4 cursor-pointer`}
+              >
+                <span className="text-base font-medium text-secondary-800">
+                  Clients
+                </span>
+              </div>
+              <div
+                onClick={() => {
+                  setActive(contactTab.OTHERS);
+                }}
+                className={`${active === contactTab.OTHERS ? "bg-badge-gray" : ""
+                  } px-4 py-2 rounded-full mr-4 cursor-pointer`}
+              >
+                <span className="text-base font-medium text-secondary-800">
+                  Others
+                </span>
+              </div>
+            </div>
+          </div>
+          )
+        }
       {shouldShowOpenClosed(ROUTES.CONTACT_PARTNER) &&
         <div className="flex justify-end items-center mb-6">
           <div>

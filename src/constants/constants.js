@@ -1,9 +1,7 @@
 
 export const SORT_OPTIONS = {
-  CASE_START: "Case Start",
-  CONTRACT: "Contract",
-  MORTGAGE_TITLE: "Mortgage & Title",
-  CLOSING: "Closing",
+  STATUS: "Status",
+  PROGRESS: "Progress",
 };
 export const casesCardData = [
   {

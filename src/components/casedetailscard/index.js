@@ -9,7 +9,7 @@ const CaseDetailsCard = ({
   title,
   clientName,
   caseType,
-  createdOn,
+  premisesType,
   address,
 }) => {
   const menuOption = [
@@ -25,9 +25,9 @@ const CaseDetailsCard = ({
       <MenuPopup dropdownItems={menuOption} icon={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />}/>
     </div>
     <ul className="card-details">
-      <DetailItem label="Client Name" value={clientName} />
-      <DetailItem label="Case Type" value={caseType} />
-      <DetailItem label="Created on" value={createdOn} />
+    <DetailItem label="Case Type" value={caseType} />
+      <DetailItem label="Client Name" value={clientName} />   
+      <DetailItem label="Premises Type" value={premisesType} />
       <DetailItem label="Premises Address" value={address} />
       {/* <li>
         <span className="left-txt">Stage</span>
