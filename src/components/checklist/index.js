@@ -9,25 +9,55 @@ import Badge from "../badge";
 
 const ChecklistItem = ({ icon, label, options, action, actionInfo, optionsValue, checkboxId, currentStep }) => {
 
-  const getOptionsByAction = (action) => {
+  const getOptionsByAction = (action,option) => {
     switch (action) {
       case "Action":
         return [
           { value: "unfinished", label: "Unfinished" },
           { value: "finished", label: "Finished" },
         ];
-      case "Upload":
-        return [
-          { value: "unuploaded", label: "Unuploaded" },
-          { value: "uploaded", label: "Uploaded" },
-        ];
+        break;
+        case "Upload":
+          if (option === "Unuploaded") {
+            return [
+              { value: "upload", label: "Upload" },
+            ];
+          } else if (option === "Uploaded") {
+            return [
+              { value: "reupload", label: "Re-upload" },
+              { value: "view", label: "View" },
+            ];
+          }else{
+            return [
+              { value: "no option", label: "No option" },
+            ];
+          }
+          break;
       case "Contact":
-        return [
-          { value: "notStarted", label: "Not Started" },
-          { value: "waiting", label: "Waiting" },
-          { value: "noResponse", label: "No Response" },
-          { value: "completed", label: "Completed" },
-        ];
+        if (option === "Not Started") {
+          return [
+            { value: "compose message", label: "Compose Message" },
+          ];
+        } else if (option === "Waiting") {
+          return [
+            { value: "reupload", label: "Resend Message" },
+            { value: "view", label: "Extended Waiting Time" },
+          ];
+        } else if (option === "No Response") {
+          return [
+            { value: "reupload", label: "Resend Message" },
+            { value: "view", label: "Extended Waiting Time" },
+          ];
+        }else if (option === "Completed") {
+          return [
+            { value: "compose message", label: "Compose Message" },
+          ];
+        }else{
+             return [
+              { value: "no option", label: "No option" },]
+        }
+        break;
+
       default:
         return [];
     }
@@ -63,12 +93,18 @@ const ChecklistItem = ({ icon, label, options, action, actionInfo, optionsValue,
         return "";
     }
   };
+  const isOptionDisable = (acc,opt) => {
+   if(acc=="Action" && (opt == "Finished" || opt =="Unfinished")){
+    return true
+   }
+    return false
+  };
 
 
   const displayColor = getColorByOptions(options)
   const displayIcon = getIconByAction(action)
-  const displayOption = getOptionsByAction(action);
-
+  const displayOption = getOptionsByAction(action,options);
+  const disabled = isOptionDisable(action,options);
 
   return (
     <div class="border-t-2 border-black-10">
@@ -94,6 +130,7 @@ const ChecklistItem = ({ icon, label, options, action, actionInfo, optionsValue,
           inputClassName="border-border rounded-full py-[10px] px-[16px] bg-transparent text-secondary-700 leading-5 font-semibold"
         /> */}
           <SelectInput
+            disabled={disabled}
             name="checklistSelect"
             value={options}
             onChange={(e) => console.log(e.target.value)}

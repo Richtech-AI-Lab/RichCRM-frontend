@@ -18,12 +18,12 @@ function* registerClient(action) {
     yield put(registerClientSuccess(response.data));
     if(response.status ==200){
       const updatedPayload = {
-        ...payload, // Spread the existing payload object
+        ...payload,
         casePayload: {
-          ...payload.casePayload, // Spread the existing premisesPayload object
+          ...payload.casePayload,
           ...(payload.casePayload.clientType == 0 
-            ? { buyerID: response.data?.data[0]?.clientId } // Replace "buyer_id_value" with actual buyerID
-            : { sellerID: response.data?.data[0]?.clientId }) // Add the addressId here
+            ? { buyerID: response.data?.data[0]?.clientId } 
+            : { sellerID: response.data?.data[0]?.clientId })
         }
       };
       yield put(registerAddressRequest(updatedPayload,navigate))

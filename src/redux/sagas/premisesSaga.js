@@ -15,7 +15,6 @@ import { caseCreateRequest } from "../actions/caseAction";
 function* registerPremises(action) {
   try {
     const { payload,navigate } = action;
-    console.log(payload.premisesPayload,"payload.premisesPayload")
     const response = yield call(() =>
       postRequest(API_ENDPOINTS.REGISTER_PREMISES, payload.premisesPayload)
     );
@@ -29,8 +28,8 @@ function* registerPremises(action) {
         }
       };
       toast.success("Premises successfully registered!");
-      yield put(caseCreateRequest(updatedPayload, navigate));
-      // navigate(ROUTES.NEW_CASE_INFO);
+      navigate(ROUTES.NEW_CASE_INFO);
+      // yield put(caseCreateRequest(updatedPayload, navigate));
     }
   } catch (error) {
     yield put(registerPremisesFailure(error.response?.data || error));

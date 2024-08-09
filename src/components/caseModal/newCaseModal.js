@@ -68,11 +68,12 @@ const NewCaseModal = ({ onClose }) => {
     // ],
   };
   const validationSchema = Yup.object({
-    // caseType: Yup.string().required('Case Type is required'),
-    // caseType: Yup.string().required('Case Purpose is required'),
+    caseType: Yup.string().required('Case Type is required'),
     clientType: Yup.string().required('Client Type is required'),
-    clientfirstName: Yup.string().required('Client First Name is required'),
-    clientLastName: Yup.string().required('Client Last Name is required'),
+    clientfirstName:  Yup.string().required('First name is required'),
+  
+    clientLastName:  Yup.string().required('Last name is required'),
+  
     address: Yup.string().required("Address is required"),
     // addressLine2: Yup.string('Address Line 2 is required'),
     city: Yup.string().required("City is required"),
@@ -92,15 +93,6 @@ const NewCaseModal = ({ onClose }) => {
       // })
     // ),
   });
-  // useEffect(() => {
-  //   const addressId = address?.data[0]?.addressId;
-  //   const premisesPayload = {
-  //     name: `${client?.clientfirstName} ${client?.clientLastName}`,
-  //     addressId: addressId,
-  //     propertyType: 2,
-  //   };
-  //   dispatch(registerPremisesRequest(premisesPayload));
-  // }, [address])
 
   const handleNewCaseInfo = async (values) => {
     // const clientDetails = values.clients[0];
@@ -120,7 +112,7 @@ const NewCaseModal = ({ onClose }) => {
       },
       premisesPayload: {
         name: `Rich CRM`,
-        propertyType: values.premisesType,
+        propertyType: 2,
       },
       casePayload: {
           creatorId: "test1@gmail.com",
@@ -128,7 +120,6 @@ const NewCaseModal = ({ onClose }) => {
           clientType: values.caseType
       }
     };
-    console.log(combinedPayload,"__________")
     try {
       dispatch(registerClientRequest(combinedPayload, navigate))
 
@@ -304,7 +295,7 @@ const NewCaseModal = ({ onClose }) => {
                           as={SelectInput}
                           defaultLabel="Select Client Type"
                           name={`clientType`}
-                          value={clientType}
+                          value={values.clientType}
                           onChange={(e) => {
                             handleChange(e);
                             const selectedClientType = e.target.value;
@@ -314,11 +305,11 @@ const NewCaseModal = ({ onClose }) => {
                           options={clientTypeOptions}
                           inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
                         />
-                        <ErrorMessage
-                          name={`clientType`}
-                          component="div"
-                          className="text-red-500 text-sm"
-                        />
+                         {touched.clientType && errors.clientType ? (
+                        <div className="text-red-500 text-sm">
+                          {errors.clientType}
+                        </div>
+                      ) : null}
                       </div>
                     </div>
                     {clientType == CLIENTTYPE.INDIVIDUAL &&
