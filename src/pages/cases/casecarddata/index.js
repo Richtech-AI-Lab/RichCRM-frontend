@@ -56,8 +56,8 @@ const CaseCardData = () => {
           <CaseDetailsCard
             title="Fu - Skyline #5712"
             clientName="Jack Fu"
-            caseType="Condo Purchasing"
-            createdOn="June 10, 2024"
+            caseType="Purchasing"
+            premisesType="Condo"
             address="1500 Skyline Avenue Apt 2503 New York, NY 10019"
           />
           <XButton

@@ -17,7 +17,16 @@ function* registerClient(action) {
     );
     yield put(registerClientSuccess(response.data));
     if(response.status ==200){
-      yield put(registerAddressRequest(payload.addressDetails,navigate))
+      const updatedPayload = {
+        ...payload,
+        casePayload: {
+          ...payload.casePayload,
+          ...(payload.casePayload.clientType == 0 
+            ? { buyerID: response.data?.data[0]?.clientId } 
+            : { sellerID: response.data?.data[0]?.clientId })
+        }
+      };
+      yield put(registerAddressRequest(updatedPayload,navigate))
       toast.success("Client created successfully");
     }
   } catch (error) {

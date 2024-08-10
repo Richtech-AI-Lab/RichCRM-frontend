@@ -15,9 +15,10 @@ import {
 
 
 //Create case
-export const caseCreateRequest = (payload) => ({
+export const caseCreateRequest = (payload,navigate) => ({
     type: POST_CASE_REQUEST,
     payload,
+    navigate
 });
 
 export const caseCreateSuccess = (user) => ({

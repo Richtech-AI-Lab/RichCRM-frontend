@@ -88,7 +88,7 @@ const ParticipantCaseDetails = () => {
           <div className="grid grid-cols-12 gap-6">
             <div className="col-span-6">
               <CaseCardDetails items={sellerItems} title="Seller" handle={handleChange} form={{ errors, touched }} />
-              <CaseCardDetails items={buyerItems} title="Puchaser" handle={handleChange} form={{ errors, touched }} />
+              <CaseCardDetails items={buyerItems} title="Purchaser" handle={handleChange} form={{ errors, touched }} />
             </div>
             <div className="col-span-6">
               <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys}  errors={errors.attorneys || []} 

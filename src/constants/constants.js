@@ -1,9 +1,7 @@
 
 export const SORT_OPTIONS = {
-  CASE_START: "Case Start",
-  CONTRACT: "Contract",
-  MORTGAGE_TITLE: "Mortgage & Title",
-  CLOSING: "Closing",
+  STATUS: "Status",
+  PROGRESS: "Progress",
 };
 export const casesCardData = [
   {
@@ -424,7 +422,13 @@ export const userRole = {
   CLIENT: 2,
 };
 
-export const clientType = {
-  BUYER: 0,
-  SELLER: 1,
+// export const clientType = {
+//   BUYER: 0,
+//   SELLER: 1,
+// };
+
+export const CLIENTTYPE = {
+  INDIVIDUAL: 0,
+  COMPANY: 1,
+  TRUST:2
 };

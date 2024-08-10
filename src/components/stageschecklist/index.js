@@ -12,10 +12,16 @@ import { CgFolder } from "react-icons/cg";
 import { BiMessageAltCheck } from "react-icons/bi";
 import { LuUpload } from "react-icons/lu";
 import StepperProgress from "../stepperProgress";
+import { Dropdown } from "flowbite-react";
+import MenuDropdown from "../menupopup";
+import MenuPopup from "../menupopup";
 
 const StagesChecklist = ({ label }) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [activeTab, setActiveTab] = useState('mortgage'); // State to track active tab
+  const [activeTab, setActiveTab] = useState('mortgage');
+  const menuOption1= ['Create a Task', 'Add a Task']
+  const menuOption2= ['Finish all', 'Edit task']
+
 
   const settingUpTasks = [
     {
@@ -266,7 +272,6 @@ const StagesChecklist = ({ label }) => {
     }
     return stepperItems[currentStep];
   };
-  console.log(currentStep, "step")
   return (
     <div className="col-span-8">
       <div className="bg-white py-4 rounded-2xl mb-5">
@@ -303,8 +308,9 @@ const StagesChecklist = ({ label }) => {
             <span className="text-base text-secondary-800 font-medium">{`${getHeadLabel(currentStep)} (2/3)`}</span>
           )}
           <div className="flex items-center gap-2">
-            <FiPlus className="text-lg opacity-40" />
-            <BsThreeDotsVertical className="text-lg opacity-40" />
+            
+            <MenuPopup dropdownItems={menuOption1} icon={<FiPlus className="text-lg opacity-40" />}/>
+            <MenuPopup dropdownItems={menuOption2} icon={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />}/>
           </div>
         </div>
         <ul className="mb-6 overflow-y-auto">

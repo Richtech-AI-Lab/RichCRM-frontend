@@ -9,18 +9,27 @@ import {
 } from "../actions/premisesActions";
 import { FETCH_PREMISES_REQUEST, REGISTER_PREMISES_REQUEST } from "../type";
 import { toast } from "react-toastify";
+import { caseCreateRequest } from "../actions/caseAction";
 
 //Register Premises Saga
 function* registerPremises(action) {
   try {
     const { payload,navigate } = action;
     const response = yield call(() =>
-      postRequest(API_ENDPOINTS.REGISTER_PREMISES, payload)
+      postRequest(API_ENDPOINTS.REGISTER_PREMISES, payload.premisesPayload)
     );
     yield put(registerPremisesSuccess(response.data));
     if(response.status==200){
+      const updatedPayload = {
+        ...payload, 
+        casePayload: {
+          ...payload.casePayload, 
+          premisesId: response.data?.data[0]?.premisesId,
+        }
+      };
       toast.success("Premises successfully registered!");
       navigate(ROUTES.NEW_CASE_INFO);
+      // yield put(caseCreateRequest(updatedPayload, navigate));
     }
   } catch (error) {
     yield put(registerPremisesFailure(error.response?.data || error));

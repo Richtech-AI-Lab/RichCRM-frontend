@@ -1,6 +1,7 @@
 import React from "react";
 
 const SelectInput = ({
+  disabled=false,
   label,
   name,
   value,
@@ -25,6 +26,7 @@ const SelectInput = ({
         </label>
       )}
       <select
+        disabled={disabled}  
         name={name}
         value={value}
         onChange={onChange}
@@ -32,11 +34,12 @@ const SelectInput = ({
         className={inputClassName}
       >
         {defaultLabel && <option value="" disabled className="bg-bg-input" label={defaultLabel} />}
-        {options.map((option) => (
+        {options?.map((option) => (
           <option key={option.value} value={option.value} label={option.label}>
             {option.label}
           </option>
         ))}
+
       </select>
       {error && touched && <p className="mt-2 text-sm text-red-600">{error}</p>}
     </div>
