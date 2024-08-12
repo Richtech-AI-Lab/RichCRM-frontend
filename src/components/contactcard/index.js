@@ -49,7 +49,7 @@ const ContactCard = ({
                 />
                 <div style={{display:'flex',flexDirection:'column'}}>
                 <span className="left-txt font-medium text-secondary-800">{data.name}</span>
-                <span className="left-txt font-medium text-secondary-800 text-sm">Purchaser</span>
+                <span className="left-txt font-medium text-secondary-800 text-sm">Purchaser (Client)</span>
                 </div>
               </div>
             </AccordionTitle>

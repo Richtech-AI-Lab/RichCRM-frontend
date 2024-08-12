@@ -64,6 +64,10 @@ module.exports = {
       'active-blue-text': '#033B6B',
       'bg-gray': {
         100: '#E2E2E7',
+        200: '#EEEDF2',
+      },
+      'border-line': {
+        100: '#BCC0C9',
       },
       'error': '#CF0505',
       'light-purple': '#F9F9FE',

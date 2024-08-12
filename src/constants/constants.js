@@ -416,6 +416,15 @@ export const contactTab ={
   CLIENTS:2,
   OTHERS:3,
 }
+
+export const addFromContactTab = {
+ BROKERS: 1,
+  CLIENTS: 2,
+  ATTORNEY: 3,
+  TITLE: 4,
+  LENDER: 5,
+  OTHER: 6,
+};
 export const userRole = {
   ADMIN: 0,
   ATTORNEY: 1,

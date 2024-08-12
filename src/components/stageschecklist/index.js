@@ -336,20 +336,6 @@ const StagesChecklist = ({ label }) => {
           className="bg-active-blue text-active-blue-text shadow-shadow-light rounded-full text-sm font-medium py-[10px] px-6" onClick={handleNextStage} />
         </div>
       </div>
-      <div className="flex justify-end justify-content:flex-end">
-        <div className="grid gap-4 grid-cols-2 ">
-          <XButton
-            text="One Drive"
-            icon={<CgFolder className="text-base mr-2 inline-block font-medium" />}
-            className="bg-white shadow-shadow-light text-secondary-800 py-3 px-6 rounded-full font-medium"
-          />
-          <XButton
-            text="Upload File"
-            icon={<LuUpload className="text-base mr-2 inline-block font-medium" />}
-            className="bg-white shadow-shadow-light text-secondary-800 py-3 px-6 rounded-full font-medium"
-          />
-        </div>
-      </div>
     </div>
   );
 };

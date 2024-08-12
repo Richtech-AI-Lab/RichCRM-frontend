@@ -3,10 +3,11 @@ import React, { useState } from "react";
 import dummyData from "../../../utils/dummyData.json";
 import { ROUTES } from "../../../constants/api";
 import { useNavigate } from "react-router-dom";
+import { IMAGES } from "../../../constants/imagePath";
 
 const ContactListing = ({ active }) => {
   const navigate = useNavigate()
-  const header=["Name", "Position", "Company", "Email", "Cell Phone", "Work Phone"]
+  const header=["Name", "Position", "Company", "Email", "Cell Phone"]
   
   const handleNavigation = () =>{
     navigate(ROUTES.CONTACT_PARTNER);
@@ -28,7 +29,7 @@ const ContactListing = ({ active }) => {
                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                   <div className="flex items-center">
                     <img
-                      src={user.picture}
+                      src={IMAGES.contact_avtar}
                       alt="Profile"
                       className="mr-3 rounded-full"
                     />
@@ -39,7 +40,6 @@ const ContactListing = ({ active }) => {
                 <Table.Cell>{user.company}</Table.Cell>
                 <Table.Cell>{user.email}</Table.Cell>
                 <Table.Cell>{user.cellphone}</Table.Cell>
-                <Table.Cell>{user.workphone}</Table.Cell>
               </Table.Row>  
             )
           })}

@@ -7,6 +7,7 @@ import { FiPlus } from "react-icons/fi";
 import { IoFilterSharp } from "react-icons/io5";
 import { useLocation } from "react-router-dom";
 import { ROUTES } from "../../constants/api";
+import { Checkbox, Dropdown, Label } from "flowbite-react";
 
 const Actionbar = ({ onFilterChange }) => {
   const location = useLocation();
@@ -75,7 +76,7 @@ const Actionbar = ({ onFilterChange }) => {
         )}
       </div>
       <div className="flex">
-      <div className="bg-white shadow-shadow-light  px-5 rounded-full flex items-center mr-4">
+      {/* <div className="bg-white shadow-shadow-light  px-5 rounded-full flex items-center mr-4">
           <IoFilterSharp className="text-xl mr-2 inline-block" />
            <SelectInput
             inputClassName=" px-0 py-[12px] border-0 text-base leading-5 font-semibold text-label focus:ring-transparent"
@@ -89,7 +90,69 @@ const Actionbar = ({ onFilterChange }) => {
               label: option.label,
             }))}
           />
-        {/* <span className="text-base font-medium text-secondary-800">Filter</span> */}
+        </div> */}
+        <div className="items-dropdown mr-4">          
+          <Dropdown label="Filter" inline className="rounded-2xl w-64" dismissOnClick={false}>
+            <div className="px-4 py-3">
+              <span className="block text-sm font-medium text-secondary-800">Status</span>
+            </div>
+            <Dropdown.Item className="py-3">
+              <div className="flex items-center gap-2">
+                <Checkbox id="dashboard" />
+                <Label htmlFor="remember" className="text-secondary-800">All Status</Label>
+              </div>
+            </Dropdown.Item>
+            <Dropdown.Item className="py-3">
+              <div className="flex items-center gap-2">
+                <Checkbox id="dashboard" />
+                <Label htmlFor="remember" className="text-secondary-800">Warning</Label>
+              </div>
+            </Dropdown.Item>
+            <Dropdown.Item className="py-3">
+              <div className="flex items-center gap-2">
+                <Checkbox id="dashboard" />
+                <Label htmlFor="remember" className="text-secondary-800">Waiting</Label>
+              </div>
+            </Dropdown.Item>
+            <Dropdown.Item className="py-3">
+              <div className="flex items-center gap-2">
+                <Checkbox id="dashboard" />
+                <Label htmlFor="remember" className="text-secondary-800">Finished</Label>
+              </div>
+            </Dropdown.Item>
+            <div className="border-t border-border-line-100 px-4 py-3">
+              <span className="block text-sm font-medium text-secondary-800">Case Type</span>
+            </div>
+            <Dropdown.Item className="py-3">
+              <div className="flex items-center gap-2">
+                <Checkbox id="dashboard" />
+                <Label htmlFor="remember" className="text-secondary-800">All Case Type</Label>
+              </div>
+            </Dropdown.Item>
+            <Dropdown.Item className="py-3">
+              <div className="flex items-center gap-2">
+                <Checkbox id="dashboard" />
+                <Label htmlFor="remember" className="text-secondary-800">Selling</Label>
+              </div>
+            </Dropdown.Item>
+            <Dropdown.Item className="py-3">
+              <div className="flex items-center gap-2">
+                <Checkbox id="dashboard" />
+                <Label htmlFor="remember" className="text-secondary-800">Purchasing</Label>
+              </div>
+            </Dropdown.Item>
+            <div className="text-center py-3">
+              <XButton
+                text={"Reset"}
+                className="bg-card-300 text-sm text-secondary-800 py-[10px] px-8 rounded-[100px]"
+              />
+              <XButton
+                type="submit"
+                text={"Apply"}
+                className="bg-primary text-sm text-white py-[10px] px-8 rounded-[100px] ml-3"
+              />
+            </div>
+          </Dropdown>
         </div>
         <SelectInput
           inputClassName="bg-white shadow-shadow-light py-[12px] px-6 rounded-full border-0 text-base leading-5 font-semibold text-label"
@@ -104,7 +167,14 @@ const Actionbar = ({ onFilterChange }) => {
             label: `Sort by: ${option.label}`,
           }))}
         />
-      <XButton text="New case" icon={<FiPlus className="text-base mr-2 inline-block" />} className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium ml-4" onClick={toggleModal} />
+      {activeFilter !== "Closed" && (
+          <XButton
+            text="New case"
+            icon={<FiPlus className="text-base mr-2 inline-block" />}
+            className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium ml-4"
+            onClick={toggleModal}
+          />
+        )}
       {isModalOpen && <NewCaseModal onClose={toggleModal} />}
       </div>
     </div>
