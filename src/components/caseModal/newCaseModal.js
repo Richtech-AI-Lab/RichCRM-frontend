@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import * as Yup from "yup";
-import { Formik, FieldArray, ErrorMessage, Field } from "formik";
+import { Formik, FieldArray, ErrorMessage, Field, replace } from "formik";
 import { Label, Modal } from "flowbite-react";
 import TextInput from "../TextInput";
 import XButton from "../button/XButton";
@@ -22,6 +22,7 @@ import { registerAddressRequest } from "../../redux/actions/utilsActions";
 import XSpinnerLoader from "../spinnerLoader/XSpinnerLoader";
 import { CLIENTTYPE} from "../../constants/constants";
 import states from "../../constants/states.json";
+import { debounce } from "lodash";
 
 const clientTypeOptions = [
   { value: CLIENTTYPE.INDIVIDUAL, label: "Individual" },
@@ -29,14 +30,57 @@ const clientTypeOptions = [
   { value: CLIENTTYPE.TRUST, label: "Trust" },
 ];
 
+const searchOption = [
+  {
+    "clientId":"123456789",
+    "firstName": "John",
+    "lastName": "Doe",
+    "cellNumber": "1234567890",
+    "email": "john.doe@hotmail.com"
+   },
+   {
+    "clientId":"123-45-6789",
+    "firstName": "Marry",
+    "lastName": "Doe",
+    "cellNumber": "1234567890",
+    "email": "john.doe@hotmail.com"
+   },
+   {
+    "clientId":"123-45-6789",
+    "firstName": "Aqua",
+    "lastName": "Doe",
+    "cellNumber": "1234567890",
+    "email": "john.doe@hotmail.com"
+   }
+];
+
 const NewCaseModal = ({ onClose }) => {
   const dispatch = useDispatch();
   const [clientType, setClientType] = useState(CLIENTTYPE.INDIVIDUAL)
+  const [searchResults, setSearchResults] = useState([]);
+  const [activeSearchIndex, setActiveSearchIndex] = useState(null);
   const { client, error, loading } = useSelector((state) => state.client);
   const { address } = useSelector((state) => state.utils);
   const { premises } = useSelector((state) => state.premises);
   const { cases } = useSelector((state) => state.case.createCase);
   const [showClientFields, setShowClientFields] = useState(false);
+
+  const debouncedFunction = useCallback(
+    debounce((value, index) => {
+      // Additional function to call after debouncing
+      if(value != "" || value.length > 0){
+        const filteredResults = searchOption.filter(option =>
+          option.firstName.toLowerCase().includes(value.toLowerCase())
+        );
+        setSearchResults(filteredResults);
+      }else{
+        setSearchResults([]);
+      }
+      setActiveSearchIndex(index)
+      // You can call any API or perform any other actions here
+    }, 1000),
+    []
+  );
 
   const handleAddClientClick = () => {
     setShowClientFields(true);
@@ -49,60 +93,55 @@ const NewCaseModal = ({ onClose }) => {
   const initialValues = {
     caseType: "",
     clientType: "",
-    clientfirstName: "",
-    clientLastName: "",
+    // clientfirstName: "",
+    // clientLastName: "",
     premisesType: "",
     address: "",
     addressLine2: "",
     city: "",
     state: "",
     zipCode: "",
-    // clients: [
-    //   {
-    //     clientType: "",
-    //     clientfirstName: "",
-    //     clientLastName: "",
-    //     // cellNumber: "",
-    //     // email: "",
-    //   },
-    // ],
+    clients: [
+      {
+        clientfirstName: "",
+        clientLastName: "",
+        clientcellNumber: "",
+        clientemail: "",
+      },
+    ],
   };
   const validationSchema = Yup.object({
     caseType: Yup.string().required('Case Type is required'),
     clientType: Yup.string().required('Client Type is required'),
-    clientfirstName:  Yup.string().required('First name is required'),
-  
-    clientLastName:  Yup.string().required('Last name is required'),
-  
+    premisesType: Yup.string().required('Premises Type is required'),
     address: Yup.string().required("Address is required"),
     // addressLine2: Yup.string('Address Line 2 is required'),
     city: Yup.string().required("City is required"),
     state: Yup.string().required("State is required"),
     zipCode: Yup.string().required("Zip code is required"),
-    // clients: Yup.array().of(
-    //   Yup.object().shape({
-    //     clientType: Yup.string().required("Client Type is required"),
-    //     clientfirstName: Yup.string().required("Client First Name is required"),
-    //     clientLastName: Yup.string().required("Client Last Name is required"),
-        // cellNumber: Yup.string()
-        // .matches(/^[0-9]+$/, 'Cell number must be a number')
-        // // .required('Cell Number is required')
-        // ,
-        //  email: Yup.string().email('Invalid email format')
+    clients: Yup.array().of(
+      Yup.object().shape({
+        clientfirstName: Yup.string().required("Client First Name is required"),
+        clientLastName: Yup.string().required("Client Last Name is required"),
+        clientcellNumber: Yup.string()
+        .matches(/^[0-9]+$/, 'Cell number must be a number')
+        // .required('Cell Number is required')
+        ,
+        clientemail: Yup.string().email('Invalid email format')
         //  .required('Email is required'),
-      // })
-    // ),
+      })
+    ),
   });
 
   const handleNewCaseInfo = async (values) => {
-    // const clientDetails = values.clients[0];
 
+    const clientData = values.clients[0];
     const combinedPayload = {
       clientDetails: {
-        firstName: values.clientfirstName,
-        lastName: values.clientLastName,
-        // cellNumber: clientDetails.cellNumber,
-        // email: clientDetails.email,
+        firstName: clientData.clientfirstName,
+        lastName: clientData.clientLastName,
+        cellNumber: clientData.cellNumber,
+        email: clientData.email,
       },
       addressDetails: {
         addressLine1: values.address,
@@ -111,8 +150,7 @@ const NewCaseModal = ({ onClose }) => {
         zipCode: values.zipCode,
       },
       premisesPayload: {
-        name: `Rich CRM`,
-        propertyType: 2,
+        propertyType: parseInt(values.premisesType),
       },
       casePayload: {
           creatorId: "test1@gmail.com",
@@ -120,6 +158,8 @@ const NewCaseModal = ({ onClose }) => {
           clientType: values.caseType
       }
     };
+    // console.log(combinedPayload)
+    // return true;
     try {
       dispatch(registerClientRequest(combinedPayload, navigate))
 
@@ -182,6 +222,9 @@ const NewCaseModal = ({ onClose }) => {
     }
   };
 
+  const handleSearchItem = (data)=>{
+    console.log(data)
+  }
   return (
     <>
       <XSpinnerLoader loading={loading} size="lg" />
@@ -312,7 +355,167 @@ const NewCaseModal = ({ onClose }) => {
                       ) : null}
                       </div>
                     </div>
-                    {clientType == CLIENTTYPE.INDIVIDUAL &&
+                    { clientType == CLIENTTYPE.INDIVIDUAL &&
+                      <div className="mb-8">
+
+                      <FieldArray name="clients">
+                        {({ remove, push, replace }) => (
+                          <>
+                            {values?.clients.map((client, index) => (
+                              
+                              <div key={index} className="mb-2 block -mt-8">
+                                {/* <Label htmlFor={`clients.${index}.clientType`} value="Client" /> */}
+                                <div className="relative mb-8">
+                                  {index >= 0 && (
+                                    <IoIosClose
+                                      onClick={() => remove(index)}
+                                      className="absolute top-0 right-0 cursor-pointer"
+                                      size={24}
+                                    />
+                                  )}
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                  <div className="mb-2 block">
+                                    {/* <Field
+                                      as={SelectInput}
+                                      defaultLabel="Select Client Type"
+                                      name={`clients.${index}.clientType`}
+                                      value={client.clientType}
+                                      onChange={handleChange}
+                                      onBlur={handleBlur}
+                                      options={clientTypeOptions}
+                                      inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
+                                    />
+                                    <ErrorMessage
+                                      name={`clients.${index}.clientType`}
+                                      component="div"
+                                      className="text-red-500 text-sm"
+                                    /> */}
+                                  </div>
+                                </div>
+                                {client.isCard === true ? <p>{client.clientfirstName}</p>:
+                                <div className="grid grid-cols-2 gap-4 ">
+                                  <div className="mb-2 block">
+                                    <TextInput
+                                      name={`clients.${index}.clientfirstName`}
+                                      type="text"
+                                      placeholder="First Name"
+                                      value={client.clientfirstName}
+                                      onChange={(e) => {
+                                        handleChange(e);
+                                        debouncedFunction(e.target.value, index);
+                                      }}
+                                      onBlur={handleBlur}
+                                      field={{
+                                        name: `clients.${index}.clientfirstName`,
+                                      }}
+                                      form={{ errors, touched }}
+                                    />
+                                    { activeSearchIndex == index &&
+                                      searchResults.map(item=>{
+                                        return <p className={'cursor-pointer bg-badge-green m-3' } onClick={() =>{
+                                          replace(index, {
+                                            isCard: true,
+                                            clientfirstName: item.firstName,
+                                            clientLastName: item.lastName,
+                                            clientcellNumber: item.cellNumber,
+                                            clientemail: item.email,
+                                          })
+                                          setSearchResults([])
+                                        }
+                                        }>{item.firstName}</p>
+                                      })
+                                    }
+                                    <ErrorMessage
+                                      name={`clients.${index}.clientfirstName`}
+                                      component="div"
+                                      className="text-red-500 text-sm"
+                                    />
+                                  </div>
+                                  <div className="mb-2 block">
+                                    <TextInput
+                                      name={`clients.${index}.clientLastName`}
+                                      type="text"
+                                      placeholder="Last Name"
+                                      value={client.clientLastName}
+                                      onChange={handleChange}
+                                      onBlur={handleBlur}
+                                      field={{
+                                        name: `clients.${index}.clientLastName`,
+                                      }}
+                                      form={{ errors, touched }}
+                                    />
+                                    <ErrorMessage
+                                      name={`clients.${index}.clientLastName`}
+                                      component="div"
+                                      className="text-red-500 text-sm"
+                                    />
+                                  </div>
+                                  <div className="mb-8">
+                                    <TextInput
+                                      type="number"
+                                      name={`clients.${index}.clientcellNumber`}
+                                      value={client.clientcellNumber}
+                                      onChange={handleChange}
+                                      onBlur={handleBlur}
+                                      placeholder="Cell Number"
+                                      field={{
+                                        name: `clients.${index}.clientcellNumber`,
+                                      }}
+                                      form={{ errors, touched }}
+                                    />
+                                    <ErrorMessage
+                                      name={`clients.${index}.clientcellNumber`}
+                                      component="div"
+                                      className="text-red-500 text-sm"
+                                    />
+                                  </div>
+                                  <div className="mb-8">
+                                    <TextInput
+                                      type="email"
+                                      name={`clients.${index}.clientemail`}
+                                      id={`clients.${index}.clientemail`}
+                                      value={client.clientemail}
+                                      onChange={handleChange}
+                                      onBlur={handleBlur}
+                                      placeholder="Email"
+                                      field={{ name: `clients.${index}.clientemail` }}
+                                      form={{ errors, touched }}
+                                    />
+                                    <ErrorMessage
+                                      name={`clients.${index}.email`}
+                                      component="div"
+                                      className="text-red-500 text-sm"
+                                    />
+                                  </div>
+                                </div>}
+                                {/* <div className="relative mb-8">
+                                                          {index > 0 && (
+                                                              <IoIosClose onClick={() => remove(index)} className="absolute top-0 right-0 cursor-pointer" size={24} />
+                                                          )}
+                                                      </div> */}
+                              </div>
+                            ))}
+                            {/* <a className="ml-6 text-primary2" onClick={() => push({ clientType: "", clientfirstName: "", clientLastName: "" })}>  <IoIosAdd /> Add a client</a> */}
+                            <a
+                              className="ml-6 text-primary2 flex items-center"
+                              onClick={() =>
+                                push({
+                                  clientfirstName: "",
+                                  clientLastName: "",
+                                  clientcellNumber: "",
+                                  clientemail: "",
+                                })
+                              }
+                            >
+                              <IoIosAdd className="mr-1" /> Add a client
+                            </a>
+                          </>
+                        )}
+                      </FieldArray>
+                    </div>
+                    }
+                    {/* {clientType == CLIENTTYPE.INDIVIDUAL &&
                       <div className="grid grid-cols-2 gap-4">
                         <div className="mb-2 block">
                         
@@ -328,11 +531,6 @@ const NewCaseModal = ({ onClose }) => {
                             }}
                             form={{ errors, touched }}
                           />
-                          {/* <ErrorMessage
-                            name={`clientfirstName`}
-                            component="div"
-                            className="text-red-500 text-sm"
-                          /> */}
                         </div>
                         <div className="mb-2 block">
                           <TextInput
@@ -347,14 +545,9 @@ const NewCaseModal = ({ onClose }) => {
                             }}
                             form={{ errors, touched }}
                           />
-                          {/* <ErrorMessage
-                            name={`clientLastName`}
-                            component="div"
-                            className="text-red-500 text-sm"
-                          /> */}
                         </div>
                       </div>
-                    }
+                    } */}
                     {clientType == CLIENTTYPE.COMPANY &&
                       
                         <div className="mb-2 block">
@@ -422,12 +615,12 @@ const NewCaseModal = ({ onClose }) => {
                           onBlur={handleBlur}
                           options={[
                             { value: 0, label: "Condo" },
-                            { value: 1,  label: "House (Single)" },
-                            { value: 2,  label: "House (Multiple)" },
-                            { value: 3, label: "Co-op" },
-                            { value: 4, label: "Commercial" },
-                            { value: 5, label: "Land" },
-                            { value: 6, label: "Condo-op" },
+                            { value: 1,  label: "House" },
+                            // { value: 2,  label: "House (Multiple)" },
+                            { value: 2, label: "Co-op" },
+                            { value: 3, label: "Commercial" },
+                            { value: 4, label: "Land" },
+                            { value: 5, label: "Condo-op" },
                           ]}
                           inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
                         />
