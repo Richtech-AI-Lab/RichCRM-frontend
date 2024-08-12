@@ -11,6 +11,8 @@ import StagesChecklist from "../../../components/stageschecklist";
 import { useNavigate } from "react-router-dom";
 import { FaRegEdit } from "react-icons/fa";
 import { ROUTES } from "../../../constants/api";
+import { CgFolder } from "react-icons/cg";
+import { LuUpload } from "react-icons/lu";
 
 const CaseCardData = () => {
   const navigate=useNavigate();
@@ -51,6 +53,20 @@ const CaseCardData = () => {
   return (
     <div>
       <PageHeader items={headerItems} />
+      <div className="flex justify-end justify-content:flex-end mb-6">
+        <div className="grid gap-4 grid-cols-2 ">
+          <XButton
+            text="One Drive"
+            icon={<CgFolder className="text-base mr-2 inline-block font-medium" />}
+            className="bg-white shadow-shadow-light text-secondary-800 py-3 px-6 rounded-full font-medium"
+          />
+          <XButton
+            text="Upload File"
+            icon={<LuUpload className="text-base mr-2 inline-block font-medium" />}
+            className="bg-white shadow-shadow-light text-secondary-800 py-3 px-6 rounded-full font-medium"
+          />
+        </div>
+      </div>
       <div className="grid grid-cols-12 gap-6">
         <div className="col-span-4">
           <CaseDetailsCard
@@ -63,7 +79,7 @@ const CaseCardData = () => {
           <XButton
             text="Case Details"
             // icon={<FaRegEdit className="text-base mr-2 inline-block" />}
-            className="bg-active-blue text-active-blue-text shadow-shadow-light rounded-full text-sm font-medium w-full py-3 px-3 mb-7 flex items-center justify-center"
+            className="bg-badge-gray text-secondary-800  rounded-full text-sm font-medium w-full py-3 px-3 mb-7 flex items-center justify-center"
             onClick={handleCaseDetails}
           />
           {/* <ContactCard

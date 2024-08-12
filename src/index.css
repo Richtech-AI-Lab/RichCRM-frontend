@@ -175,4 +175,19 @@
   .contacts-table td {
     @apply py-2 text-sm text-secondary-800 font-medium px-4 first:pl-0 last:pr-0
   }
+  .contacts-table.addFromContactModal {
+    @apply  bg-input-surface
+  }
+  .contacts-table.addFromContactModal th {
+    @apply  bg-input-surface
+  }
+  .contacts-table.addFromContactModal td {
+    @apply  bg-input-surface
+  }
+  .items-dropdown > button {
+    @apply bg-white shadow-shadow-light py-[10px] px-5 rounded-full flex items-center text-base text-secondary-800 font-medium
+  }
+  .items-dropdown ul li button {
+    @apply hover:bg-bg-gray-200
+  }
 }

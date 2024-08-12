@@ -6,13 +6,14 @@ import XButton from "../button/XButton";
 import { useNavigate } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
-import { clientType, contactTab } from "../../constants/constants";
+import { addFromContactTab, clientType, contactTab } from "../../constants/constants";
 import { IMAGES } from "../../constants/imagePath";
 import ContactsActionbar from "../actionbar/contactsActionBar";
+import AddFromContactListing from "../../pages/contacts/addFromContactListing";
 
 const AddFromContactModal = ({ onClose }) => {
 
-  const [activeTab, setActiveTab] = useState(contactTab.PARTNERS);
+  const [activeTab, setActiveTab] = useState(addFromContactTab.BROKERS);
   const initialValues = {};
 
   const handleAddFromContact = async (values) => {
@@ -21,7 +22,7 @@ const AddFromContactModal = ({ onClose }) => {
 
   return (
     <>
-      <Modal show={true} size="md" onClose={onClose} className="new-case-modal">
+      <Modal show={true}  onClose={onClose} className="new-case-modal">
         <Modal.Header className="border-b-0">
           <div>
             <h2 className="mb-2 text-[28px] leading-9 font-medium text-secondary-800">
@@ -32,7 +33,7 @@ const AddFromContactModal = ({ onClose }) => {
             </p>
           </div>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="pt-2">
           <Formik
             initialValues={initialValues}
             // onSubmit={handleNewCaseInfo}
@@ -63,12 +64,13 @@ const AddFromContactModal = ({ onClose }) => {
                   </div>
                 </div>
 
-                <div className="mt-14">
+                <div className="mt-8">
                   <ContactsActionbar
                     active={activeTab}
                     setActive={setActiveTab}
                     isAddFromContactModal={true}
                   />
+                <AddFromContactListing active={activeTab} />
                 </div>
 
                 <div className="text-end mt-8">
@@ -76,11 +78,11 @@ const AddFromContactModal = ({ onClose }) => {
                     text={"Cancel"}
                     onClick={onClose}
                     disabled={isSubmitting}
-                    className="bg-card-300 text-sm text-secondary-800 py-[10px] px-6 rounded-[100px]"
+                    className="bg-card-300 text-sm text-primary2 py-[10px] px-6 rounded-[100px]"
                   />
                   <XButton
                     type="submit"
-                    text={"Next"}
+                    text={"Add"}
                     disabled={isSubmitting}
                     className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px] ml-4"
                   />
