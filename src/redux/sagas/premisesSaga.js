@@ -28,8 +28,8 @@ function* registerPremises(action) {
         }
       };
       toast.success("Premises successfully registered!");
-      navigate(ROUTES.NEW_CASE_INFO);
-      // yield put(caseCreateRequest(updatedPayload, navigate));
+      // navigate(ROUTES.NEW_CASE_INFO);
+      yield put(caseCreateRequest(updatedPayload, navigate));
     }
   } catch (error) {
     yield put(registerPremisesFailure(error.response?.data || error));

@@ -15,7 +15,7 @@ const ContactDetailItem = ({ icon, label, content, isInput, className }) => {
             value=""
             onChange={(e) => console.log(e.target.value)}
             options={[
-              { value: "Purchaser", label: "Purchaser" },
+              { value: "Purchaser", label: "Purchaser(Client)" },
               { value: "Seller", label: "Seller" },
             ]}
             inputClassName="border-border rounded-full py-[10px] px-[16px] bg-transparent text-secondary-700 leading-5 font-semibold"

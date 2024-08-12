@@ -22,8 +22,8 @@ function* registerClient(action) {
         casePayload: {
           ...payload.casePayload,
           ...(payload.casePayload.clientType == 0 
-            ? { buyerID: response.data?.data[0]?.clientId } 
-            : { sellerID: response.data?.data[0]?.clientId })
+            ? { buyerId: response.data?.data[0]?.clientId } 
+            : { sellerId: response.data?.data[0]?.clientId })
         }
       };
       yield put(registerAddressRequest(updatedPayload,navigate))

@@ -2,12 +2,15 @@ import avatarImage from "../assets/images/avatar.png";
 import searchIcon from "../assets/images/search.svg";
 import plusIcon from "../assets/images/add.svg";
 import subtractIcon from "../assets/images/subtract.svg";
-import logo from "../assets/images/logo.png"
+import logo from "../assets/images/logo.png";
+import contact_avtar from "../assets/images/contact_avtar.png"
 
 export const IMAGES = {
   profile: avatarImage,
   searchIcon: searchIcon,
   addIcon: plusIcon,
   removeIcon: subtractIcon,
-  logo:logo
+  logo:logo,
+  contact_avtar:contact_avtar
+
 };

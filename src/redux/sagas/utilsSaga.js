@@ -23,6 +23,7 @@ function* registerAddress(action) {
         premisesPayload: {
           ...payload.premisesPayload, 
           addressId: response.data?.data[0]?.addressId, 
+          name: `${response.data?.data[0]?.addressLine1}_${response.data?.data[0]?.addressId}`, 
         }
       };
 
