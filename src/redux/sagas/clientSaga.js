@@ -21,7 +21,7 @@ function* registerClient(action) {
         ...payload,
         casePayload: {
           ...payload.casePayload,
-          ...(payload.casePayload.clientType == 0 
+          ...(payload.casePayload.caseType == 0 
             ? { buyerId: response.data?.data[0]?.clientId } 
             : { sellerId: response.data?.data[0]?.clientId })
         }

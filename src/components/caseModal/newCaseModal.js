@@ -20,7 +20,7 @@ import { ROUTES } from "../../constants/api";
 import { registerClientRequest } from "../../redux/actions/clientActions";
 import { registerAddressRequest } from "../../redux/actions/utilsActions";
 import XSpinnerLoader from "../spinnerLoader/XSpinnerLoader";
-import { CLIENTTYPE } from "../../constants/constants";
+import { CASETYPE, CLIENTTYPE } from "../../constants/constants";
 import states from "../../constants/states.json";
 import { debounce } from "lodash";
 import avatar from '../../assets/images/avatar.png'
@@ -31,6 +31,11 @@ const clientTypeOptions = [
   { value: CLIENTTYPE.COMPANY, label: "Company" },
   { value: CLIENTTYPE.TRUST, label: "Trust" },
 ];
+
+const caseTypeOptions = [
+  { value: CASETYPE.PURCHASING, label: "Purchasing" },
+  { value: CASETYPE.SELLING, label: "Selling" },
+]
 
 const searchOption = [
   {
@@ -149,7 +154,7 @@ const NewCaseModal = ({ onClose }) => {
 
     const clientData = values.clients[0];
     const clientDetails = {
-      clientType: values.clientType,
+      clientType: parseInt(values.clientType),
       firstName: clientData.clientfirstName,
       lastName: clientData.clientLastName,
       ...(clientData.clientcellNumber && { cellNumber: clientData.clientcellNumber }),
@@ -169,7 +174,7 @@ const NewCaseModal = ({ onClose }) => {
       casePayload: {
         creatorId: localStorage.getItem("authEmail"),
         stage: 0,
-        clientType: values.caseType
+        caseType: parseInt(values.caseType)
       }
     };
     // console.log(combinedPayload, values)
@@ -278,10 +283,7 @@ const NewCaseModal = ({ onClose }) => {
                         value={values.caseType}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        options={[
-                          { value: 1, label: "Selling" },
-                          { value: 0, label: "Purchasing" },
-                        ]}
+                        options={caseTypeOptions}
                         inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
                       />
                       {touched.caseType && errors.caseType ? (
@@ -542,7 +544,7 @@ const NewCaseModal = ({ onClose }) => {
                         </FieldArray>
                       </div>
                     }
-                    {/* {clientType == CLIENTTYPE.INDIVIDUAL &&
+                    {/* {clientType == clientType.INDIVIDUAL &&
                       <div className="grid grid-cols-2 gap-4">
                         <div className="mb-2 block">
                         

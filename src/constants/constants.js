@@ -431,10 +431,10 @@ export const userRole = {
   CLIENT: 2,
 };
 
-// export const clientType = {
-//   BUYER: 0,
-//   SELLER: 1,
-// };
+export const CASETYPE = {
+  PURCHASING: 0,
+  SELLING: 1,
+};
 
 export const CLIENTTYPE = {
   INDIVIDUAL: 0,
