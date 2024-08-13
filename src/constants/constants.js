@@ -431,13 +431,28 @@ export const userRole = {
   CLIENT: 2,
 };
 
-// export const clientType = {
-//   BUYER: 0,
-//   SELLER: 1,
-// };
+export const CASETYPE = {
+  PURCHASING: 0,
+  SELLING: 1,
+};
 
 export const CLIENTTYPE = {
   INDIVIDUAL: 0,
   COMPANY: 1,
   TRUST:2
 };
+
+// export const STAGESNAMES ={
+//   SETUP: 0,
+//   CONTRACT_PREPARING: 0,
+//   CONTRACT_SIGNING: 0,
+//   MORTGAGE: 0,
+//   CLOSING: 0,
+// }
+export const STAGESNAMES ={
+  '0': 'SETUP',
+  '1': 'CONTRACT_PREPARING',
+  '2': 'CONTRACT_SIGNING',
+  '3': 'MORTGAGE',
+  '4': 'CLOSING'
+}

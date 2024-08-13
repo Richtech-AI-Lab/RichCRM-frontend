@@ -12,10 +12,11 @@ function* createCase(action) {
         const updatedPayload = {
             ...payload, 
             casePayload: {
-              ...payload.casePayload, 
-              clientType: parseInt(payload.casePayload.clientType)
+              ...payload.casePayload
             }
           };
+        
+        console.log(payload.casePayload);
         const response = yield call(() => postRequest(API_ENDPOINTS.CREATE_CASE, updatedPayload.casePayload));
         yield put(caseCreateSuccess(response.data));
         if(response.status==200){

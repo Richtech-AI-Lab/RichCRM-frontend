@@ -20,15 +20,22 @@ import { ROUTES } from "../../constants/api";
 import { registerClientRequest } from "../../redux/actions/clientActions";
 import { registerAddressRequest } from "../../redux/actions/utilsActions";
 import XSpinnerLoader from "../spinnerLoader/XSpinnerLoader";
-import { CLIENTTYPE } from "../../constants/constants";
+import { CASETYPE, CLIENTTYPE } from "../../constants/constants";
 import states from "../../constants/states.json";
 import { debounce } from "lodash";
+import avatar from '../../assets/images/avatar.png'
+import { IoCloseCircleOutline } from "react-icons/io5";
 
 const clientTypeOptions = [
   { value: CLIENTTYPE.INDIVIDUAL, label: "Individual" },
   { value: CLIENTTYPE.COMPANY, label: "Company" },
   { value: CLIENTTYPE.TRUST, label: "Trust" },
 ];
+
+const caseTypeOptions = [
+  { value: CASETYPE.PURCHASING, label: "Purchasing" },
+  { value: CASETYPE.SELLING, label: "Selling" },
+]
 
 const searchOption = [
   {
@@ -147,6 +154,7 @@ const NewCaseModal = ({ onClose }) => {
 
     const clientData = values.clients[0];
     const clientDetails = {
+      clientType: parseInt(values.clientType),
       firstName: clientData.clientfirstName,
       lastName: clientData.clientLastName,
       ...(clientData.clientcellNumber && { cellNumber: clientData.clientcellNumber }),
@@ -164,9 +172,9 @@ const NewCaseModal = ({ onClose }) => {
         propertyType: parseInt(values.premisesType),
       },
       casePayload: {
-        creatorId: "test1@gmail.com",
+        creatorId: localStorage.getItem("authEmail"),
         stage: 0,
-        clientType: values.caseType
+        caseType: parseInt(values.caseType)
       }
     };
     // console.log(combinedPayload, values)
@@ -233,9 +241,6 @@ const NewCaseModal = ({ onClose }) => {
     }
   };
 
-  const handleSearchItem = (data) => {
-    console.log(data)
-  }
   return (
     <>
       <XSpinnerLoader loading={loading} size="lg" />
@@ -270,8 +275,6 @@ const NewCaseModal = ({ onClose }) => {
                 <div className="mb-2 block">
                   <Label htmlFor="caseType" value="Case Type" />
                   <div className="grid grid-cols-2 gap-4 mb-8">
-
-
                     <div className="mb-2 block">
                       <Field
                         as={SelectInput}
@@ -280,10 +283,7 @@ const NewCaseModal = ({ onClose }) => {
                         value={values.caseType}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        options={[
-                          { value: 1, label: "Selling" },
-                          { value: 0, label: "Purchasing" },
-                        ]}
+                        options={caseTypeOptions}
                         inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
                       />
                       {touched.caseType && errors.caseType ? (
@@ -374,7 +374,7 @@ const NewCaseModal = ({ onClose }) => {
                               {values?.clients.map((client, index) => (
                                 <div key={index} className="mb-2 block -mt-8">
                                   {/* <Label htmlFor={`clients.${index}.clientType`} value="Client" /> */}
-                                  <div className="relative mb-8">
+                                  {client.isCard !== true ?(<div className="relative mb-8">
                                     {index >= 0 && (
                                       <IoIosClose
                                         onClick={() => remove(index)}
@@ -382,7 +382,7 @@ const NewCaseModal = ({ onClose }) => {
                                         size={24}
                                       />
                                     )}
-                                  </div>
+                                  </div>): ""}
                                   <div className="grid grid-cols-2 gap-4">
                                     <div className="mb-2 block">
                                       {/* <Field
@@ -402,7 +402,19 @@ const NewCaseModal = ({ onClose }) => {
                                     /> */}
                                     </div>
                                   </div>
-                                  {client.isCard === true ? <p>{client.clientfirstName}</p> :
+                                  {client.isCard === true ?
+                                  <div className="flex justify-between items-center border border-card-300 p-4 rounded-2xl">
+                                      <div className="flex items-center">
+                                        <img src={avatar} className="w-8 mr-3" />
+                                        <span>{client.clientfirstName}</span>
+                                      </div>
+                                      <IoCloseCircleOutline
+                                        onClick={() => remove(index)}
+                                        className="text-xl text-text-gray-100 cursor-pointer"
+                                        size={24}
+                                      />
+                                      {/* <IoCloseCircleOutline className="" /> */}
+                                    </div> :
                                     <div className="grid grid-cols-2 gap-4 ">
                                       <div className="mb-2 block">
                                         <TextInput
@@ -422,7 +434,7 @@ const NewCaseModal = ({ onClose }) => {
                                         />
                                         {activeSearchIndex == index &&
                                           searchResults.map(item => {
-                                            return <p className={'cursor-pointer bg-badge-green m-3'} onClick={() => {
+                                            return <ul className={'search-list-dropdown overflow-hidden rounded-2xl shadow-shadow-light-2'}><li className={'px-4 py-2 hover:bg-input-surface'} onClick={() => {
                                               replace(index, {
                                                 isCard: true,
                                                 clientfirstName: item.firstName,
@@ -432,7 +444,15 @@ const NewCaseModal = ({ onClose }) => {
                                               })
                                               setSearchResults([])
                                             }
-                                            }>{item.firstName}</p>
+                                            }>
+                                              <div className="flex items-center">
+                                                <img src={avatar} className="w-8 mr-3" />
+                                                <div>
+                                                  <p className="text-base text-secondary-800">{item.firstName}</p>
+                                                  <span className="text-text-gray-100 text-sm">707684</span>
+                                                </div>
+                                              </div>
+                                            </li></ul>
                                           })
                                         }
                                         <ErrorMessage
@@ -524,7 +544,7 @@ const NewCaseModal = ({ onClose }) => {
                         </FieldArray>
                       </div>
                     }
-                    {/* {clientType == CLIENTTYPE.INDIVIDUAL &&
+                    {/* {clientType == clientType.INDIVIDUAL &&
                       <div className="grid grid-cols-2 gap-4">
                         <div className="mb-2 block">
                         
@@ -670,7 +690,7 @@ const NewCaseModal = ({ onClose }) => {
                   <div className="mb-2 block">
 
                     <Label htmlFor="premiseInfo" value="Premise Information" />
-                    <div className="grid grid-cols-2 gap-4 mb-8">
+                    <div className="grid grid-cols-2 gap-4">
                       <div className="mb-2 block">
                         <Field
                           as={SelectInput}

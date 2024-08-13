@@ -15,12 +15,17 @@ import StepperProgress from "../stepperProgress";
 import { Dropdown } from "flowbite-react";
 import MenuDropdown from "../menupopup";
 import MenuPopup from "../menupopup";
+import { useDispatch, useSelector } from "react-redux";
+import { createStageRequest } from "../../redux/actions/stagesActions";
+import { STAGESNAMES } from "../../constants/constants";
 
 const StagesChecklist = ({ label }) => {
+  const dispatch = useDispatch();
   const [currentStep, setCurrentStep] = useState(0);
   const [activeTab, setActiveTab] = useState('mortgage');
-  const menuOption1= ['Create a Task', 'Add a Task']
-  const menuOption2= ['Finish all', 'Edit task']
+  const menuOption1 = ['Create a Task', 'Add a Task']
+  const menuOption2 = ['Finish all', 'Edit task']
+  const { loading, data, error } = useSelector((state) => state.stages);
 
 
   const settingUpTasks = [
@@ -251,19 +256,60 @@ const StagesChecklist = ({ label }) => {
     }
   };
 
-  const handleNextStage = () => {
-    if (currentStep < stepperItems.length - 1) {
-      setCurrentStep(currentStep + 1);
-      setActiveTab('mortgage'); // Reset active tab to mortgage when changing step
+
+  const handlePreviousStage = async () => {
+    if (currentStep > 0) {
+      const createStagePayload = {
+        stageType: currentStep - 1,
+        caseId: "1_f7858dbf-70ea-4e42-a8b5-331a39d11296_e42e5350-6090-4576-bbd9-8c5180b606d5",
+      };
+
+      try {
+        const stageExists = await checkStageExists(createStagePayload);
+        if (stageExists === false) {
+          const response = await dispatch(createStageRequest(createStagePayload));
+          setCurrentStep(currentStep - 1);
+          setActiveTab("mortgage");
+        } else {
+          setCurrentStep(currentStep - 1);
+          setActiveTab("mortgage");
+          console.log("Stage already exists. Skipping API call.");
+        }
+      } catch (error) {
+        console.error("Error creating stage:", error.message);
+      }
     }
   };
 
-  const handlePreviousStage = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
-      setActiveTab('mortgage'); // Reset active tab to mortgage when changing step
+  const handleNextStage = async () => {
+    if (currentStep < stepperItems.length - 1) {
+      const createStagePayload = {
+        stageType: currentStep + 1,
+        caseId: "1_f7858dbf-70ea-4e42-a8b5-331a39d11296_e42e5350-6090-4576-bbd9-8c5180b606d5",
+      };
+
+      try {
+        const stageExists = await checkStageExists(createStagePayload);
+        if (stageExists === false) {
+          const response = await dispatch(createStageRequest(createStagePayload));
+          setCurrentStep(currentStep + 1);
+          setActiveTab("mortgage"); // Reset active tab to mortgage when changing step
+        } else {
+          setCurrentStep(currentStep + 1);
+          setActiveTab("mortgage");
+          console.log("Stage already exists. Skipping API call.");
+        }
+      } catch (error) {
+        console.error("Error creating stage:", error.message);
+      }
     }
   };
+
+  const checkStageExists = async ({ stageType, caseId }) => {
+    let stagekey = `${stageType}`
+    return data.hasOwnProperty(STAGESNAMES[stagekey])
+  };
+
 
   const getChecklistItems = () => {
     if (currentStep === 3) {
@@ -293,7 +339,7 @@ const StagesChecklist = ({ label }) => {
           {currentStep === 3 ? (
             <div className="flex justify-start gap-x-8">
               <span
-                className={`pb-4 cursor-pointer ${activeTab === 'mortgage' ? 'text-base text-secondary-800 font-medium border-b-[3px] border-primary' : 'text-gray-400'}`}                onClick={() => setActiveTab('mortgage')}
+                className={`pb-4 cursor-pointer ${activeTab === 'mortgage' ? 'text-base text-secondary-800 font-medium border-b-[3px] border-primary' : 'text-gray-400'}`} onClick={() => setActiveTab('mortgage')}
               >
                 Mortgage Task (1/5)
               </span>
@@ -308,9 +354,9 @@ const StagesChecklist = ({ label }) => {
             <span className="text-base text-secondary-800 font-medium">{`${getHeadLabel(currentStep)} (2/3)`}</span>
           )}
           <div className="flex items-center gap-2">
-            
-            <MenuPopup dropdownItems={menuOption1} icon={<FiPlus className="text-lg opacity-40" />}/>
-            <MenuPopup dropdownItems={menuOption2} icon={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />}/>
+
+            <MenuPopup dropdownItems={menuOption1} icon={<FiPlus className="text-lg opacity-40" />} />
+            <MenuPopup dropdownItems={menuOption2} icon={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />} />
           </div>
         </div>
         <ul className="mb-6 overflow-y-auto">
@@ -325,15 +371,15 @@ const StagesChecklist = ({ label }) => {
           ))}
         </ul>
         <div className="flex justify-between items-center pt-5 px-4">
-        <XButton
+          <XButton
             text="Back to previous stage"
             className={`bg-card-300 rounded-full text-sm font-medium py-[10px] px-6 ${currentStep === 0 ? 'opacity-50 cursor-not-allowed text-secondary-300' : 'text-secondary-800'}`}
             onClick={handlePreviousStage}
             disabled={currentStep === 0}
           />
-          <XButton 
-          text={currentStep === stepperItems?.length - 1 ? "Close Case" : "Move to next stage"}
-          className="bg-active-blue text-active-blue-text shadow-shadow-light rounded-full text-sm font-medium py-[10px] px-6" onClick={handleNextStage} />
+          <XButton
+            text={currentStep === stepperItems?.length - 1 ? "Close Case" : "Move to next stage"}
+            className="bg-active-blue text-active-blue-text shadow-shadow-light rounded-full text-sm font-medium py-[10px] px-6" onClick={handleNextStage} />
         </div>
       </div>
     </div>

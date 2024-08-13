@@ -125,7 +125,7 @@
     @apply pb-5 mb-5
   }
   .new-case-modal > div{
-    @apply max-w-[624px]
+    @apply max-w-[656px]
   }
   .new-case-modal > div > div{
     @apply rounded-3xl
@@ -189,5 +189,20 @@
   }
   .items-dropdown ul li button {
     @apply hover:bg-bg-gray-200
+  }
+  .items-dropdown ul li input[type='checkbox'] {
+    @apply bg-transparent border-secondary-800 rounded-sm focus:ring-transparent
+  }
+  .items-dropdown ul li input[type='checkbox']:checked {
+    @apply bg-primary2 border-primary2
+  }
+  .items-dropdown.single-select ul {
+    @apply p-0
+  }
+  .items-dropdown.single-select ul li:first-child button {
+    @apply rounded-tl-[14px] rounded-tr-[14px]
+  }
+  .items-dropdown.single-select ul li:last-child button {
+    @apply rounded-bl-[14px] rounded-br-[14px]
   }
 }

@@ -6,9 +6,10 @@ import { RiDownloadLine } from "react-icons/ri";
 import CaseExportModal from "../caseExportModal";
 import { ROUTES } from "../../constants/api";
 import { useLocation } from "react-router-dom";
+import ContactTabs from "./contactTabs";
 
 
-const CasesActionbar = ({ active, setActive }) => {
+const CasesActionbar = ({ active="", setActive="" }) => {
     const location = useLocation();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -20,46 +21,17 @@ const CasesActionbar = ({ active, setActive }) => {
         const pathsToShow = [ROUTES.CONTACTS];
         return pathsToShow.includes(location.pathname);
       };
+
+      const addFromCasesTabs = [
+        { id: caseDetailTab.PARTICIPANTS, label: "Participants" },
+        { id: caseDetailTab.PREMISES, label: "Premises" },
+        { id: caseDetailTab.OTHERS, label: "Others" }
+      ];
     return (
       <>
         <div className="flex justify-between items-center mb-6">
           <div className="flex">
-            <div
-              onClick={() => {
-                setActive(caseDetailTab.PARTICIPANTS);
-              }}
-              className={`${
-                active === caseDetailTab.PARTICIPANTS ? "bg-badge-gray" : ""
-              } px-4 py-2 rounded-full mr-4 cursor-pointer`}
-            >
-              <span className="text-base font-medium text-secondary-800">
-                Participants
-              </span>
-            </div>
-            <div
-              onClick={() => {
-                setActive(caseDetailTab.PREMISES);
-              }}
-              className={`${
-                active === caseDetailTab.PREMISES ? "bg-badge-gray" : ""
-              } px-4 py-2 rounded-full mr-4 cursor-pointer`}
-            >
-              <span className="text-base font-medium text-secondary-800">
-                Premises
-              </span>
-            </div>
-            <div
-              onClick={() => {
-                setActive(caseDetailTab.OTHERS);
-              }}
-              className={`${
-                active === caseDetailTab.OTHERS ? "bg-badge-gray" : ""
-              } px-4 py-2 rounded-full mr-4 cursor-pointer`}
-            >
-              <span className="text-base font-medium text-secondary-800">
-                Others
-              </span>
-            </div>
+          <ContactTabs active={active} setActive={setActive} tabs={addFromCasesTabs} />
           </div>
           <div>
             {shouldShowOpenClosed() ? (
