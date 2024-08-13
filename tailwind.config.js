@@ -12,6 +12,7 @@ module.exports = {
         'full': 'rgba(0, 0, 0, 0.2) 0px 0px 6px',
         'card': '0px 3px 8px rgba(0, 14, 73, 0.15);',
         'shadow-light': '0px 1px 4px 0px rgba(0, 14, 73, 0.15)',
+        'shadow-light-2': '0px 2px 6px 0px rgba(0, 14, 73, 0.15), 0px 1px 2px 0px rgba(0, 14, 73, 0.20)'
       }
     },
     colors: {
