@@ -72,6 +72,9 @@ module.exports = {
       },
       'error': '#CF0505',
       'light-purple': '#F9F9FE',
+      'text-gray': {
+        100: '#707684',
+      },
       ...colors,
     },
   },
