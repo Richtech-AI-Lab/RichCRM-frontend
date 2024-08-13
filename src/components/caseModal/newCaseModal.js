@@ -147,6 +147,7 @@ const NewCaseModal = ({ onClose }) => {
 
     const clientData = values.clients[0];
     const clientDetails = {
+      clientType: values.clientType,
       firstName: clientData.clientfirstName,
       lastName: clientData.clientLastName,
       ...(clientData.clientcellNumber && { cellNumber: clientData.clientcellNumber }),
