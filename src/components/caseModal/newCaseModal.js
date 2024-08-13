@@ -165,7 +165,7 @@ const NewCaseModal = ({ onClose }) => {
         propertyType: parseInt(values.premisesType),
       },
       casePayload: {
-        creatorId: "test1@gmail.com",
+        creatorId: localStorage.getItem("authEmail"),
         stage: 0,
         clientType: values.caseType
       }

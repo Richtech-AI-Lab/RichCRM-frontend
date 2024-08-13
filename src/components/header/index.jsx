@@ -15,6 +15,7 @@ const Header = ({ toggleDrawer, title }) => {
 
   const handleLogout = () => {
     dispatch(logout());
+    localStorage.removeItem('authEmail');
     localStorage.setItem("headerTitle", 'Dashboard');
     navigate(ROUTES.LOGIN);
   };
