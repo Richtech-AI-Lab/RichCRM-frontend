@@ -8,7 +8,8 @@ function* createStageSaga(action) {
     const { payload } = action;
   try {
     const response = yield call(() =>postRequest(API_ENDPOINTS.CREATE_STAGE, payload));
-      yield put(createStageSuccess(response.data));
+    // console.log(response.data.data[0],"response.data.data")
+      yield put(createStageSuccess(response?.data?.data[0]));
   } catch (error) {
     yield put(createStageFailure(error.response?.data || error));
   }
