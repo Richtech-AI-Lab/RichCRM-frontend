@@ -15,12 +15,16 @@ import StepperProgress from "../stepperProgress";
 import { Dropdown } from "flowbite-react";
 import MenuDropdown from "../menupopup";
 import MenuPopup from "../menupopup";
+import { useDispatch, useSelector } from "react-redux";
+import { createStageRequest } from "../../redux/actions/stagesActions";
 
 const StagesChecklist = ({ label }) => {
+  const dispatch=useDispatch();
   const [currentStep, setCurrentStep] = useState(0);
   const [activeTab, setActiveTab] = useState('mortgage');
   const menuOption1= ['Create a Task', 'Add a Task']
   const menuOption2= ['Finish all', 'Edit task']
+  const { loading, data ,error} = useSelector((state) => state.stages);
 
 
   const settingUpTasks = [
@@ -251,12 +255,41 @@ const StagesChecklist = ({ label }) => {
     }
   };
 
-  const handleNextStage = () => {
-    if (currentStep < stepperItems.length - 1) {
-      setCurrentStep(currentStep + 1);
-      setActiveTab('mortgage'); // Reset active tab to mortgage when changing step
+  // const handleNextStage = () => {
+  //   if (currentStep < stepperItems.length - 1) {
+  //     setCurrentStep(currentStep + 1);
+  //     setActiveTab('mortgage'); // Reset active tab to mortgage when changing step
+  // };
+
+
+const handleNextStage = async () => {
+  if (currentStep < stepperItems.length - 1) {
+    const createStagePayload = {
+      stageType: currentStep,
+      caseId: "1_f7858dbf-70ea-4e42-a8b5-331a39d11296_e42e5350-6090-4576-bbd9-8c5180b606d5",
+    };
+
+    try {
+      const stageExists = await checkStageExists(createStagePayload);
+      console.log(stageExists,"stgeExist")
+      // if (stageExists === false) {
+        const response = await dispatch(createStageRequest(createStagePayload));
+        setCurrentStep(currentStep + 1);
+        setActiveTab("mortgage"); // Reset active tab to mortgage when changing step
+      // } else {
+      //   setCurrentStep(currentStep + 1);
+      //   setActiveTab("mortgage");
+      //   console.log("Stage already exists. Skipping API call.");
+      // }
+    } catch (error) {
+      console.error("Error creating stage:", error.message);
     }
-  };
+  }
+};
+
+const checkStageExists = async ({ stageType, caseId }) => {
+  return  data?.data?.some(stage => stage.stageType === stageType);
+};
 
   const handlePreviousStage = () => {
     if (currentStep > 0) {

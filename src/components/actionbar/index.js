@@ -8,6 +8,7 @@ import { IoFilterSharp } from "react-icons/io5";
 import { useLocation } from "react-router-dom";
 import { ROUTES } from "../../constants/api";
 import { Checkbox, Dropdown, Label } from "flowbite-react";
+import { FaCheck } from "react-icons/fa";
 
 const Actionbar = ({ onFilterChange }) => {
   const location = useLocation();
@@ -92,7 +93,7 @@ const Actionbar = ({ onFilterChange }) => {
           />
         </div> */}
         <div className="items-dropdown mr-4">          
-          <Dropdown label="Filter" inline className="rounded-2xl w-64" dismissOnClick={false}>
+          <Dropdown label="Filter" inline className="rounded-2xl w-64 shadow-shadow-light-2" dismissOnClick={false}>
             <div className="px-4 py-3">
               <span className="block text-sm font-medium text-secondary-800">Status</span>
             </div>
@@ -154,7 +155,7 @@ const Actionbar = ({ onFilterChange }) => {
             </div>
           </Dropdown>
         </div>
-        <SelectInput
+        {/* <SelectInput
           inputClassName="bg-white shadow-shadow-light py-[12px] px-6 rounded-full border-0 text-base leading-5 font-semibold text-label"
           labelClassName="text-label mr-3"
           // label="Sort by"
@@ -166,7 +167,17 @@ const Actionbar = ({ onFilterChange }) => {
             value: option.value,
             label: `Sort by: ${option.label}`,
           }))}
-        />
+        /> */}
+      <div className="items-dropdown single-select">
+          <Dropdown label="Sort by: Status" inline className="rounded-2xl w-64 shadow-shadow-light-2" dismissOnClick={false}>
+            <Dropdown.Item className="py-3">
+                <span htmlFor="remember" className="text-secondary-800"><FaCheck className="inline-block mr-1" /> Status</span>
+            </Dropdown.Item>
+            <Dropdown.Item className="py-3">
+                <span htmlFor="remember" className="text-secondary-800"><FaCheck className="inline-block mr-1" />Progress</span>
+            </Dropdown.Item>
+          </Dropdown>
+        </div>
       {activeFilter !== "Closed" && (
           <XButton
             text="New case"
