@@ -12,7 +12,11 @@ const taskReducer = (state = initialState, action) => {
     case CREATE_TASK_REQUEST:
       return { ...state, loading: true, error: null };
     case CREATE_TASK_SUCCESS:
-      return { ...state, loading: false, data: action.payload };
+      const { currentStep,taskRes } = action.payload;
+      return { ...state, loading: false, data: {
+        ...state.data,
+        [STAGESNAMES[currentStep]]: taskRes,
+      } };
     case CREATE_TASK_FAILURE:
       return { ...state, loading: false, error: action.payload };
     default:

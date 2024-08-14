@@ -9,7 +9,7 @@ import Badge from "../badge";
 
 const ChecklistItem = ({ icon, label, options, action, actionInfo, optionsValue, checkboxId, currentStep }) => {
 
-  const getOptionsByAction = (action,option) => {
+  const getOptionsByAction = (action="Upload",option="Not Started") => {
     switch (action) {
       case "Action":
         return [
@@ -103,7 +103,7 @@ const ChecklistItem = ({ icon, label, options, action, actionInfo, optionsValue,
 
   const displayColor = getColorByOptions(options)
   const displayIcon = getIconByAction(action)
-  const displayOption = getOptionsByAction(action,options);
+  const displayOption = getOptionsByAction();
   const disabled = isOptionDisable(action,options);
 
   return (
