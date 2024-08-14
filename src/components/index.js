@@ -22,6 +22,7 @@ import Label from "./label";
 import CaseCardDetails from "./casecarddetails";
 import CardListItem from "./cardlistitem";
 import AuthFormContainer from "./authContainer";
+import DropdownMenu from "./dropdownmenu";
 
 export {
   Header,
@@ -47,5 +48,6 @@ export {
   Label,
   CardListItem,
   CaseCardDetails,
-  AuthFormContainer
+  AuthFormContainer,
+  DropdownMenu
 };
