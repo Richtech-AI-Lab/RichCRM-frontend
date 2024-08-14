@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdFileCopy } from "react-icons/md";
 import { TbFolderSearch } from "react-icons/tb";
 import XButton from "../button/XButton";
@@ -16,8 +16,9 @@ import { Dropdown } from "flowbite-react";
 import MenuDropdown from "../menupopup";
 import MenuPopup from "../menupopup";
 import { useDispatch, useSelector } from "react-redux";
-import { createStageRequest } from "../../redux/actions/stagesActions";
+import { createStageRequest, getStageRequest } from "../../redux/actions/stagesActions";
 import { STAGESNAMES } from "../../constants/constants";
+import { isEmpty } from "lodash";
 
 const StagesChecklist = ({ label }) => {
   const dispatch = useDispatch();
@@ -26,6 +27,16 @@ const StagesChecklist = ({ label }) => {
   const menuOption1 = ['Create a Task', 'Add a Task']
   const menuOption2 = ['Finish all', 'Edit task']
   const { loading, data, error } = useSelector((state) => state.stages);
+
+  useEffect(() => {
+    if (isEmpty(data)) {
+      let sagaPayload = {
+        stageType: 0,
+        caseId: localStorage.getItem('c_id'),
+      }
+      dispatch(getStageRequest(sagaPayload));
+    }
+  }, [])
 
 
   const settingUpTasks = [
@@ -261,7 +272,7 @@ const StagesChecklist = ({ label }) => {
     if (currentStep > 0) {
       const createStagePayload = {
         stageType: currentStep - 1,
-        caseId: "1_f7858dbf-70ea-4e42-a8b5-331a39d11296_e42e5350-6090-4576-bbd9-8c5180b606d5",
+        caseId: localStorage.getItem('c_id'),
       };
 
       try {
@@ -285,7 +296,7 @@ const StagesChecklist = ({ label }) => {
     if (currentStep < stepperItems.length - 1) {
       const createStagePayload = {
         stageType: currentStep + 1,
-        caseId: "1_f7858dbf-70ea-4e42-a8b5-331a39d11296_e42e5350-6090-4576-bbd9-8c5180b606d5",
+        caseId: localStorage.getItem('c_id'),
       };
 
       try {
