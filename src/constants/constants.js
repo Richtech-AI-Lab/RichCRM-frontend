@@ -2,6 +2,8 @@
 export const SORT_OPTIONS = {
   STATUS: "Status",
   PROGRESS: "Progress",
+  NEWOLD: "New to Old",
+  OLDNEW:"Old to New"
 };
 export const casesCardData = [
   {
