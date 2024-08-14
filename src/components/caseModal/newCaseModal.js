@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import * as Yup from "yup";
 import { Formik, FieldArray, ErrorMessage, Field, replace } from "formik";
-import { Label, Modal } from "flowbite-react";
+import { Label, Modal, Dropdown } from "flowbite-react";
 import TextInput from "../TextInput";
 import XButton from "../button/XButton";
 import SelectInput from "../selectinput";
@@ -20,22 +20,18 @@ import { ROUTES } from "../../constants/api";
 import { registerClientRequest } from "../../redux/actions/clientActions";
 import { registerAddressRequest } from "../../redux/actions/utilsActions";
 import XSpinnerLoader from "../spinnerLoader/XSpinnerLoader";
-import { CASETYPE, CLIENTTYPE } from "../../constants/constants";
+import { CLIENTTYPE } from "../../constants/constants";
 import states from "../../constants/states.json";
 import { debounce } from "lodash";
 import avatar from '../../assets/images/avatar.png'
 import { IoCloseCircleOutline } from "react-icons/io5";
+import NewCaseDropdown from "../newcasedropdown";
 
 const clientTypeOptions = [
   { value: CLIENTTYPE.INDIVIDUAL, label: "Individual" },
   { value: CLIENTTYPE.COMPANY, label: "Company" },
   { value: CLIENTTYPE.TRUST, label: "Trust" },
 ];
-
-const caseTypeOptions = [
-  { value: CASETYPE.PURCHASING, label: "Purchasing" },
-  { value: CASETYPE.SELLING, label: "Selling" },
-]
 
 const searchOption = [
   {
@@ -154,7 +150,7 @@ const NewCaseModal = ({ onClose }) => {
 
     const clientData = values.clients[0];
     const clientDetails = {
-      clientType: parseInt(values.clientType),
+      clientType: values.clientType,
       firstName: clientData.clientfirstName,
       lastName: clientData.clientLastName,
       ...(clientData.clientcellNumber && { cellNumber: clientData.clientcellNumber }),
@@ -174,7 +170,7 @@ const NewCaseModal = ({ onClose }) => {
       casePayload: {
         creatorId: localStorage.getItem("authEmail"),
         stage: 0,
-        caseType: parseInt(values.caseType)
+        clientType: values.caseType
       }
     };
     // console.log(combinedPayload, values)
@@ -271,26 +267,51 @@ const NewCaseModal = ({ onClose }) => {
               handleSubmit,
               isSubmitting,
             }) => (
+              
               <form onSubmit={handleSubmit} className="">
-                <div className="mb-2 block">
+                <div className="block">
                   <Label htmlFor="caseType" value="Case Type" />
                   <div className="grid grid-cols-2 gap-4 mb-8">
-                    <div className="mb-2 block">
-                      <Field
+                    <div className="block">
+                      <div className="items-dropdown single-select mt-3">
+                        <Field
+                          as={NewCaseDropdown}
+                          defaultLabel="Select Case Type"
+                          name="caseType"
+                          value={values.caseType}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          options={[
+                            { value: 1, label: "Selling" },
+                            { value: 0, label: "Purchasing" },
+                          ]}
+                          inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
+                        />
+                        {touched.caseType && errors.caseType ? (
+                          <div className="text-red-500 text-sm">
+                            {errors.caseType}
+                          </div>
+                        ) : null}
+                      </div>
+                      {/* <Field
                         as={SelectInput}
                         defaultLabel="Select Case Type"
                         name="caseType"
                         value={values.caseType}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        options={caseTypeOptions}
+                        options={[
+                          { value: 1, label: "Selling" },
+                          { value: 0, label: "Purchasing" },
+                        ]}
                         inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
-                      />
-                      {touched.caseType && errors.caseType ? (
+                      /> */}
+
+                      {/* {touched.caseType && errors.caseType ? (
                         <div className="text-red-500 text-sm">
                           {errors.caseType}
                         </div>
-                      ) : null}
+                      ) : null} */}
                     </div>
                   </div>
                   {/* <div className="mb-8">
@@ -344,8 +365,29 @@ const NewCaseModal = ({ onClose }) => {
                     {" "}
                     <Label value="Client" className="mb-2" />
                     <div className="grid grid-cols-2 gap-4">
-                      <div className="mb-2 block">
-                        <Field
+                      <div className="block">
+                        <div className="items-dropdown single-select mt-3">
+                          <Field
+                            as={NewCaseDropdown}
+                            defaultLabel="Select Client Type"
+                            name={`clientType`}
+                            value={values.clientType}
+                            onChange={(e) => {
+                              handleChange(e);
+                              const selectedClientType = e.target.value;
+                              setClientType(selectedClientType)
+                            }}
+                            onBlur={handleBlur}
+                            options={clientTypeOptions}
+                            inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
+                          />
+                          {touched.clientType && errors.clientType ? (
+                            <div className="text-red-500 text-sm">
+                              {errors.clientType}
+                            </div>
+                          ) : null}
+                        </div>
+                        {/* <Field
                           as={SelectInput}
                           defaultLabel="Select Client Type"
                           name={`clientType`}
@@ -358,12 +400,8 @@ const NewCaseModal = ({ onClose }) => {
                           onBlur={handleBlur}
                           options={clientTypeOptions}
                           inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
-                        />
-                        {touched.clientType && errors.clientType ? (
-                          <div className="text-red-500 text-sm">
-                            {errors.clientType}
-                          </div>
-                        ) : null}
+                        /> */}
+
                       </div>
                     </div>
                     {clientType == CLIENTTYPE.INDIVIDUAL &&
@@ -372,9 +410,9 @@ const NewCaseModal = ({ onClose }) => {
                           {({ remove, push, replace }) => (
                             <>
                               {values?.clients.map((client, index) => (
-                                <div key={index} className="mb-2 block -mt-8">
+                                <div key={index} className="block pt-4 relative">
                                   {/* <Label htmlFor={`clients.${index}.clientType`} value="Client" /> */}
-                                  {client.isCard !== true ?(<div className="relative mb-8">
+                                  {client.isCard !== true ? (<div>
                                     {index >= 0 && (
                                       <IoIosClose
                                         onClick={() => remove(index)}
@@ -382,10 +420,10 @@ const NewCaseModal = ({ onClose }) => {
                                         size={24}
                                       />
                                     )}
-                                  </div>): ""}
-                                  <div className="grid grid-cols-2 gap-4">
-                                    <div className="mb-2 block">
-                                      {/* <Field
+                                  </div>) : ""}
+                                  {/* <div className="grid grid-cols-2 gap-4">
+                                    <div className="mb-2 block"> */}
+                                  {/* <Field
                                       as={SelectInput}
                                       defaultLabel="Select Client Type"
                                       name={`clients.${index}.clientType`}
@@ -400,10 +438,10 @@ const NewCaseModal = ({ onClose }) => {
                                       component="div"
                                       className="text-red-500 text-sm"
                                     /> */}
-                                    </div>
-                                  </div>
+                                  {/* </div>
+                                  </div> */}
                                   {client.isCard === true ?
-                                  <div className="flex justify-between items-center border border-card-300 p-4 rounded-2xl">
+                                    <div className="flex justify-between items-center border border-card-300 p-4 rounded-2xl">
                                       <div className="flex items-center">
                                         <img src={avatar} className="w-8 mr-3" />
                                         <span>{client.clientfirstName}</span>
@@ -415,8 +453,8 @@ const NewCaseModal = ({ onClose }) => {
                                       />
                                       {/* <IoCloseCircleOutline className="" /> */}
                                     </div> :
-                                    <div className="grid grid-cols-2 gap-4 ">
-                                      <div className="mb-2 block">
+                                    <div className="grid grid-cols-2 gap-x-3">
+                                      <div className="block">
                                         <TextInput
                                           name={`clients.${index}.clientfirstName`}
                                           type="text"
@@ -461,7 +499,7 @@ const NewCaseModal = ({ onClose }) => {
                                           className="text-red-500 text-sm"
                                         />
                                       </div>
-                                      <div className="mb-2 block">
+                                      <div className="block">
                                         <TextInput
                                           name={`clients.${index}.clientLastName`}
                                           type="text"
@@ -480,7 +518,7 @@ const NewCaseModal = ({ onClose }) => {
                                           className="text-red-500 text-sm"
                                         />
                                       </div>
-                                      <div className="mb-8">
+                                      <div className="">
                                         <TextInput
                                           type="number"
                                           name={`clients.${index}.clientcellNumber`}
@@ -499,7 +537,7 @@ const NewCaseModal = ({ onClose }) => {
                                           className="text-red-500 text-sm"
                                         />
                                       </div>
-                                      <div className="mb-8">
+                                      <div className="">
                                         <TextInput
                                           type="email"
                                           name={`clients.${index}.clientemail`}
@@ -527,7 +565,7 @@ const NewCaseModal = ({ onClose }) => {
                               ))}
                               {/* <a className="ml-6 text-primary2" onClick={() => push({ clientType: "", clientfirstName: "", clientLastName: "" })}>  <IoIosAdd /> Add a client</a> */}
                               <a
-                                className="ml-6 text-primary2 flex items-center"
+                                className="text-primary2 flex items-center mt-4"
                                 onClick={() =>
                                   push({
                                     clientfirstName: "",
@@ -544,7 +582,7 @@ const NewCaseModal = ({ onClose }) => {
                         </FieldArray>
                       </div>
                     }
-                    {/* {clientType == clientType.INDIVIDUAL &&
+                    {/* {clientType == CLIENTTYPE.INDIVIDUAL &&
                       <div className="grid grid-cols-2 gap-4">
                         <div className="mb-2 block">
                         
@@ -582,16 +620,16 @@ const NewCaseModal = ({ onClose }) => {
                         {({ remove, push, replace }) => (
                           <>
                             {values.companyInfo.map((company, index) => (
-                              <div className="mb-2 block" key={index}>
-                                  <div className="relative mb-8">
-                                    {index >= 0 && (
-                                      <IoIosClose
-                                        onClick={() => remove(index)}
-                                        className="absolute top-0 right-0 cursor-pointer"
-                                        size={24}
-                                      />
-                                    )}
-                                  </div>
+                              <div className="relative pt-4 block" key={index}>
+                                <div className="">
+                                  {index >= 0 && (
+                                    <IoIosClose
+                                      onClick={() => remove(index)}
+                                      className="absolute top-0 right-0 cursor-pointer"
+                                      size={24}
+                                    />
+                                  )}
+                                </div>
                                 <TextInput
                                   name={`companyInfo.${index}.companyname`}
                                   type="text"
@@ -613,7 +651,7 @@ const NewCaseModal = ({ onClose }) => {
                               </div>
                             ))}
                             <a
-                              className="ml-6 text-primary2 flex items-center"
+                              className="text-primary2 flex items-center mt-4"
                               onClick={() =>
                                 push({
                                   companyname: "",
@@ -628,71 +666,96 @@ const NewCaseModal = ({ onClose }) => {
                       </FieldArray>
                     }
                     {clientType == CLIENTTYPE.TRUST &&
-                    <div className="mb-8">
-                      <FieldArray name="trustInfo">
-                        {({ remove, push, replace }) => (
-                          <>
-                            {
-                              values.trustInfo.map((trust, index) => (
-                                <div className="mb-2 block" key={index}>
-                                  <div className="relative mb-8">
-                                    {index >= 0 && (
-                                      <div>
-                                        
-                                      <IoIosClose
-                                        onClick={() => remove(index)}
-                                        className="absolute top-0 right-0 cursor-pointer"
-                                        size={24}
-                                      />
-                                      {/* <h1>close</h1> */}
-                                      </div>
-                                    )}
-                                  </div>
-                                  <TextInput
-                                    name={`trustInfo.${index}.trustname`}
-                                    type="text"
-                                    placeholder="Trust Name"
-                                    value={trust.trustname}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    field={{
-                                      name: `trustInfo.${index}.trustname`,
-                                    }}
-                                    form={{ errors, touched }}
-                                  />
-                                  {/* <ErrorMessage
+                      <div className="mb-8">
+                        <FieldArray name="trustInfo">
+                          {({ remove, push, replace }) => (
+                            <>
+                              {
+                                values.trustInfo.map((trust, index) => (
+                                  <div className="relative pt-4 block" key={index}>
+                                    <div className="">
+                                      {index >= 0 && (
+                                        <div>
+
+                                          <IoIosClose
+                                            onClick={() => remove(index)}
+                                            className="absolute top-0 right-0 cursor-pointer"
+                                            size={24}
+                                          />
+                                          {/* <h1>close</h1> */}
+                                        </div>
+                                      )}
+                                    </div>
+                                    <TextInput
+                                      name={`trustInfo.${index}.trustname`}
+                                      type="text"
+                                      placeholder="Trust Name"
+                                      value={trust.trustname}
+                                      onChange={handleChange}
+                                      onBlur={handleBlur}
+                                      field={{
+                                        name: `trustInfo.${index}.trustname`,
+                                      }}
+                                      form={{ errors, touched }}
+                                    />
+                                    {/* <ErrorMessage
                                 name={`trustInfo.${index}.trustname`}
                                 component="div"
                                 className="text-red-500 text-sm"
                               /> */}
 
-                                </div>))}
-                            <a
-                              className="ml-6 text-primary2 flex items-center"
-                              onClick={() =>
-                                push({
-                                  trustname: "",
-                                })
-                              }
-                            >
-                              <IoIosAdd className="mr-1" /> Add a client
-                            </a>
-                          </>
+                                  </div>))}
+                              <a
+                                className="text-primary2 flex items-center mt-4"
+                                onClick={() =>
+                                  push({
+                                    trustname: "",
+                                  })
+                                }
+                              >
+                                <IoIosAdd className="mr-1" /> Add a client
+                              </a>
+                            </>
 
-                        )}
-                      </ FieldArray>
-                    </div>
+                          )}
+                        </ FieldArray>
+                      </div>
                     }
                   </div>
                 </div>
 
                 <div>
-                  <div className="mb-2 block">
+                  <div className="block">
 
                     <Label htmlFor="premiseInfo" value="Premise Information" />
                     <div className="grid grid-cols-2 gap-4">
-                      <div className="mb-2 block">
-                        <Field
+                      <div className="block">
+                        <div className="items-dropdown single-select mt-3">
+                          <Field
+                            as={NewCaseDropdown}
+                            defaultLabel="Select Premises Type"
+                            name="premisesType"
+                            value={values.premisesType}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            options={[
+                              { value: 0, label: "Condo" },
+                              { value: 1, label: "House" },
+                              { value: 2, label: "Co-op" },
+                              { value: 3, label: "Commercial" },
+                              { value: 4, label: "Land" },
+                              { value: 5, label: "Condo-op" },
+                              { value: 6, label: "House (Multiple)" },
+                            ]}
+                            inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
+                          />
+                          {touched.premisesType && errors.premisesType ? (
+                            <div className="text-red-500 text-sm">
+                              {errors.premisesType}
+                            </div>
+                          ) : null}
+                        </div>
+                        {/* <Field
                           as={SelectInput}
                           defaultLabel="Select Premises Type"
                           name="premisesType"
@@ -714,7 +777,7 @@ const NewCaseModal = ({ onClose }) => {
                           <div className="text-red-500 text-sm">
                             {errors.premisesType}
                           </div>
-                        ) : null}
+                        ) : null} */}
                       </div>
                     </div>
                     <TextInput
@@ -778,11 +841,11 @@ const NewCaseModal = ({ onClose }) => {
                     text={"Cancel"}
                     onClick={onClose}
                     disabled={isSubmitting}
-                    className="bg-card-300 text-sm text-secondary-800 py-[10px] px-6 rounded-[100px]"
+                    className="bg-card-300 text-sm text-primary2 py-[10px] px-6 rounded-[100px]"
                   />
                   <XButton
                     type="submit"
-                    text={"Next"}
+                    text={"Create"}
                     disabled={isSubmitting}
                     className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px] ml-4"
                   />

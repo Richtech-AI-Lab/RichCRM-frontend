@@ -20,6 +20,10 @@ function* createCase(action) {
         const response = yield call(() => postRequest(API_ENDPOINTS.CREATE_CASE, updatedPayload.casePayload));
         yield put(caseCreateSuccess(response.data));
         if(response.status==200){
+            const caseId = response.data?.data[0].caseId; 
+            if (caseId) {
+                localStorage.setItem('c_id', caseId);
+            }
             toast.success("Cases successfully registered!");
              navigate(ROUTES.NEW_CASE_INFO);
         }
