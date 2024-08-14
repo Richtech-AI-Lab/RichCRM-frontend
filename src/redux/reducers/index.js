@@ -5,6 +5,7 @@ import premisesReducer from "./premisesReducer";
 import clientReducer from "./clientReducer";
 import utilsReducer from "./utilsReducer";
 import stageReducer from "./stagesReducer";
+import taskReducer from "./taskReducer";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   premises: premisesReducer,
   client: clientReducer,
   utils: utilsReducer,
-  stages:stageReducer
+  stages:stageReducer,
+  task:taskReducer
 });
 
 export default rootReducer;
