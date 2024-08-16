@@ -361,7 +361,14 @@ const StagesChecklist = ({ label }) => {
           </div>
         </div>
       </div>
-      {(localStorage.getItem('c_id') && !taskData.data[STAGESNAMES[currentStep]]) || (!localStorage.getItem('c_id') && taskData.data[STAGESNAMES[currentStep]]) ? <XSpinnerLoader loading={true} size="lg" /> : <div className="bg-white py-4 rounded-2xl mb-5">
+      {(localStorage.getItem('c_id') && !taskData.data[STAGESNAMES[currentStep]]) || (!localStorage.getItem('c_id') && taskData.data[STAGESNAMES[currentStep]]) ? <XSpinnerLoader loading={true} size="lg" /> : 
+      <>
+      {currentStep === 3 &&
+        <div className="bg-danger-100 rounded-2xl px-4 py-2 mb-4">
+        <p className="text-white text-base font-medium">The Mortgage is due in 4 days.</p>
+        </div>
+      }  
+      <div className="bg-white py-4 rounded-2xl mb-5">
         <div className="flex justify-between items-center mb-8 px-4">
           {/* <span className="text-base text-secondary-800 font-medium">{getHeadLabel(currentStep)}</span> */}
 
@@ -412,7 +419,7 @@ const StagesChecklist = ({ label }) => {
             text={currentStep === stepperItems?.length - 1 ? "Close Case" : "Move to next stage"}
             className="bg-active-blue text-active-blue-text shadow-shadow-light rounded-full text-sm font-medium py-[10px] px-6" onClick={handleNextStage} />
         </div>
-      </div>}
+      </div></>}
     </div>
   );
 };
