@@ -4,24 +4,31 @@ import { POST_CASE_REQUEST, GET_CASE_REQUEST, UPDATE_CASE_REQUEST, DELETE_CASE_R
 import { postRequest, getRequest } from "../../axios/interceptor";
 import { API_ENDPOINTS, ROUTES } from "../../constants/api";
 import { toast } from "react-toastify";
+import { createStageRequest } from "../actions/stagesActions";
 
 
 function* createCase(action) {
     try {
-        const { payload,navigate } = action;
+        const { payload, navigate } = action;
         const updatedPayload = {
-            ...payload, 
+            ...payload,
             casePayload: {
-              ...payload.casePayload
+                ...payload.casePayload
             }
-          };
-        
-        console.log(payload.casePayload);
+        };
+
         const response = yield call(() => postRequest(API_ENDPOINTS.CREATE_CASE, updatedPayload.casePayload));
         yield put(caseCreateSuccess(response.data));
-        if(response.status==200){
+        if (response.status == 200) {
+            const caseId = response.data?.data[0].caseId;
+            let sagaPayload = {
+                stageType: 0,
+                caseId: caseId,
+            }
+            yield put(createStageRequest(sagaPayload));
+            localStorage.setItem('c_id', caseId);
             toast.success("Cases successfully registered!");
-             navigate(ROUTES.NEW_CASE_INFO);
+            navigate(ROUTES.NEW_CASE_INFO);
         }
     } catch (error) {
         yield put(caseCreateFailure(error.response.data || error));

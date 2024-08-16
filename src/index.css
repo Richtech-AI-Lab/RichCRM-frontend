@@ -205,4 +205,22 @@
   .items-dropdown.single-select ul li:last-child button {
     @apply rounded-bl-[14px] rounded-br-[14px]
   }
+  .new-case-modal .items-dropdown > button {
+    @apply bg-input-surface shadow-none py-3 px-4 rounded-[40px] text-sm text-secondary-800 font-normal relative w-full
+  }
+  .new-case-modal .items-dropdown > button svg {
+    @apply absolute right-3
+  }
+  /* .new-case-modal select {
+    @apply text-text-gray-100
+  } */
+  /* .new-case-modal .form-input::placeholder {
+    @apply text-text-gray-100
+  } */
+  .sort-by-filter.items-dropdown > button {
+    @apply relative w-48
+  }
+  .sort-by-filter.items-dropdown > button svg {
+    @apply absolute right-3
+  }
 }

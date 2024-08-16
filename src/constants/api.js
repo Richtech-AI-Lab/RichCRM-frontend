@@ -12,7 +12,10 @@ export const API_ENDPOINTS = {
   FETCH_PREMISES_BY_ADDRESS_ID: "/premises/query/address",
   REGISTER_CLIENT: "/client/register",
   REGISTER_ADDRESS: "/utils/address/register",
-  CREATE_STAGE:"/stage/create"
+  CREATE_STAGE:"/stage/create",
+  READ_STAGE: "/stage",
+  CREATE_TASK:"/task/create",
+  READ_TASK:"/task",
 };
 
 export const ROUTES = {
