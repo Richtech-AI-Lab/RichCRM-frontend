@@ -34,6 +34,8 @@ const SelectInput = ({
         className={inputClassName}
       >
         {defaultLabel && <option value="" disabled className="bg-bg-input" label={defaultLabel} />}
+
+        {/* {console.log(options)} */}
         {options?.map((option) => (
           <option key={option.value} value={option.value} label={option.label}>
             {option.label}

@@ -20,6 +20,7 @@ import { createStageRequest, getStageRequest } from "../../redux/actions/stagesA
 import { getTaskRequest } from "../../redux/actions/taskActions";
 import { STAGESNAMES } from "../../constants/constants";
 import { isEmpty } from "lodash";
+import XSpinnerLoader from "../spinnerLoader/XSpinnerLoader";
 
 const StagesChecklist = ({ label }) => {
   const dispatch = useDispatch();
@@ -46,14 +47,15 @@ const StagesChecklist = ({ label }) => {
     }
   }, [data])
 
+
   const getChecklistItems = useCallback(() => {
     let currentstepstr = `${currentStep}`;
-    const getTaskPayload ={
-      currentStageData : data[STAGESNAMES[currentstepstr]].tasks,
+    const getTaskPayload = {
+      currentStageData: data[STAGESNAMES[currentstepstr]].tasks,
       currentStep: currentstepstr
     }
     const response = dispatch(getTaskRequest(getTaskPayload));
-    
+
   }, [dispatch, currentStep, data])
   const settingUpTasks = [
     {
@@ -359,7 +361,7 @@ const StagesChecklist = ({ label }) => {
           </div>
         </div>
       </div>
-      <div className="bg-white py-4 rounded-2xl mb-5">
+      {(localStorage.getItem('c_id') && !taskData.data[STAGESNAMES[currentStep]]) || (!localStorage.getItem('c_id') && taskData.data[STAGESNAMES[currentStep]]) ? <XSpinnerLoader loading={true} size="lg" /> : <div className="bg-white py-4 rounded-2xl mb-5">
         <div className="flex justify-between items-center mb-8 px-4">
           {/* <span className="text-base text-secondary-800 font-medium">{getHeadLabel(currentStep)}</span> */}
 
@@ -387,17 +389,17 @@ const StagesChecklist = ({ label }) => {
           </div>
         </div>
         <ul className="mb-6 overflow-y-auto">
-          {taskData.data[STAGESNAMES[currentStep]]?.map((item, index) =>
-          {
-          return (
-            <ChecklistItem
-              key={index}
-              action={item.name}
-              actionInfo={item.name}
-              options={item.options}
-              checkboxId={item.checkboxId}
-            />
-          )})}
+          {taskData.data[STAGESNAMES[currentStep]]?.map((item, index) => {
+            return (
+              <ChecklistItem
+                key={index}
+                action={item.taskType}
+                actionInfo={item.name}
+                options={item.options}
+                checkboxId={item.checkboxId}
+              />
+            )
+          })}
         </ul>
         <div className="flex justify-between items-center pt-5 px-4">
           <XButton
@@ -410,7 +412,7 @@ const StagesChecklist = ({ label }) => {
             text={currentStep === stepperItems?.length - 1 ? "Close Case" : "Move to next stage"}
             className="bg-active-blue text-active-blue-text shadow-shadow-light rounded-full text-sm font-medium py-[10px] px-6" onClick={handleNextStage} />
         </div>
-      </div>
+      </div>}
     </div>
   );
 };

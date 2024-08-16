@@ -458,3 +458,14 @@ export const STAGESNAMES ={
   '3': 'MORTGAGE',
   '4': 'CLOSING'
 }
+
+export const ACTIONTYPELABEL ={
+  0: 'Action',
+  1: 'Contact',
+  2: 'Upload'
+}
+export const ACTIONTYPE ={
+ ACTION: 0,
+  CONTACT:1,
+  UPLOAD: 2
+}

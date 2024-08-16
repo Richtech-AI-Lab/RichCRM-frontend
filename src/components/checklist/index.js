@@ -6,34 +6,21 @@ import { IoChatbubbles } from "react-icons/io5";
 import { LuUpload } from "react-icons/lu";
 import { FaClipboardList } from "react-icons/fa";
 import Badge from "../badge";
+import { ACTIONTYPE, ACTIONTYPELABEL } from "../../constants/constants";
 
 const ChecklistItem = ({ icon, label, options, action, actionInfo, optionsValue, checkboxId, currentStep }) => {
 
-  const getOptionsByAction = (action="Upload",option="Not Started") => {
+  const getOptionsByAction = ( option = "Not Started") => {
     switch (action) {
-      case "Action":
+      // case "Action":
+      case ACTIONTYPE.ACTION:
         return [
           { value: "unfinished", label: "Unfinished" },
           { value: "finished", label: "Finished" },
         ];
         break;
-        case "Upload":
-          if (option === "Unuploaded") {
-            return [
-              { value: "upload", label: "Upload" },
-            ];
-          } else if (option === "Uploaded") {
-            return [
-              { value: "reupload", label: "Re-upload" },
-              { value: "view", label: "View" },
-            ];
-          }else{
-            return [
-              { value: "no option", label: "No option" },
-            ];
-          }
-          break;
-      case "Contact":
+      // case "Contact":
+      case ACTIONTYPE.CONTACT:
         if (option === "Not Started") {
           return [
             { value: "compose message", label: "Compose Message" },
@@ -48,16 +35,32 @@ const ChecklistItem = ({ icon, label, options, action, actionInfo, optionsValue,
             { value: "reupload", label: "Resend Message" },
             { value: "view", label: "Extended Waiting Time" },
           ];
-        }else if (option === "Completed") {
+        } else if (option === "Completed") {
           return [
             { value: "compose message", label: "Compose Message" },
           ];
-        }else{
-             return [
-              { value: "no option", label: "No option" },]
+        } else {
+          return [
+            { value: "no option", label: "No option" },]
         }
         break;
-
+      // case "Upload":
+      case ACTIONTYPE.UPLOAD:
+        if (option === "Unuploaded") {
+          return [
+            { value: "upload", label: "Upload" },
+          ];
+        } else if (option === "Uploaded") {
+          return [
+            { value: "reupload", label: "Re-upload" },
+            { value: "view", label: "View" },
+          ];
+        } else {
+          return [
+            { value: "no option", label: "No option" },
+          ];
+        }
+        break;
       default:
         return [];
     }
@@ -65,11 +68,11 @@ const ChecklistItem = ({ icon, label, options, action, actionInfo, optionsValue,
 
   const getIconByAction = (action) => {
     switch (action) {
-      case "Action":
+      case ACTIONTYPE.ACTION:
         return <FaClipboardList />
-      case "Upload":
+      case ACTIONTYPE.CONTACT:
         return <LuUpload />
-      case "Contact":
+      case ACTIONTYPE.UPLOAD:
         return <IoChatbubbles />
       default: <></>
     }
@@ -93,10 +96,10 @@ const ChecklistItem = ({ icon, label, options, action, actionInfo, optionsValue,
         return "";
     }
   };
-  const isOptionDisable = (acc,opt) => {
-   if(acc=="Action" && (opt == "Finished" || opt =="Unfinished")){
-    return true
-   }
+  const isOptionDisable = (acc, opt) => {
+    if (acc == "Action" && (opt == "Finished" || opt == "Unfinished")) {
+      return true
+    }
     return false
   };
 
@@ -104,8 +107,8 @@ const ChecklistItem = ({ icon, label, options, action, actionInfo, optionsValue,
   const displayColor = getColorByOptions(options)
   const displayIcon = getIconByAction(action)
   const displayOption = getOptionsByAction();
-  const disabled = isOptionDisable(action,options);
-
+  const disabled = isOptionDisable(action, options);
+console.log(displayOption,"displayOption");
   return (
     <div class="border-t-2 border-black-10">
       <li className="flex justify-between items-center mb-5 pb-5 task-checklist mt-2">
@@ -113,7 +116,7 @@ const ChecklistItem = ({ icon, label, options, action, actionInfo, optionsValue,
           <Checkbox id={checkboxId} defaultChecked className="mr-6" />
           <Label htmlFor={checkboxId} className="flex items-center text-lg text-title font-medium">
             {displayIcon && <span className="mr-2">{displayIcon}</span>}
-            {action}: {actionInfo}
+            {ACTIONTYPELABEL[action]}: {actionInfo}
           </Label>
         </div>
         <div>
