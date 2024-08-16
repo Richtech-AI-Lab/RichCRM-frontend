@@ -421,11 +421,11 @@ export const contactTab ={
 
 export const addFromContactTab = {
  BROKERS: 1,
-  CLIENTS: 2,
-  ATTORNEY: 3,
-  TITLE: 4,
-  LENDER: 5,
-  OTHER: 6,
+ ATTORNEY: 2,
+ TITLE: 3,
+ LENDER: 4,
+ OTHER: 5,
+ CLIENTS: 6,
 };
 export const userRole = {
   ADMIN: 0,

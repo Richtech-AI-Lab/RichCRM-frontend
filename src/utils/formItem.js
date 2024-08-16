@@ -3,6 +3,50 @@
 import { IMAGES } from "../constants/imagePath";
 import states from "../constants/states.json"
 
+export const contactItemFirst=[
+    { label: "Position", name: "contactPosition", placeholder: "Enter position name" },
+    { label: "Company", name: "contactCompany", placeholder: "Enter company name" },
+]
+export const contactItemSecond = [
+  
+    { label: "Email", name: "contactEmail", placeholder: "Enter a Email Address" },
+    { label: "Cell Phone", name: "contactCellPhone", placeholder: "Enter a Cell Phone" },
+    {
+        show: false, optional: true, buttonText: "add Work Phone", icon: IMAGES.removeIcon, name: "contactWorkPhone", label: "Work Phone", placeholder: "Enter a work phone",
+    },
+    {
+        show: false, optional: true, buttonText: "add We Chat", icon: IMAGES.removeIcon, name: "contactWeChat", label: "We Chat", placeholder: "Enter a we chat",
+    },
+    {
+        show: false, optional: true, buttonText: "add WhatsApp", icon: IMAGES.removeIcon, name: "contactWhatsApp", label: "WhatsApp", placeholder: "Enter a whatsApp",
+    },
+    {
+        show: false, optional: true, buttonText: "add Line", icon: IMAGES.removeIcon, name: "contactLine", label: "Line", placeholder: "Enter a Line",
+    },
+    {
+        name: "contactAddress",
+        label: "Address",
+        placeholder: "Enter address",
+    },
+    {
+        name: "contactAddress2",
+        label: "Address Line 2",
+        placeholder: "Enter address",
+    },
+    {
+        name: "contactCity",
+        label: "City",
+        placeholder: "Enter city",
+    },
+    {
+        name: "contactState",
+        label: "State",
+        type: "dropdown",
+        dropDownOptions: states,
+    },
+    { label: "Zip Code", name: "contactZipcode", placeholder: "Enter a zip code" },
+];
+
 export const sellerItems = [
     { label: "Name", name: "sellerName", placeholder: "Enter seller name" },
     { label: "SSN", name: "sellerSSN", placeholder: "Enter a SSN" },

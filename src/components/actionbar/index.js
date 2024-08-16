@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import XButton from "../button/XButton";
 import NewCaseModal from "../caseModal/newCaseModal";
 import { SORT_OPTIONS } from "../../constants/constants";
@@ -15,6 +15,15 @@ const Actionbar = ({ onFilterChange }) => {
   const [sortBy, setSortBy] = useState(SORT_OPTIONS.STATUS);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState("Open");
+
+  useEffect(()=>{
+    if(activeFilter==="Open"){
+      setSortBy(SORT_OPTIONS.STATUS)
+    }else{
+      setSortBy(SORT_OPTIONS.NEWOLD)
+    }
+  },[activeFilter])
+
   const openfilterSections = [
     {
       title: "Status",
@@ -66,9 +75,6 @@ const Actionbar = ({ onFilterChange }) => {
 
   const handleSortChange = (value) => {
     setSortBy(value);
-    // if (onFilterChange) {
-    //   onFilterChange(value);
-    // }
   };
 
   const toggleModal = () => {
@@ -133,13 +139,14 @@ const Actionbar = ({ onFilterChange }) => {
         <div className="items-dropdown single-select sort-by-filter">
           <Dropdown
             label={label}
-
+            value={sortBy}
             inline
             className="rounded-2xl w-64 shadow-shadow-light-2"
             dismissOnClick={false}
           >
             {(activeFilter === "Open" ? sortOptions : closeSortOptions).map((option) => (
               <Dropdown.Item
+              
                 key={option.value}
                 className="py-3"
                 onClick={() => handleSortChange(option.value)}

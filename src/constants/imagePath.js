@@ -4,6 +4,7 @@ import plusIcon from "../assets/images/add.svg";
 import subtractIcon from "../assets/images/subtract.svg";
 import logo from "../assets/images/logo.png";
 import contact_avtar from "../assets/images/contact_avtar.png"
+import avatarpic from "../assets/images/avatarpic.png";
 
 export const IMAGES = {
   profile: avatarImage,
@@ -11,6 +12,7 @@ export const IMAGES = {
   addIcon: plusIcon,
   removeIcon: subtractIcon,
   logo:logo,
-  contact_avtar:contact_avtar
+  contact_avtar:contact_avtar,
+  avatarpic : avatarpic
 
 };
