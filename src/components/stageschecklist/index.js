@@ -359,6 +359,11 @@ const StagesChecklist = ({ label }) => {
           </div>
         </div>
       </div>
+      {currentStep === 3 &&
+        <div className="bg-danger-100 rounded-2xl px-4 py-2 mb-4">
+        <p className="text-white text-base font-medium">The Mortgage is due in 4 days.</p>
+        </div>
+      }  
       <div className="bg-white py-4 rounded-2xl mb-5">
         <div className="flex justify-between items-center mb-8 px-4">
           {/* <span className="text-base text-secondary-800 font-medium">{getHeadLabel(currentStep)}</span> */}

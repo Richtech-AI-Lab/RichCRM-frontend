@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { SlArrowRight } from "react-icons/sl";
 import {
   CaseDetailsCard,
@@ -13,6 +13,7 @@ import { FaRegEdit } from "react-icons/fa";
 import { ROUTES } from "../../../constants/api";
 import { CgFolder } from "react-icons/cg";
 import { LuUpload } from "react-icons/lu";
+import UploadFileModal from "../../../components/caseModal/uploadFileModal";
 
 const CaseCardData = () => {
   const navigate=useNavigate();
@@ -50,6 +51,12 @@ const CaseCardData = () => {
     address: "137 Maple Avenue Brooklyn, NY 11215",
     },
   ];
+
+  const [isUploadFileModalOpen, setIsUploadFileModalOpen] = useState(false);
+  const toggleUploadFileModal = () => {
+    setIsUploadFileModalOpen(!isUploadFileModalOpen);
+  };
+
   return (
     <div>
       <PageHeader items={headerItems} />
@@ -61,6 +68,7 @@ const CaseCardData = () => {
             className="bg-white shadow-shadow-light text-secondary-800 py-3 px-6 rounded-full font-medium"
           />
           <XButton
+            onClick={toggleUploadFileModal}
             text="Upload File"
             icon={<LuUpload className="text-base mr-2 inline-block font-medium" />}
             className="bg-white shadow-shadow-light text-secondary-800 py-3 px-6 rounded-full font-medium"
@@ -95,6 +103,7 @@ const CaseCardData = () => {
         </div>
         <StagesChecklist />
       </div>
+      {isUploadFileModalOpen && <UploadFileModal onClose={toggleUploadFileModal} />}
     </div>
   );
 };
