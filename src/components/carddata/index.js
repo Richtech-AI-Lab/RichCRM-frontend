@@ -34,7 +34,7 @@ const CardData = ({ title, count, items, cardClass, onClick ,includeClasses,card
           caseDetails={item?.premisesId?.name}
           caseTitle={item.caseTitle}
           caseCount={item.caseCount}
-          // caseType={item.caseType}
+          caseType={item?.caseType}
           innerCardClass={includeClasses ? "bg-input-surface" : "bg-white shadow-shadow-light"}
           />
       ))}
