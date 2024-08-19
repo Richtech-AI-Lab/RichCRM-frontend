@@ -136,7 +136,7 @@ const Actionbar = ({ onFilterChange }) => {
           onReset={handleReset}
           onClick={()=>alert('helo')}
         />
-        <div className="items-dropdown single-select sort-by-filter">
+        <div className={`items-dropdown single-select ${activeFilter === "Open"?'sort-by-filter':''}`}>
           <Dropdown
             label={label}
             value={sortBy}

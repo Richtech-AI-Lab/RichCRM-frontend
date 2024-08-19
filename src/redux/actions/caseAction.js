@@ -10,7 +10,10 @@ import {
     UPDATE_CASE_FAILURE,
     DELETE_CASE_REQUEST,
     DELETE_CASE_SUCCESS,
-    DELETE_CASE_FAILURE
+    DELETE_CASE_FAILURE,
+    FETCH_ALL_CASES_REQUEST,
+    FETCH_ALL_CASES_SUCCESS,
+    FETCH_ALL_CASES_FAILURE
 } from "../type";
 
 
@@ -79,3 +82,18 @@ export const deleteCaseFailure = (error) => ({
     payload: error,
 });
 
+//Fetch All Cases
+export const fetchAllCasesRequest = (payload) => ({
+    type: FETCH_ALL_CASES_REQUEST,
+    payload,
+});
+
+export const fetchAllCasesSuccess = (cases, closedCases) => ({
+    type: FETCH_ALL_CASES_SUCCESS,
+    payload: { cases, closedCases },
+});
+
+export const fetchAllCasesFailure = (error) => ({
+    type: FETCH_ALL_CASES_FAILURE,
+    payload: error,
+});

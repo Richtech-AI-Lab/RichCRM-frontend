@@ -68,7 +68,6 @@ const NewCaseModal = ({ onClose }) => {
   const { client, error, loading } = useSelector((state) => state.client);
   const { address } = useSelector((state) => state.utils);
   const { premises } = useSelector((state) => state.premises);
-  const { cases } = useSelector((state) => state.case.createCase);
   const [showClientFields, setShowClientFields] = useState(false);
 
   const debouncedFunction = useCallback(
