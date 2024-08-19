@@ -369,7 +369,7 @@ const StagesChecklist = ({ label }) => {
         </div>
       }  
       <div className="bg-white py-4 rounded-2xl mb-5">
-        <div className="flex justify-between items-center mb-8 px-4">
+        <div className={`flex justify-between items-center ${currentStep === 3? '':'pb-4'} px-4`}>
           {/* <span className="text-base text-secondary-800 font-medium">{getHeadLabel(currentStep)}</span> */}
 
           {currentStep === 3 ? (

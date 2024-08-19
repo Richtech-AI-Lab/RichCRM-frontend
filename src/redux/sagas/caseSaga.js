@@ -42,13 +42,51 @@ function* fetchAllCases(action) {
     try {
         const { payload } = action;
         const response = yield call(() => postRequest(API_ENDPOINTS.FECTH_ALL_CASES, payload));
-        console.log(response.data.data,"fetch cases")
         if (response.status == 200) {
             const sellerIds = [...new Set(response?.data?.data.map(caseItem => caseItem.sellerId))];
             const premisesIds = [...new Set(response?.data?.data.map(caseItem => caseItem.premisesId))];
-            console.log(premisesIds,"premises id")
+
+            const sellerIdsData = yield all(
+                sellerIds.map((id) =>
+                    call(function* () {
+                        try {
+                            let res = yield call(getRequest, `${API_ENDPOINTS.FETCH_CLIENT_BY_ID}/${id}`);
+                            return res.data.data[0];
+                        } catch (error) {
+                            //   handleError(error);
+                            return null; // Return null or some default value if the call fails
+                        }
+                    })
+                )
+            );
+
+            const premisesIdsData = yield all(
+                premisesIds.map((id) =>
+                    call(function* () {
+                        try {
+                            let res = yield call(getRequest, `${API_ENDPOINTS.FETCH_PREMISES_BY_ID}/${id}`);
+                            return res.data.data[0];
+                        } catch (error) {
+                            //   handleError(error);
+                            return null; 
+                            // Return null or some default value if the call fails
+                        }
+                    })
+                )
+            );
+            const updatedCases = response?.data?.data.map(caseItem => {
+                const premises = premisesIdsData.find(p => p.premisesId === caseItem.premisesId);
+                // const clients = sellerIdsData.find(p => p.sellerIds === caseItem.sellerId);
+                return {
+                    ...caseItem,
+                    premisesId: premises,
+                    // clientsId: clients
+                    
+                    // Replace premisesId with the entire premises object
+                };
+            });
+            yield put(fetchAllCasesSuccess(updatedCases));
         }
-        yield put(fetchAllCasesSuccess(response.data));
     } catch (error) {
         yield put(fetchAllCasesFailure(error.response.data || error));
     }

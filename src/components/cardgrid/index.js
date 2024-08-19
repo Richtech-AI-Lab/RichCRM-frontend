@@ -17,7 +17,7 @@ const CardGrid = ({ cards, includeClasses,onCardClick }) => {
       <div className="grid grid-cols-5 gap-2">
         {isDashboardRoute ? (
           <>
-            {cards.map((card, index) => (
+            {cards?.map((card, index) => (
               <DashboardCardData
                 key={index}
                 title={card.title}
@@ -31,15 +31,16 @@ const CardGrid = ({ cards, includeClasses,onCardClick }) => {
           </>
         ) : (
           <>
-            {cards.map((card, index) => (
+            {cards?.map((card, index) => (
               <CardData
                 key={index}
-                title={card.title}
+                title={card.label}
                 count={card.count}
                 items={card.items}
                 cardClass={includeClasses ? "bg-white p-0" : "bg-card-300"}
                 onClick={onCardClick}
                 includeClasses={includeClasses}
+                card={card}
               />
             ))}
           </>
