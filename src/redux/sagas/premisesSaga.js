@@ -2,12 +2,14 @@ import { call, put, takeLatest } from "redux-saga/effects";
 import { postRequest } from "../../axios/interceptor";
 import { API_ENDPOINTS, ROUTES } from "../../constants/api";
 import {
+  fetchPremisesByIdFailure,
+  fetchPremisesByIdSuccess,
   fetchPremisesFailure,
   fetchPremisesSuccess,
   registerPremisesFailure,
   registerPremisesSuccess,
 } from "../actions/premisesActions";
-import { FETCH_PREMISES_REQUEST, REGISTER_PREMISES_REQUEST } from "../type";
+import { FETCH_PREMISES_BY_ID_REQUEST, FETCH_PREMISES_REQUEST, REGISTER_PREMISES_REQUEST } from "../type";
 import { toast } from "react-toastify";
 import { caseCreateRequest } from "../actions/caseAction";
 
@@ -51,8 +53,23 @@ function* fetchPremises(action) {
   }
 }
 
+
+function* fetchPremisesById(action) {
+  try {
+    const { premisesId } = action;
+    const response = yield call(() =>
+      postRequest(API_ENDPOINTS.FETCH_PREMISES_BY_ID, premisesId)
+    );
+    console.log("Premises Response By  Id:", response);
+    yield put(fetchPremisesByIdSuccess(response.data));
+  } catch (error) {
+    yield put(fetchPremisesByIdFailure(error.response?.data || error));
+  }
+}
+
 export function* premisesSaga() {
   yield takeLatest(REGISTER_PREMISES_REQUEST, registerPremises);
   yield takeLatest(FETCH_PREMISES_REQUEST, fetchPremises);
+  yield takeLatest(FETCH_PREMISES_BY_ID_REQUEST, fetchPremisesById);
 }
 

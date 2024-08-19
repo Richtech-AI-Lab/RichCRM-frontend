@@ -1,10 +1,12 @@
 import { takeLatest, put, call } from "redux-saga/effects";
-import { caseCreateSuccess, caseCreateFailure, getCaseSuccess, getCaseFailure, updateCaseSuccess, updateCaseFailure, deleteCaseSuccess, deleteCaseFailure } from "../actions/caseAction";
-import { POST_CASE_REQUEST, GET_CASE_REQUEST, UPDATE_CASE_REQUEST, DELETE_CASE_REQUEST } from "../type";
+import { caseCreateSuccess, caseCreateFailure, updateCaseSuccess, updateCaseFailure, deleteCaseSuccess, deleteCaseFailure, fetchAllCasesSuccess, fetchAllCasesFailure } from "../actions/caseAction";
+import { POST_CASE_REQUEST, UPDATE_CASE_REQUEST, DELETE_CASE_REQUEST, FETCH_ALL_CASES_REQUEST } from "../type";
 import { postRequest, getRequest } from "../../axios/interceptor";
 import { API_ENDPOINTS, ROUTES } from "../../constants/api";
 import { toast } from "react-toastify";
 import { createStageRequest } from "../actions/stagesActions";
+import { fetchClientByIdRequest } from "../actions/clientActions";
+import { all } from "redux-saga/effects";
 
 
 function* createCase(action) {
@@ -36,13 +38,19 @@ function* createCase(action) {
     }
 }
 
-function* getCase(action) {
+function* fetchAllCases(action) {
     try {
         const { payload } = action;
-        const response = yield call(() => getRequest(API_ENDPOINTS.GET_CASE, payload));
-        yield put(getCaseSuccess(response.data));
+        const response = yield call(() => postRequest(API_ENDPOINTS.FECTH_ALL_CASES, payload));
+        console.log(response.data.data,"fetch cases")
+        if (response.status == 200) {
+            const sellerIds = [...new Set(response?.data?.data.map(caseItem => caseItem.sellerId))];
+            const premisesIds = [...new Set(response?.data?.data.map(caseItem => caseItem.premisesId))];
+            console.log(premisesIds,"premises id")
+        }
+        yield put(fetchAllCasesSuccess(response.data));
     } catch (error) {
-        yield put(getCaseFailure(error.response.data || error));
+        yield put(fetchAllCasesFailure(error.response.data || error));
     }
 }
 
@@ -68,7 +76,7 @@ function* deleteCase(action) {
 
 export function* caseSaga() {
     yield takeLatest(POST_CASE_REQUEST, createCase);
-    yield takeLatest(GET_CASE_REQUEST, getCase);
+    yield takeLatest(FETCH_ALL_CASES_REQUEST, fetchAllCases);
     yield takeLatest(UPDATE_CASE_REQUEST, updateCase);
     yield takeLatest(DELETE_CASE_REQUEST, deleteCase);
 }

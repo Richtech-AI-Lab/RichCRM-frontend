@@ -1,11 +1,13 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { API_ENDPOINTS } from "../../constants/api";
 import {
+  fetchClientByIdFailure,
+  fetchClientByIdSuccess,
   registerClientFailure,
   registerClientSuccess,
 } from "../actions/clientActions";
-import { REGISTER_CLIENT_REQUEST } from "../type";
-import { postRequest } from "../../axios/interceptor";
+import { FETCH_CLIENT_BY_ID_REQUEST, REGISTER_CLIENT_REQUEST } from "../type";
+import { getRequest, postRequest } from "../../axios/interceptor";
 import { toast } from "react-toastify";
 import { registerAddressRequest } from "../actions/utilsActions";
 
@@ -35,6 +37,20 @@ function* registerClient(action) {
   }
 }
 
+function* fetchClientById(action) {
+  try {
+    const { clientId } = action.payload;
+    const response = yield call(() =>
+      getRequest(`${API_ENDPOINTS.FETCH_CLIENT_BY_ID}/${clientId}`)
+    );
+    console.log(response, "fetch client by Id response");
+    yield put(fetchClientByIdSuccess(response.data));
+  } catch (error) {
+    yield put(fetchClientByIdFailure(error.response.data || error));
+  }
+}
+
 export function* clientSaga() {
   yield takeLatest(REGISTER_CLIENT_REQUEST, registerClient);
+  yield takeLatest(FETCH_CLIENT_BY_ID_REQUEST, fetchClientById);
 }
