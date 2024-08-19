@@ -421,11 +421,11 @@ export const contactTab ={
 
 export const addFromContactTab = {
  BROKERS: 1,
-  CLIENTS: 2,
-  ATTORNEY: 3,
-  TITLE: 4,
-  LENDER: 5,
-  OTHER: 6,
+ ATTORNEY: 2,
+ TITLE: 3,
+ LENDER: 4,
+ OTHER: 5,
+ CLIENTS: 6,
 };
 export const userRole = {
   ADMIN: 0,
@@ -457,4 +457,15 @@ export const STAGESNAMES ={
   '2': 'CONTRACT_SIGNING',
   '3': 'MORTGAGE',
   '4': 'CLOSING'
+}
+
+export const ACTIONTYPELABEL ={
+  0: 'Action',
+  1: 'Contact',
+  2: 'Upload'
+}
+export const ACTIONTYPE ={
+ ACTION: 0,
+  CONTACT:1,
+  UPLOAD: 2
 }

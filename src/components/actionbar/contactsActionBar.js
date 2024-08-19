@@ -8,32 +8,32 @@ import { ROUTES } from "../../constants/api";
 import NewCaseModal from "../caseModal/newCaseModal";
 import { useLocation } from "react-router-dom";
 import ContactTabs from "./contactTabs";
+import { AiOutlineLink } from "react-icons/ai";
 
-
-const ContactsActionbar = ({ active="", setActive="" , isAddFromContactModal}) => {
+const ContactsActionbar = ({ active = "", setActive = "", isAddFromContactModal }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
-  const shouldShowOpenClosed = (routePath) => {
+  const shouldShow = (routePath) => {
     const pathsToShow = [routePath];
     return pathsToShow.includes(location.pathname);
   };
 
   const addFromContactTabs = [
     { id: addFromContactTab.BROKERS, label: "Brokers" },
-    { id: addFromContactTab.CLIENTS, label: "Clients" },
     { id: addFromContactTab.ATTORNEY, label: "Attorney" },
     { id: addFromContactTab.TITLE, label: "Title" },
     { id: addFromContactTab.LENDER, label: "Lender" },
+    { id: addFromContactTab.CLIENTS, label: "Clients" },
     { id: addFromContactTab.OTHER, label: "Other" }
   ];
   return (
     <>
 
-        {shouldShowOpenClosed(ROUTES.CONTACTS)  && (
+      {shouldShow(ROUTES.CONTACTS) && (
         <div className="flex justify-between items-center mb-6">
           <ContactTabs active={active} setActive={setActive} tabs={addFromContactTabs} />
           <div>
@@ -48,28 +48,25 @@ const ContactsActionbar = ({ active="", setActive="" , isAddFromContactModal}) =
         </div>
       )}
 
-{isAddFromContactModal && (
+      {isAddFromContactModal && (
         <div className="flex justify-between items-center mb-6">
           <ContactTabs active={active} setActive={setActive} tabs={addFromContactTabs} isAddFromContactModal={isAddFromContactModal} />
         </div>
       )}
-      {shouldShowOpenClosed(ROUTES.CONTACT_PARTNER) &&
+      {shouldShow(ROUTES.CONTACT_PARTNER) &&
         <div className="flex justify-end items-center mb-6">
           <div>
 
-                <XButton
-                  text="Edit"
-                  icon={<FiEdit3 className="text-base mr-2 inline-block" />}
-                  className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium"
-                />
-                <XButton
-                  text="Share"
-                  onClick={toggleModal}
-                  icon={
-                    <RiDownloadLine className="text-base mr-2 inline-block" />
-                  }
-                  className="bg-primary2 text-sm text-white py-[10px] px-6 rounded-[100px] font-medium ml-4"
-                />
+            <XButton
+              text="Connect"
+              icon={<AiOutlineLink className="text-base mr-2 inline-block"/>}
+              className="shadow-shadow-light-2 text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium"
+            />
+            <XButton
+              text="Edit"
+              icon={<FiEdit3 className="text-base mr-2 inline-block" />}
+              className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium ml-4"
+            />
           </div>
         </div>}
     </>

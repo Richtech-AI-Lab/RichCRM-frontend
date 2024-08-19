@@ -75,6 +75,9 @@ module.exports = {
       'text-gray': {
         100: '#707684',
       },
+      'danger':{
+        100:'#C60B00'
+      },    
       ...colors,
     },
   },
