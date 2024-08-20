@@ -26,7 +26,7 @@ import { debounce } from "lodash";
 import avatar from '../../assets/images/avatar.png'
 import { IoCloseCircleOutline } from "react-icons/io5";
 import NewCaseDropdown from "../newcasedropdown";
-import { caseTypeOptions } from "../../utils/formItem";
+import { caseTypeOptions, premisesTypes } from "../../utils/formItem";
 
 const clientTypeOptions = [
   { value: CLIENTTYPE.INDIVIDUAL, label: "Individual" },
@@ -734,15 +734,7 @@ const NewCaseModal = ({ onClose }) => {
                             value={values.premisesType}
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            options={[
-                              { value: 0, label: "Condo" },
-                              { value: 1, label: "House" },
-                              { value: 2, label: "Co-op" },
-                              { value: 3, label: "Commercial" },
-                              { value: 4, label: "Land" },
-                              { value: 5, label: "Condo-op" },
-                              { value: 6, label: "House (Multiple)" },
-                            ]}
+                            options={premisesTypes}
                             inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
                           />
                           {touched.premisesType && errors.premisesType ? (

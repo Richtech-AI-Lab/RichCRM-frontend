@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SlArrowRight } from "react-icons/sl";
 import {
   CaseDetailsCard,
@@ -8,18 +8,44 @@ import {
 } from "../../../components";
 import { IMAGES } from "../../../constants/imagePath";
 import StagesChecklist from "../../../components/stageschecklist";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FaRegEdit } from "react-icons/fa";
 import { ROUTES } from "../../../constants/api";
 import { CgFolder } from "react-icons/cg";
 import { LuUpload } from "react-icons/lu";
 import UploadFileModal from "../../../components/caseModal/uploadFileModal";
+import { caseTypeOptions, premisesTypes } from "../../../utils/formItem";
+import { fetchPremisesByQueryIdRequest } from "../../../redux/actions/premisesActions";
+import { useDispatch, useSelector } from "react-redux";
 
 const CaseCardData = () => {
   const navigate=useNavigate();
-  const handleCaseDetails=()=>{
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const {casedetails }= location.state || {};
+  const caseTypeLabel = caseTypeOptions.find(option => option.value === casedetails.caseType)?.label || "Unknown";
+  const {premises}= useSelector((state) => state.premises);
+  const premisesDetails = premises?.data?.length > 0 ? premises?.data[0] : null;
+  const premisesTypeLabel = premisesTypes.find(option => option.value === premisesDetails?.propertyType)?.label || "Unknown";
+
+const handleCaseDetails=()=>{
     navigate(ROUTES.CASES_DETAILS)
   }
+
+  useEffect(() => {
+    const fetchPremisesByQueryId = async () => {
+      try {
+        const payload = {
+          premisesId: casedetails && casedetails?.premisesId,
+        };
+        dispatch(fetchPremisesByQueryIdRequest(payload));
+      } catch (error) {
+        console.error("Failed to fetch premises data:", error);
+      }
+    };
+
+    fetchPremisesByQueryId();
+  }, [casedetails.premisesId]);
 
   const headerItems = [
     { text: "Cases", className: "mr-8" },
@@ -78,11 +104,13 @@ const CaseCardData = () => {
       <div className="grid grid-cols-12 gap-6">
         <div className="col-span-4">
           <CaseDetailsCard
-            title="Fu - Skyline #5712"
-            clientName="Jack Fu"
-            caseType="Purchasing"
-            premisesType="Condo"
-            address="1500 Skyline Avenue Apt 2503 New York, NY 10019"
+            title={premisesDetails?.name}
+            clientName={`${casedetails?.clientsId?.firstName} ${casedetails?.clientsId?.lastName}` }
+            caseType={caseTypeLabel}
+            premisesType={premisesTypeLabel}
+            // address="1500 Skyline Avenue Apt 2503 New York, NY 10019"
+            address={premisesDetails?.addressId
+            }
           />
           <XButton
             text="Case Details"

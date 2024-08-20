@@ -10,6 +10,7 @@ import { FETCH_CLIENT_BY_ID_REQUEST, REGISTER_CLIENT_REQUEST } from "../type";
 import { getRequest, postRequest } from "../../axios/interceptor";
 import { toast } from "react-toastify";
 import { registerAddressRequest } from "../actions/utilsActions";
+import { handleError } from "../../utils/eventHandler";
 
 function* registerClient(action) {
   try {
@@ -32,8 +33,8 @@ function* registerClient(action) {
       toast.success("Client created successfully");
     }
   } catch (error) {
+    handleError(error)
     yield put(registerClientFailure(error.response?.data || error));
-    toast.error("Failed to create case.");
   }
 }
 
@@ -43,9 +44,9 @@ function* fetchClientById(action) {
     const response = yield call(() =>
       getRequest(`${API_ENDPOINTS.FETCH_CLIENT_BY_ID}/${clientId}`)
     );
-    console.log(response, "fetch client by Id response");
     yield put(fetchClientByIdSuccess(response.data));
   } catch (error) {
+    handleError(error)
     yield put(fetchClientByIdFailure(error.response.data || error));
   }
 }

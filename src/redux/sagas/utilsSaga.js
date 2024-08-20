@@ -8,6 +8,7 @@ import {
 import { REGISTER_ADDRESS_REQUEST } from "../type";
 import { registerPremisesRequest } from "../actions/premisesActions";
 import { toast } from "react-toastify";
+import { handleError } from "../../utils/eventHandler";
 
 function* registerAddress(action) {
   try {
@@ -32,8 +33,9 @@ function* registerAddress(action) {
     }
 
   } catch (error) {
+    handleError(error)
     yield put(registerAddressFailure(error.response?.data || error));
-    toast.error("Failed to register address.");
+    // toast.error("Failed to register address.");
   }
 }
 

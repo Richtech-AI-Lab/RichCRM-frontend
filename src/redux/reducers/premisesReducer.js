@@ -3,6 +3,9 @@ import {
   FETCH_PREMISES_BY_ID_FAILURE,
   FETCH_PREMISES_BY_ID_REQUEST,
   FETCH_PREMISES_BY_ID_SUCCESS,
+  FETCH_PREMISES_BY_QUERY_ID_FAILURE,
+  FETCH_PREMISES_BY_QUERY_ID_REQUEST,
+  FETCH_PREMISES_BY_QUERY_ID_SUCCESS,
   FETCH_PREMISES_FAILURE,
   FETCH_PREMISES_REQUEST,
   FETCH_PREMISES_SUCCESS,
@@ -58,6 +61,25 @@ const premisesReducer = (state = initialState, action) => {
         error: null,
       };
     case REGISTER_PREMISES_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+      case FETCH_PREMISES_BY_QUERY_ID_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    case FETCH_PREMISES_BY_QUERY_ID_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        premises: action.payload,
+        error: null,
+      };
+    case FETCH_PREMISES_BY_QUERY_ID_FAILURE:
       return {
         ...state,
         loading: false,

@@ -88,9 +88,9 @@ export const fetchAllCasesRequest = (payload) => ({
     payload,
 });
 
-export const fetchAllCasesSuccess = (cases, closedCases) => ({
+export const fetchAllCasesSuccess = (cases) => ({
     type: FETCH_ALL_CASES_SUCCESS,
-    payload: { cases, closedCases },
+    payload: { cases },
 });
 
 export const fetchAllCasesFailure = (error) => ({

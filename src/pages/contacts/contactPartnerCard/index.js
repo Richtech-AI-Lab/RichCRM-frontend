@@ -1,4 +1,4 @@
-import { Table, TextInput } from "flowbite-react";
+import { Table, Textarea, TextInput } from "flowbite-react";
 import React, { useState } from "react";
 import dummyData from "../../../utils/dummyData.json";
 import { ROUTES } from "../../../constants/api";
@@ -39,6 +39,7 @@ const ContactPartnerCard = ({ active }) => {
     { caseDetails: "535 W 52nd St #9G coop", caseTitle: "Gee, First Name" }
   ];
   return (
+    <>
     <div className="grid grid-cols-12 gap-6">
       <div className="col-span-6">
         <Formik
@@ -54,19 +55,21 @@ const ContactPartnerCard = ({ active }) => {
             touched
           }) => (
             <form onSubmit={handleSubmit}>
-              <div className="bg-white rounded-2xl mb-5">
-                <div className="flex">
+              <div className="bg-white rounded-2xl mb-5 p-4">
+              <div className="flex">
                   <img
                     src={IMAGES.avatarpic}
                     alt="Profile"
-                    className="rounded-full m-2"
+                    className="rounded-full"
                     style={{height:'150px', width:'150px'}}
                     // className="mt-2"
                   />
-                  <div style={{ display: 'flex', flexDirection: 'column' }} className="ml-5 mt-2">
-                    <span className="left-txt font-medium text-secondary-800">Lessy Wang</span>
-                    <span className="left-txt font-medium text-secondary-800 text-sm">Brokers</span>
-                    <span className="left-txt font-medium text-secondary-800 text-sm  mt-5">1232324</span>
+                  <div className="ml-6">
+                    <div className="mb-16">
+                    <p className="text-[22px] font-medium text-secondary-800">Lessy Wang</p>
+                    <p className="font-medium text-secondary-800 text-sm mb-10">Brokers</p>
+                    </div>
+                    <p className="text-secondary-300 text-sm">ID xxxx</p>
                   </div>
                 </div>
               </div>
@@ -76,10 +79,11 @@ const ContactPartnerCard = ({ active }) => {
 
               <CaseCardDetails items={contactItemSecond} handle={handleChange} form={{ errors, touched }} />
               <div className="bg-white rounded-2xl mb-5">
-                <TextInput
+                <Textarea
                   name="add a note"
                   type="text"
                   placeholder="Add a note for "
+                  className="bg-white resize-none border-none h-60 py-3 px-4"
                 // value={values.clientfirstName}
                 // onChange={handleChange}
                 // onBlur={handleBlur}
@@ -87,7 +91,7 @@ const ContactPartnerCard = ({ active }) => {
                 // form={{ errors, touched }}
                 />
               </div>
-              <FormButton onSave={handleSubmit} />
+              {/* <FormButton onSave={handleSubmit} /> */}
             </form>
           )}
         </Formik>
@@ -125,7 +129,8 @@ const ContactPartnerCard = ({ active }) => {
         </div>
       </div>
     </div>
-
+      <FormButton onSave={handleSubmit} />
+</>
   );
 };
 
