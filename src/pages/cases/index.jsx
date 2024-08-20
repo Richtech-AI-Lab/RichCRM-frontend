@@ -63,7 +63,7 @@ const Cases = () => {
 
   return (
     <>
-    {/* <XSpinnerLoader loading={loading} size="lg" /> */}
+    <XSpinnerLoader loading={loading} size="lg" />
 
     <div className="mt-14">
       <Actionbar onFilterChange={handleFilterChange} />

@@ -24,7 +24,7 @@ const CasesCategoryCard = ({ cases,onCardClick ,categoryTitle,stageCount}) => {
               caseDetails={item.premisesId}
               onClick={onCardClick}
               caseType={item?.caseType}
-              caseTitle={`${item.clientsId.firstName} ${item.clientsId.lastName}` }
+              caseTitle={`${item.clientsId.lastName}, ${item.clientsId.firstName}` }
               caseCount={item.caseCount}
             />
           ))}
