@@ -11,6 +11,7 @@ const ClosedCasesGrid = ({ closedCases }) => {
             caseDetails={item.caseDetails}
             caseTitle={item.caseTitle}
             closedCases={closedCases}
+            caseType={item?.caseType}
           />
         ))}
       </div>

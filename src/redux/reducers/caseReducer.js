@@ -20,7 +20,6 @@ import {
 
 const initialCasesState = {
   cases: [],
-  closedCases: [],
   loading: false,
   error: null,
 };
@@ -61,12 +60,28 @@ const casesReducer = (state = initialCasesState, action) => {
         ),
         error: null,
       };
+      case FETCH_ALL_CASES_SUCCESS:
+        if (action.payload.closed) {
+          return {
+            ...state,
+            loading: false,
+            closedCases: action.payload.cases,
+            error: null,
+          };
+        } else {
+          return {
+            ...state,
+            loading: false,
+            cases: action.payload.cases,
+            error: null,
+          };
+        }
+  
     case FETCH_ALL_CASES_SUCCESS:
       return {
         ...state,
         loading: false,
         cases: action.payload.cases,
-        closedCases: action.payload.closedCases,
         error: null,
       };
     case GET_CASE_FAILURE:

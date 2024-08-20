@@ -10,7 +10,7 @@ import { stageTypes } from "../../utils/formItem";
 
 const Cases = () => {
   const dispatch = useDispatch();
-  const {loading}= useSelector((state) => state.case.casesData);
+  const {cases,loading}= useSelector((state) => state.case.casesData);
   const [filter, setFilter] = useState("Open");
   const navigate = useNavigate();
   const handleCardClick = (card,filteredCases,stageCount) => {
@@ -73,7 +73,7 @@ const Cases = () => {
         // cards={cases?.data}
         onCardClick={handleCardClick} />
       ) : (
-        <ClosedCasesGrid closedCases={closedCases} />
+        <ClosedCasesGrid closedCases={cases} />
       )}
     </div>
     </>
