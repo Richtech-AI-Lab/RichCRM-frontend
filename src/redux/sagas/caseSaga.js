@@ -43,11 +43,14 @@ function* fetchAllCases(action) {
         const { payload } = action;
         const response = yield call(() => postRequest(API_ENDPOINTS.FECTH_ALL_CASES, payload));
         if (response.status == 200) {
-            const sellerIds = [...new Set(response?.data?.data.map(caseItem => caseItem.sellerId))];
-            const premisesIds = [...new Set(response?.data?.data.map(caseItem => caseItem.premisesId))];
+            const ids = [...new Set(
+                response?.data?.data
+                  .map(caseItem => caseItem.sellerId || caseItem.buyerId) // Take sellerId if available, otherwise take buyerId
+              )];
+            // const premisesIds = [...new Set(response?.data?.data.map(caseItem => caseItem.premisesId))];
 
-            const sellerIdsData = yield all(
-                sellerIds.map((id) =>
+            const clientIdsData = yield all(
+                ids.map((id) =>
                     call(function* () {
                         try {
                             let res = yield call(getRequest, `${API_ENDPOINTS.FETCH_CLIENT_BY_ID}/${id}`);
@@ -59,28 +62,27 @@ function* fetchAllCases(action) {
                     })
                 )
             );
-
-            const premisesIdsData = yield all(
-                premisesIds.map((id) =>
-                    call(function* () {
-                        try {
-                            let res = yield call(getRequest, `${API_ENDPOINTS.FETCH_PREMISES_BY_ID}/${id}`);
-                            return res.data.data[0];
-                        } catch (error) {
-                            //   handleError(error);
-                            return null; 
-                            // Return null or some default value if the call fails
-                        }
-                    })
-                )
-            );
+            // const premisesIdsData = yield all(
+            //     premisesIds.map((id) =>
+            //         call(function* () {
+            //             try {
+            //                 let res = yield call(getRequest, `${API_ENDPOINTS.FETCH_PREMISES_BY_ID}/${id}`);
+            //                 return res.data.data[0];
+            //             } catch (error) {
+            //                 //   handleError(error);
+            //                 return null; 
+            //                 // Return null or some default value if the call fails
+            //             }
+            //         })
+            //     )
+            // );
             const updatedCases = response?.data?.data.map(caseItem => {
-                const premises = premisesIdsData.find(p => p.premisesId === caseItem.premisesId);
-                // const clients = sellerIdsData.find(p => p.sellerIds === caseItem.sellerId);
+                const clients = clientIdsData.find(p => 
+                    p.clientId === caseItem.sellerId || p.clientId === caseItem.buyerId
+                  );
                 return {
                     ...caseItem,
-                    premisesId: premises,
-                    // clientsId: clients
+                    clientsId: clients
                     
                     // Replace premisesId with the entire premises object
                 };

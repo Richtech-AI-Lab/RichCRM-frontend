@@ -22,15 +22,16 @@ const CasesCategoryCard = ({ cases,onCardClick ,categoryTitle,stageCount}) => {
           // .filter((item) => item.badgeText === badge)
           .map((item, index) => (
             <CardItem
-              key={index}
-              badgeColor={item.badgeColor}
-              badgeText={item.badgeText}
-              caseDetails={item.caseDetails}
-              onClick={onCardClick}
-              caseTitle={item.caseTitle}
-              caseCount={item.caseCount}
-              caseType={item?.caseType}
-            />
+            key={index}
+            badgeColor={item.badgeColor}
+            badgeText={item.badgeText}
+            caseDetails={item.premisesId}
+            onClick={onCardClick}
+            caseType={item?.caseType}
+            caseTitle={`${item.clientsId.lastName}, ${item.clientsId.firstName}` }
+            caseCount={item.caseCount}
+          />
+
           ))}
         </div>
       {/* ))} */}
