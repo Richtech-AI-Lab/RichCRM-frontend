@@ -2,6 +2,9 @@ import {
   FETCH_PREMISES_BY_ID_FAILURE,
   FETCH_PREMISES_BY_ID_REQUEST,
   FETCH_PREMISES_BY_ID_SUCCESS,
+  FETCH_PREMISES_BY_QUERY_ID_FAILURE,
+  FETCH_PREMISES_BY_QUERY_ID_REQUEST,
+  FETCH_PREMISES_BY_QUERY_ID_SUCCESS,
   FETCH_PREMISES_FAILURE,
   FETCH_PREMISES_REQUEST,
   FETCH_PREMISES_SUCCESS,
@@ -57,4 +60,19 @@ export const fetchPremisesByIdSuccess = (data) => ({
 export const fetchPremisesByIdFailure = (error) => ({
   type: FETCH_PREMISES_BY_ID_FAILURE,
   payload: error
+});
+
+export const fetchPremisesByQueryIdRequest = (premisesId) => ({
+  type: FETCH_PREMISES_BY_QUERY_ID_REQUEST,
+  payload: { premisesId }
+});
+
+export const fetchPremisesByQueryIdSuccess = (data) => ({
+  type: FETCH_PREMISES_BY_QUERY_ID_SUCCESS,
+  payload: data,
+});
+
+export const fetchPremisesByQueryIdFailure = (error) => ({
+  type: FETCH_PREMISES_BY_QUERY_ID_FAILURE,
+  payload: error,
 });

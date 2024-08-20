@@ -315,4 +315,14 @@ export const stageTypes = [
   { value: 3, label: "Mortgage & Title" },
   { value: 4, label: "Closing" },
 ];
+
+export const premisesTypes = [
+    { value: 0, label: "House (Single-Family )" },
+    { value: 1, label: "House (Multi-Family)" },
+    { value: 2, label: "Condo" },
+    { value: 3, label: "Commercial" },
+    { value: 4, label: "Land" },
+    { value: 5, label: "Co-op" },
+    { value: 6, label: "Condo-op" },
+  ];
   

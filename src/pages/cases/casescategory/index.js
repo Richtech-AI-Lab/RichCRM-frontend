@@ -36,8 +36,8 @@ const CasesCategory = () => {
     { badgeColor: "gray", badgeText: "Waiting", caseDetails: "535 W 52nd St #9G coop" ,caseTitle: "Gee, First Name",caseCount: "1/3",},
     { badgeColor: "gray", badgeText: "Waiting", caseDetails: "535 W 52nd St #9G coop" ,caseTitle: "Gee, First Name",caseCount: "1/3",},
   ];
-  const handleCaseCardClick = () => {
-    navigate(ROUTES.CASES_DATA);
+  const handleCaseCardClick = (casedetails) => {
+    navigate(ROUTES.CASES_DATA, { state: { casedetails } });
   };
   return (
     <div>

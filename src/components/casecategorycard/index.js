@@ -7,7 +7,6 @@ import { BsHourglass } from "react-icons/bs";
 import { FiCheckCircle } from "react-icons/fi";
 
 const CasesCategoryCard = ({ cases,onCardClick ,categoryTitle,stageCount}) => {
-  console.log(cases,"cases in category card")
   // const badgeTexts = [...new Set(cases.map((item) => item.badgeText))];
 
   return (
@@ -26,7 +25,7 @@ const CasesCategoryCard = ({ cases,onCardClick ,categoryTitle,stageCount}) => {
             badgeColor={item.badgeColor}
             badgeText={item.badgeText}
             caseDetails={item.premisesId}
-            onClick={onCardClick}
+            onClick={()=>onCardClick(item)}
             caseType={item?.caseType}
             caseTitle={`${item.clientsId.lastName}, ${item.clientsId.firstName}` }
             caseCount={item.caseCount}
