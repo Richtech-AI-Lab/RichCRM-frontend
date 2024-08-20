@@ -49,7 +49,7 @@ const SideNav = ({ isDrawerOpen, toggleDrawer, setTitle }) => {
       <img
                   src={IMAGES.logo}
                   alt="logo"
-                  className="mr-4 w-15 ml-5 mt-5"
+                  className="mr-4 w-15 ml-5 mt-5 sidebar-logo"
                 />
       <Sidebar.Items className="mt-10 sidebar-items flex flex-col justify-between h-[calc(100vh-140px)]">
         <Sidebar.ItemGroup>

@@ -52,7 +52,16 @@
     @apply bg-white p-4 rounded-3xl;
   }
   .sidebar-toggle {
-    @apply w-[0] !important;
+    @apply w-[80px] !important;
+  }
+  .sidebar-toggle ul li a{
+  @apply justify-start;
+  }
+  .sidebar-toggle ul li a span{
+    @apply hidden;
+  }
+  .sidebar-toggle .sidebar-logo{
+    @apply mx-1;
   }
   .listing-border {
     @apply border-b border-b-border;

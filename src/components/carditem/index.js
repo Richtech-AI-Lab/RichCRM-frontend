@@ -1,5 +1,6 @@
 import React from "react";
 import Badge from "../badge";
+import { caseTypeOptions } from "../../utils/formItem";
 
 const CardItem = ({
   badgeColor,
@@ -9,8 +10,11 @@ const CardItem = ({
   caseCount,
   onClick,
   innerCardClass,
-  closedCases
-}) => (
+  closedCases,
+  caseType
+}) => {
+  const caseTypeLabel = caseTypeOptions.find(option => option.value === caseType)?.label || "Unknown";
+  return (
   <div
     className={`card rounded-2xl ${closedCases ? 'mb-0 shadow-shadow-light' : 'mb-2'}  ${innerCardClass}`}
     onClick={onClick}
@@ -31,7 +35,8 @@ const CardItem = ({
     )}
     <p className="text-sm text-secondary-800 font-medium mt-1">{caseDetails}</p>
 
-    <span className={`text-xs ${closedCases ? 'text-secondary-800' : 'text-secondary-700'}`}>Selling</span>
+    <span className={`text-xs ${closedCases ? 'text-secondary-800' : 'text-secondary-700'}`}>{caseTypeLabel}</span>
   </div>
 );
+};
 export default CardItem;

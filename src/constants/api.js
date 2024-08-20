@@ -16,6 +16,9 @@ export const API_ENDPOINTS = {
   READ_STAGE: "/stage",
   CREATE_TASK:"/task/create",
   READ_TASK:"/task",
+  FECTH_ALL_CASES:"/case/all",
+  FETCH_CLIENT_BY_ID:"/client",
+  FETCH_PREMISES_BY_ID:"/premises"
 };
 
 export const ROUTES = {

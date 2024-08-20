@@ -26,16 +26,13 @@ import { debounce } from "lodash";
 import avatar from '../../assets/images/avatar.png'
 import { IoCloseCircleOutline } from "react-icons/io5";
 import NewCaseDropdown from "../newcasedropdown";
+import { caseTypeOptions } from "../../utils/formItem";
 
 const clientTypeOptions = [
   { value: CLIENTTYPE.INDIVIDUAL, label: "Individual" },
   { value: CLIENTTYPE.COMPANY, label: "Company" },
   { value: CLIENTTYPE.TRUST, label: "Trust" },
 ];
-const caseTypeOptions = [
-  { value: CASETYPE.PURCHASING, label: "Purchasing" },
-  { value: CASETYPE.SELLING, label: "Selling" },
-]
 const searchOption = [
   {
     "clientId": "123456789",
@@ -68,7 +65,6 @@ const NewCaseModal = ({ onClose }) => {
   const { client, error, loading } = useSelector((state) => state.client);
   const { address } = useSelector((state) => state.utils);
   const { premises } = useSelector((state) => state.premises);
-  const { cases } = useSelector((state) => state.case.createCase);
   const [showClientFields, setShowClientFields] = useState(false);
 
   const debouncedFunction = useCallback(
@@ -284,10 +280,7 @@ const NewCaseModal = ({ onClose }) => {
                           value={values.caseType}
                           onChange={handleChange}
                           onBlur={handleBlur}
-                          options={[
-                            { value: 1, label: "Selling" },
-                            { value: 0, label: "Purchasing" },
-                          ]}
+                          options={caseTypeOptions}
                           inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
                         />
                         {touched.caseType && errors.caseType ? (

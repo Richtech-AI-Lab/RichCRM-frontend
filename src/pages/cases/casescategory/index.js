@@ -1,12 +1,14 @@
 import React from "react";
 import { Actionbar, PageHeader } from "../../../components";
 import CasesCategoryCard from "../../../components/casecategorycard";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { SlArrowRight } from "react-icons/sl";
 import { ROUTES } from "../../../constants/api";
 
 const CasesCategory = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { card, filteredCases,stageCount } = location.state || {};
   const headerItems = [
     { text: "Cases", className: "mr-4" },
     { text: "Contract Preparing", separator: <SlArrowRight className="inline mr-4" />},
@@ -42,8 +44,10 @@ const CasesCategory = () => {
       <PageHeader items={headerItems} />
       <Actionbar />
       <CasesCategoryCard
-        cases={cases}
+        cases={filteredCases}
         onCardClick={handleCaseCardClick}
+        categoryTitle={card?.label}
+        stageCount={stageCount}
       />
     </div>
   );

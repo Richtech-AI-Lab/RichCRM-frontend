@@ -1,5 +1,6 @@
 // participant.js
 
+import { CASETYPE } from "../constants/constants";
 import { IMAGES } from "../constants/imagePath";
 import states from "../constants/states.json"
 
@@ -301,3 +302,17 @@ export const otherItems = [
     }
 ];
 
+export const caseTypeOptions = [
+  { value: CASETYPE.PURCHASING, label: "Purchasing" },
+  { value: CASETYPE.SELLING, label: "Selling" },
+];
+
+// utils/stageUtils.js
+export const stageTypes = [
+  { value: 0, label: "Setting up" },
+  { value: 1, label: "Contract Reviewing" },
+  { value: 2, label: "Contract Signing" },
+  { value: 3, label: "Mortgage & Title" },
+  { value: 4, label: "Closing" },
+];
+  

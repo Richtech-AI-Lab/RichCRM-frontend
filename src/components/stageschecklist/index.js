@@ -348,6 +348,8 @@ const StagesChecklist = ({ label }) => {
   //   return stepperItems[currentStep];
   // };
   return (
+    <>
+    <XSpinnerLoader loading={loading} size="lg" />
     <div className="col-span-8">
       <div className="bg-white py-4 rounded-2xl mb-5">
         <div className="px-4">
@@ -361,28 +363,30 @@ const StagesChecklist = ({ label }) => {
           </div>
         </div>
       </div>
-      {(localStorage.getItem('c_id') && !taskData.data[STAGESNAMES[currentStep]]) || (!localStorage.getItem('c_id') && taskData.data[STAGESNAMES[currentStep]]) ? <XSpinnerLoader loading={true} size="lg" /> : 
-      <>
+      {
+        // (localStorage.getItem('c_id') && !taskData.data[STAGESNAMES[currentStep]]) || (!localStorage.getItem('c_id') && taskData.data[STAGESNAMES[currentStep]])
+        //  ?  : 
+        <>
       {currentStep === 3 &&
         <div className="bg-danger-100 rounded-2xl px-4 py-2 mb-4">
         <p className="text-white text-base font-medium">The Mortgage is due in 4 days.</p>
         </div>
       }  
       <div className="bg-white py-4 rounded-2xl mb-5">
-        <div className="flex justify-between items-center mb-8 px-4">
+        <div className={`flex justify-between items-center ${currentStep === 3? '':'pb-4'} px-4`}>
           {/* <span className="text-base text-secondary-800 font-medium">{getHeadLabel(currentStep)}</span> */}
 
           {currentStep === 3 ? (
             <div className="flex justify-start gap-x-8">
               <span
                 className={`pb-4 cursor-pointer ${activeTab === 'mortgage' ? 'text-base text-secondary-800 font-medium border-b-[3px] border-primary' : 'text-gray-400'}`} onClick={() => setActiveTab('mortgage')}
-              >
+                >
                 Mortgage Task (1/5)
               </span>
               <span
                 className={`pb-4 cursor-pointer ${activeTab === 'title' ? 'text-base text-secondary-800 font-medium border-b-[3px] border-primary' : 'text-gray-400'}`}
                 onClick={() => setActiveTab('title')}
-              >
+                >
                 Title Task (1/4)
               </span>
             </div>
@@ -399,14 +403,14 @@ const StagesChecklist = ({ label }) => {
           {taskData.data[STAGESNAMES[currentStep]]?.map((item, index) => {
             return (
               <ChecklistItem
-                key={index}
+              key={index}
                 action={item.taskType}
                 actionInfo={item.name}
                 options={item.options}
                 checkboxId={item.checkboxId}
-              />
-            )
-          })}
+                />
+              )
+            })}
         </ul>
         <div className="flex justify-between items-center pt-5 px-4">
           <XButton
@@ -414,13 +418,14 @@ const StagesChecklist = ({ label }) => {
             className={`bg-card-300 rounded-full text-sm font-medium py-[10px] px-6 ${currentStep === 0 ? 'opacity-50 cursor-not-allowed text-secondary-300' : 'text-secondary-800'}`}
             onClick={handlePreviousStage}
             disabled={currentStep === 0}
-          />
+            />
           <XButton
             text={currentStep === stepperItems?.length - 1 ? "Close Case" : "Move to next stage"}
             className="bg-active-blue text-active-blue-text shadow-shadow-light rounded-full text-sm font-medium py-[10px] px-6" onClick={handleNextStage} />
         </div>
       </div></>}
     </div>
+    </>
   );
 };
 
