@@ -4,8 +4,9 @@ import { IoIosArrowForward } from "react-icons/io";
 import { useSelector } from "react-redux";
 const CardData = ({ title, count, items, cardClass, onClick ,includeClasses,card}) => {
   const {cases}= useSelector((state) => state.case.casesData);
-  const stageCount = cases?.filter((caseItem) => caseItem.stage === card.value).length;
- 
+  const filteredCases = cases?.filter((caseItem) => caseItem.stage === card.value);
+  const stageCount = filteredCases?.length;
+
   const handleCardClick = () => {
     const filteredCases = cases?.filter((caseItem) => caseItem.stage === card.value);
     onClick(card,filteredCases,stageCount); 
@@ -25,19 +26,24 @@ const CardData = ({ title, count, items, cardClass, onClick ,includeClasses,card
       </div>
       <div className="pl-2 pr-2">
       {/* {items?.map((item, index) => ( */}
-      {cases?.filter((caseItem) => caseItem.stage === card.value)
-        .map((item,index) => (
+      {stageCount > 0 ? (
+        filteredCases.map((item,index) => (
         <CardItem
           key={index}
           badgeColor={item.badgeColor}
           badgeText={item.badgeText}
           caseDetails={item?.premisesId}
-          caseTitle={`${item.clientsId.lastName}, ${item.clientsId.firstName}` }
+          caseTitle={`${item.clientsId.lastName}, ${item.clientsId.firstName}`}
           caseCount={item.caseCount}
           caseType={item?.caseType}
           innerCardClass={includeClasses ? "bg-input-surface" : "bg-white shadow-shadow-light"}
           />
-      ))}
+          ))
+        ) : (
+          <div className="text-center p-4 text-gray-500">
+             No cases available
+          </div>
+        )}
       </div>
     </div>
   );

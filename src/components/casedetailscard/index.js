@@ -20,7 +20,7 @@ const CaseDetailsCard = ({
     <div className="flex justify-between items-center mb-6 ">
     <div>
         <span className="text-[22px] block mb-2 leading-7 text-secondary-800 font-medium">{title}</span>
-        <p className="text-base leading-6 text-secondary-800 font-medium">1500 Skyline Avenue</p>
+        <p className="text-base leading-6 text-secondary-800 font-medium">{address}</p>
       </div>
       <MenuPopup dropdownItems={menuOption} icon={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />}/>
     </div>

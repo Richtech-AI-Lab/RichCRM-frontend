@@ -12,7 +12,7 @@ const StepperProgress = ({ steps, currentStep }) => {
                 : ""
             } ${
               index < currentStep
-                ? "text-blue-600 dark:text-blue-500 after:border-blue-100 dark:after:border-blue-800"
+                ? "text-blue-600 dark:text-blue-500 after:border-primary2 dark:after:border-blue-800"
                 : "after:border-active-blue dark:after:border-gray-700"
             }`}
           >

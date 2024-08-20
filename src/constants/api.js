@@ -18,7 +18,8 @@ export const API_ENDPOINTS = {
   READ_TASK:"/task",
   FECTH_ALL_CASES:"/case/all",
   FETCH_CLIENT_BY_ID:"/client",
-  FETCH_PREMISES_BY_ID:"/premises"
+  FETCH_PREMISES_BY_ID:"/premises",
+  FETCH_PREMISES_BY_QUERY_ID:"/premises/query/id"
 };
 
 export const ROUTES = {

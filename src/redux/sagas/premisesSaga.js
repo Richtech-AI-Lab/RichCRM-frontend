@@ -4,12 +4,14 @@ import { API_ENDPOINTS, ROUTES } from "../../constants/api";
 import {
   fetchPremisesByIdFailure,
   fetchPremisesByIdSuccess,
+  fetchPremisesByQueryIdFailure,
+  fetchPremisesByQueryIdSuccess,
   fetchPremisesFailure,
   fetchPremisesSuccess,
   registerPremisesFailure,
   registerPremisesSuccess,
 } from "../actions/premisesActions";
-import { FETCH_PREMISES_BY_ID_REQUEST, FETCH_PREMISES_REQUEST, REGISTER_PREMISES_REQUEST } from "../type";
+import { FETCH_PREMISES_BY_ID_REQUEST, FETCH_PREMISES_BY_QUERY_ID_FAILURE, FETCH_PREMISES_BY_QUERY_ID_REQUEST, FETCH_PREMISES_BY_QUERY_ID_SUCCESS, FETCH_PREMISES_REQUEST, REGISTER_PREMISES_REQUEST } from "../type";
 import { toast } from "react-toastify";
 import { caseCreateRequest } from "../actions/caseAction";
 import { handleError } from "../../utils/eventHandler";
@@ -69,9 +71,22 @@ function* fetchPremisesById(action) {
   }
 }
 
+function* fetchPremisesByQueryId(action) {
+  try {
+    const { premisesId } = action.payload;
+    const response = yield call(() =>
+      postRequest(API_ENDPOINTS.FETCH_PREMISES_BY_QUERY_ID,premisesId)
+    );
+    yield put(fetchPremisesByQueryIdSuccess(response.data));
+  } catch (error) {
+    yield put(fetchPremisesByQueryIdFailure(error.response?.data || error));
+  }
+}
+
 export function* premisesSaga() {
   yield takeLatest(REGISTER_PREMISES_REQUEST, registerPremises);
   yield takeLatest(FETCH_PREMISES_REQUEST, fetchPremises);
   yield takeLatest(FETCH_PREMISES_BY_ID_REQUEST, fetchPremisesById);
+  yield takeLatest(FETCH_PREMISES_BY_QUERY_ID_REQUEST, fetchPremisesByQueryId);
 }
 
