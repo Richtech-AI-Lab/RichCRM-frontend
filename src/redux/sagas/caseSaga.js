@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { createStageRequest } from "../actions/stagesActions";
 import { fetchClientByIdRequest } from "../actions/clientActions";
 import { all } from "redux-saga/effects";
+import { handleError } from "../../utils/eventHandler";
 
 
 function* createCase(action) {
@@ -33,8 +34,9 @@ function* createCase(action) {
             navigate(ROUTES.NEW_CASE_INFO);
         }
     } catch (error) {
+        handleError(error)
         yield put(caseCreateFailure(error.response.data || error));
-        toast.error("Failed to register cases.");
+        // toast.error("Failed to register cases.");
     }
 }
 
@@ -45,8 +47,8 @@ function* fetchAllCases(action) {
         if (response.status == 200) {
             const ids = [...new Set(
                 response?.data?.data
-                  .map(caseItem => caseItem.sellerId || caseItem.buyerId) // Take sellerId if available, otherwise take buyerId
-              )];
+                    .map(caseItem => caseItem.sellerId || caseItem.buyerId) // Take sellerId if available, otherwise take buyerId
+            )];
             // const premisesIds = [...new Set(response?.data?.data.map(caseItem => caseItem.premisesId))];
 
             const clientIdsData = yield all(
@@ -77,19 +79,20 @@ function* fetchAllCases(action) {
             //     )
             // );
             const updatedCases = response?.data?.data.map(caseItem => {
-                const clients = clientIdsData.find(p => 
+                const clients = clientIdsData.find(p =>
                     p.clientId === caseItem.sellerId || p.clientId === caseItem.buyerId
-                  );
+                );
                 return {
                     ...caseItem,
                     clientsId: clients
-                    
+
                     // Replace premisesId with the entire premises object
                 };
             });
             yield put(fetchAllCasesSuccess(updatedCases));
         }
     } catch (error) {
+        handleError(error)
         yield put(fetchAllCasesFailure(error.response.data || error));
     }
 }
@@ -100,6 +103,7 @@ function* updateCase(action) {
         const response = yield call(() => postRequest(`${API_ENDPOINTS.GET_CASE}/${id}`));
         yield put(updateCaseSuccess(response.data));
     } catch (error) {
+        handleError(error)
         yield put(updateCaseFailure(error.response.data || error));
     }
 }
@@ -110,6 +114,7 @@ function* deleteCase(action) {
         const response = yield call(() => postRequest(API_ENDPOINTS.DELETE_CASE, payload));
         yield put(deleteCaseSuccess(response.data));
     } catch (error) {
+        handleError(error)
         yield put(deleteCaseFailure(error.response.data || error));
     }
 }

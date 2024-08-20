@@ -5,6 +5,7 @@ import { createTaskFailure, createTaskSuccess } from '../actions/taskActions';
 import { getRequest, postRequest } from '../../axios/interceptor';
 import { all } from 'redux-saga/effects';
 import { STAGESNAMES } from '../../constants/constants';
+import { handleError } from '../../utils/eventHandler';
 
 function* createtaskSaga(action) {
   const { payload } = action;
@@ -12,6 +13,7 @@ function* createtaskSaga(action) {
     const response = yield call(() => postRequest(API_ENDPOINTS.CREATE_TASK, payload));
     yield put(createTaskSuccess(response?.data?.data[0]));
   } catch (error) {
+    handleError(error)
     yield put(createTaskFailure(error.response?.data || error));
   }
 }
@@ -29,18 +31,19 @@ function* getAllTaskSaga(action) {
   const { currentStageData, currentStep } = action.payload;
   // console.log(currentStageData, currentStep,"currentStageData, currentStep")
   try {
-      const results = yield all(currentStageData?.map(taskId => 
-          call(fetchDataForStage, taskId)
-      ));
-      const responses = yield all(results);
-      const data = {
-          currentStep,
-          taskRes: responses.map(response => response.data.data[0]),
-      };
+    const results = yield all(currentStageData?.map(taskId =>
+      call(fetchDataForStage, taskId)
+    ));
+    const responses = yield all(results);
+    const data = {
+      currentStep,
+      taskRes: responses.map(response => response.data.data[0]),
+    };
 
-      yield put(createTaskSuccess(data));
+    yield put(createTaskSuccess(data));
   } catch (error) {
-      yield put(createTaskFailure(error.response?.data || error));
+    handleError(error)
+    yield put(createTaskFailure(error.response?.data || error));
   }
 }
 

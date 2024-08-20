@@ -12,6 +12,7 @@ import {
 import { FETCH_PREMISES_BY_ID_REQUEST, FETCH_PREMISES_REQUEST, REGISTER_PREMISES_REQUEST } from "../type";
 import { toast } from "react-toastify";
 import { caseCreateRequest } from "../actions/caseAction";
+import { handleError } from "../../utils/eventHandler";
 
 //Register Premises Saga
 function* registerPremises(action) {
@@ -34,8 +35,8 @@ function* registerPremises(action) {
       yield put(caseCreateRequest(updatedPayload, navigate));
     }
   } catch (error) {
+    handleError(error)
     yield put(registerPremisesFailure(error.response?.data || error));
-    toast.error("Failed to register premises.");
   }
 }
 
@@ -49,6 +50,7 @@ function* fetchPremises(action) {
     console.log("Premises Response By Address Id:", response);
     yield put(fetchPremisesSuccess(response.data));
   } catch (error) {
+    handleError(error)
     yield put(fetchPremisesFailure(error.response?.data || error));
   }
 }
@@ -60,9 +62,9 @@ function* fetchPremisesById(action) {
     const response = yield call(() =>
       postRequest(API_ENDPOINTS.FETCH_PREMISES_BY_ID, premisesId)
     );
-    console.log("Premises Response By  Id:", response);
     yield put(fetchPremisesByIdSuccess(response.data));
   } catch (error) {
+    handleError(error)
     yield put(fetchPremisesByIdFailure(error.response?.data || error));
   }
 }

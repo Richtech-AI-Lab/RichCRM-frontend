@@ -12,7 +12,7 @@ import { CgFolder } from "react-icons/cg";
 import { BiMessageAltCheck } from "react-icons/bi";
 import { LuUpload } from "react-icons/lu";
 import StepperProgress from "../stepperProgress";
-import { Dropdown } from "flowbite-react";
+import { Dropdown, Spinner } from "flowbite-react";
 import MenuDropdown from "../menupopup";
 import MenuPopup from "../menupopup";
 import { useDispatch, useSelector } from "react-redux";
@@ -349,57 +349,58 @@ const StagesChecklist = ({ label }) => {
   // };
   return (
     <>
-    <XSpinnerLoader loading={loading} size="lg" />
-    <div className="col-span-8">
-      <div className="bg-white py-4 rounded-2xl mb-5">
-        <div className="px-4">
-          <div className="mb-6">
-            <span className="text-base text-secondary-800 font-medium">Stage</span>
-          </div>
-          <div className="w-full">
-            <div className="flex gap-2 progress-bars">
-              <StepperProgress steps={progressItems} currentStep={currentStep} />
+
+      <div className="col-span-8">
+        <div className="bg-white py-4 rounded-2xl mb-5">
+          <div className="px-4">
+            <div className="mb-6">
+              <span className="text-base text-secondary-800 font-medium">Stage</span>
+            </div>
+            <div className="w-full">
+              <div className="flex gap-2 progress-bars">
+                <StepperProgress steps={progressItems} currentStep={currentStep} />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      {
-        // (localStorage.getItem('c_id') && !taskData.data[STAGESNAMES[currentStep]]) || (!localStorage.getItem('c_id') && taskData.data[STAGESNAMES[currentStep]])
-        //  ?  : 
-        <>
-      {currentStep === 3 &&
-        <div className="bg-danger-100 rounded-2xl px-4 py-2 mb-4">
-        <p className="text-white text-base font-medium">The Mortgage is due in 4 days.</p>
-        </div>
-      }  
-      <div className="bg-white py-4 rounded-2xl mb-5">
-        <div className={`flex justify-between items-center ${currentStep === 3? '':'pb-4'} px-4`}>
-          {/* <span className="text-base text-secondary-800 font-medium">{getHeadLabel(currentStep)}</span> */}
+        {
+          // (localStorage.getItem('c_id') && !taskData.data[STAGESNAMES[currentStep]]) || (!localStorage.getItem('c_id') && taskData.data[STAGESNAMES[currentStep]])
+          //  ?  : 
+          <>
+            {currentStep === 3 &&
+              <div className="bg-danger-100 rounded-2xl px-4 py-2 mb-4">
+                <p className="text-white text-base font-medium">The Mortgage is due in 4 days.</p>
+              </div>
+            }
+            <div className="bg-white py-4 rounded-2xl mb-5">
+              <div className={`flex justify-between items-center ${currentStep === 3 ? '' : 'pb-4'} px-4`}>
+                {/* <span className="text-base text-secondary-800 font-medium">{getHeadLabel(currentStep)}</span> */}
 
-          {currentStep === 3 ? (
-            <div className="flex justify-start gap-x-8">
-              <span
-                className={`pb-4 cursor-pointer ${activeTab === 'mortgage' ? 'text-base text-secondary-800 font-medium border-b-[3px] border-primary' : 'text-gray-400'}`} onClick={() => setActiveTab('mortgage')}
-                >
-                Mortgage Task (1/5)
-              </span>
-              <span
-                className={`pb-4 cursor-pointer ${activeTab === 'title' ? 'text-base text-secondary-800 font-medium border-b-[3px] border-primary' : 'text-gray-400'}`}
-                onClick={() => setActiveTab('title')}
-                >
-                Title Task (1/4)
-              </span>
-            </div>
-          ) : (
-            <span className="text-base text-secondary-800 font-medium">{`${getHeadLabel(currentStep)} (2/3)`}</span>
-          )}
-          <div className="flex items-center gap-2">
+                {currentStep === 3 ? (
+                  <div className="flex justify-start gap-x-8">
+                    <span
+                      className={`pb-4 cursor-pointer ${activeTab === 'mortgage' ? 'text-base text-secondary-800 font-medium border-b-[3px] border-primary' : 'text-gray-400'}`} onClick={() => setActiveTab('mortgage')}
+                    >
+                      Mortgage Task (1/5)
+                    </span>
+                    <span
+                      className={`pb-4 cursor-pointer ${activeTab === 'title' ? 'text-base text-secondary-800 font-medium border-b-[3px] border-primary' : 'text-gray-400'}`}
+                      onClick={() => setActiveTab('title')}
+                    >
+                      Title Task (1/4)
+                    </span>
+                  </div>
+                ) : (
+                  <span className="text-base text-secondary-800 font-medium">{`${getHeadLabel(currentStep)} (2/3)`}</span>
+                )}
+                <div className="flex items-center gap-2">
 
-            <MenuPopup dropdownItems={menuOption1} icon={<FiPlus className="text-lg opacity-40" />} />
-            <MenuPopup dropdownItems={menuOption2} icon={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />} />
-          </div>
-        </div>
-        <ul className="mb-6 overflow-y-auto">
+                  <MenuPopup dropdownItems={menuOption1} icon={<FiPlus className="text-lg opacity-40" />} />
+                  <MenuPopup dropdownItems={menuOption2} icon={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />} />
+                </div>
+              </div>
+              {/* <ul className="mb-6 overflow-y-auto">
+        <XSpinnerLoader loading={loading} size="lg" />
           {taskData.data[STAGESNAMES[currentStep]]?.map((item, index) => {
             return (
               <ChecklistItem
@@ -411,20 +412,45 @@ const StagesChecklist = ({ label }) => {
                 />
               )
             })}
-        </ul>
-        <div className="flex justify-between items-center pt-5 px-4">
-          <XButton
-            text="Back to previous stage"
-            className={`bg-card-300 rounded-full text-sm font-medium py-[10px] px-6 ${currentStep === 0 ? 'opacity-50 cursor-not-allowed text-secondary-300' : 'text-secondary-800'}`}
-            onClick={handlePreviousStage}
-            disabled={currentStep === 0}
-            />
-          <XButton
-            text={currentStep === stepperItems?.length - 1 ? "Close Case" : "Move to next stage"}
-            className="bg-active-blue text-active-blue-text shadow-shadow-light rounded-full text-sm font-medium py-[10px] px-6" onClick={handleNextStage} />
-        </div>
-      </div></>}
-    </div>
+        </ul> */}
+              <ul className="mb-6 overflow-y-auto min-h-[calc(100vh-440px)] flex justify-center items-center">
+                {loading && <Spinner
+                  size="xl"
+                  animation="border"
+                  role="status"
+                  variant="primary"
+                // className={`spinner-${size}`}
+                >
+                  <span className="visually-hidden">Loading...</span>
+                </Spinner>}
+
+                {!loading && <div className="w-full">
+                  {taskData.data[STAGESNAMES[currentStep]]?.map((item, index) => {
+                    return (
+                      <ChecklistItem
+                        key={index}
+                        action={item.taskType}
+                        actionInfo={item.name}
+                        options={item.options}
+                        checkboxId={item.checkboxId}
+                      />
+                    )
+                  })}
+                </div>}
+              </ul>
+              <div className="flex justify-between items-center pt-5 px-4">
+                <XButton
+                  text="Back to previous stage"
+                  className={`bg-card-300 rounded-full text-sm font-medium py-[10px] px-6 ${currentStep === 0 ? 'opacity-50 cursor-not-allowed text-secondary-300' : 'text-secondary-800'}`}
+                  onClick={handlePreviousStage}
+                  disabled={currentStep === 0}
+                />
+                <XButton
+                  text={currentStep === stepperItems?.length - 1 ? "Close Case" : "Move to next stage"}
+                  className="bg-active-blue text-active-blue-text shadow-shadow-light rounded-full text-sm font-medium py-[10px] px-6" onClick={handleNextStage} />
+              </div>
+            </div></>}
+      </div>
     </>
   );
 };

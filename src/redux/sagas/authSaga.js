@@ -3,6 +3,7 @@ import { forgotPasswordFailure, forgotPasswordSuccess, loginFailure, loginSucces
 import { DELETE_USER_REQUEST, FORGOT_PASSWORD_REQUEST, LOGIN_REQUEST, REGISTER_REQUEST } from "../type";
 import { postRequest } from "../../axios/interceptor";
 import { API_ENDPOINTS } from "../../constants/api";
+import { handleError } from "../../utils/eventHandler";
 
 function* login(action) {
   try {
@@ -15,6 +16,7 @@ function* login(action) {
     // localStorage.setItem('authToken', response.data);
     // localStorage.setItem('authToken', response.data.token);
   } catch (error) {
+    handleError(error)
     yield put(loginFailure(error.response?.data || error));
   }
 }
@@ -26,6 +28,7 @@ function* register(action) {
     const response = yield call(() => postRequest(API_ENDPOINTS.REGISTER, payload));
     yield put(registerSuccess(response?.data));
   } catch (error) {
+    handleError(error)
     yield put(registerFailure(error.response?.data || error));
   }
 }
@@ -37,6 +40,7 @@ function* forgotPassword(action) {
     const response = yield call(() => postRequest(API_ENDPOINTS.FORGOT_PASSWORD, payload));
     yield put(forgotPasswordSuccess());
   } catch (error) {
+    handleError(error)
     yield put(forgotPasswordFailure(error.response?.data || error));
   }
 }
@@ -48,6 +52,7 @@ function* deleteUser(action) {
     const response = yield call(() => postRequest(API_ENDPOINTS.DELETE_USER, payload));
     yield put(deleteUserSuccess(response?.data));
   } catch (error) {
+    handleError(error)
     yield put(deleteUserFailure(error.response?.data || error));
   }
 }
