@@ -21,9 +21,10 @@ const CasesCategoryCard = ({ cases,onCardClick ,categoryTitle,stageCount}) => {
               key={index}
               badgeColor={item.badgeColor}
               badgeText={item.badgeText}
-              caseDetails={item.premisesId.name}
+              caseDetails={item.premisesId}
               onClick={onCardClick}
-              caseTitle={item.caseTitle}
+              caseType={item?.caseType}
+              caseTitle={`${item.clientsId.firstName} ${item.clientsId.lastName}` }
               caseCount={item.caseCount}
             />
           ))}
