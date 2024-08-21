@@ -429,6 +429,7 @@ const StagesChecklist = ({ label }) => {
                     return (
                       <ChecklistItem
                         key={index}
+                        status={item.status}
                         action={item.taskType}
                         actionInfo={item.name}
                         options={item.options}

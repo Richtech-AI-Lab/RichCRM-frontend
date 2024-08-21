@@ -8,7 +8,7 @@ import { FaClipboardList } from "react-icons/fa";
 import Badge from "../badge";
 import { ACTIONTYPE, ACTIONTYPELABEL } from "../../constants/constants";
 
-const ChecklistItem = ({ icon, label, options, action, actionInfo, optionsValue, checkboxId, currentStep }) => {
+const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optionsValue, checkboxId, currentStep }) => {
 
   const getOptionsByAction = ( option = "Not Started") => {
     switch (action) {
@@ -108,12 +108,12 @@ const ChecklistItem = ({ icon, label, options, action, actionInfo, optionsValue,
   const displayIcon = getIconByAction(action)
   const displayOption = getOptionsByAction();
   const disabled = isOptionDisable(action, options);
-console.log(displayOption,"displayOption");
+// console.log(displayOption,"displayOption");
   return (
     <div class="border-t-2 border-black-10">
       <li className="flex justify-between items-center mb-5 pb-5 task-checklist mt-2">
         <div className="flex items-center gap-2 custom-radio">
-          <Checkbox id={checkboxId} defaultChecked className="mr-6" />
+          <Checkbox  id={checkboxId} defaultChecked={status} className="mr-6" />
           <Label htmlFor={checkboxId} className="flex items-center text-lg text-title font-medium">
             {displayIcon && <span className="mr-2">{displayIcon}</span>}
             {ACTIONTYPELABEL[action]}: {actionInfo}
