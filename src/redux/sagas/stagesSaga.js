@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { CREATE_STAGE_REQUEST, GET_STAGE_REQUEST } from '../type';
 import { API_ENDPOINTS } from '../../constants/api';
-import { createStageFailure, createStageSuccess } from '../actions/stagesActions';
+import { createStageFailure, createStageSuccess, startStageLoading } from '../actions/stagesActions';
 import { getRequest, postRequest } from '../../axios/interceptor';
 import { handleError } from '../../utils/eventHandler';
 
@@ -18,7 +18,7 @@ function* createStageSaga(action) {
 }
 
 function* getStageSaga(action) {
-  // yield put({ type: CREATE_STAGE_REQUEST});
+  yield put(startStageLoading());
   const { payload } = action;
   // console.log(`${API_ENDPOINTS.READ_STAGE}/${payload?.caseId}/${payload?.stageType}`,"payload")
   try {

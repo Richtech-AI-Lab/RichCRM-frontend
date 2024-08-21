@@ -7,7 +7,8 @@ export const handleError = (error) => {
     const status = error.response.status;
     switch (status) {
       case 400:
-        toast.error(error.response.data.message);
+        const extractedMessage = extractErrorMessage(error.response.data);
+        toast.error(extractedMessage);
         break;
       case 401:
         toast.error(ERROR_MESSAGES.UNAUTHORIZED);
@@ -26,4 +27,13 @@ export const handleError = (error) => {
         break;
     }
   }
+};
+
+const extractErrorMessage = (responseData) => {
+  const { message } = responseData;
+  const bracketIndex = message.lastIndexOf(']');
+  if (bracketIndex !== -1) {
+    return message.substring(bracketIndex + 1).trim();
+  }
+  return message;
 };

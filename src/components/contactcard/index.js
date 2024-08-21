@@ -12,9 +12,11 @@ import {
   Dropdown,
 } from "flowbite-react";
 import AddFromContactModal from "../caseModal/addFromContactModal";
+import { IMAGES } from "../../constants/imagePath";
 
 const ContactCard = ({
-  contactData,
+  clientDetails,
+  loading
   // profileImage,
   // name,
   // // notes,
@@ -38,17 +40,17 @@ const ContactCard = ({
         </Dropdown>
       </div>
       <Accordion className="border-0">
-        {contactData.map((data, index) => (
+        {clientDetails?.map((data, index) => (
           <AccordionPanel key={index}>
             <AccordionTitle className="py-3 px-4 border-t border-badge-gray rounded-none first:rounded-t-none bg-white hover:bg-white focus:ring-transparent contact-accordian-title">
               <div className="flex items-center">
                 <img
-                  src={data.profileImage}
+                  src={data?.profileImage || IMAGES.profile}
                   alt="Profile"
                   className="mr-4 w-10 h-10 rounded-full"
                 />
                 <div style={{display:'flex',flexDirection:'column'}}>
-                <span className="left-txt font-medium text-secondary-800">{data.name}</span>
+                <span className="left-txt font-medium text-secondary-800">{`${data.firstName} ${data.lastName}` }</span>
                 <span className="left-txt font-medium text-secondary-800 text-sm">Purchaser (Client)</span>
                 </div>
               </div>
@@ -67,25 +69,25 @@ const ContactCard = ({
                 <ContactDetailItem
                   // icon={<MdOutlineEmail className="text-xl" />}
                   label="Email"
-                  content={data.email}
+                  content={data.email || 'not available'}
                   isInput={false}
                 />
                 <ContactDetailItem
                   // icon={<MdOutlinePhone className="text-xl" />}
                   label="Cell Phone"
-                  content={data.phone}
+                  content={data.cellNumber || 'not available'}
                   isInput={false}
                 />
                 <ContactDetailItem
                   // icon={<IoLogoWechat className="text-xl" />}
                   label="WeChat"
-                  content={data.weChat}
+                  content={data.wechatAccount || 'not available'}
                   isInput={false}
                 />
                 <ContactDetailItem
                   // icon={<GrLocation className="text-xl" />}
                   label="Address"
-                  content={data.address}
+                  content={data.addressId || 'not available'}
                   isInput={false}
                 />
               </ul>

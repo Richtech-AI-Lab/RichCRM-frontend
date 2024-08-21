@@ -17,6 +17,8 @@ import UploadFileModal from "../../../components/caseModal/uploadFileModal";
 import { caseTypeOptions, premisesTypes } from "../../../utils/formItem";
 import { fetchPremisesByQueryIdRequest } from "../../../redux/actions/premisesActions";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchClientByIdRequest } from "../../../redux/actions/clientActions";
+import { Spinner } from "flowbite-react";
 
 const CaseCardData = () => {
   const navigate=useNavigate();
@@ -24,14 +26,16 @@ const CaseCardData = () => {
   const location = useLocation();
   const {casedetails }= location.state || {};
   const caseTypeLabel = caseTypeOptions.find(option => option.value === casedetails.caseType)?.label || "Unknown";
-  const {premises}= useSelector((state) => state.premises);
+  const {premises, loading}= useSelector((state) => state.premises);
+  const {client}= useSelector((state) => state.client);
+  const clientDetails = client?.data?.length > 0 ? client?.data : null;
   const premisesDetails = premises?.data?.length > 0 ? premises?.data[0] : null;
   const premisesTypeLabel = premisesTypes.find(option => option.value === premisesDetails?.propertyType)?.label || "Unknown";
 
 const handleCaseDetails=()=>{
     navigate(ROUTES.CASES_DETAILS)
   }
-
+  let premisesLoading= loading
   useEffect(() => {
     const fetchPremisesByQueryId = async () => {
       try {
@@ -46,6 +50,22 @@ const handleCaseDetails=()=>{
 
     fetchPremisesByQueryId();
   }, [casedetails.premisesId]);
+
+  useEffect(() => {
+    let id= casedetails?.buyerId || casedetails?.sellerId
+    const fetchClientByQueryId = async () => {
+      try {
+        const payload = {
+          clientId: casedetails && id,
+        };
+        dispatch(fetchClientByIdRequest(payload.clientId));
+      } catch (error) {
+        console.error("failed to fetch client", error);
+      }
+    };
+
+    fetchClientByQueryId();
+  }, [casedetails.buyerId, casedetails.sellerId]);
 
   const headerItems = [
     { text: "Cases", className: "mr-8" },
@@ -103,15 +123,25 @@ const handleCaseDetails=()=>{
       </div>
       <div className="grid grid-cols-12 gap-6">
         <div className="col-span-4">
+        {false ? <Spinner
+                  size="xl"
+                  animation="border"
+                  role="status"
+                  variant="primary"
+                // className={`spinner-${size}`}
+                >
+                  <span className="visually-hidden">Loading...</span>
+                </Spinner>:
           <CaseDetailsCard
-            title={premisesDetails?.name}
-            clientName={casedetails?.clientName}
-            caseType={caseTypeLabel}
-            premisesType={premisesTypeLabel}
-            // address="1500 Skyline Avenue Apt 2503 New York, NY 10019"
-            address={premisesDetails?.addressId
-            }
+          title={premisesDetails?.name}
+          clientName={casedetails?.clientName}
+          caseType={caseTypeLabel}
+          premisesType={premisesTypeLabel}
+          // address="1500 Skyline Avenue Apt 2503 New York, NY 10019"
+          address={premisesDetails?.addressId
+          }
           />
+         }
           <XButton
             text="Case Details"
             // icon={<FaRegEdit className="text-base mr-2 inline-block" />}
@@ -127,7 +157,20 @@ const handleCaseDetails=()=>{
             weChat="(+1) xxx xxx xxxx"
             address="2000 Panorama Blvd Apt 3605 New York, NY 10022"
           /> */}
-           <ContactCard contactData={contactData} />
+          { false ?
+            <Spinner
+                  size="xl"
+                  animation="border"
+                  role="status"
+                  variant="primary"
+                // className={`spinner-${size}`}
+                >
+                  <span className="visually-hidden">Loading...</span>
+                </Spinner>:
+           <ContactCard 
+           clientDetails={clientDetails}
+           />
+          }
         </div>
         <StagesChecklist />
       </div>
