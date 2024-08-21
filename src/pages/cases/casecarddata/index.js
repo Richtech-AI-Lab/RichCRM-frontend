@@ -105,7 +105,7 @@ const handleCaseDetails=()=>{
         <div className="col-span-4">
           <CaseDetailsCard
             title={premisesDetails?.name}
-            clientName={`${casedetails?.clientsId?.firstName} ${casedetails?.clientsId?.lastName}` }
+            clientName={casedetails?.clientName}
             caseType={caseTypeLabel}
             premisesType={premisesTypeLabel}
             // address="1500 Skyline Avenue Apt 2503 New York, NY 10019"
