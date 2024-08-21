@@ -2,7 +2,6 @@ import React from "react";
 import { SlArrowRight } from "react-icons/sl";
 import {
   CaseDetailsCard,
-  ContactCard,
   PageHeader,
   XButton,
 } from "../../../components";

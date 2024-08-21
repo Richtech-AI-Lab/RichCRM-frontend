@@ -10,6 +10,7 @@ import {
   fetchPremisesSuccess,
   registerPremisesFailure,
   registerPremisesSuccess,
+  startPremisesLoading,
 } from "../actions/premisesActions";
 import { FETCH_PREMISES_BY_ID_REQUEST, FETCH_PREMISES_BY_QUERY_ID_FAILURE, FETCH_PREMISES_BY_QUERY_ID_REQUEST, FETCH_PREMISES_BY_QUERY_ID_SUCCESS, FETCH_PREMISES_REQUEST, REGISTER_PREMISES_REQUEST } from "../type";
 import { toast } from "react-toastify";
@@ -44,6 +45,7 @@ function* registerPremises(action) {
 
 //Fetch Premises Saga By Address Id
 function* fetchPremises(action) {
+  yield put(startPremisesLoading());
   try {
     const { payload } = action;
     const response = yield call(() =>

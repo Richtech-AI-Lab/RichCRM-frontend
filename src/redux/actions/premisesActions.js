@@ -11,6 +11,8 @@ import {
   REGISTER_PREMISES_FAILURE,
   REGISTER_PREMISES_REQUEST,
   REGISTER_PREMISES_SUCCESS,
+  START_LOADING,
+  STOP_LOADING,
 } from "../type";
 
 export const registerPremisesRequest = (premises,navigate) => ({
@@ -75,4 +77,12 @@ export const fetchPremisesByQueryIdSuccess = (data) => ({
 export const fetchPremisesByQueryIdFailure = (error) => ({
   type: FETCH_PREMISES_BY_QUERY_ID_FAILURE,
   payload: error,
+});
+
+export const startPremisesLoading = () => ({
+  type: START_LOADING
+});
+
+export const stopPremisesLoading = () => ({
+  type: STOP_LOADING
 });
