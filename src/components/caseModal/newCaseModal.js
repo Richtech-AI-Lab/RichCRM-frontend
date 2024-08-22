@@ -16,7 +16,7 @@ import { caseCreateRequest } from "../../redux/actions/caseAction";
 import { toast } from "react-toastify";
 import { clearData } from "../../redux/actions/authActions";
 import { useDispatch, useSelector } from "react-redux";
-import { ROUTES } from "../../constants/api";
+import { API_ENDPOINTS, ROUTES } from "../../constants/api";
 import { registerClientRequest } from "../../redux/actions/clientActions";
 import { registerAddressRequest } from "../../redux/actions/utilsActions";
 import XSpinnerLoader from "../spinnerLoader/XSpinnerLoader";
@@ -27,6 +27,8 @@ import avatar from '../../assets/images/avatar.png'
 import { IoCloseCircleOutline } from "react-icons/io5";
 import NewCaseDropdown from "../newcasedropdown";
 import { caseTypeOptions, premisesTypes } from "../../utils/formItem";
+import axios from "axios";
+import { getRequest, postRequest } from "../../axios/interceptor";
 
 const clientTypeOptions = [
   { value: CLIENTTYPE.INDIVIDUAL, label: "Individual" },
@@ -68,16 +70,25 @@ const NewCaseModal = ({ onClose }) => {
   const [showClientFields, setShowClientFields] = useState(false);
 
   const debouncedFunction = useCallback(
-    debounce((value, index) => {
-      // Additional function to call after debouncing
+    debounce(async (value, index) => {
       if (value != "" || value.length > 0) {
-        const filteredResults = searchOption.filter(option =>
-          option.firstName.toLowerCase().includes(value.toLowerCase())
-        );
+        const response = await postRequest(API_ENDPOINTS.FETCH_CLIENT_BY_QUERY, {
+          keyword:  value 
+        }
+        )
+        const filteredResults = response?.data?.data;
         setSearchResults(filteredResults);
       } else {
         setSearchResults([]);
       }
+      // if (value != "" || value.length > 0) {
+      //   const filteredResults = searchOption.filter(option =>
+      //     option.firstName.toLowerCase().includes(value.toLowerCase())
+      //   );
+      //   setSearchResults(filteredResults);
+      // } else {
+      //   setSearchResults([]);
+      // }
       setActiveSearchIndex(index)
       // You can call any API or perform any other actions here
     }, 1000),
@@ -266,7 +277,7 @@ const NewCaseModal = ({ onClose }) => {
               handleSubmit,
               isSubmitting,
             }) => (
-              
+
               <form onSubmit={handleSubmit} className="">
                 <div className="block">
                   <Label htmlFor="caseType" value="Case Type" />
@@ -466,29 +477,35 @@ const NewCaseModal = ({ onClose }) => {
                                           }}
                                           form={{ errors, touched }}
                                         />
-                                        {activeSearchIndex == index &&
-                                          searchResults.map(item => {
-                                            return <ul className={'search-list-dropdown overflow-hidden rounded-2xl shadow-shadow-light-2'}><li className={'px-4 py-2 hover:bg-input-surface'} onClick={() => {
-                                              replace(index, {
-                                                isCard: true,
-                                                clientfirstName: item.firstName,
-                                                clientLastName: item.lastName,
-                                                clientcellNumber: item.cellNumber,
-                                                clientemail: item.email,
-                                              })
-                                              setSearchResults([])
-                                            }
-                                            }>
-                                              <div className="flex items-center">
-                                                <img src={avatar} className="w-8 mr-3" />
-                                                <div>
-                                                  <p className="text-base text-secondary-800">{item.firstName}</p>
-                                                  <span className="text-text-gray-100 text-sm">707684</span>
+                                        {activeSearchIndex == index && (
+                                          <ul className={'search-list-dropdown overflow-hidden rounded-2xl shadow-shadow-light-2'}>
+                                            {searchResults.map((item) => (
+                                              <li
+                                                className={'px-4 py-2 hover:bg-input-surface'}
+                                                onClick={() => {
+                                                  replace(index, {
+                                                    isCard: true,
+                                                    clientfirstName: item.firstName,
+                                                    clientLastName: item.lastName,
+                                                    clientcellNumber: item.cellNumber,
+                                                    clientemail: item.email,
+                                                  });
+                                                  setSearchResults([]);
+                                                }}
+                                                key={item.id} // Adding a key for each list item for better performance
+                                              >
+                                                <div className="flex items-center">
+                                                  <img src={avatar} className="w-8 mr-3" />
+                                                  <div>
+                                                    <p className="text-base text-secondary-800">{item.firstName}</p>
+                                                    <span className="text-text-gray-100 text-sm">707684</span>
+                                                  </div>
                                                 </div>
-                                              </div>
-                                            </li></ul>
-                                          })
-                                        }
+                                              </li>
+                                            ))}
+                                          </ul>
+                                        )}
+
                                         <ErrorMessage
                                           name={`clients.${index}.clientfirstName`}
                                           component="div"
