@@ -13,7 +13,8 @@ import {
     DELETE_CASE_FAILURE,
     FETCH_ALL_CASES_REQUEST,
     FETCH_ALL_CASES_SUCCESS,
-    FETCH_ALL_CASES_FAILURE
+    FETCH_ALL_CASES_FAILURE,
+    READ_CASE_REQUEST
 } from "../type";
 
 
@@ -97,3 +98,11 @@ export const fetchAllCasesFailure = (error) => ({
     type: FETCH_ALL_CASES_FAILURE,
     payload: error,
 });
+
+
+//read cases
+export const getClientByIdRequest = (payload) => ({
+    type: READ_CASE_REQUEST,
+    payload,
+});
+

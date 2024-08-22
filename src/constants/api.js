@@ -5,7 +5,7 @@ export const API_ENDPOINTS = {
   FORGOT_PASSWORD: "/forgot-password",
   DELETE_USER: "/auth/delete",
   CREATE_CASE: "/case/create",
-  GET_CASE: "/case/:id",
+  READ_CASE: "/case",
   UPDATE_CASE: "/case/update",
   DELETE_CASE: "/case/delete",
   REGISTER_PREMISES: "/premises/register",

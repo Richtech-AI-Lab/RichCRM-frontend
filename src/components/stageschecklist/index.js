@@ -21,8 +21,9 @@ import { getTaskRequest } from "../../redux/actions/taskActions";
 import { STAGESNAMES } from "../../constants/constants";
 import { isEmpty } from "lodash";
 import XSpinnerLoader from "../spinnerLoader/XSpinnerLoader";
+import { caseCreateSuccess, getClientByIdRequest } from "../../redux/actions/caseAction";
 
-const StagesChecklist = ({ label }) => {
+const StagesChecklist = () => {
   const dispatch = useDispatch();
   const [currentStep, setCurrentStep] = useState(0);
   const [activeTab, setActiveTab] = useState('mortgage');
@@ -30,6 +31,7 @@ const StagesChecklist = ({ label }) => {
   const menuOption2 = ['Finish all', 'Edit task']
   const { loading, data, error } = useSelector((state) => state.stages);
   const taskData = useSelector((state) => state.task);
+  const { casesData } = useSelector((state) => state.case);
 
   useEffect(() => {
     if (isEmpty(data)) {
@@ -38,6 +40,18 @@ const StagesChecklist = ({ label }) => {
         caseId: localStorage.getItem('c_id'),
       }
       dispatch(getStageRequest(sagaPayload));
+    }
+    if (casesData?.cases?.length === 0) {
+      let caseId = localStorage.getItem('c_id');
+      dispatch(getClientByIdRequest(caseId));
+    } else {
+      let caseId = localStorage.getItem('c_id');
+      const foundCase = casesData?.cases?.find(item => item.caseId === caseId);
+      if (foundCase) {
+        dispatch(caseCreateSuccess(foundCase));
+      } else {
+        dispatch(caseCreateSuccess([])); // Dispatch empty array if not found
+      }
     }
   }, [])
 
@@ -259,14 +273,14 @@ const StagesChecklist = ({ label }) => {
     "Closing"
   ];
 
-  const stepperItems = [
-    settingUpTasks,
-    contractReviewingTasks,
-    contractSigningTasks,
-    // Include mortgageTasks and titleTasks as separate items for the Mortgage & Title step
-    { mortgageTasks, titleTasks },
-    closingTasks,
-  ];
+  // const stepperItems = [
+  //   settingUpTasks,
+  //   contractReviewingTasks,
+  //   contractSigningTasks,
+  //   // Include mortgageTasks and titleTasks as separate items for the Mortgage & Title step
+  //   { mortgageTasks, titleTasks },
+  //   closingTasks,
+  // ];
 
   const getHeadLabel = (currentStep) => {
     switch (currentStep) {
@@ -311,7 +325,7 @@ const StagesChecklist = ({ label }) => {
   };
 
   const handleNextStage = async () => {
-    if (currentStep < stepperItems.length - 1) {
+    if (currentStep < progressItems.length - 1) {
       const createStagePayload = {
         stageType: currentStep + 1,
         caseId: localStorage.getItem('c_id'),
@@ -334,12 +348,59 @@ const StagesChecklist = ({ label }) => {
     }
   };
 
-  const checkStageExists = async ({ stageType, caseId }) => {
+  const checkStageExists = async ({ stageType }) => {
     let stagekey = `${stageType}`
     return data.hasOwnProperty(STAGESNAMES[stagekey])
   };
 
 
+  function getMortgageDueAlertInfo(casesData, currentStep) {
+    if (!casesData || !casesData.cases) {
+      return { showAlert: false, daysUntilDue: null };
+    }
+  
+    const mortgageContingencyDateStr = casesData.cases.mortgageContingencyDate;
+    if (!mortgageContingencyDateStr || currentStep !== 3) {
+      return { showAlert: false, daysUntilDue: null };
+    }
+  
+    const mortgageContingencyDate = new Date(mortgageContingencyDateStr);
+    const currentDate = new Date();
+  
+    // Calculate days difference between the mortgage contingency date and current date
+    const timeDiff = mortgageContingencyDate - currentDate;
+    const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+  
+    // Determine if the alert should be shown
+    const showAlert = daysDiff >= 0 && daysDiff <= 5;
+  
+    return { showAlert, daysUntilDue: daysDiff };
+  }
+  
+  function getClosingDueAlertInfo(casesData, currentStep) {
+    if (!casesData || !casesData.cases) {
+      return { showAlert: false, daysUntilDue: null };
+    }
+  
+    const closingDateStr = casesData.cases.closingDate;
+    if (!closingDateStr || currentStep !== 3) {
+      return { showAlert: false, daysUntilDue: null };
+    }
+  
+    const closingDate = new Date(closingDateStr);
+    const currentDate = new Date();
+  
+    // Calculate days difference between the closing date and current date
+    const timeDiff = closingDate - currentDate;
+    const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+  
+    // Determine if the alert should be shown
+    const showAlert = daysDiff >= 0 && daysDiff <= 5;
+  
+    return { showAlert, daysUntilDue: daysDiff };
+  }
+  const mortgageAlertInfo = getMortgageDueAlertInfo(casesData, currentStep);
+  const closingAlertInfo = getClosingDueAlertInfo(casesData, currentStep);
   // const getChecklistItems = () => {
   //   if (currentStep === 3) {
   //     // Return the active tab's items for the Mortgage & Title step
@@ -367,9 +428,14 @@ const StagesChecklist = ({ label }) => {
           // (localStorage.getItem('c_id') && !taskData.data[STAGESNAMES[currentStep]]) || (!localStorage.getItem('c_id') && taskData.data[STAGESNAMES[currentStep]])
           //  ?  : 
           <>
-            {currentStep === 3 &&
+            {mortgageAlertInfo.showAlert &&
               <div className="bg-danger-100 rounded-2xl px-4 py-2 mb-4">
-                <p className="text-white text-base font-medium">The Mortgage is due in 4 days.</p>
+                <p className="text-white text-base font-medium">The Mortgage is due in {mortgageAlertInfo.daysUntilDue} days.</p>
+              </div>
+            }
+            {closingAlertInfo.showAlert &&
+              <div className="bg-danger-100 rounded-2xl px-4 py-2 mb-4">
+                <p className="text-white text-base font-medium">The Contract is due in {closingAlertInfo.daysUntilDue} days.</p>
               </div>
             }
             <div className="bg-white py-4 rounded-2xl mb-5">
@@ -424,20 +490,33 @@ const StagesChecklist = ({ label }) => {
                   <span className="visually-hidden">Loading...</span>
                 </Spinner>}
 
-                {!loading && <div className="w-full">
-                  {taskData.data[STAGESNAMES[currentStep]]?.map((item, index) => {
-                    return (
-                      <ChecklistItem
-                        key={index}
-                        status={item.status}
-                        action={item.taskType}
-                        actionInfo={item.name}
-                        options={item.options}
-                        checkboxId={item.checkboxId}
-                      />
-                    )
-                  })}
-                </div>}
+                {!loading && (
+                  <div className="w-full">
+                    {taskData.data[STAGESNAMES[currentStep]]
+                      ?.slice(
+                        currentStep === 3
+                          ? activeTab === 'title'
+                            ? 5
+                            : 0
+                          : 0, // Start index for slice when currentStep is 3, otherwise start at 0
+                        currentStep === 3
+                          ? activeTab === 'title'
+                            ? 10
+                            : 5
+                          : taskData.data[STAGESNAMES[currentStep]].length // End index for slice when currentStep is 3, otherwise show all
+                      )
+                      .map((item, index) => (
+                        <ChecklistItem
+                          key={index}
+                          status={item.status}
+                          action={item.taskType}
+                          actionInfo={item.name}
+                          options={item.options}
+                          checkboxId={item.checkboxId}
+                        />
+                      ))}
+                  </div>
+                )}
               </ul>
               <div className="flex justify-between items-center pt-5 px-4">
                 <XButton
@@ -447,7 +526,7 @@ const StagesChecklist = ({ label }) => {
                   disabled={currentStep === 0}
                 />
                 <XButton
-                  text={currentStep === stepperItems?.length - 1 ? "Close Case" : "Move to next stage"}
+                  text={currentStep === progressItems?.length - 1 ? "Close Case" : "Move to next stage"}
                   className="bg-active-blue text-active-blue-text shadow-shadow-light rounded-full text-sm font-medium py-[10px] px-6" onClick={handleNextStage} />
               </div>
             </div></>}

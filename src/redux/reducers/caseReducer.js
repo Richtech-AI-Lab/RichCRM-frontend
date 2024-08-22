@@ -39,7 +39,7 @@ const casesReducer = (state = initialCasesState, action) => {
       return {
         ...state,
         loading: false,
-        cases: [...state.cases, action.payload],
+        cases: [action.payload],
         error: null,
       };
     case UPDATE_CASE_SUCCESS:
