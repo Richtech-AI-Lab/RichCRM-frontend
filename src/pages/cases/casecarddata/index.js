@@ -27,7 +27,7 @@ const CaseCardData = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const {casedetails }= location.state || {};
-  const caseTypeLabel = caseTypeOptions.find(option => option.value === casedetails.caseType)?.label || "Unknown";
+  const caseTypeLabel = caseTypeOptions.find(option => option.value === casedetails?.caseType)?.label || "Unknown";
   const {premises, loading}= useSelector((state) => state.premises);
   const {client}= useSelector((state) => state.client);
   const clientDetails = client?.data?.length > 0 ? client?.data : null;

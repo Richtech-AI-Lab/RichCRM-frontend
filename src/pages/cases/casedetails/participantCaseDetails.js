@@ -113,8 +113,8 @@ const ParticipantCaseDetails = ({isEdit,setIsEdit}) => {
             <div className="col-span-6">
               {
                 isEdit ? cases[0]?.caseType ?
-                  <CaseCardDetails items={sellerItems} title="Seller"  handle={handleChange} form={{ errors, touched }} />
-                  :<CaseCardDetails items={buyerItems} title="Purchaser" handle={handleChange} form={{ errors, touched }} />
+                  <CaseCardDetails items={sellerItems} title="Seller" value={clientDetails[0]} handle={handleChange} form={{ errors, touched }} />
+                  :<CaseCardDetails items={buyerItems} title="Purchaser" value={clientDetails[0]} handle={handleChange} form={{ errors, touched }} />
                     
                   :
                   <ParticipantDetail client={clientDetails} caseType={cases[0]?.caseType} address={addressDetails}/>

@@ -14,6 +14,10 @@ const PremisesCaseDetails = ({isEdit,setIsEdit}) => {
   const { data: premisesData } = useSelector((state) => state.premises.premises);
   const premisesDetails = premisesData?.length > 0 ? premisesData : null;
 
+  const values={
+    ...addressData[0],
+    ...premisesDetails[0]
+  }
   const toggleEdit = () => {
     setIsEdit(prevState => !prevState);
   };
@@ -109,11 +113,11 @@ const PremisesCaseDetails = ({isEdit,setIsEdit}) => {
           <div className="grid grid-cols-12 gap-6">
             { isEdit ?<> 
               <div className="col-span-6">
-               <CaseCardDetails items={lowerSectionItems} title="Premises Info" handle={handleChange} />
+               <CaseCardDetails items={lowerSectionItems} value={values} title="Premises Info" handle={handleChange} />
                 
             </div>
             <div className="col-span-6">
-              {/* <CaseCardDetails items={premisesComposition} title="Premises Composition" handle={handleChange} /> */}
+              <CaseCardDetails items={premisesComposition} title="Premises Composition" handle={handleChange} />
               <CaseCardDetails items={inspectionItems} title="Engineer Inspection" handle={handleChange} />
               <CaseCardDetails items={termitesInspectionItems} title="Termites Inspection" handle={handleChange} />
             </div>
@@ -121,7 +125,7 @@ const PremisesCaseDetails = ({isEdit,setIsEdit}) => {
             :
             <>
             <div className="col-span-6">
-              <PremisesDetail address={addressData} premises={premisesData} />
+              <PremisesDetail address={addressDetails} premises={premisesDetails} />
             </div>
             <div className="col-span-6">
               {/* <CaseCardDetails items={premisesComposition} title="Premises Composition" handle={handleChange} />
