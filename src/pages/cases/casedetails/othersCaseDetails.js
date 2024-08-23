@@ -7,9 +7,13 @@ import { brokersItems, closingDateItems, financialItems, otherItems } from "../.
 import FormButton from "../../../components/formButton";
 
 
-const OthersCaseDetails = () => {
+const OthersCaseDetails = ({ isEdit, setIsEdit }) => {
+  const toggleEdit = () => {
+    setIsEdit(prevState => !prevState);
+  };
   let handleSubmit = (x) => {
     console.log(x)
+    toggleEdit()
   }
   const initialValues = {
     purchasePrice: "",
@@ -40,15 +44,32 @@ const OthersCaseDetails = () => {
       }) => (
         <form onSubmit={handleSubmit} className="pemises-form">
           <div className="grid grid-cols-12 gap-6">
-            <div className="col-span-6">
-              <CaseCardDetails items={financialItems} title="Prices" handle={handleChange} />
-              <CaseCardDetails items={brokersItems} title="Brokers" handle={handleChange} />
+            {isEdit ?
 
-            </div>
-            <div className="col-span-6">
-              <CaseCardDetails items={closingDateItems} title="Closing" handle={handleChange} />
-              <CaseCardDetails items={otherItems} title="Others" handle={handleChange} />
-            </div>
+              <>
+
+                <div className="col-span-6">
+                  <CaseCardDetails items={financialItems} title="Prices" handle={handleChange} />
+                  <CaseCardDetails items={brokersItems} title="Brokers" handle={handleChange} />
+
+                </div>
+                <div className="col-span-6">
+                  <CaseCardDetails items={closingDateItems} title="Closing" handle={handleChange} />
+                  <CaseCardDetails items={otherItems} title="Others" handle={handleChange} />
+                </div>
+              </> :
+              <>
+                <div className="col-span-6">
+                  <CaseCardDetails items={financialItems} title="Prices" handle={handleChange} />
+                  <CaseCardDetails items={brokersItems} title="Brokers" handle={handleChange} />
+
+                </div>
+                <div className="col-span-6">
+                  <CaseCardDetails items={closingDateItems} title="Closing" handle={handleChange} />
+                  <CaseCardDetails items={otherItems} title="Others" handle={handleChange} />
+                </div>
+              </>
+            }
           </div >
           <FormButton onSave={handleSubmit} />
         </form>

@@ -477,3 +477,12 @@ export const ERROR_MESSAGES = {
     "Internal Server Error: Something went wrong on the server.",
   UNEXPECTED_ERROR: "An unexpected error occurred. Please try again later.",
 };
+export const PREMISES_TYPE = {
+  0: "House (Single-Family)",
+  1: "House (Multi-Family)",
+  2: "Condo",
+  3: "Commercial",
+  4: "Land",
+  5: "Co-op",
+  6: "Condo-op",
+};

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SlArrowRight } from "react-icons/sl";
 import { CaseCardDetails, PageHeader, XButton } from "../../../components";
 import { MdOutlineEmail, MdOutlinePhone } from "react-icons/md";
@@ -9,10 +9,12 @@ import { caseDetailTab } from "../../../constants/constants";
 import ParticipantCaseDetails from "./participantCaseDetails";
 import PremisesCaseDetails from "./premisesCaseDetails";
 import OthersCaseDetails from "./othersCaseDetails";
+import { fetchAddressByIdRequest } from "../../../redux/actions/utilsActions";
+import { useDispatch } from "react-redux";
 
 const CaseDetails = () => {
   const [activeTab, setActiveTab] = useState(caseDetailTab.PARTICIPANTS);
-
+  const [isEdit, setIsEdit] = useState(false)
   const headerItems = [
     { text: "Cases", className: "mr-8" },
     {
@@ -242,19 +244,19 @@ const CaseDetails = () => {
   const renderActiveTab = (activeTab) => {
     switch (activeTab) {
       case caseDetailTab.PARTICIPANTS:
-        return <ParticipantCaseDetails />;
+        return <ParticipantCaseDetails isEdit={isEdit} setIsEdit={setIsEdit} />;
       case caseDetailTab.PREMISES:
-        return <PremisesCaseDetails />;
+        return <PremisesCaseDetails isEdit={isEdit} setIsEdit={setIsEdit} />;
       case caseDetailTab.OTHERS:
-        return <OthersCaseDetails />;
+        return <OthersCaseDetails isEdit={isEdit} setIsEdit={setIsEdit}  />;
       default:
-        return <ParticipantCaseDetails />;
+        return <ParticipantCaseDetails isEdit={isEdit} setIsEdit={setIsEdit}  />;
     }
   };
   return (
     <div>
       <PageHeader items={headerItems} />
-      <CasesActionbar active={activeTab} setActive={setActiveTab}/> 
+      <CasesActionbar active={activeTab} setActive={setActiveTab} setIsEdit={setIsEdit} isEdit={isEdit}/> 
       {renderActiveTab(activeTab)}
         {/* <div className="col-span-6">
           <CaseCardDetails items={sellerItems} />

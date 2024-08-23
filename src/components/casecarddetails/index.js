@@ -4,7 +4,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { IMAGES } from "../../constants/imagePath";
 import { useFormikContext } from "formik";
 
-const CaseCardDetails = ({ title, items, handle,form }) => {
+const CaseCardDetails = ({ title, items, handle,form  }) => {
   const { setFieldValue } = useFormikContext();
   const [fields, setFields] = useState(items)
 
