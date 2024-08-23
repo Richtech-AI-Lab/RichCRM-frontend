@@ -36,6 +36,7 @@ const CardData = ({ title, count, items, cardClass, onClick ,includeClasses,card
           caseTitle={item?.clientName}
           caseCount={item.caseCount}
           caseType={item?.caseType}
+          caseStatus={item?.caseStatus}
           innerCardClass={includeClasses ? "bg-input-surface" : "bg-white shadow-shadow-light"}
           />
           ))

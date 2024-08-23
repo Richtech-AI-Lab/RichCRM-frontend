@@ -29,6 +29,7 @@ const CasesCategoryCard = ({ cases,onCardClick ,categoryTitle,stageCount}) => {
             caseType={item?.caseType}
             caseTitle={item?.clientName}
             caseCount={item.caseCount}
+            caseStatus= {item?.caseStatus}
           />
 
           ))}
