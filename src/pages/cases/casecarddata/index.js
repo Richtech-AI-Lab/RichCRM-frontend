@@ -5,6 +5,7 @@ import {
   ContactCard,
   PageHeader,
   XButton,
+  XSpinnerLoader,
 } from "../../../components";
 import { IMAGES } from "../../../constants/imagePath";
 import StagesChecklist from "../../../components/stageschecklist";
@@ -35,7 +36,7 @@ const CaseCardData = () => {
 const handleCaseDetails=()=>{
     navigate(ROUTES.CASES_DETAILS)
   }
-  let premisesLoading= loading
+  // let premisesLoading= loading
   useEffect(() => {
     const fetchPremisesByQueryId = async () => {
       try {
@@ -105,6 +106,7 @@ const handleCaseDetails=()=>{
 
   return (
     <div>
+        <XSpinnerLoader loading={loading} size="lg" />
       <PageHeader items={headerItems} />
       <div className="flex justify-end justify-content:flex-end mb-6">
         <div className="grid gap-4 grid-cols-2 ">
@@ -123,7 +125,7 @@ const handleCaseDetails=()=>{
       </div>
       <div className="grid grid-cols-12 gap-6">
         <div className="col-span-4">
-        {false ? <Spinner
+        {/* {false ? <Spinner
                   size="xl"
                   animation="border"
                   role="status"
@@ -131,7 +133,7 @@ const handleCaseDetails=()=>{
                 // className={`spinner-${size}`}
                 >
                   <span className="visually-hidden">Loading...</span>
-                </Spinner>:
+                </Spinner>: */}
           <CaseDetailsCard
           title={premisesDetails?.name}
           clientName={casedetails?.clientName}
@@ -141,7 +143,7 @@ const handleCaseDetails=()=>{
           address={premisesDetails?.addressId
           }
           />
-         }
+         {/* } */}
           <XButton
             text="Case Details"
             // icon={<FaRegEdit className="text-base mr-2 inline-block" />}
@@ -157,7 +159,7 @@ const handleCaseDetails=()=>{
             weChat="(+1) xxx xxx xxxx"
             address="2000 Panorama Blvd Apt 3605 New York, NY 10022"
           /> */}
-          { false ?
+          {/* { false ?
             <Spinner
                   size="xl"
                   animation="border"
@@ -166,11 +168,11 @@ const handleCaseDetails=()=>{
                 // className={`spinner-${size}`}
                 >
                   <span className="visually-hidden">Loading...</span>
-                </Spinner>:
+                </Spinner>: */}
            <ContactCard 
            clientDetails={clientDetails}
            />
-          }
+          {/* } */}
         </div>
         <StagesChecklist />
       </div>

@@ -1,6 +1,6 @@
 import { takeLatest, put, call } from "redux-saga/effects";
 import { caseCreateSuccess, caseCreateFailure, updateCaseSuccess, updateCaseFailure, deleteCaseSuccess, deleteCaseFailure, fetchAllCasesSuccess, fetchAllCasesFailure } from "../actions/caseAction";
-import { POST_CASE_REQUEST, UPDATE_CASE_REQUEST, DELETE_CASE_REQUEST, FETCH_ALL_CASES_REQUEST } from "../type";
+import { POST_CASE_REQUEST, UPDATE_CASE_REQUEST, DELETE_CASE_REQUEST, FETCH_ALL_CASES_REQUEST, READ_CASE_REQUEST } from "../type";
 import { postRequest, getRequest } from "../../axios/interceptor";
 import { API_ENDPOINTS, ROUTES } from "../../constants/api";
 import { toast } from "react-toastify";
@@ -119,9 +119,23 @@ function* deleteCase(action) {
     }
 }
 
+function* getCase(action) {
+    const { payload } = action;
+    // console.log(`${API_ENDPOINTS.READ_STAGE}/${payload?.caseId}/${payload?.stageType}`,"payload")
+    // console.log(payload)
+    try {
+        const response = yield call(() => getRequest(`${API_ENDPOINTS.READ_CASE}/${payload}`));
+        yield put(caseCreateSuccess(response?.data?.data[0]));
+    } catch (error) {
+        handleError(error);
+        yield put(caseCreateFailure(error.response?.data || error));
+    }
+}
+
 export function* caseSaga() {
     yield takeLatest(POST_CASE_REQUEST, createCase);
     yield takeLatest(FETCH_ALL_CASES_REQUEST, fetchAllCases);
     yield takeLatest(UPDATE_CASE_REQUEST, updateCase);
     yield takeLatest(DELETE_CASE_REQUEST, deleteCase);
+    yield takeLatest(READ_CASE_REQUEST, getCase);
 }

@@ -9,7 +9,7 @@ const ClosedCasesGrid = ({ closedCases }) => {
           <CardItem
             key={index}
             caseDetails={item?.premisesId}
-            caseTitle={`${item?.clientsId?.lastName}, ${item?.clientsId?.firstName}` }
+            caseTitle={item?.clientName }
             closedCases={closedCases}
             caseType={item?.caseType}
           />
