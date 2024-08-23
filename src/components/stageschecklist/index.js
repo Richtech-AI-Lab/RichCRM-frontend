@@ -372,7 +372,7 @@ const StagesChecklist = () => {
     const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
   
     // Determine if the alert should be shown
-    const showAlert = daysDiff >= 0 && daysDiff <= 5;
+    const showAlert = daysDiff >= 0 && daysDiff <= 8;
   
     return { showAlert, daysUntilDue: daysDiff };
   }
@@ -395,7 +395,7 @@ const StagesChecklist = () => {
     const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
   
     // Determine if the alert should be shown
-    const showAlert = daysDiff >= 0 && daysDiff <= 5;
+    const showAlert = daysDiff >= 0 && daysDiff <= 8;
   
     return { showAlert, daysUntilDue: daysDiff };
   }
