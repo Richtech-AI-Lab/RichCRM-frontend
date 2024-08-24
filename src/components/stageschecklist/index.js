@@ -21,7 +21,7 @@ import { getTaskRequest } from "../../redux/actions/taskActions";
 import { STAGESNAMES } from "../../constants/constants";
 import { isEmpty } from "lodash";
 import XSpinnerLoader from "../spinnerLoader/XSpinnerLoader";
-import { caseCreateSuccess, getClientByIdRequest } from "../../redux/actions/caseAction";
+import { caseCreateSuccess, getClientByIdRequest, updateCaseRequest } from "../../redux/actions/caseAction";
 
 const StagesChecklist = () => {
   const dispatch = useDispatch();
@@ -48,6 +48,8 @@ const StagesChecklist = () => {
       let caseId = localStorage.getItem('c_id');
       const foundCase = casesData?.cases?.find(item => item.caseId === caseId);
       if (foundCase) {
+        // Set init step to stage
+        setCurrentStep(foundCase.stage);
         dispatch(caseCreateSuccess(foundCase));
       } else {
         dispatch(caseCreateSuccess([])); // Dispatch empty array if not found
@@ -334,7 +336,15 @@ const StagesChecklist = () => {
       try {
         const stageExists = await checkStageExists(createStagePayload);
         if (stageExists === false) {
-          const response = await dispatch(createStageRequest(createStagePayload));
+          await dispatch(createStageRequest(createStagePayload));
+
+          // Update case to next stage
+          await dispatch(updateCaseRequest({
+            caseId: localStorage.getItem('c_id'),
+            creatorId: localStorage.getItem("authEmail"),
+            stage: currentStep + 1,
+          }));
+
           setCurrentStep(currentStep + 1);
           setActiveTab("mortgage"); // Reset active tab to mortgage when changing step
         } else {
