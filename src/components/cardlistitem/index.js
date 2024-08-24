@@ -39,8 +39,8 @@ const CardListItem = ({
                       type="radio"
                       id={option.id}
                       name={name}
-                      value={option.id}
-                      checked={value?.includes(option.id)}
+                      value={option.value}
+                      checked={value==option.id}
                       className="mr-2"
                     />
                     <Label
@@ -68,6 +68,7 @@ const CardListItem = ({
                   inputClassName="bg-input-surface py-[6px] px-4 rounded-full border-0 text-sm leading-5 font-semibold text-label"
                   labelClassName="ext-label mr-3"
                   name={name}
+                  value={value}
                   options={options.map((option) => ({
                     value: option.id,
                     label: option.label,
@@ -86,7 +87,7 @@ const CardListItem = ({
             </span>
             <DateInput
               name={name}
-              value={selectedDate}
+              // value={selectedDate}
               onChange={(date) => {
                 setSelectedDate(date);
                 setFieldValue(name, date);
@@ -143,6 +144,7 @@ const CardListItem = ({
                  inputClassName="bg-input-surface ml-3 py-[6px] px-4 rounded-full border-0 text-sm leading-5 font-semibold text-label"
                   labelClassName="ext-label mr-3"
                    name="premisesMaintenace.period"
+                   value={value}
                   options={options.map((option) => ({
                     value: option.id,
                     label: option.label,

@@ -2,10 +2,12 @@ import { call, put, takeLatest } from "redux-saga/effects";
 import { postRequest } from "../../axios/interceptor";
 import { API_ENDPOINTS, ROUTES } from "../../constants/api";
 import {
+  fetchAddressByIdFailure,
+  fetchAddressByIdSuccess,
   registerAddressFailure,
   registerAddressSuccess,
 } from "../actions/utilsActions";
-import { REGISTER_ADDRESS_REQUEST } from "../type";
+import { FETCH_ADDRESS_BY_ID_REQUEST, REGISTER_ADDRESS_REQUEST } from "../type";
 import { registerPremisesRequest } from "../actions/premisesActions";
 import { toast } from "react-toastify";
 import { handleError } from "../../utils/eventHandler";
@@ -13,7 +15,6 @@ import { handleError } from "../../utils/eventHandler";
 function* registerAddress(action) {
   try {
     const { payload,navigate } = action;
-    console.log(payload,"paylaod")
     const response = yield call(() =>
       postRequest(API_ENDPOINTS.REGISTER_ADDRESS, payload.addressDetails)
     );
@@ -39,6 +40,18 @@ function* registerAddress(action) {
   }
 }
 
+function* fetchAddressById(action) {
+  try {
+    const { payload } = action;
+    const response = yield call(() => postRequest(API_ENDPOINTS.FETCH_ADDRESS_BY_QUERY_ID, payload));
+    yield put(fetchAddressByIdSuccess(response.data));
+  } catch (error) {
+    handleError(error)
+    yield put(fetchAddressByIdFailure(error.response.data || error));
+  }
+}
+
 export function* utilsSaga() {
   yield takeLatest(REGISTER_ADDRESS_REQUEST, registerAddress);
+  yield takeLatest(FETCH_ADDRESS_BY_ID_REQUEST, fetchAddressById);
 }

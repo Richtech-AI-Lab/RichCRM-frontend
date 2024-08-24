@@ -20,7 +20,8 @@ export const API_ENDPOINTS = {
   FETCH_CLIENT_BY_ID:"/client",
   FETCH_PREMISES_BY_ID:"/premises",
   FETCH_PREMISES_BY_QUERY_ID:"/premises/query/id",
-  FETCH_CLIENT_BY_QUERY:"client/query"
+  FETCH_CLIENT_BY_QUERY:"client/query",
+  FETCH_ADDRESS_BY_QUERY_ID:"/utils/address/query/id"
 };
 
 export const ROUTES = {

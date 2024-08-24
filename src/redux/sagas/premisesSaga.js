@@ -51,7 +51,7 @@ function* fetchPremises(action) {
     const response = yield call(() =>
       postRequest(API_ENDPOINTS.FETCH_PREMISES_BY_ADDRESS_ID, payload)
     );
-    console.log("Premises Response By Address Id:", response);
+    // console.log("Premises Response By Address Id:", response);
     yield put(fetchPremisesSuccess(response.data));
   } catch (error) {
     handleError(error)

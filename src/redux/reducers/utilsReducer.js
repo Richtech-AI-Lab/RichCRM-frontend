@@ -1,5 +1,8 @@
 import {
   CLEAR_DATA,
+  FETCH_ADDRESS_BY_ID_FAILURE,
+  FETCH_ADDRESS_BY_ID_REQUEST,
+  FETCH_ADDRESS_BY_ID_SUCCESS,
   REGISTER_ADDRESS_FAILURE,
   REGISTER_ADDRESS_REQUEST,
   REGISTER_ADDRESS_SUCCESS,
@@ -30,6 +33,12 @@ const utilsReducer = (state = initialState, action) => {
         loading: false,
         error: action.payload,
       };
+    case FETCH_ADDRESS_BY_ID_REQUEST:
+      return { ...state, loading: true, error: null };
+    case FETCH_ADDRESS_BY_ID_SUCCESS:
+      return { ...state, loading: false, address: action.payload, error: null };
+    case FETCH_ADDRESS_BY_ID_FAILURE:
+      return { ...state, loading: false, error: action.payload };
     case CLEAR_DATA:
       return initialState;
     default:

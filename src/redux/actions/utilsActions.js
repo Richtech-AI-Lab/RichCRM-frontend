@@ -1,4 +1,7 @@
 import {
+  FETCH_ADDRESS_BY_ID_FAILURE,
+  FETCH_ADDRESS_BY_ID_REQUEST,
+  FETCH_ADDRESS_BY_ID_SUCCESS,
   REGISTER_ADDRESS_FAILURE,
   REGISTER_ADDRESS_REQUEST,
   REGISTER_ADDRESS_SUCCESS,
@@ -18,4 +21,19 @@ export const registerAddressSuccess = (response) => ({
 export const registerAddressFailure = (error) => ({
   type: REGISTER_ADDRESS_FAILURE,
   payload: error,
+});
+
+export const fetchAddressByIdRequest = (data) => ({
+  type: FETCH_ADDRESS_BY_ID_REQUEST,
+  payload:data
+});
+
+export const fetchAddressByIdSuccess = (data) => ({
+  type: FETCH_ADDRESS_BY_ID_SUCCESS,
+  payload: data
+});
+
+export const fetchAddressByIdFailure = (error) => ({
+  type: FETCH_ADDRESS_BY_ID_FAILURE,
+  payload: error
 });

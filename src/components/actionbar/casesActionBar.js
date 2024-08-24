@@ -9,14 +9,17 @@ import { useLocation } from "react-router-dom";
 import ContactTabs from "./contactTabs";
 
 
-const CasesActionbar = ({ active="", setActive="" }) => {
+const CasesActionbar = ({ active="", setActive="", setIsEdit="" , isEdit }) => {
+
     const location = useLocation();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen);
       };
-
+      const toggleEdit = () => {
+        setIsEdit(prevState => !prevState);
+      };
       const shouldShowOpenClosed = () => {
         const pathsToShow = [ROUTES.CONTACTS];
         return pathsToShow.includes(location.pathname);
@@ -43,11 +46,12 @@ const CasesActionbar = ({ active="", setActive="" }) => {
               />
             ) : (
               <>
-                <XButton
+               { !isEdit && <XButton
                   text="Edit"
+                  onClick={toggleEdit}
                   icon={<FiEdit3 className="text-base mr-2 inline-block" />}
                   className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium"
-                />
+                />}
                 <XButton
                   text="Export"
                   onClick={toggleModal}

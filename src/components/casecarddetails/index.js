@@ -4,7 +4,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { IMAGES } from "../../constants/imagePath";
 import { useFormikContext } from "formik";
 
-const CaseCardDetails = ({ title, items, handle,form }) => {
+const CaseCardDetails = ({ title, items, handle,form,value=""}) => {
   const { setFieldValue } = useFormikContext();
   const [fields, setFields] = useState(items)
 
@@ -51,12 +51,13 @@ const CaseCardDetails = ({ title, items, handle,form }) => {
           ) :
           (
             <>
+            {/* {console.log(item.name,value[item.name])} */}
               <CardListItem
                 formerror={form}
                 key={index}
                 label={item.label}
                 name={item.name}
-                value={item.value}
+                value={value[item.name] ? value[item.name] : ""}
                 type={item.type ? item.type : "text"}
                 options={
                   item.type === "checkboxes"

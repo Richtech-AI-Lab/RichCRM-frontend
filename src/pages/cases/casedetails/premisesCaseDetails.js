@@ -4,10 +4,26 @@ import { Formik } from "formik";
 import { inspectionItems, lowerSectionItems, premisesComposition, termitesInspectionItems } from "../../../utils/formItem";
 import FormButton from "../../../components/formButton";
 import * as Yup from "yup";
+import { useSelector } from "react-redux";
+import PremisesDetail from "../showdetail/premisesdetail";
 
-const PremisesCaseDetails = () => {
+const PremisesCaseDetails = ({isEdit,setIsEdit}) => {
+  const { data: addressData } = useSelector((state) => state?.utils?.address);
+  const addressDetails = addressData?.length > 0 ? addressData : null;
+
+  const { data: premisesData } = useSelector((state) => state.premises.premises);
+  const premisesDetails = premisesData?.length > 0 ? premisesData : null;
+
+  const values={
+    ...addressData[0],
+    ...premisesDetails[0]
+  }
+  const toggleEdit = () => {
+    setIsEdit(prevState => !prevState);
+  };
   let handleSubmit = (x) => {
     console.log(x)
+    toggleEdit()
   }
   const initialValues = {
     scheduleDate: "",
@@ -28,7 +44,7 @@ const PremisesCaseDetails = () => {
     premisesParking: "",
     premisesMaintenace: {
       amount: '',
-      period: '', 
+      period: '',
     },
     premisesAssessment: "",
     premisesPaidby: "",
@@ -86,25 +102,40 @@ const PremisesCaseDetails = () => {
   //   premisesRecievedDate: Yup.date().required('Premises received date is required'),
   //   premisesTermites: Yup.boolean().required('Termites inspection status is required'),
   // });
-  
+
   return (
-    <Formik initialValues={initialValues}  onSubmit={handleSubmit} >
+    <Formik initialValues={initialValues} onSubmit={handleSubmit} >
       {({
         handleChange,
         handleSubmit
       }) => (
         <form onSubmit={handleSubmit} className="pemises-form">
           <div className="grid grid-cols-12 gap-6">
-            <div className="col-span-6">
-              <CaseCardDetails items={lowerSectionItems} title="Premises Info" handle={handleChange} />
+            { isEdit ?<> 
+              <div className="col-span-6">
+               <CaseCardDetails items={lowerSectionItems} value={values} title="Premises Info" handle={handleChange} />
+                
             </div>
             <div className="col-span-6">
               <CaseCardDetails items={premisesComposition} title="Premises Composition" handle={handleChange} />
               <CaseCardDetails items={inspectionItems} title="Engineer Inspection" handle={handleChange} />
               <CaseCardDetails items={termitesInspectionItems} title="Termites Inspection" handle={handleChange} />
             </div>
+            </>
+            :
+            <>
+            <div className="col-span-6">
+              <PremisesDetail address={addressDetails} premises={premisesDetails} />
+            </div>
+            <div className="col-span-6">
+              {/* <CaseCardDetails items={premisesComposition} title="Premises Composition" handle={handleChange} />
+              <CaseCardDetails items={inspectionItems} title="Engineer Inspection" handle={handleChange} />
+              <CaseCardDetails items={termitesInspectionItems} title="Termites Inspection" handle={handleChange} /> */}
+            </div>
+            </>}
           </div >
-          <FormButton onSave={handleSubmit}/> 
+
+          <FormButton onSave={handleSubmit} />
         </form>
       )}
     </Formik>
