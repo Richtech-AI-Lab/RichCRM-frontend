@@ -54,7 +54,7 @@ const handleCaseDetails=()=>{
   }, [casedetails.premisesId]);
 
   useEffect(()=>{
-    if(clientDetails){
+    if(clientDetails && clientDetails[0]?.addressId){
       let data={
         addressId:clientDetails[0]?.addressId
       }

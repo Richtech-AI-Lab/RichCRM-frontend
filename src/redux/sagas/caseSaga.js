@@ -19,16 +19,17 @@ function* createCase(action) {
                 ...payload.casePayload
             }
         };
+        console.log(updatedPayload);
 
         const response = yield call(() => postRequest(API_ENDPOINTS.CREATE_CASE, updatedPayload.casePayload));
         yield put(caseCreateSuccess(response.data));
         if (response.status == 200) {
             const caseId = response.data?.data[0].caseId;
-            let sagaPayload = {
-                stageType: 0,
-                caseId: caseId,
-            }
-            yield put(createStageRequest(sagaPayload));
+            // let sagaPayload = {
+            //     stageType: 0,
+            //     caseId: caseId,
+            // }
+            // yield put(createStageRequest(sagaPayload));
             localStorage.setItem('c_id', caseId);
             toast.success("Cases successfully registered!");
             navigate(ROUTES.NEW_CASE_INFO);
@@ -99,9 +100,9 @@ function* fetchAllCases(action) {
 
 function* updateCase(action) {
     try {
-        const { id } = action.payload;
-        const response = yield call(() => postRequest(`${API_ENDPOINTS.GET_CASE}/${id}`));
-        yield put(updateCaseSuccess(response.data));
+        const { payload } = action;
+        const response = yield call(() => postRequest(API_ENDPOINTS.UPDATE_CASE, payload));
+        yield put(caseCreateSuccess(response.data));
     } catch (error) {
         handleError(error)
         yield put(updateCaseFailure(error.response.data || error));
