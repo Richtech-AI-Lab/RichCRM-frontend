@@ -10,57 +10,82 @@ import ShowDetail from "../showdetail/participantdetail";
 import { fetchAddressByIdRequest } from "../../../redux/actions/utilsActions";
 import { fetchPremisesRequest } from "../../../redux/actions/premisesActions";
 import ParticipantDetail from "../showdetail/participantdetail";
+import PurchaserParticipantForm from "../editDetail/purchaserParticipantForm";
+import { updateClientByIdRequest } from "../../../redux/actions/clientActions";
 
 
-const ParticipantCaseDetails = ({isEdit,setIsEdit}) => {
+const ParticipantCaseDetails = ({ isEdit, setIsEdit }) => {
   const dispatch = useDispatch();
-  const {client}= useSelector((state) => state.client);
-  const {cases}= useSelector((state) => state.case.casesData);
+  const { client } = useSelector((state) => state.client);
+  const { cases } = useSelector((state) => state.case.casesData);
   const clientDetails = client?.data?.length > 0 ? client?.data : null;
-  const {data}= useSelector((state) => state?.utils?.address);
+  const { data } = useSelector((state) => state?.utils?.address);
   const addressDetails = data?.length > 0 ? data : null;
 
   const toggleEdit = () => {
     setIsEdit(prevState => !prevState);
   };
-  useEffect(()=>{
-    if(addressDetails){
-      let data={
-        addressId:clientDetails[0]?.addressId
-      }
-      dispatch(fetchPremisesRequest(data))
-    }
-  },[addressDetails])
+  // useEffect(() => {
+  //   if (addressDetails) {
+  //     let data = {
+  //       addressId: clientDetails[0]?.addressId
+  //     }
+  //     dispatch(fetchPremisesRequest(data))
+  //   }
+  // }, [addressDetails])
 
-  const handleSubmit = (x) => {
+  const handleSubmit = (values, { setSubmitting }) => {
+    // Split the name into firstName and lastName
+    const [firstName, lastName] = values?.name?.split(' ');
+
+    // Create the payload for the first API call
+    const firstApiPayload = {
+      firstName,
+      lastName,
+      ssn: values.ssn,
+      email: values.email,
+      cellNumber: values.cellNumber,
+      workNumber: values.workNumber,
+      wechatAccount: values.wechatAccount,
+      // whatsApp: values.whatsApp,
+      // line: values.line,
+      clientId:clientDetails[0]?.clientId
+    };
+
+    const secondApiPayload = {
+      addressLine1: values.addressLine1,
+      addressLine2: values.addressLine2,
+      city: values.city,
+      state: values.state,
+      zipCode: values.zipCode,
+    }
+
+    let data = {
+      client: firstApiPayload,
+      util: secondApiPayload
+    }
+    console.log(data,"______")
+    dispatch(updateClientByIdRequest(data))
     toggleEdit()
   }
   const handleAttorneysChange = (attorneys, handleChange) => {
     handleChange({ target: { name: 'attorneys', value: attorneys } });
   };
-  const initialValues = {
-    sellerName: "",
-    sellerSSN: "",
-    sellerEmail: "",
-    sellerCellPhone: "",
-    sellerWorkPhone: "",
-    sellerWeChat: "",
-    sellerWhatsApp: "",
-    sellerLine: "",
-    sellerMailingAddress: "",
-    purchaserName: "",
-    purchaserSSN: "",
-    purchaserEmail: "",
-    purchaserCellPhone: "",
-    purchaserWorkPhone: "",
-    purchaserWeChat: "",
-    purchaserWhatsApp: "",
-    purchaserLine: "",
-    purchaserMailingAddress: "",
-    attorneys: [],
-    titleCompany: "",
-    titleNumber: "",
-    titleMortgage: "",
+  const initialPurchaserValues = {
+    firstName: '',
+    lastName: '',
+    ssn: '',
+    email: '',
+    cellphone: '',
+    workNumber: '',
+    wechatAccount: '',
+    whatsAppNumber: '',
+    lineNumber: '',
+    addressLine1: '',
+    addressLine2: '',
+    city: '',
+    state: '',
+    zipCode: '',
   };
   const validationSchema = Yup.object({
     // sellerName: Yup.string().required("name is required"),
@@ -94,44 +119,46 @@ const ParticipantCaseDetails = ({isEdit,setIsEdit}) => {
     // titleNumber: Yup.string().required("title number is required"),
     // titleMortgage: Yup.string().required("title mortage is required"),
   });
-
   return (
-    <Formik
-      initialValues={initialValues}
-      onSubmit={handleSubmit}
-      // validationSchema={validationSchema}
-    >
-      {({
-        handleChange,
-        handleSubmit,
-        values,
-        errors,
-        touched
-      }) => (
-        <form onSubmit={handleSubmit} className="login-form">
-          <div className="grid grid-cols-12 gap-6">
-            <div className="col-span-6">
-              {
-                isEdit ? cases[0]?.caseType ?
-                  <CaseCardDetails items={sellerItems} title="Seller" value={clientDetails[0]} handle={handleChange} form={{ errors, touched }} />
-                  :<CaseCardDetails items={buyerItems} title="Purchaser" value={clientDetails[0]} handle={handleChange} form={{ errors, touched }} />
-                    
-                  :
-                  <ParticipantDetail client={clientDetails} caseType={cases[0]?.caseType} address={addressDetails}/>
+    <>
+      {isEdit ?
+        (<Formik
+          initialValues={initialPurchaserValues}
+          onSubmit={handleSubmit}
+        // validationSchema={validationSchema}
+        >
+          {({
+            handleChange,
+            handleSubmit,
+            values,
+            errors,
+            touched,
+            setFieldValue
+          }) => (
+            <form onSubmit={handleSubmit} className="purchaser-form">
+              <div className="grid grid-cols-12 gap-6">
+                <div className="col-span-6">
+                  {false ? ""
+                    // <SellerParticipantForm items={sellerItems} title="Seller" value={clientDetails[0]} handle={handleChange} form={{ errors, touched }} />
+                    :
+                    <PurchaserParticipantForm title="Purchaser" handleChange={handleChange} setFieldValue={setFieldValue} values={values} form={{ errors, touched }} />
+                  }
 
-              }
-            
-            </div>
-            <div className="col-span-6">
-              <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys}  errors={errors.attorneys || []} 
-                touched={touched.attorneys || []} setAttorneys={(attorneys) => handleAttorneysChange(attorneys, handleChange)} />
-              <CaseCardDetails items={titleMortgageItems} title="Title & Mortgage" handle={handleChange} />
-            </div>
-          </div >
-         { isEdit && <FormButton onSave={handleSubmit} />}
-        </form>
-      )}
-    </Formik>
+                </div>
+                <div className="col-span-6">
+                  {/* <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} errors={errors.attorneys || []}
+                    touched={touched.attorneys || []} setAttorneys={(attorneys) => handleAttorneysChange(attorneys, handleChange)} />
+                  <CaseCardDetails items={titleMortgageItems} title="Title & Mortgage" handle={handleChange} /> */}
+                </div>
+              </div >
+              <FormButton onSave={handleSubmit} />
+            </form>
+          )}
+        </Formik>)
+        :
+        (<div className="grid grid-cols-12 gap-6">
+                <div className="col-span-6"><ParticipantDetail client={clientDetails} caseType={false} address={addressDetails} /></div></div>)}
+    </>
   );
 };
 

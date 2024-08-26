@@ -5,6 +5,9 @@ import {
   REGISTER_CLIENT_FAILURE,
   REGISTER_CLIENT_REQUEST,
   REGISTER_CLIENT_SUCCESS,
+  UPDATE_CLIENT_BY_ID_FAILURE,
+  UPDATE_CLIENT_BY_ID_REQUEST,
+  UPDATE_CLIENT_BY_ID_SUCCESS,
 } from "../type";
 
 export const registerClientRequest = (clientData,navigate) => ({
@@ -36,5 +39,20 @@ export const fetchClientByIdSuccess = (data) => ({
 
 export const fetchClientByIdFailure = (error) => ({
   type: FETCH_CLIENT_BY_ID_FAILURE,
+  payload: error
+});
+
+export const updateClientByIdRequest = (clientData) => ({
+  type: UPDATE_CLIENT_BY_ID_REQUEST,
+  payload: clientData
+});
+
+export const updateClientByIdSuccess = (data) => ({
+  type: UPDATE_CLIENT_BY_ID_SUCCESS,
+  payload: data
+});
+
+export const updateClientByIdFailure = (error) => ({
+  type: UPDATE_CLIENT_BY_ID_FAILURE,
   payload: error
 });

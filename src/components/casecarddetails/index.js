@@ -51,7 +51,6 @@ const CaseCardDetails = ({ title, items, handle,form,value=""}) => {
           ) :
           (
             <>
-            {/* {console.log(item.name,value[item.name])} */}
               <CardListItem
                 formerror={form}
                 key={index}

@@ -1,9 +1,5 @@
 import React, { useState } from "react";
 
-import { BsThreeDotsVertical } from "react-icons/bs";
-import { CASETYPE } from "../../../constants/constants";
-
-
 const ParticipantDetail = ({ client, caseType, address }) => {
 
 
