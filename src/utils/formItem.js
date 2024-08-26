@@ -85,7 +85,28 @@ export const buyerItems = [
     {
         show: false, optional: true, buttonText: "add Line", icon: IMAGES.removeIcon, name: "purchaserLine", label: "Line", placeholder: "Enter a Line",
     },
-    { label: "Mailing Address", name: "purchaserMailingAddress", placeholder: "Enter Address" },
+    {
+        name: "addressLine1",
+        label: "Address",
+        placeholder: "Enter address",
+    },
+    {
+        name: "addressLine2",
+        label: "Address Line 2",
+        placeholder: "Enter address",
+    },
+    {
+        name: "city",
+        label: "City",
+        placeholder: "Enter city",
+    },
+    {
+        name: "state",
+        label: "State",
+        type: "dropdown",
+        dropDownOptions: states,
+    },
+    { label: "Zip Code", name: "zipCode", placeholder: "Enter a zip code" },
 ];
 
 export const titleMortgageItems = [

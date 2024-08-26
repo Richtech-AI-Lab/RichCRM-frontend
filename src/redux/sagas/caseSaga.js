@@ -24,6 +24,7 @@ function* createCase(action) {
         const response = yield call(() => postRequest(API_ENDPOINTS.CREATE_CASE, updatedPayload.casePayload));
         yield put(caseCreateSuccess(response.data));
         if (response.status == 200) {
+            const casedetails=response.data?.data[0];
             const caseId = response.data?.data[0].caseId;
             // let sagaPayload = {
             //     stageType: 0,
@@ -31,8 +32,9 @@ function* createCase(action) {
             // }
             // yield put(createStageRequest(sagaPayload));
             localStorage.setItem('c_id', caseId);
+            console.log(updatedPayload, "ccc")
             toast.success("Cases successfully registered!");
-            navigate(ROUTES.NEW_CASE_INFO);
+            navigate(ROUTES.CASES_DATA, { state: { casedetails }});
         }
     } catch (error) {
         handleError(error)
