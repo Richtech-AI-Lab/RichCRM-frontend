@@ -6,6 +6,9 @@ import {
   REGISTER_CLIENT_FAILURE,
   REGISTER_CLIENT_REQUEST,
   REGISTER_CLIENT_SUCCESS,
+  UPDATE_CLIENT_BY_ID_FAILURE,
+  UPDATE_CLIENT_BY_ID_REQUEST,
+  UPDATE_CLIENT_BY_ID_SUCCESS,
 } from "../type";
 
 const initialState = {
@@ -21,6 +24,12 @@ const clientReducer = (state = initialState, action) => {
     case FETCH_CLIENT_BY_ID_SUCCESS:
       return { ...state, loading: false, client: action.payload, error: null };
     case FETCH_CLIENT_BY_ID_FAILURE:
+      return { ...state, loading: false, error: action.payload };
+    case UPDATE_CLIENT_BY_ID_REQUEST:
+      return { ...state, loading: true, error: null };
+    case UPDATE_CLIENT_BY_ID_SUCCESS:
+      return { ...state, loading: false, client: action.payload, error: null };
+    case UPDATE_CLIENT_BY_ID_FAILURE:
       return { ...state, loading: false, error: action.payload };
     case REGISTER_CLIENT_REQUEST:
       return { ...state, loading: true };

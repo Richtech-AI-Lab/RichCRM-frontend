@@ -60,7 +60,7 @@ function* updateClientById(action) {
     const response = yield call(() =>
       postRequest(API_ENDPOINTS.UPDATE_CLIENT, payload?.client)
     );
-    console.log(payload?.client,"____")
+    // console.log(payload?.client,"____")
     yield put(updateClientByIdSuccess(response.data));
     if(response.status ==200){
       const updatedPayload = {
@@ -68,7 +68,7 @@ function* updateClientById(action) {
         addressId: response.data.data[0].addressId
       };
       // yield put(registerAddressRequest(updatedPayload))
-      toast.success("Client Updated successfully");
+      toast.success("Client Updated!");
     }
   } catch (error) {
     handleError(error)

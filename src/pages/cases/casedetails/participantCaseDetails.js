@@ -6,12 +6,10 @@ import { sellerItems, buyerItems, titleMortgageItems } from "../../../utils/form
 import FormButton from "../../../components/formButton";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import ShowDetail from "../showdetail/participantdetail";
-import { fetchAddressByIdRequest } from "../../../redux/actions/utilsActions";
-import { fetchPremisesRequest } from "../../../redux/actions/premisesActions";
 import ParticipantDetail from "../showdetail/participantdetail";
 import PurchaserParticipantForm from "../editDetail/purchaserParticipantForm";
 import { updateClientByIdRequest } from "../../../redux/actions/clientActions";
+import { createAddressRequest } from "../../../redux/actions/utilsActions";
 
 
 const ParticipantCaseDetails = ({ isEdit, setIsEdit }) => {
@@ -49,7 +47,7 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit }) => {
       wechatAccount: values.wechatAccount,
       // whatsApp: values.whatsApp,
       // line: values.line,
-      clientId:clientDetails[0]?.clientId
+      clientId: clientDetails[0]?.clientId
     };
 
     const secondApiPayload = {
@@ -64,19 +62,31 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit }) => {
       client: firstApiPayload,
       util: secondApiPayload
     }
-    console.log(data,"______")
-    dispatch(updateClientByIdRequest(data))
+    dispatch(createAddressRequest(data))
     toggleEdit()
   }
   const handleAttorneysChange = (attorneys, handleChange) => {
     handleChange({ target: { name: 'attorneys', value: attorneys } });
   };
-  const initialPurchaserValues = {
-    firstName: '',
-    lastName: '',
+  const initialPurchaserValues = clientDetails && clientDetails.length > 0 ? {
+    name: `${clientDetails[0]?.firstName || ''} ${clientDetails[0]?.lastName || ''}`,
+    ssn: clientDetails[0]?.ssn || '',
+    email: clientDetails[0]?.email || '',
+    cellNumber: clientDetails[0]?.cellNumber || '',
+    workNumber: clientDetails[0]?.workNumber || '',
+    wechatAccount: clientDetails[0]?.wechatAccount || '',
+    whatsAppNumber: clientDetails[0]?.whatsAppNumber || '',
+    lineNumber: clientDetails[0]?.lineNumber || '',
+    addressLine1: addressDetails[0]?.addressLine1 || '',
+    addressLine2: addressDetails[0]?.addressLine2 || '',
+    city: addressDetails[0]?.city || '',
+    state: addressDetails[0]?.state || '',
+    zipCode: addressDetails[0]?.zipCode || '',
+  } : {
+    name: '',
     ssn: '',
     email: '',
-    cellphone: '',
+    cellNumber: '',
     workNumber: '',
     wechatAccount: '',
     whatsAppNumber: '',
@@ -87,6 +97,7 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit }) => {
     state: '',
     zipCode: '',
   };
+
   const validationSchema = Yup.object({
     // sellerName: Yup.string().required("name is required"),
     // sellerSSN: Yup.string().required("ssn is required"),
@@ -135,15 +146,10 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit }) => {
             touched,
             setFieldValue
           }) => (
-            <form onSubmit={handleSubmit} className="purchaser-form">
+            <form onSubmit={handleSubmit} className="participant-form">
               <div className="grid grid-cols-12 gap-6">
                 <div className="col-span-6">
-                  {false ? ""
-                    // <SellerParticipantForm items={sellerItems} title="Seller" value={clientDetails[0]} handle={handleChange} form={{ errors, touched }} />
-                    :
-                    <PurchaserParticipantForm title="Purchaser" handleChange={handleChange} setFieldValue={setFieldValue} values={values} form={{ errors, touched }} />
-                  }
-
+                  <PurchaserParticipantForm title={cases[0]?.caseType ? "Seller" : "Purchaser"} handleChange={handleChange} setFieldValue={setFieldValue} values={values} form={{ errors, touched }} initialValues={initialPurchaserValues} />
                 </div>
                 <div className="col-span-6">
                   {/* <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} errors={errors.attorneys || []}
@@ -157,7 +163,7 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit }) => {
         </Formik>)
         :
         (<div className="grid grid-cols-12 gap-6">
-                <div className="col-span-6"><ParticipantDetail client={clientDetails} caseType={false} address={addressDetails} /></div></div>)}
+          <div className="col-span-6"><ParticipantDetail client={clientDetails} title={cases[0]?.caseType ? "Seller" : "Purchaser"} address={addressDetails} /></div></div>)}
     </>
   );
 };

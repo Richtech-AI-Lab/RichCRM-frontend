@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { CaseCardDetails, XButton } from "../../../components";
+import { CaseCardDetails, SelectInput, XButton } from "../../../components";
 // import CaseAttorneyItems from "./caseAttorneyItems";
-import { Formik } from "formik";
+import { Field, Formik } from "formik";
 import { sellerItems, buyerItems, titleMortgageItems } from "../../../utils/formItem";
 import FormButton from "../../../components/formButton";
 import * as Yup from "yup";
@@ -12,9 +12,10 @@ import { fetchPremisesRequest } from "../../../redux/actions/premisesActions";
 import ParticipantDetail from "../showdetail/participantdetail";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IMAGES } from "../../../constants/imagePath";
+import states from "../../../constants/states.json"
 
 
-const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, formerror, setFieldValue,  handleChange, handleBlur }) => {
+const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, formerror, setFieldValue, handleChange, handleBlur }) => {
   const [optionalFields, setOptionalFields] = useState({
     workNumber: false,
     wechatAccount: false,
@@ -23,7 +24,7 @@ const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, form
   });
 
   useEffect(() => {
-    // Set the optional fields based on initial values (for edit scenario)
+    // console.log(initialValues,"____")
     if (initialValues?.workNumber) setOptionalFields(prev => ({ ...prev, workNumber: true }));
     if (initialValues?.wechatAccount) setOptionalFields(prev => ({ ...prev, wechatAccount: true }));
     if (initialValues?.whatsAppNumber) setOptionalFields(prev => ({ ...prev, whatsAppNumber: true }));
@@ -42,7 +43,7 @@ const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, form
       ...prevState,
       [field]: false,
     }));
-    setFieldValue(field, ''); 
+    setFieldValue(field, '');
   };
 
   return (
@@ -89,11 +90,11 @@ const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, form
             <span className={`left-txt flex items-center`}>Cell Phone</span>
             <input
               className="text-right p-0 border-none focus:ring-transparent"
-              name="cellphone"
+              name="cellNumber"
               type="text"
               onChange={handleChange}
               onBlur={handleBlur}
-              value={values.cellphone}
+              value={values.cellNumber}
             /></li>
 
           <li>
@@ -129,7 +130,7 @@ const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, form
             {optionalFields.wechatAccount && (
 
               <>
-                <span className={"cursor-pointer left-txt flex items-center"} onClick={() => handleRemoveField('wechatAccount',setFieldValue)} >
+                <span className={"cursor-pointer left-txt flex items-center"} onClick={() => handleRemoveField('wechatAccount', setFieldValue)} >
                   <span className="icon mr-2"> <img src={IMAGES.removeIcon} alt="icon" /> </span>
                   WeChat
                 </span>
@@ -159,7 +160,7 @@ const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, form
             {optionalFields.whatsAppNumber && (
 
               <>
-                <span className={"cursor-pointer left-txt flex items-center"} onClick={() => handleRemoveField('whatsAppNumber',setFieldValue)} >
+                <span className={"cursor-pointer left-txt flex items-center"} onClick={() => handleRemoveField('whatsAppNumber', setFieldValue)} >
                   <span className="icon mr-2"> <img src={IMAGES.removeIcon} alt="icon" /> </span>
                   WhatsApp
                 </span>
@@ -190,7 +191,7 @@ const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, form
             {optionalFields.lineNumber && (
 
               <>
-                <span className={"cursor-pointer left-txt flex items-center"} onClick={() => handleRemoveField('lineNumber',setFieldValue)} >
+                <span className={"cursor-pointer left-txt flex items-center"} onClick={() => handleRemoveField('lineNumber', setFieldValue)} >
                   <span className="icon mr-2"> <img src={IMAGES.removeIcon} alt="icon" /> </span>
                   Line
                 </span>
@@ -245,15 +246,26 @@ const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, form
               value={values.city}
             /></li>
           <li>
-            <span className={`left-txt flex items-center`}>State</span>
-            <input
-              className="text-right p-0 border-none focus:ring-transparent"
-              name="state"
-              type="text"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.state}
-            /></li>
+            <div className="flex justify-between items-center w-full">
+              <span className="left-txt w-full">State</span>
+              <div className="flex justify-end items-center w-full gap-7">
+                <div className="grid gap-3">
+                  <Field
+                    as={SelectInput}
+                    defaultLabel={`Select State`}
+                    inputClassName="bg-input-surface py-[6px] px-4 rounded-full border-0 text-sm leading-5 font-semibold text-label"
+                    labelClassName="ext-label mr-3"
+                    name="state"
+                    value={values.state}
+                    options={states.map((option) => ({
+                      value: option.id,
+                      label: option.label,
+                    }))}
+                  />
+                </div>
+              </div>
+            </div>
+          </li>
           <li>
             <span className={`left-txt flex items-center`}>Zip Code</span>
             <input

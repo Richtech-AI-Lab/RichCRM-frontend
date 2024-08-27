@@ -12,7 +12,7 @@ import {
   registerPremisesSuccess,
   startPremisesLoading,
 } from "../actions/premisesActions";
-import { FETCH_PREMISES_BY_ID_REQUEST, FETCH_PREMISES_BY_QUERY_ID_FAILURE, FETCH_PREMISES_BY_QUERY_ID_REQUEST, FETCH_PREMISES_BY_QUERY_ID_SUCCESS, FETCH_PREMISES_REQUEST, REGISTER_PREMISES_REQUEST } from "../type";
+import { FETCH_PREMISES_BY_ID_REQUEST, FETCH_PREMISES_BY_QUERY_ID_FAILURE, FETCH_PREMISES_BY_QUERY_ID_REQUEST, FETCH_PREMISES_BY_QUERY_ID_SUCCESS, FETCH_PREMISES_REQUEST, REGISTER_PREMISES_REQUEST, UPDATE_PREMISES_REQUEST } from "../type";
 import { toast } from "react-toastify";
 import { caseCreateRequest } from "../actions/caseAction";
 import { handleError } from "../../utils/eventHandler";
@@ -20,16 +20,16 @@ import { handleError } from "../../utils/eventHandler";
 //Register Premises Saga
 function* registerPremises(action) {
   try {
-    const { payload,navigate } = action;
+    const { payload, navigate } = action;
     const response = yield call(() =>
       postRequest(API_ENDPOINTS.REGISTER_PREMISES, payload.premisesPayload)
     );
     yield put(registerPremisesSuccess(response.data));
-    if(response.status==200){
+    if (response.status == 200) {
       const updatedPayload = {
-        ...payload, 
+        ...payload,
         casePayload: {
-          ...payload.casePayload, 
+          ...payload.casePayload,
           premisesId: response.data?.data[0]?.premisesId,
         }
       };
@@ -77,11 +77,26 @@ function* fetchPremisesByQueryId(action) {
   try {
     const { premisesId } = action.payload;
     const response = yield call(() =>
-      postRequest(API_ENDPOINTS.FETCH_PREMISES_BY_QUERY_ID,premisesId)
+      postRequest(API_ENDPOINTS.FETCH_PREMISES_BY_QUERY_ID, premisesId)
     );
     yield put(fetchPremisesByQueryIdSuccess(response.data));
   } catch (error) {
     yield put(fetchPremisesByQueryIdFailure(error.response?.data || error));
+  }
+}
+
+//Register Premises Saga
+function* updatePremises(action) {
+  try {
+    const { payload } = action;
+    const response = yield call(() =>
+      postRequest(API_ENDPOINTS.UPDATE_PREMISES, payload.premises)
+    );
+    yield put(registerPremisesSuccess(response.data));
+    toast.success("Premises updated!");
+  } catch (error) {
+    handleError(error)
+    yield put(registerPremisesFailure(error.response?.data || error));
   }
 }
 
@@ -90,5 +105,6 @@ export function* premisesSaga() {
   yield takeLatest(FETCH_PREMISES_REQUEST, fetchPremises);
   yield takeLatest(FETCH_PREMISES_BY_ID_REQUEST, fetchPremisesById);
   yield takeLatest(FETCH_PREMISES_BY_QUERY_ID_REQUEST, fetchPremisesByQueryId);
+  yield takeLatest(UPDATE_PREMISES_REQUEST, updatePremises);
 }
 

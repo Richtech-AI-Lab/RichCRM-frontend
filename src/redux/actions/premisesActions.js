@@ -13,6 +13,7 @@ import {
   REGISTER_PREMISES_SUCCESS,
   START_LOADING,
   STOP_LOADING,
+  UPDATE_PREMISES_REQUEST,
 } from "../type";
 
 export const registerPremisesRequest = (premises,navigate) => ({
@@ -45,6 +46,12 @@ export const fetchPremisesSuccess = (data) => ({
 export const fetchPremisesFailure = (error) => ({
   type: FETCH_PREMISES_FAILURE,
   payload: error,
+});
+
+//Read Premises by AddressId Actions
+export const updatePremisesRequest = (data) => ({
+  type: UPDATE_PREMISES_REQUEST,
+  payload: data,
 });
 
 //Read Premises by Id

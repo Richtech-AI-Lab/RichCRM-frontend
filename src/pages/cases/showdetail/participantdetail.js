@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 
-const ParticipantDetail = ({ client, caseType, address }) => {
+const ParticipantDetail = ({ client, title, address }) => {
 
 
   return (
     <div className="bg-white p-4 rounded-2xl mb-5">
       {<div className="flex justify-between items-center mb-5">
-        <span className="text-base text-secondary-800 font-medium">{caseType ? "Seller" : "Purchaser"}</span>
+        <span className="text-base text-secondary-800 font-medium">{title}</span>
         {/* <div className="flex items-center gap-2">
           <BsThreeDotsVertical className="text-lg opacity-40" />
         </div> */}
