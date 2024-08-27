@@ -110,7 +110,7 @@ const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optio
   const disabled = isOptionDisable(action, options);
 // console.log(displayOption,"displayOption");
   return (
-    <div class="border-t-2 border-black-10">
+    <div className="border-t-2 border-black-10">
       <li className="flex justify-between items-center mb-5 pb-5 task-checklist mt-2">
         <div className="flex items-center gap-2 custom-radio">
           <Checkbox  id={checkboxId} defaultChecked={status} className="mr-6" />

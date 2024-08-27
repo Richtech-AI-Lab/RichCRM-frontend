@@ -4,25 +4,57 @@ import { Formik } from "formik";
 import { inspectionItems, lowerSectionItems, premisesComposition, termitesInspectionItems } from "../../../utils/formItem";
 import FormButton from "../../../components/formButton";
 import * as Yup from "yup";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import PremisesDetail from "../showdetail/premisesdetail";
+import PremisesForm from "../editDetail/permisesParticipantForm";
+import { createAddressRequest } from "../../../redux/actions/utilsActions";
 
-const PremisesCaseDetails = ({isEdit,setIsEdit}) => {
+const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
+  const dispatch= useDispatch()
   const { data: addressData } = useSelector((state) => state?.utils?.address);
   const addressDetails = addressData?.length > 0 ? addressData : null;
 
   const { data: premisesData } = useSelector((state) => state.premises.premises);
   const premisesDetails = premisesData?.length > 0 ? premisesData : null;
 
-  const values={
+  const values = {
     ...addressData[0],
     ...premisesDetails[0]
   }
   const toggleEdit = () => {
     setIsEdit(prevState => !prevState);
   };
-  let handleSubmit = (x) => {
-    console.log(x)
+  let handleSubmit = (values, { setSubmitting }) => {
+    const addressPayload = {
+      addressLine1: values.addressLine1,
+      addressLine2: values.addressLine2,
+      city: values.city,
+      state: values.state,
+      zipCode: values.zipCode
+    };
+    const premisesPayload = {
+      // addressId: addressDetails[0]?.addressId,
+      premisesId: premisesDetails[0]?.premisesId,
+      propertyType: values.propertyType ,
+      block: values?.block,
+      lot: values?.lot,
+      section: values?.section,
+      vacantAtClosing: values?.vacantAtClosing,
+      subjectToTenancy: values?.subjectToTenancy,
+      hoa: values?.hoa,
+      parkingSpaces: values?.parkingSpaces,
+      maintenanceFee: values?.maintenanceFee,
+      maintenanceFeePer: values?.maintenanceFeePer,
+      assessments: values?.assessments,
+      assessmentsPaidById: values?.assessmentsPaidById,
+      managingCompany: values?.managingCompany,
+      isTwoFamily: values?.isTwoFamily,
+    };
+    let data = {
+      util: addressPayload,
+      premises: premisesPayload
+    }
+    dispatch(createAddressRequest(data))
     toggleEdit()
   }
   const initialValues = {
@@ -63,6 +95,56 @@ const PremisesCaseDetails = ({isEdit,setIsEdit}) => {
     premisesRecievedDate: "",
     premisesTermites: "",
   };
+  const initialPremisesValues = premisesDetails && premisesDetails.length > 0 ?
+    {
+      // premisesId: premisesDetails[0],
+      // name: premisesDetails[0],
+      // addressId:premisesDetails[0],
+      propertyType: premisesDetails[0].propertyType || '',
+      addressLine1: addressDetails[0]?.addressLine1 || '',
+      addressLine2: addressDetails[0]?.addressLine2 || '',
+      city: addressDetails[0]?.city || '',
+      state: addressDetails[0]?.state || '',
+      zipCode: addressDetails[0]?.zipCode || '',
+      block: premisesDetails[0]?.block,
+      lot: premisesDetails[0]?.lot,
+      section: premisesDetails[0]?.section,
+      vacantAtClosing: premisesDetails[0]?.vacantAtClosing,
+      subjectToTenancy: premisesDetails[0]?.subjectToTenancy,
+      hoa: premisesDetails[0]?.hoa,
+      parkingSpaces: premisesDetails[0]?.parkingSpaces,
+      maintenanceFee: premisesDetails[0]?.maintenanceFee,
+      maintenanceFeePer: premisesDetails[0]?.maintenanceFeePer,
+      assessments: premisesDetails[0]?.assessments,
+      assessmentsPaidById: premisesDetails[0]?.assessmentsPaidById,
+      managingCompany: premisesDetails[0]?.managingCompany,
+      isTwoFamily: premisesDetails[0]?.isTwoFamily,
+    }
+    :
+    {
+      propertyType: '',
+      addressLine1: '',
+      addressLine2: '',
+      city: '',
+      state: '',
+      zipCode: '',
+      name: '',
+      addressId: '',
+      block: '',
+      lot: '',
+      section: '',
+      vacantAtClosing: '',
+      subjectToTenancy: '',
+      hoa: '',
+      parkingSpaces: '',
+      maintenanceFee: '',
+      maintenanceFeePer: '',
+      assessments: '',
+      assessmentsPaidById: '',
+      managingCompany: '',
+      isTwoFamily: '',
+    }
+
 
   // const validationSchema = Yup.object().shape({
   //   scheduleDate: Yup.date().required('Schedule date is required'),
@@ -104,41 +186,41 @@ const PremisesCaseDetails = ({isEdit,setIsEdit}) => {
   // });
 
   return (
-    <Formik initialValues={initialValues} onSubmit={handleSubmit} >
-      {({
-        handleChange,
-        handleSubmit
-      }) => (
-        <form onSubmit={handleSubmit} className="pemises-form">
-          <div className="grid grid-cols-12 gap-6">
-            { isEdit ?<> 
-              <div className="col-span-6">
-               <CaseCardDetails items={lowerSectionItems} value={values} title="Premises Info" handle={handleChange} />
-                
-            </div>
-            <div className="col-span-6">
-              <CaseCardDetails items={premisesComposition} title="Premises Composition" handle={handleChange} />
-              <CaseCardDetails items={inspectionItems} title="Engineer Inspection" handle={handleChange} />
-              <CaseCardDetails items={termitesInspectionItems} title="Termites Inspection" handle={handleChange} />
-            </div>
-            </>
-            :
-            <>
-            <div className="col-span-6">
-              <PremisesDetail address={addressDetails} premises={premisesDetails} />
-            </div>
-            <div className="col-span-6">
-              {/* <CaseCardDetails items={premisesComposition} title="Premises Composition" handle={handleChange} />
-              <CaseCardDetails items={inspectionItems} title="Engineer Inspection" handle={handleChange} />
-              <CaseCardDetails items={termitesInspectionItems} title="Termites Inspection" handle={handleChange} /> */}
-            </div>
-            </>}
-          </div >
+    <>
+      {isEdit ?
+        (
+          <Formik initialValues={initialPremisesValues} onSubmit={handleSubmit} >
+            {({
+              handleChange,
+              handleSubmit,
+              values,
+              errors,
+              touched,
+              setFieldValue
+            }) => (
+              <form onSubmit={handleSubmit} className="premises-form">
+                <div className="grid grid-cols-12 gap-6">
 
-          <FormButton onSave={handleSubmit} />
-        </form>
-      )}
-    </Formik>
+                  <div className="col-span-6">
+                    <PremisesForm title="Premises Info" handleChange={handleChange} setFieldValue={setFieldValue} values={values} form={{ errors, touched }} initialValues={initialPremisesValues} />
+                  </div>
+                  
+                  {/* <div className="col-span-6">
+                    <CaseCardDetails items={premisesComposition} title="Premises Composition" handle={handleChange} />
+                    <CaseCardDetails items={inspectionItems} title="Engineer Inspection" handle={handleChange} />
+                    <CaseCardDetails items={termitesInspectionItems} title="Termites Inspection" handle={handleChange} />
+                  </div> */}
+                </div >
+
+                <FormButton onSave={handleSubmit} />
+              </form>
+            )}
+          </Formik>) :
+        (<div className="grid grid-cols-12 gap-6">
+          <div className="col-span-6">
+            <PremisesDetail address={addressDetails} premises={premisesDetails} />
+          </div></div>)}
+    </>
   );
 };
 

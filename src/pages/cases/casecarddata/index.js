@@ -54,14 +54,14 @@ const handleCaseDetails=()=>{
   }, [casedetails.premisesId]);
 
   useEffect(()=>{
-    if(clientDetails && clientDetails[0]?.addressId){
+    if(premisesDetails && premisesDetails?.addressId){
       let data={
-        addressId:clientDetails[0]?.addressId
+        addressId:premisesDetails?.addressId
       }
       dispatch(fetchAddressByIdRequest(data))
     }
 
-  },[clientDetails])
+  },[premisesDetails])
 
   useEffect(() => {
     let id= casedetails?.buyerId || casedetails?.sellerId

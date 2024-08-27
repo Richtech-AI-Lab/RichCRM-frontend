@@ -9,6 +9,7 @@ export const API_ENDPOINTS = {
   UPDATE_CASE: "/case/update",
   DELETE_CASE: "/case/delete",
   REGISTER_PREMISES: "/premises/register",
+  UPDATE_PREMISES:"/premises/update",
   FETCH_PREMISES_BY_ADDRESS_ID: "/premises/query/address",
   REGISTER_CLIENT: "/client/register",
   REGISTER_ADDRESS: "/utils/address/register",
@@ -21,7 +22,8 @@ export const API_ENDPOINTS = {
   FETCH_PREMISES_BY_ID:"/premises",
   FETCH_PREMISES_BY_QUERY_ID:"/premises/query/id",
   FETCH_CLIENT_BY_QUERY:"client/query",
-  FETCH_ADDRESS_BY_QUERY_ID:"/utils/address/query/id"
+  FETCH_ADDRESS_BY_QUERY_ID:"/utils/address/query/id",
+  UPDATE_CLIENT:"/client/update"
 };
 
 export const ROUTES = {

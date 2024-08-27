@@ -64,15 +64,15 @@ const PremisesDetail = ({ premises,  address}) => {
           </li>}
           {premises[0]?.vacantAtClosing && <li>
             <span className="left-txt flex items-center" >Vacant at closing</span>
-            <span className="left-txt flex items-center" >{`${premises[0].vacantAtClosing? "yes" : "no"}`}</span>
+            <span className="left-txt flex items-center" >{`${premises[0].vacantAtClosing =="1"? "Yes" : "No"}`}</span>
           </li>}
           {<li>
             <span className="left-txt flex items-center" >Subject to Tenancy</span>
-            <span className="left-txt flex items-center" >{`${premises[0].subjectToTenancy? "yes" : "no"}`}</span>
+            <span className="left-txt flex items-center" >{`${premises[0].subjectToTenancy =="1"? "Yes" : "No"}`}</span>
           </li>}
           {premises[0]?.hoa && <li>
             <span className="left-txt flex items-center" >HOA</span>
-            <span className="left-txt flex items-center" >{`${premises[0].hoa ? "yes" : "no"}`}</span>
+            <span className="left-txt flex items-center" >{`${premises[0].hoa =="1"? "Yes" : "No"}`}</span>
           </li>}
           {premises[0]?.parkingSpaces && <li>
             <span className="left-txt flex items-center" >Parking Space</span>
