@@ -4,7 +4,7 @@ import ContactsActionbar from "../../components/actionbar/contactsActionBar";
 import ContactListing from "./contactListing";
 
 const Contacts = () => {
-  const [activeTab, setActiveTab] = useState(contactTab.PARTNERS);
+  const [activeTab, setActiveTab] = useState(0);
 
   return (
     <div className="mt-14">

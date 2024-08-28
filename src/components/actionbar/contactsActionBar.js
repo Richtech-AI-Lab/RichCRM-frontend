@@ -10,7 +10,7 @@ import { useLocation } from "react-router-dom";
 import ContactTabs from "./contactTabs";
 import { AiOutlineLink } from "react-icons/ai";
 
-const ContactsActionbar = ({ active = "", setActive = "", isAddFromContactModal }) => {
+const ContactsActionbar = ({ active = "", setActive = "", isAddFromContactModal , isEdit, toggleEdit}) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -62,11 +62,12 @@ const ContactsActionbar = ({ active = "", setActive = "", isAddFromContactModal 
               icon={<AiOutlineLink className="text-base mr-2 inline-block"/>}
               className="shadow-shadow-light-2 text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium"
             />
-            <XButton
+           {!isEdit && <XButton
+              onClick={()=>toggleEdit()}
               text="Edit"
               icon={<FiEdit3 className="text-base mr-2 inline-block" />}
               className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium ml-4"
-            />
+            />}
           </div>
         </div>}
     </>

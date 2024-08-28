@@ -12,6 +12,7 @@ import { registerPremisesRequest, updatePremisesRequest } from "../actions/premi
 import { toast } from "react-toastify";
 import { handleError } from "../../utils/eventHandler";
 import { updateClientByIdRequest } from "../actions/clientActions";
+import { updateContactRequest } from "../actions/contactActions";
 
 function* registerAddress(action) {
   try {
@@ -79,6 +80,20 @@ function* createAddress(action) {
         };
   
         yield put(updatePremisesRequest(updatedPayload));
+        toast.success("address updated!");
+      }else if (payload.contact) {
+        updatedPayload = {
+          contact: {
+            ...payload.contact,
+            mailingAddress: response.data?.data[0]?.addressId,
+          },
+          util: {
+            ...payload.util,
+            addressId: response.data?.data[0]?.addressId,
+          },
+        };
+  
+        yield put(updateContactRequest(updatedPayload.contact));
         toast.success("address updated!");
       }
     } 
