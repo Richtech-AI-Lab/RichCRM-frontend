@@ -4,7 +4,7 @@ import { GET_CONTACT_BY_TYPE_REQUEST, GET_CONTACT_REQUEST, UPDATE_CONTACT_REQUES
 import { getRequest, postRequest } from "../../axios/interceptor";
 import { toast } from "react-toastify";
 import { handleError } from "../../utils/eventHandler";
-import { getContactFailure, getContactSuccess, updateContactFailure, updateContactSuccess } from "../actions/contactActions";
+import { getContactFailure, getContactSuccess, setSelectedContact, updateContactFailure, updateContactSuccess } from "../actions/contactActions";
 
 function* getContactByType(action) {
   try {
@@ -25,8 +25,12 @@ function* updateContact(action) {
     const response = yield call(() =>
       postRequest(API_ENDPOINTS.UPDATE_CONTACT, payload)
     );
-    // console.log(payload?.client,"____")
-    yield put(updateContactSuccess(response.data));
+    const updatedResponse = {
+      ...response?.data?.data[0],
+      contactId: payload?.contactId,
+      contactType: payload?.contactType,
+    };
+    yield put(setSelectedContact(updatedResponse));
     if(response.status ==200){
       toast.success("contact updated!");
     }

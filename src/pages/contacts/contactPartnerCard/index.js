@@ -19,7 +19,9 @@ import ContactDetail from "../contactDetail";
 const ContactPartnerCard = ({ isEdit, toggleEdit }) => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const contactdetails = location?.state?.contact;
+  // const contactdetails = location?.state?.contact ;
+  const contactdetails  = useSelector((state) => state?.contact?.selectedItem);
+
   const addressData = useSelector((state) => state?.utils?.address);
   const addressDetails = addressData?.data?.length > 0 ? addressData?.data[0] : null;
 

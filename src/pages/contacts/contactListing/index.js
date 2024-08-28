@@ -5,7 +5,7 @@ import { ROUTES } from "../../../constants/api";
 import { useNavigate } from "react-router-dom";
 import { IMAGES } from "../../../constants/imagePath";
 import { addFromContactTab } from "../../../constants/constants";
-import { getContactRequest } from "../../../redux/actions/contactActions";
+import { getContactRequest, setSelectedContact } from "../../../redux/actions/contactActions";
 import { useDispatch, useSelector } from "react-redux";
 import XSpinnerLoader from "../../../components/spinnerLoader/XSpinnerLoader";
 
@@ -25,8 +25,9 @@ const ContactListing = ({ active }) => {
   };
 
   const handleNavigation = (item) => {
+    dispatch(setSelectedContact(item));
     localStorage.setItem("contact_id",item)
-    navigate(ROUTES.CONTACT_PARTNER, { state: { contact: item } } );
+    navigate(ROUTES.CONTACT_PARTNER);
   }
   const header = headers[active] ?? ["Name", "Position", "Company", "Email", "Cell Phone"];
 
