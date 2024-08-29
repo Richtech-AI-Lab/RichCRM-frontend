@@ -78,37 +78,68 @@ const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optio
     }
   }
 
-  const getColorByOptions = (option) => {
-    switch (option) {
-      case "Unfinished":
-      case "Unuploaded":
-      case "Not Started":
-        return "yellow";
-      case "Finished":
-      case "Uploaded":
-      case "Completed":
-        return "green";
-      case "Waiting":
-        return "gray";
-      case "No Response":
-        return "red";
-      default:
-        return "";
-    }
-  };
   const isOptionDisable = (acc, opt) => {
     if (acc == "Action" && (opt == "Finished" || opt == "Unfinished")) {
       return true
     }
     return false
   };
+  function getTaskLabelAndColor(taskType, status) {
+    console.log(taskType, status,"taskType, status")
+    let label = '';
+    let displayColor = '';
 
+    switch (taskType) {
+        case 'Action':
+            if (status === 0) {
+                label = 'Unfinished';
+                displayColor = 'yellow';
+            } else if (status === 2) {
+                label = 'Finished';
+                displayColor = 'green';
+            }
+            break;
+        
+        case 'Upload':
+            if (status === 0) {
+                label = 'Unuploaded';
+                displayColor = 'yellow';
+            } else if (status === 2) {
+                label = 'Uploaded';
+                displayColor = 'green';
+            }
+            break;
+        
+        case 'Contact':
+            if (status === 0) {
+                label = 'Unfinished';
+                displayColor = 'yellow';
+            } else if (status === 1) {
+                label = 'Waiting';
+                displayColor = 'grey';
+            } else if (status === 2) {
+                label = 'Finished';
+                displayColor = 'green';
+            } else if (status === 3) {
+                label = 'No response';
+                displayColor = 'red';
+            }
+            break;
 
-  const displayColor = getColorByOptions(options)
+        default:
+            label = 'Unknown';
+            displayColor = 'black';
+    }
+
+    return { label, badgeClass: displayColor };
+}
+
   const displayIcon = getIconByAction(action)
   const displayOption = getOptionsByAction();
   const disabled = isOptionDisable(action, options);
-// console.log(displayOption,"displayOption");
+  const taskStatusColor = getTaskLabelAndColor(ACTIONTYPELABEL[action], status);
+  
+// console.log(taskStatusColor?.badgeClass,"displayOption");
   return (
     <div className="border-t-2 border-black-10">
       <li className="flex justify-between items-center mb-5 pb-5 task-checklist mt-2">
@@ -121,8 +152,8 @@ const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optio
         </div>
         <div>
           <p className="text-end mb-2">
-            <span className={`bg-badge-${displayColor} text-secondary-100 text-sm font-semibold px-4 py-1 rounded-full inline-block`}>
-              {options}
+            <span className={`bg-badge-${taskStatusColor?.badgeClass} text-secondary-100 text-sm font-semibold px-4 py-1 rounded-full inline-block`}>
+              {taskStatusColor?.label}
             </span>
           </p>
           {/* <SelectInput
