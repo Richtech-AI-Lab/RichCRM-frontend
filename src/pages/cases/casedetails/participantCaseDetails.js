@@ -159,7 +159,7 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit }) => {
                   <CaseCardDetails items={titleMortgageItems} title="Title & Mortgage" handle={handleChange} /> */}
                 </div>
               </div >
-              <FormButton onSave={handleSubmit} />
+              <FormButton onSave={handleSubmit} onCancel={toggleEdit} />
             </form>
           )}
         </Formik>)

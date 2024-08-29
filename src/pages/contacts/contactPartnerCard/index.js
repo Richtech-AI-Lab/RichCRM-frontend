@@ -154,7 +154,7 @@ const ContactPartnerCard = ({ isEdit, toggleEdit }) => {
                     </div>
 
                     <ContactEditForm handleChange={handleChange} setFieldValue={setFieldValue} values={values} form={{ errors, touched }} initialValues={initialValues} />
-                    <FormButton onSave={handleSubmit} />
+                    <FormButton onSave={handleSubmit} onCancel={toggleEdit} />
                   </form>
                 </div>
                 <div className="col-span-3">
