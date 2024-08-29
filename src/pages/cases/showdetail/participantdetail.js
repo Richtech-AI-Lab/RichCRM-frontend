@@ -13,46 +13,50 @@ const ParticipantDetail = ({ client, title, address }) => {
       </div>}
       {client?.length > 0 ?
         <ul className="card-details">
-          {client[0]?.firstName && <li>
+          <li>
             <span className="left-txt flex items-center" > Name</span>
-            <span className="left-txt flex items-center" >{`${client[0].firstName} ${client[0].lastName}`}</span>
-          </li>}
-          {client[0]?.ssn && <li>
+            <span className="left-txt flex items-center" >{`${client[0]?.firstName} ${client[0]?.lastName}`}</span>
+          </li>
+          <li>
             <span className="left-txt flex items-center" > SSN</span>
             <span className="left-txt flex items-center" > {client[0]?.ssn} </span>
-          </li>}
-          {client[0]?.email && <li>
+          </li>
+          <li>
             <span className="left-txt flex items-center" > Email</span>
             <span className="left-txt flex items-center" > {client[0]?.email} </span>
-          </li>}
-          {client[0]?.cellNumber && <li>
+          </li>
+          <li>
             <span className="left-txt flex items-center" > Cell Phone</span>
             <span className="left-txt flex items-center" >{client[0]?.cellNumber}</span>
-          </li>}
-          {client[0]?.workNumber && <li>
+          </li>
+          <li>
             <span className="left-txt flex items-center" > Work Phone</span>
             <span className="left-txt flex items-center" > {client[0]?.workNumber} </span>
-          </li>}
-          {client[0]?.wechatAccount && <li>
+          </li>
+          <li>
             <span className="left-txt flex items-center" >WeChat</span>
             <span className="left-txt flex items-center" > {client[0]?.wechatAccount} </span>
-          </li>}
-          {client[0]?.whatsApp && <li>
+          </li>
+          <li>
             <span className="left-txt flex items-center" >WhatsApp</span>
             <span className="left-txt flex items-center" > {client[0]?.whatsApp}</span>
-          </li>}
+          </li>
+          <li>
+            <span className="left-txt flex items-center">Mailing address</span>
+            <span className="left-txt flex items-center">{address[0]?.addressLine1} {address[0]?.addressLine2} {address[0]?.city} {address[0]?.state} {address[0]?.zipCode} </span>
+          </li>
           {/* {client[0]?.line && <li>
             <span className="left-txt flex items-center" >Line</span>
             <span className="left-txt flex items-center" > {client[0]?.line} </span>
           </li>} */}
-          {address[0] && Object.keys(address[0]).some(key =>
+          {/* {address[0] && Object.keys(address[0]).some(key =>
             ['addressLine1', 'addressLine2', 'city', 'state', 'zipCode'].includes(key) && address[0][key]
           ) && (
               <li>
                 <span className="left-txt flex items-center">Mailing address</span>
                 <span className="left-txt flex items-center">{address[0]?.addressLine1} {address[0]?.addressLine2} {address[0]?.city} {address[0]?.state} {address[0]?.zipCode} </span>
               </li>
-            )}
+            )} */}
         </ul> : ""}
     </div>
 

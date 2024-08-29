@@ -3,11 +3,16 @@ import React, { useState } from "react";
 import ContactsActionbar from "../../../components/actionbar/contactsActionBar";
 import ContactPartnerCard from "../contactPartnerCard";
 
-const ContactPartner = ({ active }) => {
+const ContactPartner = () => {
+  const [isEdit, setIsEdit] = useState(false);
+  const toggleEdit = () => {
+    console.log(isEdit)
+    setIsEdit(prevState => !prevState);
+  };
   return (
     <div className="mt-14">
-    <ContactsActionbar />
-    <ContactPartnerCard />
+    <ContactsActionbar isEdit={isEdit} toggleEdit={()=>{toggleEdit()}} />
+    <ContactPartnerCard isEdit={isEdit} toggleEdit={()=>{toggleEdit()}}/>
   </div>
   );
 };

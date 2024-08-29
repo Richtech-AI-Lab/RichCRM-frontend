@@ -420,13 +420,14 @@ export const contactTab ={
 }
 
 export const addFromContactTab = {
- BROKERS: 1,
- ATTORNEY: 2,
- TITLE: 3,
- LENDER: 4,
- OTHER: 5,
- CLIENTS: 6,
+ BROKERS: 0,
+ ATTORNEY: 1,
+ TITLE: 2,
+ LENDER: 3,
+ OTHER: 4,
+ CLIENTS: 5,
 };
+
 export const userRole = {
   ADMIN: 0,
   ATTORNEY: 1,

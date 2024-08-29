@@ -4,7 +4,7 @@ import { ERROR_MESSAGES } from '../constants/constants';
 
 export const handleError = (error) => {
   if (error) {
-    const status = error.response.status;
+    const status = error?.response?.status;
     switch (status) {
       case 400:
         const extractedMessage = extractErrorMessage(error.response.data);
