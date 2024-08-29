@@ -85,7 +85,7 @@ const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optio
     return false
   };
   function getTaskLabelAndColor(taskType, status) {
-    console.log(taskType, status,"taskType, status")
+    // console.log(taskType, status,"taskType, status")
     let label = '';
     let displayColor = '';
 

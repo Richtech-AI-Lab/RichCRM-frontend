@@ -21,7 +21,7 @@ import { getTaskRequest } from "../../redux/actions/taskActions";
 import { STAGESNAMES } from "../../constants/constants";
 import { isEmpty } from "lodash";
 import XSpinnerLoader from "../spinnerLoader/XSpinnerLoader";
-import { caseCreateSuccess, getClientByIdRequest, updateCaseRequest } from "../../redux/actions/caseAction";
+import { caseCreateSuccess, closeCaseRequest, getClientByIdRequest, updateCaseRequest } from "../../redux/actions/caseAction";
 
 const StagesChecklist = () => {
   const dispatch = useDispatch();
@@ -355,6 +355,15 @@ const StagesChecklist = () => {
       } catch (error) {
         console.error("Error creating stage:", error.message);
       }
+    } else if (currentStep === progressItems.length - 1) {
+      try {
+        const closeCasePayload = {
+          caseId: localStorage.getItem('c_id'),
+        };
+        dispatch(closeCaseRequest(closeCasePayload))
+      } catch (error) {
+        console.error("Error closer stage:", error.message);
+      }
     }
   };
 
@@ -368,45 +377,45 @@ const StagesChecklist = () => {
     if (!casesData || !casesData.cases) {
       return { showAlert: false, daysUntilDue: null };
     }
-  
+
     const mortgageContingencyDateStr = casesData.cases.mortgageContingencyDate;
     if (!mortgageContingencyDateStr || currentStep !== 3) {
       return { showAlert: false, daysUntilDue: null };
     }
-  
+
     const mortgageContingencyDate = new Date(mortgageContingencyDateStr);
     const currentDate = new Date();
-  
+
     // Calculate days difference between the mortgage contingency date and current date
     const timeDiff = mortgageContingencyDate - currentDate;
     const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-  
+
     // Determine if the alert should be shown
     const showAlert = daysDiff >= 0 && daysDiff <= 8;
-  
+
     return { showAlert, daysUntilDue: daysDiff };
   }
-  
+
   function getClosingDueAlertInfo(casesData, currentStep) {
     if (!casesData || !casesData.cases) {
       return { showAlert: false, daysUntilDue: null };
     }
-  
+
     const closingDateStr = casesData.cases.closingDate;
     if (!closingDateStr || currentStep !== 3) {
       return { showAlert: false, daysUntilDue: null };
     }
-  
+
     const closingDate = new Date(closingDateStr);
     const currentDate = new Date();
-  
+
     // Calculate days difference between the closing date and current date
     const timeDiff = closingDate - currentDate;
     const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-  
+
     // Determine if the alert should be shown
     const showAlert = daysDiff >= 0 && daysDiff <= 8;
-  
+
     return { showAlert, daysUntilDue: daysDiff };
   }
   const mortgageAlertInfo = getMortgageDueAlertInfo(casesData, currentStep);

@@ -1,6 +1,6 @@
 import { takeLatest, put, call } from "redux-saga/effects";
 import { caseCreateSuccess, caseCreateFailure, updateCaseSuccess, updateCaseFailure, deleteCaseSuccess, deleteCaseFailure, fetchAllCasesSuccess, fetchAllCasesFailure } from "../actions/caseAction";
-import { POST_CASE_REQUEST, UPDATE_CASE_REQUEST, DELETE_CASE_REQUEST, FETCH_ALL_CASES_REQUEST, READ_CASE_REQUEST } from "../type";
+import { POST_CASE_REQUEST, UPDATE_CASE_REQUEST, DELETE_CASE_REQUEST, FETCH_ALL_CASES_REQUEST, READ_CASE_REQUEST, READ_CASE_BY_CLIENT, CLOSE_CASE } from "../type";
 import { postRequest, getRequest } from "../../axios/interceptor";
 import { API_ENDPOINTS, ROUTES } from "../../constants/api";
 import { toast } from "react-toastify";
@@ -24,7 +24,7 @@ function* createCase(action) {
         const response = yield call(() => postRequest(API_ENDPOINTS.CREATE_CASE, updatedPayload.casePayload));
         yield put(caseCreateSuccess(response.data));
         if (response.status == 200) {
-            const casedetails=response.data?.data[0];
+            const casedetails = response.data?.data[0];
             const caseId = response.data?.data[0].caseId;
             // let sagaPayload = {
             //     stageType: 0,
@@ -34,7 +34,7 @@ function* createCase(action) {
             localStorage.setItem('c_id', caseId);
             console.log(updatedPayload, "ccc")
             toast.success("Cases successfully registered!");
-            navigate(ROUTES.CASES_DATA, { state: { casedetails }});
+            navigate(ROUTES.CASES_DATA, { state: { casedetails } });
         }
     } catch (error) {
         handleError(error)
@@ -135,10 +135,38 @@ function* getCase(action) {
     }
 }
 
+function* getCaseByClient(action) {
+    try {
+        const { payload } = action;
+        const response = yield call(() => postRequest(API_ENDPOINTS.GET_CASE_BY_CLIENT, payload));
+        yield put(caseCreateSuccess(response.data));
+        if (response.status == 200) {
+            toast.success("Case Closed!");
+        }
+    } catch (error) {
+        handleError(error)
+        yield put(updateCaseFailure(error.response.data || error));
+    }
+}
+
+function* closeCaseByCaseId(action) {
+    try {
+        const { payload } = action;
+        const response = yield call(() => postRequest(API_ENDPOINTS.CLOSE_CASE, payload));
+        yield put(caseCreateSuccess(response.data));
+    } catch (error) {
+        handleError(error)
+        yield put(updateCaseFailure(error.response.data || error));
+    }
+}
+
+
 export function* caseSaga() {
     yield takeLatest(POST_CASE_REQUEST, createCase);
     yield takeLatest(FETCH_ALL_CASES_REQUEST, fetchAllCases);
     yield takeLatest(UPDATE_CASE_REQUEST, updateCase);
     yield takeLatest(DELETE_CASE_REQUEST, deleteCase);
     yield takeLatest(READ_CASE_REQUEST, getCase);
+    yield takeLatest(READ_CASE_BY_CLIENT, getCaseByClient);
+    yield takeLatest(CLOSE_CASE, closeCaseByCaseId);
 }

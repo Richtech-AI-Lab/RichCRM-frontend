@@ -6,6 +6,8 @@ export const API_ENDPOINTS = {
   DELETE_USER: "/auth/delete",
   CREATE_CASE: "/case/create",
   READ_CASE: "/case",
+  CLOSE_CASE: "/case/close",
+  GET_CASE_BY_CLIENT: "/case/query/client",
   UPDATE_CASE: "/case/update",
   DELETE_CASE: "/case/delete",
   REGISTER_PREMISES: "/premises/register",

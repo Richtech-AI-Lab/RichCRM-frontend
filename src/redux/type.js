@@ -32,6 +32,11 @@ export const FETCH_ALL_CASES_FAILURE = "FETCH_ALL_CASES_FAILURE";
 // Read cases
 export const READ_CASE_REQUEST = "READ_CASE_REQUEST";
 
+// read case by client id
+export const READ_CASE_BY_CLIENT = "READ_CASE_BY_CLIENT";
+// close case
+export const CLOSE_CASE = "CLOSE_CASE";
+
 //CaseTypes
 
 export const POST_CASE_REQUEST = "POST_CASE_REQUEST";
