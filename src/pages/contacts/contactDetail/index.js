@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { IMAGES } from "../../../constants/imagePath";
+import { caseTypeOptions } from "../../../utils/formItem";
+import { SelectInput } from "../../../components";
+import { Field } from "formik";
 
 const ContactDetail = ({ contact, address }) => {
     return (
@@ -16,7 +19,7 @@ const ContactDetail = ({ contact, address }) => {
                     <div className="ml-6">
                         <div className="mb-16">
                             <p className="text-[22px] font-medium text-secondary-800">{contact?.firstName} {contact?.lastName}</p>
-                            {/* <p className="font-medium text-secondary-800 text-sm mb-10">Brokers</p> */}
+                            <p className="font-medium text-secondary-800 text-sm mb-10">Brokers</p>
 
                         </div>
                         <p className="text-secondary-300 text-sm">{contact?.contactId}</p>

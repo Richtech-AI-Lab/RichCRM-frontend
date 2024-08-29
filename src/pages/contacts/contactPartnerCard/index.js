@@ -1,5 +1,5 @@
 import { Table, Textarea, TextInput } from "flowbite-react";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import dummyData from "../../../utils/dummyData.json";
 import { ROUTES } from "../../../constants/api";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -37,7 +37,7 @@ const ContactPartnerCard = ({ isEdit, toggleEdit }) => {
   }, [])
 
 
-  const handleSubmit = (values) => {
+  const handleSubmit =  useCallback((values) => {
 
     const firstApiPayload = {
       contactId: contactdetails?.contactId,
@@ -70,7 +70,8 @@ const ContactPartnerCard = ({ isEdit, toggleEdit }) => {
     }
     dispatch(createAddressRequest(data))
     toggleEdit()
-  }
+  }, []);
+
   const caseTypeOptions = [
     { value: CASETYPE.PURCHASING, label: "Purchaser" },
     { value: CASETYPE.SELLING, label: "Broker" },
@@ -141,7 +142,7 @@ const ContactPartnerCard = ({ isEdit, toggleEdit }) => {
                             inputClassName="bg-input-surface py-[6px] px-4 rounded-full border-0 text-sm leading-5 font-semibold text-label"
                             labelClassName="ext-label mr-3"
                             name="type"
-                            options={caseTypeOptions.map((option) => ({
+                            options={caseTypeOptions?.map((option) => ({
                               value: option.id,
                               label: option.label,
                             }))}
