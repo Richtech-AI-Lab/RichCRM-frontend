@@ -152,12 +152,14 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit }) => {
                   <PurchaserParticipantForm title={cases[0]?.caseType ? "Seller" : "Purchaser"} handleChange={handleChange} setFieldValue={setFieldValue} values={values} form={{ errors, touched }} initialValues={initialPurchaserValues} />
                 </div>
                 <div className="col-span-6">
+                <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} errors={errors.attorneys || []}
+                    touched={touched.attorneys || []} setAttorneys={(attorneys) => handleAttorneysChange(attorneys, handleChange)} />
                   {/* <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} errors={errors.attorneys || []}
                     touched={touched.attorneys || []} setAttorneys={(attorneys) => handleAttorneysChange(attorneys, handleChange)} />
                   <CaseCardDetails items={titleMortgageItems} title="Title & Mortgage" handle={handleChange} /> */}
                 </div>
               </div >
-              <FormButton onSave={handleSubmit} />
+              <FormButton onSave={handleSubmit} onCancel={toggleEdit} />
             </form>
           )}
         </Formik>)

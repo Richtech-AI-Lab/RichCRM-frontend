@@ -1,11 +1,13 @@
 import React from 'react';
 import XButton from '../button/XButton';
 
-const FormButton = ({onSave }) => {
+const FormButton = ({onSave, onCancel }) => {
   return (
     <div className="flex justify-end mt-6">
       <XButton
         text="Cancel"
+        type="button" 
+        onClick={onCancel} 
         className="bg-badge-gray font-medium text-base text-primary py-[10px] px-6 rounded-[100px] shadow-shadow-light"
       />
       <XButton

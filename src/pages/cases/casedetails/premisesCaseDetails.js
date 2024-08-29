@@ -212,7 +212,7 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
                   </div> */}
                 </div >
 
-                <FormButton onSave={handleSubmit} />
+                <FormButton onSave={handleSubmit} onCancel={toggleEdit}/>
               </form>
             )}
           </Formik>) :

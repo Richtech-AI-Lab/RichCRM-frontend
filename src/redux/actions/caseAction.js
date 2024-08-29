@@ -14,7 +14,9 @@ import {
     FETCH_ALL_CASES_REQUEST,
     FETCH_ALL_CASES_SUCCESS,
     FETCH_ALL_CASES_FAILURE,
-    READ_CASE_REQUEST
+    READ_CASE_REQUEST,
+    READ_CASE_BY_CLIENT,
+    CLOSE_CASE
 } from "../type";
 
 
@@ -103,6 +105,18 @@ export const fetchAllCasesFailure = (error) => ({
 //read cases
 export const getClientByIdRequest = (payload) => ({
     type: READ_CASE_REQUEST,
+    payload,
+});
+
+//read cases
+export const getCaseByClientRequest = (payload) => ({
+    type: READ_CASE_BY_CLIENT,
+    payload,
+});
+
+//close case
+export const closeCaseRequest = (payload) => ({
+    type: CLOSE_CASE,
     payload,
 });
 
