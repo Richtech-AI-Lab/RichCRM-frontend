@@ -49,7 +49,7 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, errors, touched }) 
                 render={({ push, remove }) => (
                     <>
                         <ul className="card-details">
-                            {attorneys.map((item, index) => (
+                            {attorneys?.map((item, index) => (
                                 <li key={item.id} className="flex justify-between">
                                     <span className="left-txt flex items-center">
                                         <span className="icon mr-2 cursor-pointer" onClick={() => remove(index)}>
