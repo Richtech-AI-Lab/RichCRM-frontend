@@ -11,7 +11,7 @@ const contactReducer = (state = initialState, action) => {
     case GET_CONTACT_BY_TYPE_REQUEST:
       return { ...state, loading: true, error: null };
     case GET_CONTACT_BY_TYPE_SUCCESS:
-      return { ...state, loading: false, contact: action.payload, error: null };
+      return { ...state, loading: false, contact: action.payload.data, error: null };
     case GET_CONTACT_BY_TYPE_FAILURE:
       return { ...state, loading: false, error: action.payload };
     case UPDATE_CONTACT_REQUEST:
@@ -23,7 +23,10 @@ const contactReducer = (state = initialState, action) => {
     case SET_SELECTED_CONTACT:
       return {
         ...state,
-        selectedItem: action.payload, 
+        contact:{
+          ...state.contact,
+          selectedItem: action.payload, 
+        }
       };
     default:
       return state;

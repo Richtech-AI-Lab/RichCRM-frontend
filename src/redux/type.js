@@ -34,6 +34,7 @@ export const READ_CASE_REQUEST = "READ_CASE_REQUEST";
 
 // read case by client id
 export const READ_CASE_BY_CLIENT = "READ_CASE_BY_CLIENT";
+export const READ_CASE_BY_CONTACT = "READ_CASE_BY_CONTACT";
 // close case
 export const CLOSE_CASE = "CLOSE_CASE";
 

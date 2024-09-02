@@ -201,9 +201,9 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
               <form onSubmit={handleSubmit} className="premises-form">
                 <div className="grid grid-cols-12 gap-6">
 
-                  <div className="col-span-6">
+                  
                     <PremisesForm title="Premises Info" handleChange={handleChange} setFieldValue={setFieldValue} values={values} form={{ errors, touched }} initialValues={initialPremisesValues} />
-                  </div>
+
                   
                   {/* <div className="col-span-6">
                     <CaseCardDetails items={premisesComposition} title="Premises Composition" handle={handleChange} />
@@ -217,9 +217,9 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
             )}
           </Formik>) :
         (<div className="grid grid-cols-12 gap-6">
-          <div className="col-span-6">
+         
             <PremisesDetail address={addressDetails} premises={premisesDetails} />
-          </div></div>)}
+         </div>)}
     </>
   );
 };
