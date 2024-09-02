@@ -16,6 +16,7 @@ import {
   FETCH_ALL_CASES_REQUEST,
   FETCH_ALL_CASES_SUCCESS,
   FETCH_ALL_CASES_FAILURE,
+  SET_STAGE,
 } from "../type";
 
 const initialCasesState = {
@@ -94,6 +95,17 @@ const casesReducer = (state = initialCasesState, action) => {
         loading: false,
         error: action.payload,
       };
+      case SET_STAGE:
+        return {
+          ...state,
+          cases: state.cases.map((caseItem) =>
+            caseItem.caseId === action.payload.caseId
+              ? { ...caseItem, stage: action.payload.stage }
+              : caseItem
+          ),
+          loading: false,
+          error: null,
+        };
     case CLEAR_DATA:
       return initialCasesState;
     default:
