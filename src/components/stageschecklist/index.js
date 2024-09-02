@@ -33,78 +33,77 @@ const StagesChecklist = () => {
   const taskData = useSelector((state) => state.task);
   const { casesData } = useSelector((state) => state.case);
 
+//   useEffect(() => {
+//     if (isEmpty(data)) {
+//       let sagaPayload = {
+//         stageType: 0,
+//         caseId: localStorage.getItem('c_id'),
+//       }
+//       dispatch(getStageRequest(sagaPayload));
+//     }
+//     let caseDataGet = localStorage.getItem('c_data');
+//     if (caseDataGet) {
+//       try {
+//         caseDataGet = JSON.parse(caseDataGet);
+//       } catch (error) {
+//         console.error("Error parsing case data from localStorage", error);
+//       }
+//     }
+//        let caseId = localStorage.getItem('c_id');
+//     const foundCase = caseDataGet?.find(item => item.caseId === caseId);
+// console.log(casesData, "casesData");
+    
+
+//     if (casesData?.cases?.length === 0) {
+//       let caseId = localStorage.getItem('c_id');
+//       dispatch(getClientByIdRequest(caseId));
+
+//       // setCurrentStep(foundCase.stage);
+//     } else {
+//       if (foundCase) {
+//         // Set init step to stage
+//         setCurrentStep(foundCase.stage);
+//         dispatch(caseCreateSuccess(foundCase));
+//       } else {
+//         dispatch(caseCreateSuccess([])); // Dispatch empty array if not found
+//       }
+//     }
+//   }, [ data])
+
   useEffect(() => {
-    if (isEmpty(data)) {
-      let sagaPayload = {
-        stageType: 0,
-        caseId: localStorage.getItem('c_id'),
-      }
-      dispatch(getStageRequest(sagaPayload));
-    }
     let caseDataGet = localStorage.getItem('c_data');
     if (caseDataGet) {
       try {
         caseDataGet = JSON.parse(caseDataGet);
+        if (!Array.isArray(caseDataGet)) {
+          console.error("caseDataGet is not an array");
+          caseDataGet = [];
+        }
       } catch (error) {
         console.error("Error parsing case data from localStorage", error);
+        caseDataGet = [];
       }
-    }
-       let caseId = localStorage.getItem('c_id');
-    const foundCase = caseDataGet?.find(item => item.caseId === caseId);
-console.log(casesData, "casesData");
-    
-
-    if (casesData?.cases?.length === 0) {
-      let caseId = localStorage.getItem('c_id');
-      dispatch(getClientByIdRequest(caseId));
-
-      // setCurrentStep(foundCase.stage);
     } else {
-      if (foundCase) {
-        // Set init step to stage
-        setCurrentStep(foundCase.stage);
-        dispatch(caseCreateSuccess(foundCase));
-      } else {
-        dispatch(caseCreateSuccess([])); // Dispatch empty array if not found
-      }
+      caseDataGet = []; 
     }
-  }, [ data])
-
-
-  // useEffect(() => {
-  //   let caseDataGet = localStorage.getItem('c_data');
-  //   if (caseDataGet) {
-  //     try {
-  //       caseDataGet = JSON.parse(caseDataGet);
-  //       if (!Array.isArray(caseDataGet)) {
-  //         console.error("caseDataGet is not an array");
-  //         caseDataGet = [];
-  //       }
-  //     } catch (error) {
-  //       console.error("Error parsing case data from localStorage", error);
-  //       caseDataGet = [];
-  //     }
-  //   } else {
-  //     caseDataGet = []; 
-  //   }
     
-  //   let caseId = localStorage.getItem('c_id');
+    let caseId = localStorage.getItem('c_id');
     
-  //   if (!caseId) {
-  //     console.error("caseId is not found in localStorage");
-  //     return;
-  //   }
+    if (!caseId) {
+      console.error("caseId is not found in localStorage");
+      return;
+    }
     
-  //   const foundCase = caseDataGet.find(item => item.caseId === caseId);
+    const foundCase = caseDataGet.find(item => item.caseId === caseId);
     
-  //   if (foundCase) {
-  //     setCurrentStep(foundCase.stage);
-  //     dispatch(caseCreateSuccess(foundCase));
-  //   } else {
-  //     dispatch(caseCreateSuccess([])); // Dispatch empty array if not found
-  //   }
+    if (foundCase) {
+      setCurrentStep(foundCase.stage);
+      dispatch(caseCreateSuccess(foundCase));
+    } else {
+      dispatch(caseCreateSuccess([])); // Dispatch empty array if not found
+    }
     
-  // }, []); // Empty dependency array
+  }, []); // Empty dependency array
 
   useEffect(() => {
     if (!isEmpty(data)) {
@@ -116,7 +115,7 @@ console.log(casesData, "casesData");
   const getChecklistItems = useCallback(() => {
     let currentstepstr = `${currentStep}`;
     const getTaskPayload = {
-      currentStageData: data[STAGESNAMES[currentstepstr]].tasks,
+      currentStageData: data[STAGESNAMES[currentstepstr]]?.tasks,
       currentStep: currentstepstr
     }
     const response = dispatch(getTaskRequest(getTaskPayload));
