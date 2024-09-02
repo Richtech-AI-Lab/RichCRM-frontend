@@ -155,9 +155,33 @@ const NewCaseModal = ({ onClose }) => {
       })
     ),
   });
+  const processClients = (values) => {
+    // Destructure the clients array from the values object
+    const { clients } = values;
+  
+    // Check if the length of the clients array is greater than 1
+    if (clients.length > 1) {
+      // Remove the first object from the array
+      const remainingClients = clients.slice(1);
+  
+      // Iterate over the remaining clients to create an array of objects
+      const processedClients = remainingClients.map((clientData) => ({
+        clientType: values.clientType,
+        firstName: clientData.clientfirstName,
+        lastName: clientData.clientLastName,
+        ...(clientData.clientcellNumber && { cellNumber: clientData.clientcellNumber }),
+        ...(clientData.clientemail && { email: clientData.clientemail }),
+      }));
+  
+      return processedClients; // Return the array of processed clients
+    }
+  
+    // If the length is 1, return an empty array or the original clients array
+    return [];
+  };
 
-  const handleNewCaseInfo = async (values) => {
-
+  const handleNewCaseInfo = async (values) => {    
+    const clientList = processClients(values)
     const clientData = values.clients[0];
     const clientDetails = {
       clientType: values.clientType,
@@ -167,6 +191,7 @@ const NewCaseModal = ({ onClose }) => {
       ...(clientData.clientemail && { email: clientData.clientemail }),
     };
     const combinedPayload = {
+      clientList,
       clientDetails,
       addressDetails: {
         addressLine1: values.address,
@@ -265,7 +290,7 @@ const NewCaseModal = ({ onClose }) => {
           {/* <AuthFormContainer title="New Case" subtitle="Create a new case by filling the basic information."> */}
           <Formik
             initialValues={initialValues}
-            validationSchema={validationSchema}
+            // validationSchema={validationSchema}
             onSubmit={handleNewCaseInfo}
           >
             {({

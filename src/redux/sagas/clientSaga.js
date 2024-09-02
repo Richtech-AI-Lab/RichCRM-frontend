@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import { registerAddressRequest } from "../actions/utilsActions";
 import { handleError } from "../../utils/eventHandler";
 import { update } from "lodash";
+import { all } from "redux-saga/effects";
 
 function* registerClient(action) {
   try {
@@ -21,12 +22,21 @@ function* registerClient(action) {
     const response = yield call(() =>
       postRequest(API_ENDPOINTS.REGISTER_CLIENT, payload.clientDetails)
     );
+    const clientListRes = yield all(
+      payload.clientList?.map(clientDetails =>
+        call(postRequest, API_ENDPOINTS.REGISTER_CLIENT, clientDetails)
+      )
+    );
+    const clientIds = clientListRes.map(res => res.data.data[0].clientId);
+    // console.log(clientIds,"______")
+    
     yield put(registerClientSuccess(response.data));
     if(response.status ==200){
       const updatedPayload = {
         ...payload,
         casePayload: {
           ...payload.casePayload,
+          additionalClients: clientIds,
           ...(payload.casePayload.caseType == 0 
             ? { buyerId: response.data?.data[0]?.clientId } 
             : { sellerId: response.data?.data[0]?.clientId })

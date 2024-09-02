@@ -106,7 +106,7 @@ function* updateCase(action) {
     try {
         const { payload } = action;
         const response = yield call(() => postRequest(API_ENDPOINTS.UPDATE_CASE, payload));
-        yield put(caseCreateSuccess(response.data));
+        yield put(caseCreateSuccess(response?.data?.data[0]));
     } catch (error) {
         handleError(error)
         yield put(updateCaseFailure(error.response.data || error));
