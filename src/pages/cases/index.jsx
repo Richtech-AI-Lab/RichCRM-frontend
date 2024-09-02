@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Actionbar, CardGrid, XSpinnerLoader } from "../../components";
-import { casesCardData, closedCasesCardData } from "../../constants/constants";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../constants/api";
 import ClosedCasesGrid from "../../components/closedcasesgrid";
@@ -20,30 +19,6 @@ const Cases = () => {
   const handleFilterChange = (filter) => {
     setFilter(filter);
   };
-
-  const closedCases = [
-    { caseDetails: "535 W 52nd St #9G coop", caseTitle: "Gee, First Name" },
-    { caseDetails: "535 W 52nd St #9G coop", caseTitle: "Gee, First Name" },
-    { caseDetails: "535 W 52nd St #9G coop", caseTitle: "Gee, First Name" },
-    { caseDetails: "535 W 52nd St #9G coop", caseTitle: "Gee, First Name" },
-    { caseDetails: "535 W 52nd St #9G coop", caseTitle: "Gee, First Name" },
-    { caseDetails: "535 W 52nd St #9G coop", caseTitle: "Gee, First Name" },
-    { caseDetails: "535 W 52nd St #9G coop", caseTitle: "Gee, First Name" },
-    { caseDetails: "535 W 52nd St #9G coop", caseTitle: "Gee, First Name" },
-    { caseDetails: "535 W 52nd St #9G coop", caseTitle: "Gee, First Name" },
-    { caseDetails: "535 W 52nd St #9G coop", caseTitle: "Gee, First Name" },
-    { caseDetails: "535 W 52nd St #9G coop", caseTitle: "Gee, First Name" },
-    { seDetails: "535 W 52nd St #9G coop", caseTitle: "Gee, First Name" },
-    { seDetails: "535 W 52nd St #9G coop", caseTitle: "Gee, First Name" },
-    { caseDetails: "535 W 52nd St #9G coop", caseTitle: "Gee, First Name" },
-    { caseDetails: "535 W 52nd St #9G coop", caseTitle: "Gee, First Name" },
-    { caseDetails: "535 W 52nd St #9G coop", caseTitle: "Gee, First Name" },
-    { caseDetails: "535 W 52nd St #9G coop", caseTitle: "Gee, First Name" },
-    { caseDetails: "535 W 52nd St #9G coop", caseTitle: "Gee, First Name" },
-    { caseDetails: "535 W 52nd St #9G coop", caseTitle: "Gee, First Name" },
-    { caseDetails: "535 W 52nd St #9G coop", caseTitle: "Gee, First Name" },
-    { caseDetails: "535 W 52nd St #9G coop", caseTitle: "Gee, First Name" },
-  ];
 
   useEffect(() => {
     const fetchAllCases = async () => {

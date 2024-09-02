@@ -33,7 +33,9 @@ const StagesChecklist = () => {
   const taskData = useSelector((state) => state.task);
   const { casesData } = useSelector((state) => state.case);
 
+
   useEffect(() => {
+    // if stage is not exist then create stage.
     if (isEmpty(data)) {
       let sagaPayload = {
         stageType: 0,
@@ -41,21 +43,99 @@ const StagesChecklist = () => {
       }
       dispatch(getStageRequest(sagaPayload));
     }
-    if (casesData?.cases?.length === 0) {
-      let caseId = localStorage.getItem('c_id');
-      dispatch(getClientByIdRequest(caseId));
-    } else {
-      let caseId = localStorage.getItem('c_id');
-      const foundCase = casesData?.cases?.find(item => item.caseId === caseId);
-      if (foundCase) {
-        // Set init step to stage
-        setCurrentStep(foundCase.stage);
-        dispatch(caseCreateSuccess(foundCase));
-      } else {
-        dispatch(caseCreateSuccess([])); // Dispatch empty array if not found
-      }
+
+  }, [data])
+
+  useEffect(() => {
+    // if cases have stage then set stage
+    const foundCase = casesData?.cases?.find(item => item.caseId === localStorage.getItem('c_id'));
+    if (foundCase) {
+      setCurrentStep(foundCase?.stage);
     }
-  }, [])
+  }, [casesData.cases[0].stage])
+
+  //   const foundCase = caseDataGet.find(item => item.caseId === caseId);
+
+  //   if (foundCase) {
+  //     setCurrentStep(foundCase.stage);
+  //     dispatch(caseCreateSuccess(foundCase));
+  //   } else {
+  //     dispatch(caseCreateSuccess([])); // Dispatch empty array if not found
+  //   }
+
+
+  //   useEffect(() => {
+  //     if (isEmpty(data)) {
+  //       let sagaPayload = {
+  //         stageType: 0,
+  //         caseId: localStorage.getItem('c_id'),
+  //       }
+  //       dispatch(getStageRequest(sagaPayload));
+  //     }
+  //     let caseDataGet = localStorage.getItem('c_data');
+  //     if (caseDataGet) {
+  //       try {
+  //         caseDataGet = JSON.parse(caseDataGet);
+  //       } catch (error) {
+  //         console.error("Error parsing case data from localStorage", error);
+  //       }
+  //     }
+  //        let caseId = localStorage.getItem('c_id');
+  //     const foundCase = caseDataGet?.find(item => item.caseId === caseId);
+  // console.log(casesData, "casesData");
+
+
+  //     if (casesData?.cases?.length === 0) {
+  //       let caseId = localStorage.getItem('c_id');
+  //       dispatch(getClientByIdRequest(caseId));
+
+  //       // setCurrentStep(foundCase.stage);
+  //     } else {
+  //       if (foundCase) {
+  //         // Set init step to stage
+  //         setCurrentStep(foundCase.stage);
+  //         dispatch(caseCreateSuccess(foundCase));
+  //       } else {
+  //         dispatch(caseCreateSuccess([])); // Dispatch empty array if not found
+  //       }
+  //     }
+  //   }, [ data])
+
+
+  // useEffect(() => {
+  //   let caseDataGet = localStorage.getItem('c_data');
+  //   if (caseDataGet) {
+  //     try {
+  //       caseDataGet = JSON.parse(caseDataGet);
+  //       if (!Array.isArray(caseDataGet)) {
+  //         console.error("caseDataGet is not an array");
+  //         caseDataGet = [];
+  //       }
+  //     } catch (error) {
+  //       console.error("Error parsing case data from localStorage", error);
+  //       caseDataGet = [];
+  //     }
+  //   } else {
+  //     caseDataGet = []; 
+  //   }
+
+  //   let caseId = localStorage.getItem('c_id');
+
+  //   if (!caseId) {
+  //     console.error("caseId is not found in localStorage");
+  //     return;
+  //   }
+
+  //   const foundCase = caseDataGet.find(item => item.caseId === caseId);
+
+  //   if (foundCase) {
+  //     setCurrentStep(foundCase.stage);
+  //     dispatch(caseCreateSuccess(foundCase));
+  //   } else {
+  //     dispatch(caseCreateSuccess([])); // Dispatch empty array if not found
+  //   }
+
+  // }, []); // Empty dependency array
 
   useEffect(() => {
     if (!isEmpty(data)) {
@@ -67,205 +147,12 @@ const StagesChecklist = () => {
   const getChecklistItems = useCallback(() => {
     let currentstepstr = `${currentStep}`;
     const getTaskPayload = {
-      currentStageData: data[STAGESNAMES[currentstepstr]].tasks,
+      currentStageData: data[STAGESNAMES[currentstepstr]]?.tasks,
       currentStep: currentstepstr
     }
     const response = dispatch(getTaskRequest(getTaskPayload));
 
   }, [dispatch, currentStep, data])
-  const settingUpTasks = [
-    {
-      action: "Action",
-      actionInfo: "Case set up",
-      options: "Finished",
-      checkboxId: "accept",
-    },
-    {
-      action: "Upload",
-      actionInfo: "Inspection report",
-      options: "Uploaded",
-      checkboxId: "accept",
-    },
-    {
-      action: "Contact",
-      actionInfo: "Confirm case details with client",
-      options: "Not Started",
-      checkboxId: "accept",
-    },
-  ];
-
-  const contractReviewingTasks = [
-    {
-      action: "Upload",
-      actionInfo: "Initial contract",
-      options: "Uploaded",
-      checkboxId: "accept",
-    },
-    {
-      action: "Contact",
-      actionInfo: "Schedule contract review with client",
-      options: "Waiting",
-      checkboxId: "accept",
-    },
-    {
-      action: "Action",
-      actionInfo: "Contract review",
-      options: "Unfinished",
-      checkboxId: "accept",
-    },
-    {
-      action: "Contact",
-      actionInfo: "Collect signed contract and deposit from client",
-      options: "Not Started",
-      checkboxId: "accept",
-    },
-    {
-      action: "Upload",
-      actionInfo: "Initial contract",
-      options: "Unuploaded",
-      checkboxId: "accept",
-    },
-    {
-      action: "Upload",
-      actionInfo: "Deposit",
-      options: "Unuploaded",
-      checkboxId: "accept",
-    },
-
-  ];
-
-  const contractSigningTasks = [
-    {
-      action: "Action",
-      actionInfo: "Confirm wire info with seller",
-      options: "Finished",
-      checkboxId: "accept",
-    },
-    {
-      action: "Action",
-      actionInfo: "Send the deposit",
-      options: "Finished",
-      checkboxId: "accept",
-    },
-    {
-      action: "Contact",
-      actionInfo: "Inform the seller about the sending, and request the fully signed contract",
-      options: "Completed",
-      checkboxId: "accept",
-    },
-    {
-      action: "Upload",
-      actionInfo: "Fully signed contract",
-      options: "Uploaded",
-      checkboxId: "accept",
-    },
-  ];
-
-  // Separate items for Mortgage and Title tasks
-  const mortgageTasks = [
-    {
-      action: "Action",
-      actionInfo: "Set up mortgage due date",
-      options: "Finished",
-      checkboxId: "accept",
-    },
-    {
-      action: "Action",
-      actionInfo: "Set up mortgage due date",
-      options: "Finished",
-      checkboxId: "accept",
-    },
-    {
-      action: "Contact",
-      actionInfo: "Inform the client about the upcoming timeline",
-      options: "No Response",
-      checkboxId: "accept",
-    },
-    {
-      action: "Upload",
-      actionInfo: "Commitment Letter",
-      options: "Unuploaded",
-      checkboxId: "accept",
-    },
-    {
-      action: "Contact",
-      actionInfo: "Send the commitment to title company and seller ",
-      options: "Not Started",
-      checkboxId: "accept",
-    },
-    {
-      action: "Upload",
-      actionInfo: "Bank CTC",
-      options: "Unuploaded",
-      checkboxId: "accept",
-    },
-  ];
-
-  const titleTasks = [
-    {
-      action: "Action",
-      actionInfo: "Order title",
-      options: "Finished",
-      checkboxId: "accept",
-    },
-    {
-      action: "Upload",
-      actionInfo: "Title report",
-      options: "Unuploaded",
-      checkboxId: "accept",
-    },
-    {
-      action: "Contact",
-      actionInfo: "Confirm the title with client",
-      options: "Not Started",
-      checkboxId: "accept",
-    },
-    {
-      action: "Upload",
-      actionInfo: "All Cleared Title",
-      options: "Unuploaded",
-      checkboxId: "accept",
-    },
-  ];
-
-  const closingTasks = [
-    {
-      action: "Action",
-      actionInfo: "Schedule closing date",
-      options: "Unfinished",
-      checkboxId: "accept",
-    },
-    {
-      action: "Contact",
-      actionInfo: "Inform closing information to everyone engaged",
-      options: "Not Started",
-      checkboxId: "accept",
-    },
-    {
-      action: "Contact",
-      actionInfo: "Calculate the checks needed and inform the client",
-      options: "Not Started",
-      checkboxId: "accept",
-    },
-    {
-      action: "Action",
-      actionInfo: "Closing event",
-      options: "Unfinished",
-      checkboxId: "accept",
-    },
-    {
-      action: "Upload",
-      actionInfo: "All closing files",
-      options: "Unuploaded",
-      checkboxId: "accept",
-    },
-    {
-      action: "Contact",
-      actionInfo: "Collect feedbacks from the client",
-      options: "Not Started",
-      checkboxId: "accept",
-    },
-  ];
 
   const progressItems = [
     "Setting up",
@@ -334,7 +221,8 @@ const StagesChecklist = () => {
       };
 
       try {
-        const stageExists = await checkStageExists(createStagePayload);
+        const stageExists = false;
+        // const stageExists = await checkStageExists(createStagePayload);
         if (stageExists === false) {
           await dispatch(createStageRequest(createStagePayload));
 

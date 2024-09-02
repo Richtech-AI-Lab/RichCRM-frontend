@@ -1,18 +1,30 @@
-import { createStore, applyMiddleware, compose } from "redux";
-import createSagaMiddleware from "redux-saga";
-import rootReducer from "./reducers/index.js";
-import rootSaga from "./sagas/index";
+import { createStore, applyMiddleware, compose } from 'redux';
+import createSagaMiddleware from 'redux-saga';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import rootReducer from './reducers'; // Ensure this path is correct
+import rootSaga from './sagas'; // Ensure this path is correct
+import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
+
+const persistConfig = {
+  key: 'root',
+  storage,
+  // whitelist: ['auth', 'cases', 'client', 'contact', 'premises', 'stage', 'task', 'utils'], 
+  // stateReconciler: autoMergeLevel2
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const sagaMiddleware = createSagaMiddleware();
-
-// Using Redux's compose for middleware application
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
-  rootReducer,
+  persistedReducer,
   composeEnhancers(applyMiddleware(sagaMiddleware))
 );
 
 sagaMiddleware.run(rootSaga);
 
-export default store;
+const persistor = persistStore(store);
+
+export { store, persistor };

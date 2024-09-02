@@ -15,6 +15,7 @@ import ContactEditForm from "../contactEdit";
 import { createAddressRequest, fetchAddressByIdRequest } from "../../../redux/actions/utilsActions";
 import { useDispatch, useSelector } from "react-redux";
 import ContactDetail from "../contactDetail";
+import { getCaseByContactRequest } from "../../../redux/actions/caseAction";
 
 const ContactPartnerCard = ({ isEdit, toggleEdit }) => {
   const dispatch = useDispatch();
@@ -36,6 +37,15 @@ const ContactPartnerCard = ({ isEdit, toggleEdit }) => {
     }
   }, [])
 
+  useEffect(() => {
+    if (contactdetails?.contactId) {
+      let data = {
+        contactId: contactdetails?.contactId
+    }
+      dispatch(getCaseByContactRequest(data))
+    }
+  }, [])
+  
 
   const handleSubmit = useCallback((values) => {
 

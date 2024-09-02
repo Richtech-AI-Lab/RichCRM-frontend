@@ -34,6 +34,7 @@ export const READ_CASE_REQUEST = "READ_CASE_REQUEST";
 
 // read case by client id
 export const READ_CASE_BY_CLIENT = "READ_CASE_BY_CLIENT";
+export const READ_CASE_BY_CONTACT = "READ_CASE_BY_CONTACT";
 // close case
 export const CLOSE_CASE = "CLOSE_CASE";
 
@@ -54,6 +55,9 @@ export const UPDATE_CASE_FAILURE = "UPDATE_CASE_FAILURE";
 export const DELETE_CASE_REQUEST = "DELETE_CASE_REQUEST";
 export const DELETE_CASE_SUCCESS = "DELETE_CASE_SUCCESS";
 export const DELETE_CASE_FAILURE = "DELETE_CASE_FAILURE";
+
+export const SET_STAGE = "SET_STAGE";
+
 
 //PremisesTypes
 

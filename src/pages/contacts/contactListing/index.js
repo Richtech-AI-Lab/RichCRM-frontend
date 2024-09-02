@@ -12,7 +12,7 @@ import XSpinnerLoader from "../../../components/spinnerLoader/XSpinnerLoader";
 const ContactListing = ({ active }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
-  const contact = useSelector((state) => state?.contact?.contact?.data)
+  const contact = useSelector((state) => state?.contact?.contact)
   const {loading} = useSelector((state) => state?.contact)
 
   const headers = {

@@ -16,6 +16,7 @@ import {
   FETCH_ALL_CASES_REQUEST,
   FETCH_ALL_CASES_SUCCESS,
   FETCH_ALL_CASES_FAILURE,
+  SET_STAGE,
 } from "../type";
 
 const initialCasesState = {
@@ -60,30 +61,30 @@ const casesReducer = (state = initialCasesState, action) => {
         ),
         error: null,
       };
-      case FETCH_ALL_CASES_SUCCESS:
-        if (action.payload.closed) {
-          return {
-            ...state,
-            loading: false,
-            closedCases: action.payload.cases,
-            error: null,
-          };
-        } else {
-          return {
-            ...state,
-            loading: false,
-            cases: action.payload.cases,
-            error: null,
-          };
-        }
-  
     case FETCH_ALL_CASES_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        cases: action.payload.cases,
-        error: null,
-      };
+      if (action.payload.closed) {
+        return {
+          ...state,
+          loading: false,
+          closedCases: action.payload.cases,
+          error: null,
+        };
+      } else {
+        return {
+          ...state,
+          loading: false,
+          cases: action.payload.cases,
+          error: null,
+        };
+      }
+
+    // case FETCH_ALL_CASES_SUCCESS:
+    //   return {
+    //     ...state,
+    //     loading: false,
+    //     cases: action.payload.cases,
+    //     error: null,
+    //   };
     case GET_CASE_FAILURE:
     case POST_CASE_FAILURE:
     case UPDATE_CASE_FAILURE:
@@ -94,6 +95,17 @@ const casesReducer = (state = initialCasesState, action) => {
         loading: false,
         error: action.payload,
       };
+      case SET_STAGE:
+        return {
+          ...state,
+          cases: state.cases.map((caseItem) =>
+            caseItem.caseId === action.payload.caseId
+              ? { ...caseItem, stage: action.payload.stage }
+              : caseItem
+          ),
+          loading: false,
+          error: null,
+        };
     case CLEAR_DATA:
       return initialCasesState;
     default:

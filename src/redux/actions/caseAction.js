@@ -16,7 +16,9 @@ import {
     FETCH_ALL_CASES_FAILURE,
     READ_CASE_REQUEST,
     READ_CASE_BY_CLIENT,
-    CLOSE_CASE
+    CLOSE_CASE,
+    READ_CASE_BY_CONTACT,
+    SET_STAGE
 } from "../type";
 
 
@@ -114,9 +116,18 @@ export const getCaseByClientRequest = (payload) => ({
     payload,
 });
 
+export const getCaseByContactRequest = (payload) => ({
+    type: READ_CASE_BY_CONTACT,
+    payload,
+});
 //close case
 export const closeCaseRequest = (payload) => ({
     type: CLOSE_CASE,
     payload,
+});
+
+export const caseSetStage = (data) => ({
+    type: SET_STAGE,
+    payload: data,
 });
 
