@@ -48,6 +48,8 @@ function* fetchAllCases(action) {
         const { payload } = action;
         const response = yield call(() => postRequest(API_ENDPOINTS.FECTH_ALL_CASES, payload));
         if (response.status == 200) {
+            const casedata= response?.data?.data;
+            localStorage.setItem('c_data', JSON.stringify(casedata));
             // const ids = [...new Set(
             //     response?.data?.data
             //         .map(caseItem => caseItem.sellerId || caseItem.buyerId) // Take sellerId if available, otherwise take buyerId

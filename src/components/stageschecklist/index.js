@@ -41,12 +41,25 @@ const StagesChecklist = () => {
       }
       dispatch(getStageRequest(sagaPayload));
     }
+    let caseDataGet = localStorage.getItem('c_data');
+    if (caseDataGet) {
+      try {
+        caseDataGet = JSON.parse(caseDataGet);
+      } catch (error) {
+        console.error("Error parsing case data from localStorage", error);
+      }
+    }
+       let caseId = localStorage.getItem('c_id');
+    const foundCase = caseDataGet?.find(item => item.caseId === caseId);
+console.log(casesData, "casesData");
+    
+
     if (casesData?.cases?.length === 0) {
       let caseId = localStorage.getItem('c_id');
       dispatch(getClientByIdRequest(caseId));
+
+      // setCurrentStep(foundCase.stage);
     } else {
-      let caseId = localStorage.getItem('c_id');
-      const foundCase = casesData?.cases?.find(item => item.caseId === caseId);
       if (foundCase) {
         // Set init step to stage
         setCurrentStep(foundCase.stage);
@@ -55,7 +68,43 @@ const StagesChecklist = () => {
         dispatch(caseCreateSuccess([])); // Dispatch empty array if not found
       }
     }
-  }, [])
+  }, [ data])
+
+
+  // useEffect(() => {
+  //   let caseDataGet = localStorage.getItem('c_data');
+  //   if (caseDataGet) {
+  //     try {
+  //       caseDataGet = JSON.parse(caseDataGet);
+  //       if (!Array.isArray(caseDataGet)) {
+  //         console.error("caseDataGet is not an array");
+  //         caseDataGet = [];
+  //       }
+  //     } catch (error) {
+  //       console.error("Error parsing case data from localStorage", error);
+  //       caseDataGet = [];
+  //     }
+  //   } else {
+  //     caseDataGet = []; 
+  //   }
+    
+  //   let caseId = localStorage.getItem('c_id');
+    
+  //   if (!caseId) {
+  //     console.error("caseId is not found in localStorage");
+  //     return;
+  //   }
+    
+  //   const foundCase = caseDataGet.find(item => item.caseId === caseId);
+    
+  //   if (foundCase) {
+  //     setCurrentStep(foundCase.stage);
+  //     dispatch(caseCreateSuccess(foundCase));
+  //   } else {
+  //     dispatch(caseCreateSuccess([])); // Dispatch empty array if not found
+  //   }
+    
+  // }, []); // Empty dependency array
 
   useEffect(() => {
     if (!isEmpty(data)) {
