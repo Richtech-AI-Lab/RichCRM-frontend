@@ -174,7 +174,7 @@ function* getCaseByContact(action) {
     try {
         const { payload } = action;
         const response = yield call(() => postRequest(API_ENDPOINTS.GET_CASE_BY_CONTACT, payload));
-        yield put(caseCreateSuccess(response.data));
+        yield put(caseCreateSuccess(response?.data?.data[0]));
         if (response.status == 200) {
             // toast.success("Case Closed!");
         }

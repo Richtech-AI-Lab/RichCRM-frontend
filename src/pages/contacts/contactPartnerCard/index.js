@@ -19,6 +19,9 @@ import { getCaseByContactRequest } from "../../../redux/actions/caseAction";
 
 const ContactPartnerCard = ({ isEdit, toggleEdit }) => {
   const dispatch = useDispatch();
+  const {cases,loading}= useSelector((state) => state.case.casesData);
+
+  // console.log(cases[0].stage,"-")
   // const location = useLocation();
   // const contactdetails = location?.state?.contact ;
   const contactdetails = useSelector((state) => state?.contact?.selectedItem);
@@ -171,7 +174,8 @@ const ContactPartnerCard = ({ isEdit, toggleEdit }) => {
                   <div className="card bg-card-300 px-2 py-3">
                     <h1 className="px-5">Involved Open Cases</h1>
                     <div className="grid">
-                      {closedCases.map((item, index) => (
+                      {cases?.map((item, index) => (
+
                         <CardItem
                           key={index}
                           caseDetails={item.caseDetails}
@@ -187,7 +191,7 @@ const ContactPartnerCard = ({ isEdit, toggleEdit }) => {
                   <div className="card bg-card-300 px-2 py-3">
                     <h1 className="px-5">Involved Closed Cases</h1>
                     <div className="grid">
-                      {closedCases.map((item, index) => (
+                      {cases?.map((item, index) => (
                         <CardItem
                           key={index}
                           caseDetails={item.caseDetails}
@@ -211,12 +215,14 @@ const ContactPartnerCard = ({ isEdit, toggleEdit }) => {
               <div className="card bg-card-300 px-2 py-3">
                 <h1 className="px-5">Involved Open Cases</h1>
                 <div className="grid">
-                  {closedCases.map((item, index) => (
+                  {cases?.map((item, index) => (
                     <CardItem
                       key={index}
-                      caseDetails={item.caseDetails}
-                      caseTitle={item.caseTitle}
-                      closedCases={closedCases}
+                      caseDetails={item?.premisesName}
+                      caseTitle={item?.clientName}
+                      caseCount={item.caseCount}
+                      caseType={item?.caseType}
+                      caseStatus={item?.caseStatus}
                       innerCardClass="m-2"
                     />
                   ))}
@@ -227,12 +233,25 @@ const ContactPartnerCard = ({ isEdit, toggleEdit }) => {
               <div className="card bg-card-300 px-2 py-3">
                 <h1 className="px-5">Involved Closed Cases</h1>
                 <div className="grid">
-                  {closedCases.map((item, index) => (
+                  {cases?.map((item, index) => (
                     <CardItem
+                    // onClick={()=>{handleCaseCardClick(item)}}
+                    // key={index}
+                    // badgeColor={item.badgeColor}
+                    // badgeText={item.badgeText}
+                    // caseDetails={item?.premisesName}
+                    // caseTitle={item?.clientName}
+                    // caseCount={item.caseCount}
+                    // caseType={item?.caseType}
+                    // caseStatus={item?.caseStatus}
+                    // innerCardClass={includeClasses ? "bg-input-surface" : "bg-white shadow-shadow-light"}
                       key={index}
-                      caseDetails={item.caseDetails}
-                      caseTitle={item.caseTitle}
-                      closedCases={closedCases}
+                      caseDetails={item?.premisesName}
+                      caseTitle={item?.clientName}
+                      caseCount={item.caseCount}
+                      caseType={item?.caseType}
+                      caseStatus={item?.caseStatus}
+                      // closedCases={closedCases}
                       innerCardClass="m-2"
                     />
                   ))}

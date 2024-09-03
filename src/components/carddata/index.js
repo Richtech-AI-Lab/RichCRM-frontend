@@ -33,6 +33,7 @@ const CardData = ({ title, count, items, cardClass, onClick, includeClasses, car
         <IoIosArrowForward className="text-secondary-400" />
       </div>
       <div className="pl-2 pr-2">
+        {console.log(filteredCases,"filteredCases")}
         {/* {items?.map((item, index) => ( */}
         {stageCount > 0 ? (
           filteredCases.map((item, index) => (
