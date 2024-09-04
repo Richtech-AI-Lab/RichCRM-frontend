@@ -82,7 +82,7 @@
     @apply border-b-0 pb-0 mb-0
   }
   .card-details li span.left-txt {
-    @apply text-base text-secondary-800 font-medium
+    @apply lg:text-sm xl:text-base text-secondary-800 font-medium
   }
   .card-details .profile {
     @apply justify-start

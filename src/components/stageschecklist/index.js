@@ -318,7 +318,7 @@ const StagesChecklist = () => {
   return (
     <>
 
-      <div className="col-span-8">
+      <div className="md:col-span-12 lg:col-span-8">
         <div className="bg-white py-4 rounded-2xl mb-5">
           <div className="px-4">
             <div className="mb-6">

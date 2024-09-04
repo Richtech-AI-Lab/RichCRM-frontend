@@ -109,7 +109,7 @@ const CaseCardData = () => {
         </div>
       </div>
       <div className="grid grid-cols-12 gap-6">
-        <div className="col-span-4">
+        <div className="md:col-span-12 lg:col-span-4">
           <CaseDetailsCard
             title={premisesDetails?.name}
             clientName={casedetails?.clientName}
