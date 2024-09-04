@@ -19,7 +19,7 @@ const CaseDetailsCard = ({
   <div className="bg-white p-4 rounded-2xl mb-5">
     <div className="flex justify-between items-center mb-6 ">
     <div>
-        <span className="text-[22px] block mb-2 leading-7 text-secondary-800 font-medium">{title}</span>
+        <span className="md:text-[22px] lg:text-lg block mb-2 leading-7 text-secondary-800 font-medium">{title}</span>
         <p className="text-base leading-6 text-secondary-800 font-medium">{address}</p>
       </div>
       <MenuPopup dropdownItems={menuOption} icon={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />}/>

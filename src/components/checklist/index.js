@@ -145,7 +145,7 @@ const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optio
       <li className="flex justify-between items-center mb-5 pb-5 task-checklist mt-2">
         <div className="flex items-center gap-2 custom-radio">
           <Checkbox  id={checkboxId} defaultChecked={status} className="mr-6" />
-          <Label htmlFor={checkboxId} className="flex items-center text-lg text-title font-medium">
+          <Label htmlFor={checkboxId} className="flex items-center lg:text-base xl:text-base text-title font-medium">
             {displayIcon && <span className="mr-2">{displayIcon}</span>}
             {ACTIONTYPELABEL[action]}: {actionInfo}
           </Label>

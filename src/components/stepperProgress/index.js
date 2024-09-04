@@ -102,7 +102,7 @@ const StepperProgress = ({ steps, currentStep }) => {
               )}
               </span>
               
-          <span className="mt-2 inline-block text-secondary-800 font-medium">
+          <span className="mt-2 inline-block text-secondary-800 font-medium lg:text-sm xl:text-base">
           {step}
         </span>
             
