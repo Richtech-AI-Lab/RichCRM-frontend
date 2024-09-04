@@ -7,6 +7,7 @@ import CaseDetails from "../cases/casedetails";
 import NewCaseInfo from "../cases/newcaseinfo";
 import Contacts from "../contacts";
 import ContactPartner from "../contacts/contactPartner";
+import Calender from "../calender";
 
 
 const Content = () => {
@@ -20,6 +21,7 @@ const Content = () => {
       <Route path="/newcaseinfo" element={<NewCaseInfo />} />
       <Route path="/contacts" element={<Contacts />} />
       <Route path="/contactpartner" element={<ContactPartner />} />
+      <Route path="/calendar" element={<Calender />} />
       <Route path="/*" element={404} />
     </Routes>
   );
