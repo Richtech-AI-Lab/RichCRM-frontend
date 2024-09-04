@@ -173,16 +173,37 @@ function* getCaseByClient(action) {
 function* getCaseByContact(action) {
     try {
         const { payload } = action;
-        const response = yield call(() => postRequest(API_ENDPOINTS.GET_CASE_BY_CONTACT, payload));
-        yield put(caseCreateSuccess(response.data));
-        if (response.status == 200) {
-            // toast.success("Case Closed!");
+
+        // Create payloads for both API calls
+        const closedTruePayload = { ...payload, closed: true };
+        const closedFalsePayload = { ...payload, closed: false };
+
+        // Make both API calls in parallel
+        const [responseTrue, responseFalse] = yield all([
+            call(() => postRequest(API_ENDPOINTS.GET_CASE_BY_CONTACT, closedTruePayload)),
+            call(() => postRequest(API_ENDPOINTS.GET_CASE_BY_CONTACT, closedFalsePayload)),
+        ]);
+
+        // Check the status of both responses and combine data if both are successful
+        if (responseTrue?.status === 200 && responseFalse?.status === 200) {
+            const combinedData = [
+                responseTrue?.data?.data || [], // First API response data
+                responseFalse?.data?.data || [], // Second API response data
+            ];
+            console.log(combinedData,"responseTrue?.data?.data")
+            // Dispatch success action with combined data
+            yield put(caseCreateSuccess(combinedData));
+        } else {
+            // Handle failure if any of the responses fail
+            throw new Error('One or both API calls failed');
         }
     } catch (error) {
-        handleError(error)
+        handleError(error);
         yield put(updateCaseFailure(error.response.data || error));
     }
 }
+
+
 
 function* closeCaseByCaseId(action) {
     try {
