@@ -414,7 +414,7 @@ const StagesChecklist = () => {
                 >
                   <span className="visually-hidden">Loading...</span>
                 </Spinner>}
-                {console.log(taskData.data[STAGESNAMES[currentStep]],"STAGESNAMES[currentStep]", STAGESNAMES[currentStep])}
+
                 {!loading && (
                   <div className="w-full">
                     {taskData.data[STAGESNAMES[currentStep]]

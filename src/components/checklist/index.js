@@ -7,6 +7,7 @@ import { LuUpload } from "react-icons/lu";
 import { FaClipboardList } from "react-icons/fa";
 import Badge from "../badge";
 import { ACTIONTYPE, ACTIONTYPELABEL } from "../../constants/constants";
+import NewCaseDropdown from "../newcasedropdown";
 
 const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optionsValue, checkboxId, currentStep }) => {
 
@@ -156,21 +157,25 @@ const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optio
               {taskStatusColor?.label}
             </span>
           </p>
+          <div className="items-dropdown single-select mt-3">
+        <NewCaseDropdown 
+         disabled={disabled}
+         defaultLabel="Options"
+         name="checklistSelect"
+         value={options}
+         onChange={(e) => console.log(e.target.value)}
+         options={displayOption}
+         inputClassName="border-border rounded-full py-[10px] px-[16px] text-secondary-700 leading-5 font-semibold"
+        />
+        </div>
           {/* <SelectInput
-          name="checklistSelect"
-          value=""
-          onChange={(e) => console.log(e.target.value)}
-          options={options}
-          inputClassName="border-border rounded-full py-[10px] px-[16px] bg-transparent text-secondary-700 leading-5 font-semibold"
-        /> */}
-          <SelectInput
             disabled={disabled}
             name="checklistSelect"
             value={options}
             onChange={(e) => console.log(e.target.value)}
             options={displayOption}
             inputClassName="border-border rounded-full py-[10px] px-[16px] bg-transparent text-secondary-700 leading-5 font-semibold"
-          />
+          /> */}
         </div>
       </li>
     </div>

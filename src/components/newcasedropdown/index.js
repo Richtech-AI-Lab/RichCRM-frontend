@@ -20,6 +20,7 @@ const NewCaseDropdown = ({
     const selectedLabel = options.find((option) => option.value === value)?.label;
     return (
         <Dropdown
+        disabled={disabled}  
             label={selectedLabel || defaultLabel || "Select..."}
             name={name}
             value={value}
