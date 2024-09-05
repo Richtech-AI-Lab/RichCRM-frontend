@@ -1,16 +1,22 @@
 import React from 'react';
+import XButton from '../../../components/button/XButton';
+import { FiPlus } from 'react-icons/fi';
+import { Checkbox, Label } from 'flowbite-react';
 
-const Sidebar = ({ onAddReminderClick , filters, onFilterChange }) => {
+const Sidebar = ({ onAddReminderClick, filters, onFilterChange }) => {
   return (
     <div className="sidebar p-4">
-      <button
-        className="bg-blue-500 text-white py-2 px-4 rounded w-full mb-4"
-        onClick={onAddReminderClick}
-      >
-        Add a reminder
-      </button>
 
-      <div className="checkboxes">
+      <XButton
+        icon={<FiPlus className="text-base mr-2 inline-block" />}
+        onClick={onAddReminderClick}
+        text="Add a reminder"
+        type="button"
+        // onClick={onCancel} 
+        className="bg-primary text-base text-white py-[10px] px-6 rounded-[100px] ml-4"
+      />
+
+      {/* <div className="p-5">
         <label className="flex items-center mb-2">
           <input
             type="checkbox"
@@ -29,6 +35,20 @@ const Sidebar = ({ onAddReminderClick , filters, onFilterChange }) => {
           />
           Closing Due Date
         </label>
+      </div> */}
+      <div className="flex flex-col gap-4 p-5">
+        <div className="flex items-center gap-2">
+          <Checkbox />
+          <Label className="text-secondary-800">
+            Mortgage Due Date
+          </Label>
+        </div>
+        <div className="flex items-center gap-2">
+          <Checkbox />
+          <Label className="text-secondary-800">
+            Closing Due Date
+          </Label>
+        </div>
       </div>
     </div>
   );

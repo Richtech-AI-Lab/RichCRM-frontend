@@ -21,10 +21,10 @@ const CalendarPage = () => {
   return (
     <div className="calendar-page-container" style={{ display: 'flex', height: '100vh' }}>
      
-      <div className="calendar-container" style={{ width: '75%' , borderRight: '1px solid #ddd'}}>
+      <div className="calendar-container" style={{ width: '80%' , borderRight: '1px solid #ddd'}}>
         <Calendar toggleAddReminderModal={toggleAddReminderModal} filters={filters}/>
       </div>
-      <div className="sidebar-container" style={{ width: '25%' }}>
+      <div className="sidebar-container" style={{ width: '20%' }}>
         <Sidebar onAddReminderClick={toggleAddReminderModal}   filters={filters} onFilterChange={handleFilterChange} />
       </div>
 
