@@ -8,6 +8,7 @@ import NewCaseInfo from "../cases/newcaseinfo";
 import Contacts from "../contacts";
 import ContactPartner from "../contacts/contactPartner";
 import Calender from "../calender";
+import CalendarPage from "../calender";
 
 
 const Content = () => {
@@ -21,7 +22,7 @@ const Content = () => {
       <Route path="/newcaseinfo" element={<NewCaseInfo />} />
       <Route path="/contacts" element={<Contacts />} />
       <Route path="/contactpartner" element={<ContactPartner />} />
-      <Route path="/calendar" element={<Calender />} />
+      <Route path="/calendar" element={<CalendarPage />} />
       <Route path="/*" element={404} />
     </Routes>
   );

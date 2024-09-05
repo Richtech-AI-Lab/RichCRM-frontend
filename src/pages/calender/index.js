@@ -1,70 +1,37 @@
-import React from 'react';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
-// import './Calendar.css'; // Add custom styles if needed
+import React, { useState } from 'react';
+import Sidebar from './calenderView/sidebar';
+import Calendar from './calenderView';
+import AddReminderModal from './calenderView/addReminderModal';
 
-const events = [
-  {
-    id: '1',
-    title: 'Event 1',
-    start: '2024-09-10',
-  },
-  {
-    id: '2',
-    title: 'Event 2',
-    start: '2024-09-15',
-  }
-];
-
-const Calendar = () => {
+const CalendarPage = () => {
+  const [isAddReminderOpen, setIsAddReminderOpen] = useState(false);
+  const [filters, setFilters] = useState({
+    mortgageDue: true,
+    closingDue: true,
+  });
+  const toggleAddReminderModal = () => {
+    setIsAddReminderOpen(!isAddReminderOpen);
+  };
+  const handleFilterChange = (filterName, checked) => {
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      [filterName]: checked,
+    }));
+  };
   return (
-    <FullCalendar
-      plugins={[dayGridPlugin, interactionPlugin]}
-      initialView="dayGridMonth"
-      headerToolbar={{
-        right: 'prev,next today',
-        center: 'title',
-        left: ''
-      }}
-      events={events}
-      editable={false}
-      selectable={false}
-      dayMaxEventRows={true}
-      eventColor='#3788d8'
-    />
+    <div className="calendar-page-container" style={{ display: 'flex', height: '100vh' }}>
+     
+      <div className="calendar-container" style={{ width: '75%' , borderRight: '1px solid #ddd'}}>
+        <Calendar toggleAddReminderModal={toggleAddReminderModal} filters={filters}/>
+      </div>
+      <div className="sidebar-container" style={{ width: '25%' }}>
+        <Sidebar onAddReminderClick={toggleAddReminderModal}   filters={filters} onFilterChange={handleFilterChange} />
+      </div>
+
+      {/* Add Reminder Modal */}
+      <AddReminderModal isOpen={isAddReminderOpen} onClose={toggleAddReminderModal}  />
+    </div>
   );
 };
 
-export default Calendar;
-
-
-// import React from 'react';
-// import { Calendar } from '@fullcalendar/core';
-// import dayGridPlugin from '@fullcalendar/daygrid';
-
-
-// const CalendarData = () => {
-//   const events = [
-//     { title: 'Event 1', date: '2024-09-10' },
-//     { title: 'Event 2', date: '2024-09-15' },
-//     // Add more events as needed
-//   ];
-//   const calendarRef = React.useRef(null);
-
-//   React.useEffect(() => {
-//     const calendar = new Calendar(calendarRef.current, {
-//       plugins: [dayGridPlugin],
-//       initialView: 'dayGridMonth',
-//       events: events, // Pass your events here
-//     });
-
-//     calendar.render();
-
-//     return () => calendar.destroy(); // Cleanup on unmount
-//   }, [events]);
-
-//   return <div ref={calendarRef} />;
-// };
-
-// export default CalendarData;
+export default CalendarPage;
