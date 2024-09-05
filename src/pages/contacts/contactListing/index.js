@@ -48,18 +48,20 @@ const ContactListing = ({ active }) => {
 
 
   return (
-    <div className="overflow-x-auto contacts-table">
+    <div className="overflow-x-auto h-[68vh] contacts-table">
       <XSpinnerLoader loading={loading} size="lg" />
-      <Table>
-        <Table.Head>
+      <Table className="">
+       
+        {contact?.length > 0
+          ?
+          <>
+          <Table.Head>
           {header.map(key => {
             return (
               <Table.HeadCell>{key}</Table.HeadCell>
             )
           })}
         </Table.Head>
-        {contact?.length > 0
-          ?
           <Table.Body className="divide-y">
             {contact?.filter(item => item.contactType === active).map((user, index) => {
               return (
@@ -87,10 +89,10 @@ const ContactListing = ({ active }) => {
                 </Table.Row>
               )
             })}
-          </Table.Body> :
-          <div className="text-center text-gray-500 ">
-            No contact available
-          </div>
+          </Table.Body> </>:
+                 <div className="flex items-center justify-center h-[60vh] w-full">
+                 <p className="text-center text-gray-500">No contact available</p>
+               </div>
         }
       </Table>
     </div>

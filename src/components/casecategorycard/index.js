@@ -12,6 +12,7 @@ const CasesCategoryCard = ({ cases,onCardClick ,categoryTitle,stageCount}) => {
   return (
     <div className="card bg-card-300 p-0">
       <LabelText labelText={categoryTitle} count={stageCount} />
+      { cases?.length > 0 ?
       <div className="grid grid-cols-4 gap-2 mx-2 my-[10px]">
       {/* {badgeTexts.map((badge) => ( */}
         <div 
@@ -33,9 +34,14 @@ const CasesCategoryCard = ({ cases,onCardClick ,categoryTitle,stageCount}) => {
           />
 
           ))}
+          
         </div>
+        
       {/* ))} */}
     </div>
+   : <div className="flex items-center justify-center h-[60vh] w-full">
+                 <p className="text-center text-gray-500">No cases available</p>
+               </div>}
   </div>
   );
 };
