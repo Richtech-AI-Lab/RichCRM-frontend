@@ -34,7 +34,7 @@
     @apply bg-transparent;
   }
   .sidebar-items ul li a {
-    @apply text-base font-medium text-secondary-700 p-[18px] min-w-full inline-flex;
+    @apply text-sm xl:text-base font-medium text-secondary-700 p-[10px] xl:p-[18px] min-w-full inline-flex;
   }
   .sidebar-items ul li a svg {
     @apply text-secondary-800;

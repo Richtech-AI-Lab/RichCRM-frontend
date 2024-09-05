@@ -43,7 +43,7 @@ const SideNav = ({ isDrawerOpen, toggleDrawer, setTitle }) => {
   };
 
   return (
-    <Sidebar className={`w-[264px] sidebar ${isDrawerOpen ? '' : 'sidebar-toggle'} fixed bg-input-surface`}>
+    <Sidebar className={`w-[160px] xl:w-[264px] sidebar ${isDrawerOpen ? '' : 'sidebar-toggle'} fixed bg-input-surface`}>
       {/* <h1 className="text-secondary-700 text-xl font-bold pt-5 pb-3 px-4 whitespace-nowrap">MG Law Group</h1> */}
       {/* <img src={logo}/> */}
       <img
