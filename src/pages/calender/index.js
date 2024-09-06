@@ -29,7 +29,7 @@ const CalendarPage = () => {
       </div>
 
       {/* Add Reminder Modal */}
-      <AddReminderModal isOpen={isAddReminderOpen} onClose={toggleAddReminderModal}  />
+      {isAddReminderOpen && <AddReminderModal  onClose={toggleAddReminderModal}  />}
     </div>
   );
 };
