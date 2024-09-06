@@ -1,5 +1,6 @@
 import { Table, Textarea, TextInput } from "flowbite-react";
 import React, { useCallback, useEffect, useState } from "react";
+import * as Yup from "yup";
 import dummyData from "../../../utils/dummyData.json";
 import { ROUTES } from "../../../constants/api";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -89,6 +90,10 @@ const ContactPartnerCard = ({ isEdit, toggleEdit }) => {
     { value: CASETYPE.PURCHASING, label: "Purchaser" },
     { value: CASETYPE.SELLING, label: "Broker" },
   ];
+  const validationSchema = Yup.object({
+    email: Yup.string().required('Email is required'),
+    cellNumber: Yup.string().required('Cell number is required'),
+  });
   const initialValues = {
     contactId: contactdetails?.contactId || '',
     contactType: contactdetails?.contactType || '',
@@ -123,7 +128,7 @@ const ContactPartnerCard = ({ isEdit, toggleEdit }) => {
             enableReinitialize
             initialValues={initialValues}
             onSubmit={handleSubmit}
-          // validationSchema={validationSchema}
+            validationSchema={validationSchema}
           >
             {({
               handleChange,

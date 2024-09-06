@@ -7,7 +7,7 @@ import states from "../../../constants/states.json"
 import { Textarea } from "flowbite-react";
 
 
-const ContactEditForm = ({ initialValues, onSubmit, values, formerror, setFieldValue, handleChange, handleBlur }) => {
+const ContactEditForm = ({ initialValues, onSubmit, values, form, setFieldValue, handleChange, handleBlur }) => {
     const [optionalFields, setOptionalFields] = useState({
         workNumber: false,
         wechatAccount: false,
@@ -39,7 +39,7 @@ const ContactEditForm = ({ initialValues, onSubmit, values, formerror, setFieldV
 
     return (
         <>
-        
+
             <div className="bg-white p-4 rounded-2xl mb-5">
 
                 <ul className="card-details">
@@ -52,7 +52,7 @@ const ContactEditForm = ({ initialValues, onSubmit, values, formerror, setFieldV
                             type="text"
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            value={values?.position  }
+                            value={values?.position}
                         /></li>
                     <li>
                         <span className={`left-txt flex items-center`}>Company</span>
@@ -80,16 +80,23 @@ const ContactEditForm = ({ initialValues, onSubmit, values, formerror, setFieldV
                             onBlur={handleBlur}
                             value={values?.email}
                         /></li>
+                    {form?.errors["email"] && form?.touched["email"] && (
+                        <span className="text-sm text-red-500">{form.errors["email"]}</span>
+                    )}
                     <li>
                         <span className={`left-txt flex items-center`}>Cell Phone</span>
                         <input
                             className="text-right p-0 border-none focus:ring-transparent"
                             name="cellNumber"
                             type="text"
+                            placeholder=""
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values?.cellNumber}
                         /></li>
+                    {form?.errors["cellNumber"] && form?.touched["cellNumber"] && (
+                        <span className="text-sm text-red-500">{form.errors["cellNumber"]}</span>
+                    )}
 
                     <li>
                         {optionalFields.workNumber && (
