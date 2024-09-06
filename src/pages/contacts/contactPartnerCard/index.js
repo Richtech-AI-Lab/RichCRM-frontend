@@ -21,7 +21,7 @@ const ContactPartnerCard = ({ isEdit, toggleEdit }) => {
   const dispatch = useDispatch();
   const { cases, loading } = useSelector((state) => state.case.casesData);
 
-  console.log(cases[0], "-")
+  // console.log(cases[0], "-")
   // const location = useLocation();
   // const contactdetails = location?.state?.contact ;
   const contactdetails = useSelector((state) => state?.contact?.selectedItem);

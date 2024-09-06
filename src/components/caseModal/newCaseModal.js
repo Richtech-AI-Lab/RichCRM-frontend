@@ -120,6 +120,7 @@ const NewCaseModal = ({ onClose }) => {
         clientLastName: "",
         clientcellNumber: "",
         clientemail: "",
+        clientId: "",
       },
     ],
     companyInfo: [
@@ -171,6 +172,7 @@ const NewCaseModal = ({ onClose }) => {
         lastName: clientData.clientLastName,
         ...(clientData.clientcellNumber && { cellNumber: clientData.clientcellNumber }),
         ...(clientData.clientemail && { email: clientData.clientemail }),
+        ...(clientData.clientId && { clientId: clientData.clientId })
       }));
   
       return processedClients; // Return the array of processed clients
@@ -189,6 +191,7 @@ const NewCaseModal = ({ onClose }) => {
       lastName: clientData.clientLastName,
       ...(clientData.clientcellNumber && { cellNumber: clientData.clientcellNumber }),
       ...(clientData.clientemail && { email: clientData.clientemail }),
+      ...(clientData.clientId && { clientId: clientData.clientId })
     };
     const combinedPayload = {
       clientList,
@@ -514,6 +517,7 @@ const NewCaseModal = ({ onClose }) => {
                                                     clientLastName: item.lastName,
                                                     clientcellNumber: item.cellNumber,
                                                     clientemail: item.email,
+                                                    clientId:item.clientId
                                                   });
                                                   setSearchResults([]);
                                                 }}
