@@ -136,8 +136,17 @@
   .new-case-modal > div{
     @apply max-w-[656px]
   }
+  .calendar-modal > div{
+    @apply max-w-[480px]
+  }
   .new-case-modal > div > div{
     @apply rounded-3xl
+  }
+  .new-case-modal input::placeholder {
+    @apply text-secondary-600
+  }
+  .new-case-modal input:focus {
+    @apply bg-bg-input ring-transparent
   }
   .task-checklist {
     @apply border-b border-b-border pl-6 pr-4
@@ -231,5 +240,23 @@
   }
   .sort-by-filter.items-dropdown > button svg {
     @apply absolute right-3
+  }
+  .calendar-info {
+    @apply text-danger-200
+  }
+  .fc-h-event:has(.calendar-info) {
+    @apply bg-badge-red border-0 border-l-8 border-l-danger-100 p-2
+  }
+  .calendar-info.yellow {
+    @apply text-warning-200
+  }
+  .fc-h-event:has(.calendar-info.yellow) {
+    @apply bg-badge-yellow border-l-8 border-l-warning-100
+  }
+  .calendar-info.gray {
+    @apply text-secondary-800
+  }
+  .fc-h-event:has(.calendar-info.gray) {
+    @apply bg-bg-gray-200 border-l-8 border-l-text-gray-200
   }
 }

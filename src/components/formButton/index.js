@@ -3,7 +3,7 @@ import XButton from '../button/XButton';
 
 const FormButton = ({onSave, onCancel }) => {
   return (
-    <div className="flex justify-end mt-6">
+    <div className="flex justify-end mt-6 fixed bottom-5 right-5">
       <XButton
         text="Cancel"
         type="button" 
