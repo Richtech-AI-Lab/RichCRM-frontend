@@ -22,7 +22,7 @@ import { registerAddressRequest } from "../../redux/actions/utilsActions";
 import XSpinnerLoader from "../spinnerLoader/XSpinnerLoader";
 import { CASETYPE, CLIENTTYPE } from "../../constants/constants";
 import states from "../../constants/states.json";
-import { debounce } from "lodash";
+import { debounce, isEmpty } from "lodash";
 import avatar from '../../assets/images/avatar.png'
 import { IoCloseCircleOutline } from "react-icons/io5";
 import NewCaseDropdown from "../newcasedropdown";
@@ -311,7 +311,7 @@ const NewCaseModal = ({ onClose }) => {
                   <Label htmlFor="caseType" value="Case Type" />
                   <div className="grid grid-cols-2 gap-4 mb-8">
                     <div className="block">
-                      <div className="items-dropdown single-select mt-3">
+                      <div className={`items-dropdown ${values.caseType == "0" ||  values.caseType == "1" ? "" :  "default" }  single-select mt-3`}>
                         <Field
                           as={NewCaseDropdown}
                           defaultLabel="Select Case Type"
@@ -401,7 +401,7 @@ const NewCaseModal = ({ onClose }) => {
                     <Label value="Client" className="mb-2" />
                     <div className="grid grid-cols-2 gap-4">
                       <div className="block">
-                        <div className="items-dropdown single-select mt-3">
+                        <div className={`items-dropdown ${values.clientType == "0" ||  values.clientType == "1" || values.clientType == "2"? "" :  "default" }  single-select mt-3`}>
                           <Field
                             as={NewCaseDropdown}
                             defaultLabel="Select Client Type"
@@ -772,7 +772,8 @@ const NewCaseModal = ({ onClose }) => {
                     <Label htmlFor="premiseInfo" value="Premise Information" />
                     <div className="grid grid-cols-2 gap-4">
                       <div className="block">
-                        <div className="items-dropdown single-select mt-3 ">
+                        <div className={`items-dropdown ${values.premisesType >= "0" && values.premisesType <= "6" ? "" : "default"} single-select mt-3`}
+                        >
                           <Field
                             as={NewCaseDropdown}
                             defaultLabel="Select Premises Type"

@@ -226,6 +226,9 @@
   .new-case-modal .items-dropdown > button {
     @apply bg-input-surface shadow-none py-3 px-4 rounded-[40px] text-sm text-secondary-800 font-normal relative w-full
   }
+  .new-case-modal .items-dropdown.default > button {
+    @apply  text-secondary-600
+  }
   .new-case-modal .items-dropdown > button svg {
     @apply absolute right-3
   }
