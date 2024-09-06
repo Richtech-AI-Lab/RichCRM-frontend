@@ -320,7 +320,7 @@ const NewCaseModal = ({ onClose }) => {
                           onChange={handleChange}
                           onBlur={handleBlur}
                           options={caseTypeOptions}
-                          inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
+                          // inputClassName={values.caseType ? "text-secondary-600 bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3":"bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"  }
                         />
                         {touched.caseType && errors.caseType ? (
                           <div className="text-red-500 text-sm">
@@ -772,7 +772,7 @@ const NewCaseModal = ({ onClose }) => {
                     <Label htmlFor="premiseInfo" value="Premise Information" />
                     <div className="grid grid-cols-2 gap-4">
                       <div className="block">
-                        <div className="items-dropdown single-select mt-3">
+                        <div className="items-dropdown single-select mt-3 ">
                           <Field
                             as={NewCaseDropdown}
                             defaultLabel="Select Premises Type"

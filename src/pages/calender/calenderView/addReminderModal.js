@@ -75,7 +75,7 @@ const AddReminderModal = ({ onClose }) => {
   return (
     <>
       <Modal show={true} size="md" onClose={onClose} className="new-case-modal">
-        <Modal.Header className="border-b-0">
+        <Modal.Header className="border-b-0 pb-0">
           <div>
             <h2 className="mb-2 text-[28px] leading-9 font-medium text-secondary-800">
               Add a Reminder
@@ -85,7 +85,7 @@ const AddReminderModal = ({ onClose }) => {
             </p>
           </div>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body >
           {/* <AuthFormContainer title="New Case" subtitle="Create a new case by filling the basic information."> */}
           <Formik
             initialValues={initialValues}
@@ -105,7 +105,7 @@ const AddReminderModal = ({ onClose }) => {
               <form onSubmit={handleSubmit} className="">
                 <div className="block">
                   <Label htmlFor="Case" value="Case" />
-                  <div className="grid grid-col  gap-x-3">
+                  <div className="grid grid-col">
                     <div className="block">
                       <TextInput
                         name={`caseName`}
@@ -159,7 +159,7 @@ const AddReminderModal = ({ onClose }) => {
                     </div>
                   </div>
 
-                  <div className="grid grid-col  gap-4">
+                  <div className="grid grid-col mt-4">
                     <div className="block">
                       <Label htmlFor="Reminder Type" value="Reminder Type" />
                       <div className="items-dropdown single-select mt-3">
@@ -184,10 +184,10 @@ const AddReminderModal = ({ onClose }) => {
 
 
 
-                  <div className="grid grid-col gap-4">
+                  <div className="grid grid-col gap-4 mt-4">
                     <div className="block">
                       <Label htmlFor="Due Day" value="Due Day" />
-                      <div className="flex justify-between items-center w-full">
+                      <div className="flex justify-between items-center w-full p-2">
                         <div className="flex justify-start items-center w-full gap-7">
                           <div className="grid grid-cols-2 gap-x-12">
                             {[
@@ -235,7 +235,7 @@ const AddReminderModal = ({ onClose }) => {
                     </div>
                   </div>
 
-                  <div className="grid grid-col gap-4">
+                  <div className="grid grid-col gap-4 mt-4">
                     <div className="block">
                       <Label htmlFor="Reminder Time" value="Reminder Time" />
                       <div className="items-dropdown single-select mt-3">
@@ -262,13 +262,13 @@ const AddReminderModal = ({ onClose }) => {
                     <div className="flex items-start gap-2">
                       <Checkbox />
                       <Label className="text-secondary-800">
-                        Mortgage Due Date
+                        Popup Window Reminder
                       </Label>
                     </div>
                     <div className="flex items-start gap-2">
                       <Checkbox />
                       <Label className="text-secondary-800">
-                        Closing Due Date
+                        Email Reminder
                       </Label>
                     </div>
                   </div>
