@@ -28,7 +28,7 @@ const Actionbar = ({ onFilterChange }) => {
     {
       title: "Status",
       options: [
-        { value: "allStatus", label: "All Status" },
+        // { value: "allStatus", label: "All Status" },
         { value: "warning", label: "Warning" },
         { value: "waiting", label: "Waiting" },
         { value: "finished", label: "Finished" },
@@ -37,7 +37,7 @@ const Actionbar = ({ onFilterChange }) => {
     {
       title: "Case Type",
       options: [
-        { value: "allCaseType", label: "All Case Type" },
+        // { value: "allCaseType", label: "All Case Type" },
         { value: "selling", label: "Selling" },
         { value: "purchasing", label: "Purchasing" },
       ],
@@ -50,13 +50,13 @@ const Actionbar = ({ onFilterChange }) => {
       options: [
         { value: "last30Days", label: "Last 30 Days" },
         { value: "2024", label: "2024" },
-        { value: "allTime", label: "All Time" },
+        // { value: "allTime", label: "All Time" },
       ],
     },
     {
       title: "Case Type",
       options: [
-        { value: "allCaseType", label: "All Case Type" },
+        // { value: "allCaseType", label: "All Case Type" },
         { value: "selling", label: "Selling" },
         { value: "purchasing", label: "Purchasing" },
       ],
@@ -142,7 +142,7 @@ const Actionbar = ({ onFilterChange }) => {
             value={sortBy}
             inline
             className="rounded-2xl w-64 shadow-shadow-light-2"
-            dismissOnClick={false}
+            dismissOnClick={true}
           >
             {(activeFilter === "Open" ? sortOptions : closeSortOptions).map((option) => (
               <Dropdown.Item

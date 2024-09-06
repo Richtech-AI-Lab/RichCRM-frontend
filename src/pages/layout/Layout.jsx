@@ -14,7 +14,7 @@ const Layout = () => {
 
       <SideNav isDrawerOpen={isDrawerOpen} toggleDrawer={toggleDrawer} setTitle={setTitle}/>
       {/* Main content area */}
-      <div className={`${isDrawerOpen ? 'ml-[264px]' : 'ml-[80px]'} p-6 w-full main-content`}>
+      <div className={`${isDrawerOpen ? 'ml-[160px] xl:ml-[264px]' : 'ml-[80px]'} p-6 w-full main-content`}>
 
         {/* Main content wrapper */}
         <Header toggleDrawer={toggleDrawer} title={title}/>

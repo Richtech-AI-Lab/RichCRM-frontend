@@ -255,6 +255,24 @@ const StagesChecklist = () => {
     }
   };
 
+  const getCompletedTasksCount = (tasks) => {
+    return tasks?.filter((task) => {
+      switch (task.taskType) {
+        case 0:
+          return task.status === 2; // 'Finished'
+  
+        case 1:
+          return task.status === 2; // 'Uploaded'
+  
+        case 2:
+          return task.status === 2; // 'Finished'
+  
+        default:
+          return false; // For unknown task types
+      }
+    }).length;
+  };
+
   const checkStageExists = async ({ stageType }) => {
     let stagekey = `${stageType}`
     return data.hasOwnProperty(STAGESNAMES[stagekey])
@@ -354,17 +372,17 @@ const StagesChecklist = () => {
                     <span
                       className={`pb-4 cursor-pointer ${activeTab === 'mortgage' ? 'text-base text-secondary-800 font-medium border-b-[3px] border-primary' : 'text-gray-400'}`} onClick={() => setActiveTab('mortgage')}
                     >
-                      Mortgage Task (1/5)
+                      Mortgage Task ({getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]])}/{taskData.data[STAGESNAMES[currentStep]].length})
                     </span>
                     <span
                       className={`pb-4 cursor-pointer ${activeTab === 'title' ? 'text-base text-secondary-800 font-medium border-b-[3px] border-primary' : 'text-gray-400'}`}
                       onClick={() => setActiveTab('title')}
                     >
-                      Title Task (1/4)
+                      Title Task ({getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]])}/{taskData.data[STAGESNAMES[currentStep]].length})
                     </span>
                   </div>
                 ) : (
-                  <span className="text-base text-secondary-800 font-medium">{`${getHeadLabel(currentStep)} (2/3)`}</span>
+                  <span className="text-base text-secondary-800 font-medium">{`${getHeadLabel(currentStep)} (${getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]])}/${taskData.data[STAGESNAMES[currentStep]].length})`}</span>
                 )}
                 <div className="flex items-center gap-2">
 

@@ -32,18 +32,17 @@ const ContactsActionbar = ({ active = "", setActive = "", isAddFromContactModal 
   ];
   return (
     <>
-
       {shouldShow(ROUTES.CONTACTS) && (
         <div className="flex justify-between items-center mb-6">
           <ContactTabs active={active} setActive={setActive} tabs={addFromContactTabs} />
           <div>
             <XButton
-              text="New case"
+              text="New Contact"
               icon={<FiPlus className="text-base mr-2 inline-block" />}
               className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium ml-4"
               onClick={toggleModal}
             />
-            {isModalOpen && <NewCaseModal onClose={toggleModal} />}
+            {/* {isModalOpen && <NewCaseModal onClose={toggleModal} />} */}
           </div>
         </div>
       )}
