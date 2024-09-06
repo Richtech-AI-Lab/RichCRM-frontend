@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Formik, ErrorMessage, Field } from "formik";
-import { Label, Modal } from "flowbite-react";
+import { Checkbox, Label, Modal } from "flowbite-react";
 
 
 import { debounce } from "lodash";
@@ -17,6 +17,19 @@ const ReminderTypeOptions = [
   { value: 1, label: "Mortgage " },
   { value: 2, label: "Closing" },
 ];
+
+const ReminderDueDaysOptions = [
+  { value: 1, label: "30 Days From Today" },
+  { value: 2, label: "45 Days From Today" },
+];
+
+const ReminderTimeOptions = [
+  { value: 1, label: "7 Days Before" },
+  { value: 2, label: "14 Days Before" },
+  { value: 3, label: "30 Days Before" },
+];
+
+
 
 const AddReminderModal = ({ onClose }) => {
   const [searchResults, setSearchResults] = useState([]);
@@ -92,7 +105,7 @@ const AddReminderModal = ({ onClose }) => {
               <form onSubmit={handleSubmit} className="">
                 <div className="block">
                   <Label htmlFor="Case" value="Case" />
-                  <div className="grid grid-cols-2 gap-x-3">
+                  <div className="grid grid-col  gap-x-3">
                     <div className="block">
                       <TextInput
                         name={`caseName`}
@@ -146,9 +159,9 @@ const AddReminderModal = ({ onClose }) => {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4 mb-8">
+                  <div className="grid grid-col  gap-4">
                     <div className="block">
-                    <Label htmlFor="Reminder Type" value="Reminder Type" />
+                      <Label htmlFor="Reminder Type" value="Reminder Type" />
                       <div className="items-dropdown single-select mt-3">
                         <Field
                           as={NewCaseDropdown}
@@ -168,28 +181,98 @@ const AddReminderModal = ({ onClose }) => {
                       </div>
                     </div>
                   </div>
-                </div>
 
-                {/* <TextInput
-                  name="address"
-                  type="text"
-                  placeholder="Address"
-                  value={values.address}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  field={{ name: "address" }}
-                  form={{ errors, touched }}
-                />
-                <TextInput
-                  name="addressLine2"
-                  type="text"
-                  placeholder="Address Line 2 (Optional)"
-                  value={values.addressLine2}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  field={{ name: "addressLine2" }}
-                  form={{ errors, touched }}
-                /> */}
+
+
+                  <div className="grid grid-col gap-4">
+                    <div className="block">
+                      <Label htmlFor="Due Day" value="Due Day" />
+                      <div className="flex justify-between items-center w-full">
+                        <div className="flex justify-start items-center w-full gap-7">
+                          <div className="grid grid-cols-2 gap-x-12">
+                            {[
+                              { id: 1, value: 1, label: "Auto Filling" },
+                              { id: 0, value: 0, label: "Manual Filling" },
+                            ].map((option, index) => (
+                              <div className="flex items-center gap-2 custom-radio" key={index}>
+                                <Field
+                                  type="radio"
+                                  id={option.id}
+                                  name="vacantAtClosing"
+                                  value={option.value}
+                                  checked={values.vacantAtClosing == option.id}
+                                  className="mr-2"
+                                />
+                                <Label
+                                  htmlFor={option.id}
+                                  className="flex items-center text-base text-label font-normal"
+                                >
+                                  {option.label}
+                                </Label>
+                              </div>
+                            ))}
+                          </div>
+
+                        </div>
+                      </div>
+                      <div className="items-dropdown single-select mt-3">
+                        <Field
+                          as={NewCaseDropdown}
+                          defaultLabel="Due Day"
+                          name="duedate"
+                          // value={values?.duedate}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          options={ReminderDueDaysOptions}
+                          inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
+                        />
+                        {touched.reminderType && errors.reminderType ? (
+                          <div className="text-red-500 text-sm">
+                            {errors.reminderType}
+                          </div>
+                        ) : null}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-col gap-4">
+                    <div className="block">
+                      <Label htmlFor="Reminder Time" value="Reminder Time" />
+                      <div className="items-dropdown single-select mt-3">
+                        <Field
+                          as={NewCaseDropdown}
+                          defaultLabel="Select Reminder Time"
+                          name="reminderTime"
+                          // value={values?.duedate}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          options={ReminderTimeOptions}
+                          inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
+                        />
+                        {touched.reminderType && errors.reminderType ? (
+                          <div className="text-red-500 text-sm">
+                            {errors.reminderType}
+                          </div>
+                        ) : null}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-4 p-5">
+                    <div className="flex items-start gap-2">
+                      <Checkbox />
+                      <Label className="text-secondary-800">
+                        Mortgage Due Date
+                      </Label>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <Checkbox />
+                      <Label className="text-secondary-800">
+                        Closing Due Date
+                      </Label>
+                    </div>
+                  </div>
+                </div>
 
                 <div className="text-end mt-8">
                   <XButton

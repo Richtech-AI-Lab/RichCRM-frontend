@@ -8,12 +8,14 @@ import { addFromContactTab } from "../../../constants/constants";
 import { getContactRequest, setSelectedContact } from "../../../redux/actions/contactActions";
 import { useDispatch, useSelector } from "react-redux";
 import XSpinnerLoader from "../../../components/spinnerLoader/XSpinnerLoader";
+import { FiPlus } from "react-icons/fi";
+import { XButton } from "../../../components";
 
 const ContactListing = ({ active }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const contact = useSelector((state) => state?.contact?.contact)
-  const {loading} = useSelector((state) => state?.contact)
+  const { loading } = useSelector((state) => state?.contact)
 
   const headers = {
     [addFromContactTab.BROKERS]: ["Name", "Position", "Company", "Email", "Cell Phone"],
@@ -27,7 +29,7 @@ const ContactListing = ({ active }) => {
   const handleNavigation = (item) => {
     // console.log(item,"_____")
     dispatch(setSelectedContact(item));
-    localStorage.setItem("contact_id",item)
+    localStorage.setItem("contact_id", item)
     navigate(ROUTES.CONTACT_PARTNER);
   }
   const header = headers[active] ?? ["Name", "Position", "Company", "Email", "Cell Phone"];
@@ -52,48 +54,56 @@ const ContactListing = ({ active }) => {
     <div className="overflow-x-auto h-[68vh] contacts-table">
       <XSpinnerLoader loading={loading} size="lg" />
       <Table className="">
-       
+
         {contact?.length > 0
           ?
           <>
-          <Table.Head>
-          {header.map(key => {
-            return (
-              <Table.HeadCell>{key}</Table.HeadCell>
-            )
-          })}
-        </Table.Head>
-          <Table.Body className="divide-y">
-            {contact?.filter(item => item.contactType === active).map((user, index) => {
-              return (
-                <Table.Row key={index} className="bg-white dark:border-gray-700 dark:bg-gray-800 cursor-pointer"
-                  onClick={()=>{handleNavigation(user)}}
-                >
-                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                    <div className="flex items-center">
-                      <img
-                        src={IMAGES.contact_avtar}
-                        alt="Profile"
-                        className="mr-3 rounded-full"
-                      />
-                      <span className="left-txt font-medium text-secondary-800">{user.firstName} {user.lastName}</span>
-                    </div>
-                  </Table.Cell>
-                  {header.includes("Position") && <Table.Cell>{user.position}</Table.Cell>}
-                  {header.includes("Title Company") && <Table.Cell>{user.position}</Table.Cell>}
-                  {header.includes("Law Office") && <Table.Cell>{user.position}</Table.Cell>}
-                  {header.includes("Lender Company") && <Table.Cell>{user.position}</Table.Cell>}
-                  {header.includes("Company") && <Table.Cell>{user.company}</Table.Cell>}
-                  {header.includes("Email") && <Table.Cell>{user.email}</Table.Cell>}
-                  {header.includes("Cell Phone") && <Table.Cell>{user.cellNumber}</Table.Cell>}
-                  {header.includes("Note") && <Table.Cell> <input className="border-none focus:ring-transparent" name="note" placeholder="Add a note" value={user.note} /></Table.Cell>}
-                </Table.Row>
-              )
-            })}
-          </Table.Body> </>:
-                 <div className="flex items-center justify-center h-[60vh] w-full">
-                 <p className="text-center text-gray-500">No contact available</p>
-               </div>
+            <Table.Head>
+              {header.map(key => {
+                return (
+                  <Table.HeadCell>{key}</Table.HeadCell>
+                )
+              })}
+            </Table.Head>
+            <Table.Body className="divide-y">
+              {contact?.filter(item => item.contactType === active).map((user, index) => {
+                return (
+                  <Table.Row key={index} className="bg-white dark:border-gray-700 dark:bg-gray-800 cursor-pointer"
+                    onClick={() => { handleNavigation(user) }}
+                  >
+                    <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                      <div className="flex items-center">
+                        <img
+                          src={IMAGES.contact_avtar}
+                          alt="Profile"
+                          className="mr-3 rounded-full"
+                        />
+                        <span className="left-txt font-medium text-secondary-800">{user.firstName} {user.lastName}</span>
+                      </div>
+                    </Table.Cell>
+                    {header.includes("Position") && <Table.Cell>{user.position}</Table.Cell>}
+                    {header.includes("Title Company") && <Table.Cell>{user.position}</Table.Cell>}
+                    {header.includes("Law Office") && <Table.Cell>{user.position}</Table.Cell>}
+                    {header.includes("Lender Company") && <Table.Cell>{user.position}</Table.Cell>}
+                    {header.includes("Company") && <Table.Cell>{user.company}</Table.Cell>}
+                    {header.includes("Email") && <Table.Cell>{user.email}</Table.Cell>}
+                    {header.includes("Cell Phone") && <Table.Cell>{user.cellNumber}</Table.Cell>}
+                    {header.includes("Note") && <Table.Cell> <input className="border-none focus:ring-transparent" name="note" placeholder="Add a note" value={user.note} /></Table.Cell>}
+                  </Table.Row>
+                )
+              })}
+            </Table.Body> </> :
+          <>
+            <div className="flex flex-col items-center justify-center h-[60vh] w-full">
+              <p className="text-center text-gray-500">No contact available</p>
+              <XButton
+                text="New Contact"
+                icon={<FiPlus className="text-base mr-2 inline-block" />}
+                className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium mt-4" // Added mt-4 for spacing
+              />
+            </div>
+
+          </>
         }
       </Table>
     </div>
