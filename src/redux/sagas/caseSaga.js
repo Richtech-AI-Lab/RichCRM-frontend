@@ -190,7 +190,7 @@ function* getCaseByContact(action) {
                 responseTrue?.data?.data || [], // First API response data
                 responseFalse?.data?.data || [], // Second API response data
             ];
-            console.log(combinedData,"responseTrue?.data?.data")
+            // console.log(combinedData,"responseTrue?.data?.data")
             // Dispatch success action with combined data
             yield put(caseCreateSuccess(combinedData));
         } else {

@@ -424,8 +424,8 @@ export const addFromContactTab = {
  ATTORNEY: 1,
  TITLE: 2,
  LENDER: 3,
- OTHER: 4,
- CLIENTS: 5,
+ CLIENTS: 4,
+ OTHER: 5,
 };
 
 export const userRole = {

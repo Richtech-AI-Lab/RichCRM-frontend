@@ -23,7 +23,7 @@ const ContactsActionbar = ({ active = "", setActive = "", isAddFromContactModal 
   };
 
   const addFromContactTabs = [
-    { id: addFromContactTab.BROKERS, label: "Brokers" },
+    { id: addFromContactTab.BROKERS, label: "Realtors" },
     { id: addFromContactTab.ATTORNEY, label: "Attorney" },
     { id: addFromContactTab.TITLE, label: "Title" },
     { id: addFromContactTab.LENDER, label: "Lender" },

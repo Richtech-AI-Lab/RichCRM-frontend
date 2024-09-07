@@ -160,10 +160,10 @@ const Calendar = ({ toggleAddReminderModal, filters }) => {
 
   const renderEventContent = (eventInfo) => (
     <>
-    <div onClick={toggleDetailModal}>
-      <div>Mortgage Due</div>
+    <div onClick={toggleDetailModal} className="calendar-info">
+      <div className="font-semibold mb-1">Mortgage Due</div>
       <div>Fu, Jack</div>
-      <div>1500, skyline avenue, t900</div>
+      <div className="truncate">1500, skyline avenue, t900</div>
       
     </div>
     {isDetailOpen && <DetailCaseModal onAddReminderClick={toggleAddReminderModal} onClose={toggleDetailModal} />}

@@ -21,12 +21,10 @@ const contactReducer = (state = initialState, action) => {
     case UPDATE_CONTACT_FAILURE:
       return { ...state, loading: false, error: action.payload };
     case SET_SELECTED_CONTACT:
+      console.log(action.payload,"action.payload")
       return {
         ...state,
-        contact:{
-          ...state.contact,
-          selectedItem: action.payload, 
-        }
+        selectedItem: action.payload, 
       };
     default:
       return state;
