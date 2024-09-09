@@ -1,4 +1,4 @@
-import { GET_CONTACT_BY_TYPE_FAILURE, GET_CONTACT_BY_TYPE_REQUEST, GET_CONTACT_BY_TYPE_SUCCESS,SET_SELECTED_CONTACT,UPDATE_CONTACT_FAILURE, UPDATE_CONTACT_REQUEST, UPDATE_CONTACT_SUCCESS } from "../type";
+import { CREATE_CONTACT_FAILURE, CREATE_CONTACT_REQUEST, CREATE_CONTACT_SUCCESS, GET_CONTACT_BY_TYPE_FAILURE, GET_CONTACT_BY_TYPE_REQUEST, GET_CONTACT_BY_TYPE_SUCCESS,SET_SELECTED_CONTACT,UPDATE_CONTACT_FAILURE, UPDATE_CONTACT_REQUEST, UPDATE_CONTACT_SUCCESS } from "../type";
 
 //Get Case
 export const getContactRequest = (payload) => ({
@@ -29,6 +29,22 @@ export const updateContactSuccess = (contact) => ({
 
 export const updateContactFailure = (error) => ({
     type: UPDATE_CONTACT_FAILURE,
+    payload: error,
+});
+
+//Create Contact
+export const createContactRequest = (payload) => ({
+    type: CREATE_CONTACT_REQUEST,
+    payload,
+});
+
+export const createContactSuccess = (contact) => ({
+    type: CREATE_CONTACT_SUCCESS,
+    payload: contact,
+});
+
+export const createContactFailure = (error) => ({
+    type: CREATE_CONTACT_FAILURE,
     payload: error,
 });
 

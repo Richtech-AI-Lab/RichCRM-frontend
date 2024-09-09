@@ -11,6 +11,7 @@ import { API_ENDPOINTS, ROUTES } from "../../constants/api";
 import { postRequest } from "../../axios/interceptor";
 import { debounce } from "lodash";
 import { contactTypeLabels } from "../../constants/constants";
+import { setSelectedContact } from "../../redux/actions/contactActions";
 
 const Header = ({ toggleDrawer, title }) => {
   const navigate = useNavigate();
@@ -66,10 +67,13 @@ const Header = ({ toggleDrawer, title }) => {
             className="absolute right-5 top-[10px]"
           />
           <ul className={'absolute left-0 right-0 mt-2 bg-white z-50 search-list-dropdown overflow-hidden rounded-2xl shadow-shadow-light-2'}>
-            {searchResults.map((item) => (
+            {searchResults?.map((item) => (
               <li
                 className={'px-4 py-2 hover:bg-input-surface'}
                 onClick={() => {
+                  dispatch(setSelectedContact(item))
+                  navigate(ROUTES.CONTACT_PARTNER);
+                  setSearchResults([]);
                 }}
                 key={item.id} // Adding a key for each list item for better performance
               >

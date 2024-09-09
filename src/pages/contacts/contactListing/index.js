@@ -27,7 +27,6 @@ const ContactListing = ({ active }) => {
   };
 
   const handleNavigation = (item) => {
-    // console.log(item,"_____")
     dispatch(setSelectedContact(item));
     localStorage.setItem("contact_id", item)
     navigate(ROUTES.CONTACT_PARTNER);

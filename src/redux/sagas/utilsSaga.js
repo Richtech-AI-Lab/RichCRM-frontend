@@ -7,12 +7,12 @@ import {
   registerAddressFailure,
   registerAddressSuccess,
 } from "../actions/utilsActions";
-import { CREATE_ADDRESS_REQUEST, FETCH_ADDRESS_BY_ID_REQUEST, REGISTER_ADDRESS_REQUEST } from "../type";
+import { CREATE_ADDRESS_CONTACT_REQUEST, CREATE_ADDRESS_REQUEST, FETCH_ADDRESS_BY_ID_REQUEST, REGISTER_ADDRESS_REQUEST } from "../type";
 import { registerPremisesRequest, updatePremisesRequest } from "../actions/premisesActions";
 import { toast } from "react-toastify";
 import { handleError } from "../../utils/eventHandler";
 import { updateClientByIdRequest } from "../actions/clientActions";
-import { updateContactRequest } from "../actions/contactActions";
+import { createContactRequest, updateContactRequest } from "../actions/contactActions";
 
 function* registerAddress(action) {
   try {
@@ -116,8 +116,43 @@ function* fetchAddressById(action) {
   }
 }
 
+function* createAddressThenContact(action) {
+  try {
+    const { payload } = action;
+    const response = yield call(() =>
+      postRequest(API_ENDPOINTS.REGISTER_ADDRESS, payload?.util)
+    );
+    yield put(registerAddressSuccess(response.data));
+    if (response.status === 200) {
+      let updatedPayload;
+
+      if (payload.contact) {
+        updatedPayload = {
+          contact: {
+            ...payload.contact,
+            mailingAddress: response.data?.data[0]?.addressId,
+          },
+          util: {
+            ...payload.util,
+            addressId: response.data?.data[0]?.addressId,
+          },
+        };
+  
+        yield put(createContactRequest(updatedPayload.contact));
+        toast.success("address updated!");
+      }
+    } 
+
+  } catch (error) {
+    handleError(error)
+    yield put(registerAddressFailure(error.response?.data || error));
+    // toast.error("Failed to register address.");
+  }
+}
+
 export function* utilsSaga() {
   yield takeLatest(REGISTER_ADDRESS_REQUEST, registerAddress);
   yield takeLatest(CREATE_ADDRESS_REQUEST, createAddress);
+  yield takeLatest(CREATE_ADDRESS_CONTACT_REQUEST, createAddressThenContact);
   yield takeLatest(FETCH_ADDRESS_BY_ID_REQUEST, fetchAddressById);
 }

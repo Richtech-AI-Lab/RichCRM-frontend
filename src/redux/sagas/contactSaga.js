@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { API_ENDPOINTS } from "../../constants/api";
-import { GET_CONTACT_BY_KEYWORD_REQUEST, GET_CONTACT_BY_TYPE_REQUEST, GET_CONTACT_REQUEST, UPDATE_CONTACT_REQUEST } from "../type";
+import { CREATE_CONTACT_REQUEST, GET_CONTACT_BY_KEYWORD_REQUEST, GET_CONTACT_BY_TYPE_REQUEST, GET_CONTACT_REQUEST, UPDATE_CONTACT_REQUEST } from "../type";
 import { getRequest, postRequest } from "../../axios/interceptor";
 import { toast } from "react-toastify";
 import { handleError } from "../../utils/eventHandler";
@@ -40,6 +40,27 @@ function* updateContact(action) {
   }
 }
 
+function* createContact(action) {
+  try {
+    const { payload } = action;
+    const response = yield call(() =>
+      postRequest(API_ENDPOINTS.CREATE_CONTACT, payload)
+    );
+    const updatedResponse = {
+      ...response?.data?.data[0],
+      contactId: payload?.contactId,
+      contactType: payload?.contactType,
+    };
+    yield put(setSelectedContact(updatedResponse));
+    if(response.status ==200){
+      toast.success("contact created!");
+    }
+  } catch (error) {
+    handleError(error)
+    yield put(updateContactFailure(error.response?.data || error));
+  }
+}
+
 function* getContactByKeyword(action) {
   try {
     const contactKeyword = action.payload;
@@ -56,5 +77,6 @@ function* getContactByKeyword(action) {
 export function* contactSaga() {
   yield takeLatest(GET_CONTACT_BY_TYPE_REQUEST, getContactByType);
   yield takeLatest(UPDATE_CONTACT_REQUEST, updateContact);
+  yield takeLatest(CREATE_CONTACT_REQUEST,createContact);
   yield takeLatest(GET_CONTACT_BY_KEYWORD_REQUEST, getContactByKeyword);
 }
