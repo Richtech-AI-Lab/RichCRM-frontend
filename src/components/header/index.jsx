@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import { IMAGES } from "../../constants/imagePath";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { Dropdown } from "flowbite-react";
@@ -7,11 +7,32 @@ import { logout } from "../../redux/actions/authActions";
 import { deleteUserRequest } from "../../redux/actions/authActions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { ROUTES } from "../../constants/api";
+import { API_ENDPOINTS, ROUTES } from "../../constants/api";
+import { postRequest } from "../../axios/interceptor";
+import { debounce } from "lodash";
+import { contactTypeLabels } from "../../constants/constants";
 
 const Header = ({ toggleDrawer, title }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [searchResults, setSearchResults] = useState([]);
+
+
+  const debouncedFunction = useCallback(
+    debounce(async (value, index) => {
+      if (value != "" || value.length > 0) {
+        const response = await postRequest(API_ENDPOINTS.GET_CONTACT_BY_KEYWORD, {
+          keyword: value
+        }
+        )
+        const filteredResults = response?.data?.data;
+        setSearchResults(filteredResults);
+      } else {
+        setSearchResults([]);
+      }
+    }, 1000),
+    []
+  );
 
   const handleLogout = () => {
     dispatch(logout());
@@ -31,15 +52,37 @@ const Header = ({ toggleDrawer, title }) => {
       </h1>
       <div className="flex items-center">
         <div className="relative">
-        <input
+          <input
             className="text-base text-secondary-700 font-normal leading-6 bg-bg-gray-100 py-2 px-6 rounded-[28px] w-[360px]"
             placeholder="Search case, contact or address"
+            onChange={(e) => {
+              // handleChange(e);
+              debouncedFunction(e.target.value);
+            }}
           />
           <img
             src={IMAGES.searchIcon}
             alt="icon"
             className="absolute right-5 top-[10px]"
           />
+          <ul className={'absolute left-0 right-0 mt-2 bg-white z-50 search-list-dropdown overflow-hidden rounded-2xl shadow-shadow-light-2'}>
+            {searchResults.map((item) => (
+              <li
+                className={'px-4 py-2 hover:bg-input-surface'}
+                onClick={() => {
+                }}
+                key={item.id} // Adding a key for each list item for better performance
+              >
+                <div className="flex items-center">
+                  <img src={IMAGES.contact_avtar} className="w-8 mr-3" />
+                  <div>
+                    <p className="text-base text-secondary-800">{item?.firstName} {item?.lastName}</p>
+                    <span className="text-text-gray-100 text-sm">{contactTypeLabels[item?.contactType] || ""}</span>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
         <Dropdown
           arrowIcon={false}

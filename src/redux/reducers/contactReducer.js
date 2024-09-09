@@ -1,4 +1,4 @@
-import { GET_CONTACT_BY_TYPE_FAILURE, GET_CONTACT_BY_TYPE_REQUEST, GET_CONTACT_BY_TYPE_SUCCESS, GET_CONTACT_REQUEST, GET_CONTACT_SUCCESS, SET_SELECTED_CONTACT, UPDATE_CONTACT_FAILURE, UPDATE_CONTACT_REQUEST, UPDATE_CONTACT_SUCCESS } from "../type";
+import { GET_CONTACT_BY_KEYWORD_FAILURE, GET_CONTACT_BY_KEYWORD_REQUEST, GET_CONTACT_BY_KEYWORD_SUCCESS, GET_CONTACT_BY_TYPE_FAILURE, GET_CONTACT_BY_TYPE_REQUEST, GET_CONTACT_BY_TYPE_SUCCESS, GET_CONTACT_REQUEST, GET_CONTACT_SUCCESS, SET_SELECTED_CONTACT, UPDATE_CONTACT_FAILURE, UPDATE_CONTACT_REQUEST, UPDATE_CONTACT_SUCCESS } from "../type";
 
 const initialState = {
   loading: false,
@@ -20,11 +20,17 @@ const contactReducer = (state = initialState, action) => {
       return { ...state, loading: false, contact: action.payload, error: null };
     case UPDATE_CONTACT_FAILURE:
       return { ...state, loading: false, error: action.payload };
+    case GET_CONTACT_BY_KEYWORD_REQUEST:
+      return { ...state, loading: true, error: null };
+    case GET_CONTACT_BY_KEYWORD_SUCCESS:
+      return { ...state, loading: false, contact: action.payload.data, error: null };
+    case GET_CONTACT_BY_KEYWORD_FAILURE:
+      return { ...state, loading: false, error: action.payload };
     case SET_SELECTED_CONTACT:
-      console.log(action.payload,"action.payload")
+      console.log(action.payload, "action.payload")
       return {
         ...state,
-        selectedItem: action.payload, 
+        selectedItem: action.payload,
       };
     default:
       return state;
