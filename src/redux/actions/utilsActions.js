@@ -1,4 +1,5 @@
 import {
+  CREATE_ADDRESS_CONTACT_REQUEST,
   CREATE_ADDRESS_REQUEST,
   FETCH_ADDRESS_BY_ID_FAILURE,
   FETCH_ADDRESS_BY_ID_REQUEST,
@@ -22,6 +23,11 @@ export const registerAddressSuccess = (response) => ({
 export const registerAddressFailure = (error) => ({
   type: REGISTER_ADDRESS_FAILURE,
   payload: error,
+});
+
+export const createAddressContactRequest = (address) => ({
+  type: CREATE_ADDRESS_CONTACT_REQUEST,
+  payload: address,
 });
 
 export const createAddressRequest = (address) => ({

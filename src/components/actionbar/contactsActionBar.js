@@ -9,6 +9,7 @@ import NewCaseModal from "../caseModal/newCaseModal";
 import { useLocation } from "react-router-dom";
 import ContactTabs from "./contactTabs";
 import { AiOutlineLink } from "react-icons/ai";
+import NewContactModal from "../contactModal/newContactModal";
 
 const ContactsActionbar = ({ active = "", setActive = "", isAddFromContactModal , isEdit, toggleEdit}) => {
   const location = useLocation();
@@ -42,7 +43,7 @@ const ContactsActionbar = ({ active = "", setActive = "", isAddFromContactModal 
               className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium ml-4"
               onClick={toggleModal}
             />
-            {/* {isModalOpen && <NewCaseModal onClose={toggleModal} />} */}
+            {isModalOpen && <NewContactModal onClose={toggleModal} />}
           </div>
         </div>
       )}

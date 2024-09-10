@@ -21,7 +21,7 @@ const CardItem = ({
     switch (status) {
       case 0:
         badgeColor = 'yellow';
-        badgeText = 'Not Started';
+        badgeText = 'To-do';
         break;
       case 1:
         badgeColor = 'yellow';
@@ -37,7 +37,7 @@ const CardItem = ({
         break;
       case 4:
         badgeColor = 'green';
-        badgeText = 'All Done';
+        badgeText = 'Done';
         break;
       default:
         badgeColor = 'yellow';

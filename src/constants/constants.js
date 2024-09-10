@@ -428,6 +428,20 @@ export const addFromContactTab = {
  OTHER: 5,
 };
 
+// Reverse mapping
+export const contactTypeLabels = {
+  0: 'BROKERS',
+  1: 'ATTORNEY',
+  2: 'TITLE',
+  3: 'LENDER',
+  4: 'CLIENTS',
+  5: 'OTHER',
+};
+
+
+ 
+
+
 export const userRole = {
   ADMIN: 0,
   ATTORNEY: 1,
