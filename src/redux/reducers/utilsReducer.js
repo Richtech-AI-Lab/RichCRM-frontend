@@ -38,7 +38,7 @@ const utilsReducer = (state = initialState, action) => {
     case FETCH_ADDRESS_BY_ID_SUCCESS:
       return { ...state, loading: false, address: action.payload, error: null };
     case FETCH_ADDRESS_BY_ID_FAILURE:
-      return { ...state, loading: false, error: action.payload };
+      return { ...state, address:[], loading: false, error: action.payload };
     case CLEAR_DATA:
       return initialState;
     default:
