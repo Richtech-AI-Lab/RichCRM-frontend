@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import XSpinnerLoader from "../../../components/spinnerLoader/XSpinnerLoader";
 import { FiPlus } from "react-icons/fi";
 import { XButton } from "../../../components";
+import NewContactModal from "../../../components/contactModal/newContactModal";
+import ContactButtonWithModal from "../../../components/newContactButton";
 
 const ContactListing = ({ active, parent }) => {
   const dispatch = useDispatch();
@@ -50,7 +52,7 @@ const ContactListing = ({ active, parent }) => {
 
 
   return (
-    <div className={`overflow-x-auto h-[68vh]  ${parent === `dashboard` ? `` :`contacts-table`}`}>
+    <div className={`overflow-x-auto h-[68vh]  ${parent === `dashboard` ? `` : `contacts-table`}`}>
       <XSpinnerLoader loading={loading} size="lg" />
       <Table className="">
 
@@ -95,11 +97,15 @@ const ContactListing = ({ active, parent }) => {
           <>
             <div className="flex flex-col items-center justify-center h-[60vh] w-full">
               <p className="text-center text-gray-500">No contact available</p>
-              <XButton
+              <ContactButtonWithModal
+                buttonClass="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium mt-4" 
+                modalContent={<NewContactModal />} 
+              />
+              {/* <XButton
                 text="New Contact"
                 icon={<FiPlus className="text-base mr-2 inline-block" />}
                 className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium mt-4" // Added mt-4 for spacing
-              />
+              /> */}
             </div>
 
           </>

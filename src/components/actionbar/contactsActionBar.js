@@ -10,6 +10,7 @@ import { useLocation } from "react-router-dom";
 import ContactTabs from "./contactTabs";
 import { AiOutlineLink } from "react-icons/ai";
 import NewContactModal from "../contactModal/newContactModal";
+import ContactButtonWithModal from "../newContactButton";
 
 const ContactsActionbar = ({ active = "", setActive = "", isAddFromContactModal , isEdit, toggleEdit}) => {
   const location = useLocation();
@@ -29,13 +30,18 @@ const ContactsActionbar = ({ active = "", setActive = "", isAddFromContactModal 
         <div className="flex justify-between items-center mb-6">
           <ContactTabs active={active} setActive={setActive} tabs={addFromContactTabs} />
           <div>
-            <XButton
+          <ContactButtonWithModal
+                buttonClass="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium mt-4"
+                // modalClass=""  
+                modalContent={<NewContactModal />} 
+              />
+            {/* <XButton
               text="New Contact"
               icon={<FiPlus className="text-base mr-2 inline-block" />}
               className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium ml-4"
               onClick={toggleModal}
             />
-            {isModalOpen && <NewContactModal onClose={toggleModal} />}
+            {isModalOpen && <NewContactModal onClose={toggleModal} />} */}
           </div>
         </div>
       )}
