@@ -438,6 +438,15 @@ export const contactTypeLabels = {
   5: 'OTHER',
 };
 
+export const addFromContactTabs = [
+  { id: addFromContactTab.BROKERS, label: "Realtors" },
+  { id: addFromContactTab.ATTORNEY, label: "Attorney" },
+  { id: addFromContactTab.TITLE, label: "Title" },
+  { id: addFromContactTab.LENDER, label: "Lender" },
+  { id: addFromContactTab.CLIENTS, label: "Clients" },
+  { id: addFromContactTab.OTHER, label: "Other" }
+];
+
 
  
 

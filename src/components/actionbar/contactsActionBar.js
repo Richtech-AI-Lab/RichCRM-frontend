@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import XButton from "../button/XButton";
-import { addFromContactTab, contactTab, SORT_OPTIONS } from "../../constants/constants";
+import { addFromContactTab, addFromContactTabs, contactTab, SORT_OPTIONS } from "../../constants/constants";
 import { FiEdit3, FiPlus } from "react-icons/fi";
 import { RiDownloadLine } from "react-icons/ri";
 import CaseExportModal from "../caseExportModal";
@@ -23,14 +23,6 @@ const ContactsActionbar = ({ active = "", setActive = "", isAddFromContactModal 
     return pathsToShow.includes(location.pathname);
   };
 
-  const addFromContactTabs = [
-    { id: addFromContactTab.BROKERS, label: "Realtors" },
-    { id: addFromContactTab.ATTORNEY, label: "Attorney" },
-    { id: addFromContactTab.TITLE, label: "Title" },
-    { id: addFromContactTab.LENDER, label: "Lender" },
-    { id: addFromContactTab.CLIENTS, label: "Clients" },
-    { id: addFromContactTab.OTHER, label: "Other" }
-  ];
   return (
     <>
       {shouldShow(ROUTES.CONTACTS) && (

@@ -11,7 +11,7 @@ import XSpinnerLoader from "../../../components/spinnerLoader/XSpinnerLoader";
 import { FiPlus } from "react-icons/fi";
 import { XButton } from "../../../components";
 
-const ContactListing = ({ active }) => {
+const ContactListing = ({ active, parent }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const contact = useSelector((state) => state?.contact?.contact)
@@ -57,13 +57,13 @@ const ContactListing = ({ active }) => {
         {contact?.length > 0
           ?
           <>
-            <Table.Head>
+            {parent === "dashboard" ? "" : <Table.Head>
               {header.map(key => {
                 return (
                   <Table.HeadCell>{key}</Table.HeadCell>
                 )
               })}
-            </Table.Head>
+            </Table.Head>}
             <Table.Body className="divide-y">
               {contact?.filter(item => item.contactType === active).map((user, index) => {
                 return (
