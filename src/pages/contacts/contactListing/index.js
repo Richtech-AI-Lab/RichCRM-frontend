@@ -50,7 +50,7 @@ const ContactListing = ({ active, parent }) => {
 
 
   return (
-    <div className="overflow-x-auto h-[68vh] contacts-table">
+    <div className={`overflow-x-auto h-[68vh]  ${parent === `dashboard` ? `` :`contacts-table`}`}>
       <XSpinnerLoader loading={loading} size="lg" />
       <Table className="">
 
