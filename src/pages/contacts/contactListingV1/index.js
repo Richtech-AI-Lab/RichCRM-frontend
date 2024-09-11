@@ -47,7 +47,51 @@ const ContactListingV1 = ({ active, parent }) => {
 
     fetchContactByType();
   }, [active]);
+  function getTaskLabelAndColor(status, name) {
+    let label = '';
+    let displayColor = '';
 
+    switch (status) {
+      case 0:
+        label = 'Realtor';
+        displayColor = 'blue';
+        break;
+
+      case 1:
+        label = 'Attorney';
+        displayColor = 'yellow';
+        break;
+
+      case 2:
+        label = 'Title';
+        displayColor = 'green';
+        break;
+
+      case 3:
+        label = 'Lender';
+        displayColor = 'yellow';
+        break;
+      case 4:
+        label = 'Client';
+        displayColor = 'yellow';
+        break;
+      case 5:
+        label = 'Other';
+        displayColor = 'yellow';
+        break;
+
+
+      default:
+        label = 'Unknown';
+        displayColor = 'black';
+    }
+    if (name === "label") {
+      return label;
+    } else {
+      return displayColor
+    }
+
+  }
 
   return (
     <div className={`overflow-x-auto h-[68vh]  ${parent === `dashboard` ? `` : `contacts-table`}`}>
@@ -57,7 +101,7 @@ const ContactListingV1 = ({ active, parent }) => {
         {contact?.length > 0
           ?
           <>
-             <Table.Head>
+            <Table.Head>
               {header.map(key => {
                 return (
                   <Table.HeadCell>{key}</Table.HeadCell>
@@ -66,6 +110,7 @@ const ContactListingV1 = ({ active, parent }) => {
             </Table.Head>
             <Table.Body className="divide-y">
               {contact?.map((user, index) => {
+
                 return (
                   <Table.Row key={index} className="bg-white dark:border-gray-700 dark:bg-gray-800 cursor-pointer"
                     onClick={() => { handleNavigation(user) }}
@@ -80,7 +125,13 @@ const ContactListingV1 = ({ active, parent }) => {
                         <span className="left-txt font-medium text-secondary-800">{user.firstName} {user.lastName}</span>
                       </div>
                     </Table.Cell>
-                    {header.includes("Tag") && <Table.Cell>{user.contactType}</Table.Cell>}
+                    {header.includes("Tag") && <Table.Cell>
+                      <p className="mb-2">
+                        <span className={`bg-badge-${getTaskLabelAndColor(user.contactType, "color")} text-secondary-100 text-sm font-semibold py-1 px-3 rounded-full inline-block`}>
+                          {getTaskLabelAndColor(user.contactType, "label")}
+                        </span>
+                      </p>
+                    </Table.Cell>}
                     {header.includes("Organization") && <Table.Cell>{user.company}</Table.Cell>}
                     {header.includes("Position") && <Table.Cell>{user.position}</Table.Cell>}
                     {header.includes("Email") && <Table.Cell>{user.email}</Table.Cell>}
@@ -94,10 +145,10 @@ const ContactListingV1 = ({ active, parent }) => {
             </Table.Body> </> :
           <>
             <div className="flex flex-col items-center justify-center h-[60vh] w-full">
-              <p className="text-center text-gray-500">No {active == 0? "individual" : "organization"}  contact available</p>
+              <p className="text-center text-gray-500">No {active == 0 ? "individual" : "organization"}  contact available</p>
               <ContactButtonWithModal
-                buttonClass="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium mt-4" 
-                modalContent={active == 0? <NewIndividualContactModalV1 /> : <NewOrganizationContactModalV1 />} 
+                buttonClass="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium mt-4"
+                modalContent={active == 0 ? <NewIndividualContactModalV1 /> : <NewOrganizationContactModalV1 />}
               />
               {/* <XButton
                 text="New Contact"
