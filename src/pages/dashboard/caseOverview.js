@@ -10,7 +10,7 @@ const CaseOverview = () => {
         <div className="grid grid-cols-12 gap-6 mb-6">
             <div className="col-span-12">
                 <div className="grid grid-cols-6 gap-6">
-                    <div className="card flex flex-col justify-between h-full">
+                    <div className="card shadow-card flex flex-col justify-between h-full hover:bg-badge-gray">
                         <p className="text-[22px] text-secondary-800 font-medium leading-[30px] mb-[18px]">
                             <span>Total Open Cases</span>
                         </p>
@@ -19,7 +19,7 @@ const CaseOverview = () => {
                             <span>{cases?.length > 0 ? cases?.length : 0}</span>
                         </p>
                     </div>
-                    <div className="card flex flex-col justify-between h-full">
+                    <div className="card shadow-card flex flex-col justify-between h-full hover:bg-badge-gray">
                         <span className="text-sm text-secondary-300">Cases</span>
                         <p className="text-[18px] text-secondary-800 font-medium leading-[30px] mb-[18px]">
                             <span>Setting Up</span>
@@ -31,7 +31,7 @@ const CaseOverview = () => {
 
 
                     </div>
-                    <div className="card flex flex-col justify-between h-full">
+                    <div className="card shadow-card flex flex-col justify-between h-full hover:bg-badge-gray">
                         <span className="text-sm text-secondary-300">Cases</span>
                         <p className="text-[18px] text-secondary-800 font-medium leading-[30px] mb-[18px]">
                             <span>Contract Preparing</span>
@@ -43,7 +43,7 @@ const CaseOverview = () => {
 
 
                     </div>
-                    <div className="card flex flex-col justify-between h-full">
+                    <div className="card shadow-card flex flex-col justify-between h-full hover:bg-badge-gray">
                         <span className="text-sm text-secondary-300">Cases</span>
                         <p className="text-[18px] text-secondary-800 font-medium leading-[30px] mb-[18px]">
                             <span>Contract Signing</span>
@@ -55,7 +55,7 @@ const CaseOverview = () => {
 
 
                     </div>
-                    <div className="card flex flex-col justify-between h-full">
+                    <div className="card shadow-card flex flex-col justify-between h-full hover:bg-badge-gray">
                         <span className="text-sm text-secondary-300">Cases</span>
                         <p className="text-[18px] text-secondary-800 font-medium leading-[30px] mb-[18px]">
                             <span>Mortgage & Title</span>
@@ -67,7 +67,7 @@ const CaseOverview = () => {
 
 
                     </div>
-                    <div className="card flex flex-col justify-between h-full">
+                    <div className="card shadow-card flex flex-col justify-between h-full hover:bg-badge-gray">
                         <span className="text-sm text-secondary-300">Cases</span>
                         <p className="text-[18px] text-secondary-800 font-medium leading-[30px] mb-[18px]">
                             <span>Closing</span>

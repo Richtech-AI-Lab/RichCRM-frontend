@@ -48,7 +48,9 @@ const Dashboard = () => {
           <span>Recent Contacts</span>
         </p>
         <ContactTabs active={activeTab} setActive={setActiveTab} tabs={addFromContactTabs} />
+        <div className="contacts-table db-contacts mt-2 bg-input-surface px-4 py-0 rounded-2xl">
         <ContactListing active={activeTab} parent={"dashboard"} />
+        </div>
       </div>
     </div>
   );

@@ -102,7 +102,10 @@
   .custom-progress>div {
     @apply h-10 rounded-lg bg-primary2 text-white text-xs leading-10 !important
   }
-  .custom-radio input {
+  .new-case-modal [type='checkbox']:checked {
+    @apply bg-primary2;
+  }
+  .custom-radio [type='radio']:checked {
     @apply text-primary2 focus:ring-transparent
   }
   .btn-theme {
@@ -146,7 +149,7 @@
     @apply text-secondary-600
   }
   .new-case-modal input:focus {
-    @apply bg-bg-input ring-transparent
+    @apply ring-transparent
   }
   .task-checklist {
     @apply border-b border-b-border pl-6 pr-4
@@ -192,6 +195,12 @@
   }
   .contacts-table td {
     @apply py-2 text-sm text-secondary-800 font-medium px-4 first:pl-0 last:pr-0
+  }
+  .db-contacts td {
+    @apply bg-input-surface py-[10px]
+  }
+  .db-contacts input  {
+    @apply bg-transparent
   }
   .contacts-table.addFromContactModal {
     @apply  bg-input-surface
