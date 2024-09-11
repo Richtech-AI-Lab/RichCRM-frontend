@@ -73,7 +73,7 @@ const NewCaseModal = ({ onClose }) => {
     debounce(async (value, index) => {
       if (value != "" || value.length > 0) {
         const response = await postRequest(API_ENDPOINTS.FETCH_CLIENT_BY_QUERY, {
-          keyword:  value 
+          keyword: value
         }
         )
         const filteredResults = response?.data?.data;
@@ -159,12 +159,12 @@ const NewCaseModal = ({ onClose }) => {
   const processClients = (values) => {
     // Destructure the clients array from the values object
     const { clients } = values;
-  
+
     // Check if the length of the clients array is greater than 1
     if (clients.length > 1) {
       // Remove the first object from the array
       const remainingClients = clients.slice(1);
-  
+
       // Iterate over the remaining clients to create an array of objects
       const processedClients = remainingClients.map((clientData) => ({
         clientType: values.clientType,
@@ -174,15 +174,15 @@ const NewCaseModal = ({ onClose }) => {
         ...(clientData.clientemail && { email: clientData.clientemail }),
         ...(clientData.clientId && { clientId: clientData.clientId })
       }));
-  
+
       return processedClients; // Return the array of processed clients
     }
-  
+
     // If the length is 1, return an empty array or the original clients array
     return [];
   };
 
-  const handleNewCaseInfo = async (values) => {    
+  const handleNewCaseInfo = async (values) => {
     const clientList = processClients(values)
     const clientData = values.clients[0];
     const clientDetails = {
@@ -311,7 +311,7 @@ const NewCaseModal = ({ onClose }) => {
                   <Label htmlFor="caseType" value="Case Type" />
                   <div className="grid grid-cols-2 gap-4 mb-8">
                     <div className="block">
-                      <div className={`items-dropdown ${values.caseType == "0" ||  values.caseType == "1" ? "" :  "default" }  single-select mt-3`}>
+                      <div className={`items-dropdown ${values.caseType == "0" || values.caseType == "1" ? "" : "default"}  single-select mt-3`}>
                         <Field
                           as={NewCaseDropdown}
                           defaultLabel="Select Case Type"
@@ -320,7 +320,7 @@ const NewCaseModal = ({ onClose }) => {
                           onChange={handleChange}
                           onBlur={handleBlur}
                           options={caseTypeOptions}
-                          // inputClassName={values.caseType ? "text-secondary-600 bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3":"bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"  }
+                        // inputClassName={values.caseType ? "text-secondary-600 bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3":"bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"  }
                         />
                         {touched.caseType && errors.caseType ? (
                           <div className="text-red-500 text-sm">
@@ -401,7 +401,7 @@ const NewCaseModal = ({ onClose }) => {
                     <Label value="Client" className="mb-2" />
                     <div className="grid grid-cols-2 gap-4">
                       <div className="block">
-                        <div className={`items-dropdown ${values.clientType == "0" ||  values.clientType == "1" || values.clientType == "2"? "" :  "default" }  single-select mt-3`}>
+                        <div className={`items-dropdown ${values.clientType == "0" || values.clientType == "1" || values.clientType == "2" ? "" : "default"}  single-select mt-3`}>
                           <Field
                             as={NewCaseDropdown}
                             defaultLabel="Select Client Type"
@@ -517,7 +517,7 @@ const NewCaseModal = ({ onClose }) => {
                                                     clientLastName: item.lastName,
                                                     clientcellNumber: item.cellNumber,
                                                     clientemail: item.email,
-                                                    clientId:item.clientId
+                                                    clientId: item.clientId
                                                   });
                                                   setSearchResults([]);
                                                 }}
@@ -846,18 +846,20 @@ const NewCaseModal = ({ onClose }) => {
                         field={{ name: "city" }}
                         form={{ errors, touched }}
                       />
-                      <Field
-                        as={SelectInput}
+                      <div className={`items-dropdown ${values.state == null || values.state == undefined || values.state == "" ? "default" : ""} single-select mt-3`}  >                      <Field
+                        as={NewCaseDropdown}
                         defaultLabel="Select State"
                         name="state"
                         value={values.state}
                         onChange={handleChange}
                         onBlur={handleBlur}
                         options={states}
-                        error={errors.state}
-                        touched={touched.state}
-                        inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
+                        field={{ name: "state" }}
+                        form={{ errors, touched }}
                       />
+
+                      </div>
+
                       <TextInput
                         name="zipCode"
                         type="text"
