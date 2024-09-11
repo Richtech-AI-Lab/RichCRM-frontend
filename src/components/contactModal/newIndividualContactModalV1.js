@@ -1,84 +1,54 @@
 import React, { useState } from "react";
 import { Formik, Field } from "formik";
-import { SelectInput, XButton } from "..";
+import { SelectInput, TextInput, XButton } from "..";
 import { IMAGES } from "../../constants/imagePath";
 import states from "../../constants/states.json";
-import { Label, Modal, Textarea, TextInput } from "flowbite-react";
+import { Label, Modal, Textarea } from "flowbite-react";
 import { useDispatch } from "react-redux";
 import NewCaseDropdown from "../newcasedropdown";
 import { caseTypeOptions, contactTagOption } from "../../utils/formItem";
 import { createAddressContactRequest, createAddressRequest } from "../../redux/actions/utilsActions";
+import { createContactRequest } from "../../redux/actions/contactActions";
+import * as Yup from "yup";
 
 // Initial form values for new contact
 const initialValues = {
+    firstName: '',
+    lastName: '',
+    contactType: '',
     position: '',
     company: '',
     email: '',
     cellNumber: '',
     workNumber: '',
-    wechatAccount: '',
-    whatsAppNumber: '',
-    lineNumber: '',
-    addressLine1: '',
-    addressLine2: '',
-    city: '',
-    state: '',
-    zipCode: '',
-    note: ''
 };
 
 const NewIndividualContactModalV1 = ({ onSubmit, onClose }) => {
     const dispatch = useDispatch();
-    const [optionalFields, setOptionalFields] = useState({
-        workNumber: false,
-        wechatAccount: false,
-        whatsAppNumber: false,
-        lineNumber: false,
+    const validationSchema = Yup.object({
+        contactType: Yup.string().required('Contact Tag is required'),
+        firstName: Yup.string().required("First Name is required"),
+        lastName: Yup.string().required("Last Name is required"),
+        email: Yup.string().email('Invalid email format'),
+        cellphone: Yup.string().required('Cell phone is required'),
     });
-
-    const handleAddField = (field) => {
-        setOptionalFields((prevState) => ({
-            ...prevState,
-            [field]: true,
-        }));
-    };
-
-    const handleRemoveField = (field, setFieldValue) => {
-        setOptionalFields((prevState) => ({
-            ...prevState,
-            [field]: false,
-        }));
-        setFieldValue(field, '');
-    };
     const handleNewContact = async (values) => {
 
         try {
-            const combinePayload = {
-                contact: {
-                    contactType: 2,
-                    firstName: values?.firstName,
-                    lastName: values?.lastName,
-                    company: values?.company,
-                    position: values?.position,
-                    cellNumber: values?.cellNumber,
-                    email: values?.email,
-                    workNumber: values?.workNumber,
-                    wechatAccount: values?.wechatAccount,
-                    whatsAppNumber: values?.whatsAppNumber,
-                    lineNumber: values?.lineNumber,
-                    note: values?.note
-                },
-                util: {
-                    addressLine1: values?.addressLine1,
-                    addressLine2: values?.addressLine2,
-                    city: values?.city,
-                    state: values?.state,
-                    zipCode: values?.zipCode,
-                }
+            const payload = {
 
-            }
+                firstName: values?.firstName,
+                lastName: values?.lastName,
+                contactType: values?.contactType,
+                position: values?.position,
+                company: values?.company,
+                email: values?.email,
+                cellNumber: values?.cellNumber,
+                workNumber: values?.workNumber,
+            };
 
-            dispatch(createAddressContactRequest(combinePayload))
+
+            dispatch(createContactRequest(payload))
 
             onClose();
         } catch (error) {
@@ -103,7 +73,7 @@ const NewIndividualContactModalV1 = ({ onSubmit, onClose }) => {
             <Modal.Body>
                 <Formik
                     initialValues={initialValues}
-                    // validationSchema={validationSchema}
+                    validationSchema={validationSchema}
                     onSubmit={handleNewContact}
                 >
                     {({
@@ -152,17 +122,27 @@ const NewIndividualContactModalV1 = ({ onSubmit, onClose }) => {
 
                                 </div>
                                 <div className="grid grid-cols-1 gap-4">
-                                    <div className={`items-dropdown ${values.tag = ! "" ? "" : "default"}  single-select mt-3 mb-3`}>
-                                        <Field
-                                            as={NewCaseDropdown}
-                                            defaultLabel="Select Tag"
-                                            name="tag"
-                                            value={values.tag}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            options={contactTagOption}
-                                        />
+                                    <div className="block">
+                                        <div className={`items-dropdown single-select mt-3 mb-3`}>
+                                            <Field
+                                                as={NewCaseDropdown}
+                                                defaultLabel="Select Tag"
+                                                name="contactType"
+                                                value={values.contactType}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                options={contactTagOption}
+
+                                            />
+
+                                            {touched.contactType && errors.contactType ? (
+                                                <div className="text-red-500 text-sm">
+                                                    {errors.contactType}
+                                                </div>
+                                            ) : null}
+                                        </div>
                                     </div>
+
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4">

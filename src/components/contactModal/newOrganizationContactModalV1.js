@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Formik, Field } from "formik";
-import { SelectInput, XButton } from "..";
+import { SelectInput, TextInput, XButton } from "..";
 import { IMAGES } from "../../constants/imagePath";
 import states from "../../constants/states.json";
-import { Label, Modal, Textarea, TextInput } from "flowbite-react";
+import { Label, Modal, Textarea } from "flowbite-react";
 import { useDispatch } from "react-redux";
 import NewCaseDropdown from "../newcasedropdown";
 import { caseTypeOptions, contactTagOption } from "../../utils/formItem";
@@ -109,7 +109,6 @@ const NewOrganizationContactModalV1 = ({ onSubmit, onClose }) => {
                             </div> */}
                             <div className="block">
                                 <div className="grid grid-cols-1">
-
                                     <TextInput
                                         name="organizationName"
                                         type="text"

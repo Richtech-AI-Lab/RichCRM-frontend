@@ -12,6 +12,8 @@ import { FiPlus } from "react-icons/fi";
 import { XButton } from "../../../components";
 import NewContactModal from "../../../components/contactModal/newContactModal";
 import ContactButtonWithModal from "../../../components/newContactButton";
+import NewIndividualContactModalV1 from "../../../components/contactModal/newIndividualContactModalV1";
+import NewOrganizationContactModalV1 from "../../../components/contactModal/newOrganizationContactModalV1";
 
 const ContactListingV1 = ({ active, parent }) => {
   const dispatch = useDispatch();
@@ -92,10 +94,10 @@ const ContactListingV1 = ({ active, parent }) => {
             </Table.Body> </> :
           <>
             <div className="flex flex-col items-center justify-center h-[60vh] w-full">
-              <p className="text-center text-gray-500">No contact available</p>
+              <p className="text-center text-gray-500">No {active == 0? "individual" : "organization"}  contact available</p>
               <ContactButtonWithModal
                 buttonClass="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium mt-4" 
-                modalContent={<NewContactModal />} 
+                modalContent={active == 0? <NewIndividualContactModalV1 /> : <NewOrganizationContactModalV1 />} 
               />
               {/* <XButton
                 text="New Contact"
