@@ -13,7 +13,7 @@ import { Field, Formik } from "formik";
 import { IMAGES } from "../../../constants/imagePath";
 import { CASETYPE } from "../../../constants/constants";
 import ContactEditForm from "../contactEdit";
-import { createAddressRequest, fetchAddressByIdRequest } from "../../../redux/actions/utilsActions";
+import { createAddressRequest, fetchAddressByIdFailure, fetchAddressByIdRequest } from "../../../redux/actions/utilsActions";
 import { useDispatch, useSelector } from "react-redux";
 import ContactDetail from "../contactDetail";
 import { getCaseByContactRequest } from "../../../redux/actions/caseAction";
@@ -38,6 +38,8 @@ const ContactPartnerCard = ({ isEdit, toggleEdit }) => {
         addressId: contactdetails?.mailingAddress
       }
       dispatch(fetchAddressByIdRequest(data))
+    }else{
+      dispatch(fetchAddressByIdFailure())
     }
   }, [])
 

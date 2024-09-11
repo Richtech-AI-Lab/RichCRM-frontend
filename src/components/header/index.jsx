@@ -17,7 +17,7 @@ const Header = ({ toggleDrawer, title }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [searchResults, setSearchResults] = useState([]);
-
+  const [searchValue, setSearchValue] = useState(""); // Add this state
 
   const debouncedFunction = useCallback(
     debounce(async (value, index) => {
@@ -34,7 +34,18 @@ const Header = ({ toggleDrawer, title }) => {
     }, 1000),
     []
   );
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setSearchValue(value);
+    debouncedFunction(value);
+  };
 
+  const handleItemClick = (item) => {
+    dispatch(setSelectedContact(item));
+    navigate(ROUTES.CONTACT_PARTNER);
+    setSearchResults([]);
+    setSearchValue(""); 
+  };
   const handleLogout = () => {
     dispatch(logout());
     localStorage.removeItem('authEmail');
@@ -56,10 +67,12 @@ const Header = ({ toggleDrawer, title }) => {
           <input
             className="text-base text-secondary-700 font-normal leading-6 bg-bg-gray-100 py-2 px-6 rounded-[28px] w-[360px]"
             placeholder="Search case, contact or address"
-            onChange={(e) => {
-              // handleChange(e);
-              debouncedFunction(e.target.value);
-            }}
+            value={searchValue} // Bind the value to the state
+            onChange={handleInputChange} // Update state on change
+            // onChange={(e) => {
+            //   // handleChange(e);
+            //   debouncedFunction(e.target.value);
+            // }}
           />
           <img
             src={IMAGES.searchIcon}
@@ -70,11 +83,7 @@ const Header = ({ toggleDrawer, title }) => {
             {searchResults?.map((item) => (
               <li
                 className={'px-4 py-2 hover:bg-input-surface'}
-                onClick={() => {
-                  dispatch(setSelectedContact(item))
-                  navigate(ROUTES.CONTACT_PARTNER);
-                  setSearchResults([]);
-                }}
+                onClick={() => handleItemClick(item)} // Use the new handler
                 key={item.id} // Adding a key for each list item for better performance
               >
                 <div className="flex items-center">

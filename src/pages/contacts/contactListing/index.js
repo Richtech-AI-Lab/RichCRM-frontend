@@ -10,8 +10,10 @@ import { useDispatch, useSelector } from "react-redux";
 import XSpinnerLoader from "../../../components/spinnerLoader/XSpinnerLoader";
 import { FiPlus } from "react-icons/fi";
 import { XButton } from "../../../components";
+import NewContactModal from "../../../components/contactModal/newContactModal";
+import ContactButtonWithModal from "../../../components/newContactButton";
 
-const ContactListing = ({ active }) => {
+const ContactListing = ({ active, parent }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const contact = useSelector((state) => state?.contact?.contact)
@@ -50,20 +52,20 @@ const ContactListing = ({ active }) => {
 
 
   return (
-    <div className="overflow-x-auto h-[68vh] contacts-table">
+    <div className={`overflow-x-auto h-[68vh]  ${parent === `dashboard` ? `` : `contacts-table`}`}>
       <XSpinnerLoader loading={loading} size="lg" />
       <Table className="">
 
         {contact?.length > 0
           ?
           <>
-            <Table.Head>
+            {parent === "dashboard" ? "" : <Table.Head>
               {header.map(key => {
                 return (
                   <Table.HeadCell>{key}</Table.HeadCell>
                 )
               })}
-            </Table.Head>
+            </Table.Head>}
             <Table.Body className="divide-y">
               {contact?.filter(item => item.contactType === active).map((user, index) => {
                 return (
@@ -95,11 +97,15 @@ const ContactListing = ({ active }) => {
           <>
             <div className="flex flex-col items-center justify-center h-[60vh] w-full">
               <p className="text-center text-gray-500">No contact available</p>
-              <XButton
+              <ContactButtonWithModal
+                buttonClass="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium mt-4" 
+                modalContent={<NewContactModal />} 
+              />
+              {/* <XButton
                 text="New Contact"
                 icon={<FiPlus className="text-base mr-2 inline-block" />}
                 className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium mt-4" // Added mt-4 for spacing
-              />
+              /> */}
             </div>
 
           </>

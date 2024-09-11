@@ -3,20 +3,13 @@ import React from "react";
 const Card = ({ title, dueText, dueInDays }) => {
   return (
     <div className="card shadow-card">
-      <p className="text-secondary-800 text-base leading-6 mb-1 font-medium">{title}</p>
-      <span className="text-secondary-700 text-sm mb-4 block">Selling</span>
       <p className="text-[22px] text-secondary-800 font-medium leading-[30px] mb-[18px]">
-        <span>{dueText}</span>
-        <span className="text-error ml-2">{dueInDays}</span>
+        <span>Mortgage is Due in</span>
+        <span className="text-error ml-2"> 20 days</span>
       </p>
-      <div className="text-right py-4 pr-8">
-        <a className="font-medium text-base leading-5 text-secondary-900">
-          Ignore
-        </a>
-        <a className="font-medium text-base leading-5 text-primary2 ml-8">
-          View Details
-        </a>
-      </div>
+      <p className="text-base text-secondary-800 font-semibold mb-1">Woooo, Larry</p>
+          <p className="text-sm text-secondary-800 font-medium mb-1">130 W 3rd St # 1203_New York NY 10012-1296</p>
+          <span className="text-sm text-secondary-300">Selling</span>
     </div>
   );
 };

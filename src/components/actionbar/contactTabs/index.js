@@ -9,13 +9,11 @@ const ContactTabs = ({ active, setActive, tabs, isAddFromContactModal }) => {
           onClick={() => {
             setActive(tab.id);
           }}
-          className={`${
-            active === tab.id
-              ? `${
-                  isAddFromContactModal ? "bg-input-surface" : "bg-bg-gray-100"
-                }`
+          className={`${active === tab.id
+              ? `${isAddFromContactModal ? "bg-input-surface" : "bg-bg-gray-100"
+              }`
               : ""
-          } px-4 py-2 rounded-full mr-4 cursor-pointer`}
+            } px-4 py-2 rounded-full mr-4 cursor-pointer`}
         >
           <span className="text-base font-medium text-secondary-800">
             {tab.label}
