@@ -382,7 +382,7 @@ const StagesChecklist = () => {
                     </span>
                   </div>
                 ) : (
-                  <span className="text-base text-secondary-800 font-medium">{`${getHeadLabel(currentStep)} (${getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]])}/${taskData.data[STAGESNAMES[currentStep]].length})`}</span>
+                  <span className="text-base text-secondary-800 font-medium">{`${getHeadLabel(currentStep)} (${getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]])}/${taskData.data[STAGESNAMES[currentStep]]?.length})`}</span>
                 )}
                 <div className="flex items-center gap-2">
 

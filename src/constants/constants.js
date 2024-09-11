@@ -447,6 +447,23 @@ export const addFromContactTabs = [
   { id: addFromContactTab.OTHER, label: "Other" }
 ];
 
+export const addFromContactV1Tab = {
+  individuals: 0,
+  organizations: 1
+ };
+
+export const addFromContactV1Tabs = [
+  { id: addFromContactV1Tab.individuals, label: "Individuals" },
+  { id: addFromContactV1Tab.organizations, label: "Organizations" },
+];
+
+
+export const CONTACTTAG = {
+  REALTORS: 0,
+  ATTORNEY: 1,
+  TITLE:2,
+  LENDER:3,
+};
 
  
 

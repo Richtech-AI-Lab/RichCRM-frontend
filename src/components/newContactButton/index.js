@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { FiPlus } from 'react-icons/fi';
 import NewContactModal from '../contactModal/newContactModal';
 import XButton from '../button/XButton';
+import NewContactModalV1 from '../contactModal/newIndividualContactModalV1';
 
 const ContactButtonWithModal = ({ buttonClass, modalClass, modalContent }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,7 +19,7 @@ const ContactButtonWithModal = ({ buttonClass, modalClass, modalContent }) => {
         onClick={toggleModal}
       />
       {isModalOpen && (
-        <NewContactModal className={modalClass} onClose={toggleModal} />
+        React.cloneElement(modalContent, { onClose: toggleModal })
       )}
     </div>
   );
