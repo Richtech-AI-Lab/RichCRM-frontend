@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import XButton from "../button/XButton";
-import { addFromContactTab, addFromContactTabs, contactTab, SORT_OPTIONS } from "../../constants/constants";
+import { addFromContactTab, addFromContactTabs, addFromContactV1Tabs, contactTab, SORT_OPTIONS } from "../../constants/constants";
 import { FiEdit3, FiPlus } from "react-icons/fi";
 import { RiDownloadLine } from "react-icons/ri";
 import CaseExportModal from "../caseExportModal";
@@ -9,8 +9,9 @@ import NewCaseModal from "../caseModal/newCaseModal";
 import { useLocation } from "react-router-dom";
 import ContactTabs from "./contactTabs";
 import { AiOutlineLink } from "react-icons/ai";
-import NewContactModal from "../contactModal/newContactModal";
 import ContactButtonWithModal from "../newContactButton";
+import NewIndividualContactModalV1 from "../contactModal/newIndividualContactModalV1";
+import NewOrganizationContactModalV1 from "../contactModal/newOrganizationContactModalV1";
 
 const ContactsActionbar = ({ active = "", setActive = "", isAddFromContactModal , isEdit, toggleEdit}) => {
   const location = useLocation();
@@ -24,16 +25,17 @@ const ContactsActionbar = ({ active = "", setActive = "", isAddFromContactModal 
     return pathsToShow.includes(location.pathname);
   };
 
+  
   return (
     <>
       {shouldShow(ROUTES.CONTACTS) && (
         <div className="flex justify-between items-center mb-6">
-          <ContactTabs active={active} setActive={setActive} tabs={addFromContactTabs} />
+          <ContactTabs active={active} setActive={setActive} tabs={addFromContactV1Tabs} />
           <div>
           <ContactButtonWithModal
                 buttonClass="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium mt-4"
                 // modalClass=""  
-                modalContent={<NewContactModal />} 
+                modalContent={active == 0? <NewIndividualContactModalV1 /> : <NewOrganizationContactModalV1 />} 
               />
             {/* <XButton
               text="New Contact"

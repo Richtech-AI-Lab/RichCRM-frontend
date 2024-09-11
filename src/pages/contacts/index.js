@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { contactTab } from "../../constants/constants";
 import ContactsActionbar from "../../components/actionbar/contactsActionBar";
-import ContactListing from "./contactListing";
+import ContactListingV1 from "./contactListingV1";
 
 const Contacts = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -9,7 +9,7 @@ const Contacts = () => {
   return (
     <div className="mt-14">
       <ContactsActionbar active={activeTab} setActive={setActiveTab} />
-      <ContactListing active={activeTab} />
+      <ContactListingV1 active={activeTab} />
     </div>
   );
 };

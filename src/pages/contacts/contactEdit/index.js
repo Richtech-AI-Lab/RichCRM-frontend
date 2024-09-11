@@ -13,6 +13,8 @@ const ContactEditForm = ({ initialValues, onSubmit, values, form, setFieldValue,
         wechatAccount: false,
         whatsAppNumber: false,
         lineNumber: false,
+        ssn: false,
+        driverlicense: false,
     });
 
     useEffect(() => {
@@ -20,6 +22,8 @@ const ContactEditForm = ({ initialValues, onSubmit, values, form, setFieldValue,
         if (initialValues?.wechatAccount) setOptionalFields(prev => ({ ...prev, wechatAccount: true }));
         if (initialValues?.whatsAppNumber) setOptionalFields(prev => ({ ...prev, whatsAppNumber: true }));
         if (initialValues?.lineNumber) setOptionalFields(prev => ({ ...prev, lineNumber: true }));
+        if (initialValues?.ssn) setOptionalFields(prev => ({ ...prev, ssn: true }));
+        if (initialValues?.driverlicense) setOptionalFields(prev => ({ ...prev, driverlicense: true }));
     }, [initialValues]);
 
     const handleAddField = (field) => {
@@ -278,6 +282,69 @@ const ContactEditForm = ({ initialValues, onSubmit, values, form, setFieldValue,
                             value={values?.zipCode}
                         /></li>
 
+
+                </ul>
+            </div>
+            <div className="bg-white p-4 rounded-2xl mb-5">
+
+                <ul className="card-details">
+
+                    <li>
+                        {optionalFields.ssn && (
+
+                            <>
+                                <span className={"cursor-pointer left-txt flex items-center"} onClick={() => handleRemoveField('ssn', setFieldValue)} >
+                                    <span className="icon mr-2"> <img src={IMAGES.removeIcon} alt="icon" /> </span>
+                                    SSN
+                                </span>
+                                <input
+                                    className="text-right p-0 border-none focus:ring-transparent"
+                                    name="ssn"
+                                    type="text"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values?.ssn}
+                                />
+                            </>
+                        )}
+                        {!optionalFields.ssn && (<span className="left-txt flex items-center" onClick={() => handleAddField('ssn')} >
+                            <span className="icon mr-2 cursor-pointer">
+                                <img
+                                    src={IMAGES.addIcon}
+                                    alt="icon"
+                                />
+                            </span>
+                            Add SSN
+                        </span>)}
+                    </li>
+                    <li>
+                        {optionalFields.driverlicense && (
+
+                            <>
+                                <span className={"cursor-pointer left-txt flex items-center"} onClick={() => handleRemoveField('driverlicense', setFieldValue)} >
+                                    <span className="icon mr-2"> <img src={IMAGES.removeIcon} alt="icon" /> </span>
+                                    Driving License
+                                </span>
+                                <input
+                                    className="text-right p-0 border-none focus:ring-transparent"
+                                    name="driverlicense"
+                                    type="text"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values?.driverlicense}
+                                />
+                            </>
+                        )}
+                        {!optionalFields.driverlicense && (<span className="left-txt flex items-center" onClick={() => handleAddField('driverlicense')} >
+                            <span className="icon mr-2 cursor-pointer">
+                                <img
+                                    src={IMAGES.addIcon}
+                                    alt="icon"
+                                />
+                            </span>
+                            Add Driving License
+                        </span>)}
+                    </li>
 
                 </ul>
             </div>
