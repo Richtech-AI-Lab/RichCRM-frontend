@@ -123,7 +123,7 @@ const NewIndividualContactModalV1 = ({ onSubmit, onClose }) => {
                                 </div>
                                 <div className="grid grid-cols-1 gap-4">
                                     <div className="block">
-                                        <div className={`items-dropdown single-select mt-3 mb-3`}>
+                                        <div className={`items-dropdown ${values.contactType == null || values.contactType == undefined || values.contactType == "" ? "default" :""} single-select mt-3 mb-3`}>
                                             <Field
                                                 as={NewCaseDropdown}
                                                 defaultLabel="Select Tag"
@@ -137,7 +137,7 @@ const NewIndividualContactModalV1 = ({ onSubmit, onClose }) => {
 
                                             {touched.contactType && errors.contactType ? (
                                                 <div className="text-red-500 text-sm">
-                                                    {errors.contactType}
+                                                    {errors.caseType}
                                                 </div>
                                             ) : null}
                                         </div>

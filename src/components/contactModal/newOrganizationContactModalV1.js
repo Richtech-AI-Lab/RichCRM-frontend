@@ -31,7 +31,7 @@ const NewOrganizationContactModalV1 = ({ onSubmit, onClose }) => {
     const dispatch = useDispatch();
 
     const handleNewContact = async (values) => {
-
+        return true;
         try {
             const combinePayload = {
                 contact: {
@@ -73,7 +73,7 @@ const NewOrganizationContactModalV1 = ({ onSubmit, onClose }) => {
             <Modal.Header className="border-b-0">
                 <div>
                     <h2 className="mb-2 text-[28px] leading-9 font-medium text-secondary-800">
-                        Create a Organization Contact
+                        Create a New Organization
                     </h2>
                     <p className="text-sm leading-5 text-secondary-700">
                         Create a new contact by filling the basic information.
@@ -107,6 +107,7 @@ const NewOrganizationContactModalV1 = ({ onSubmit, onClose }) => {
                                     </div>
                                 </div>
                             </div> */}
+                            
                             <div className="block">
                                 <div className="grid grid-cols-1">
                                     <TextInput
