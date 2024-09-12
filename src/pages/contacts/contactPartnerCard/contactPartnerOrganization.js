@@ -12,11 +12,11 @@ import { CaseCardDetails, SelectInput } from "../../../components";
 import { Field, Formik } from "formik";
 import { IMAGES } from "../../../constants/imagePath";
 import { CASETYPE } from "../../../constants/constants";
-import ContactEditForm from "../contactEdit";
 import { createAddressRequest, fetchAddressByIdFailure, fetchAddressByIdRequest } from "../../../redux/actions/utilsActions";
 import { useDispatch, useSelector } from "react-redux";
 import { getCaseByContactRequest } from "../../../redux/actions/caseAction";
 import ContactOrganizationDetail from "../contactDetail/contactOrganizationDetail";
+import ContactOrganizationEditForm from "../contactEdit/contactOrganizationEditForm";
 
 const ContactPartnerOrganization = ({ isEdit, toggleEdit }) => {
   const dispatch = useDispatch();
@@ -178,7 +178,8 @@ const ContactPartnerOrganization = ({ isEdit, toggleEdit }) => {
                       </div>
                     </div>
 
-                    <ContactEditForm handleChange={handleChange} setFieldValue={setFieldValue} values={values} form={{ errors, touched }} initialValues={initialValues} />
+                    <ContactOrganizationEditForm handleChange={handleChange} setFieldValue={setFieldValue} values={values} form={{ errors, touched }} initialValues={initialValues} />
+
                     <FormButton onSave={handleSubmit} onCancel={toggleEdit} />
                   </form>
                 </div>

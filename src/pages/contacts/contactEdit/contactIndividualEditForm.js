@@ -7,7 +7,7 @@ import states from "../../../constants/states.json"
 import { Textarea } from "flowbite-react";
 
 
-const ContactEditForm = ({ initialValues, onSubmit, values, form, setFieldValue, handleChange, handleBlur }) => {
+const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setFieldValue, handleChange, handleBlur }) => {
     const [optionalFields, setOptionalFields] = useState({
         workNumber: false,
         wechatAccount: false,
@@ -367,5 +367,5 @@ const ContactEditForm = ({ initialValues, onSubmit, values, form, setFieldValue,
     );
 };
 
-export default ContactEditForm;
+export default ContactIndividualEditForm;
 
