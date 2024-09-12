@@ -334,12 +334,19 @@ export const caseTypeOptions = [
     { value: CASETYPE.SELLING, label: "Selling" },
 ];
 
-export const contactTagOption = [
+export const contactTagIndividualOption = [
     { value: CONTACTTAG.REALTORS, label: "Realtor" },
     { value: CONTACTTAG.ATTORNEY, label: "Attorney" },
     { value: CONTACTTAG.TITLE, label: "Title" },
     { value: CONTACTTAG.LENDER, label: "Lender" },
 ];
+
+export const contactTagOrganizationOption = [
+    { value: CONTACTTAG.REALTORS, label: "Real Estate" },
+    { value: CONTACTTAG.ATTORNEY, label: "Trust" },
+    { value: CONTACTTAG.TITLE, label: "Title Company" }
+];
+
 // utils/stageUtils.js
 export const stageTypes = [
     { value: 0, label: "Setting up" },

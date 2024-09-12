@@ -15,10 +15,10 @@ import { CASETYPE } from "../../../constants/constants";
 import ContactEditForm from "../contactEdit";
 import { createAddressRequest, fetchAddressByIdFailure, fetchAddressByIdRequest } from "../../../redux/actions/utilsActions";
 import { useDispatch, useSelector } from "react-redux";
-import ContactDetail from "../contactDetail";
 import { getCaseByContactRequest } from "../../../redux/actions/caseAction";
+import ContactIndividualDetail from "../contactDetail/contactIndividualDetail";
 
-const ContactPartnerCard = ({ isEdit, toggleEdit }) => {
+const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
   const dispatch = useDispatch();
   const { cases, loading } = useSelector((state) => state.case.casesData);
 
@@ -225,7 +225,7 @@ const ContactPartnerCard = ({ isEdit, toggleEdit }) => {
           :
           <>
             <div className="col-span-6 pp">
-              <ContactDetail address={addressDetails} contact={contactdetails} />
+              <ContactIndividualDetail address={addressDetails} contact={contactdetails} />
             </div>
             <div className="col-span-3">
               <div className="card bg-card-300 px-2 py-3">
@@ -283,4 +283,4 @@ const ContactPartnerCard = ({ isEdit, toggleEdit }) => {
   );
 };
 
-export default ContactPartnerCard;
+export default ContactPartnerIndividual;

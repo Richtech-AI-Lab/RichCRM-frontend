@@ -1,5 +1,5 @@
 import { call, put, takeLatest } from "redux-saga/effects";
-import { API_ENDPOINTS } from "../../constants/api";
+import { API_ENDPOINTS, ROUTES } from "../../constants/api";
 import { CREATE_CONTACT_REQUEST, GET_CONTACT_BY_KEYWORD_REQUEST, GET_CONTACT_BY_TYPE_REQUEST, GET_CONTACT_REQUEST, UPDATE_CONTACT_REQUEST } from "../type";
 import { getRequest, postRequest } from "../../axios/interceptor";
 import { toast } from "react-toastify";
@@ -42,7 +42,7 @@ function* updateContact(action) {
 
 function* createContact(action) {
   try {
-    const { payload } = action;
+    const { payload, navigate } = action;
     const response = yield call(() =>
       postRequest(API_ENDPOINTS.CREATE_CONTACT, payload)
     );
@@ -51,9 +51,11 @@ function* createContact(action) {
       contactId: payload?.contactId,
       contactType: payload?.contactType,
     };
+    let active=1;
     yield put(setSelectedContact(updatedResponse));
     if(response.status ==200){
       toast.success("contact created!");
+      navigate(ROUTES.CONTACT_PARTNER, {state: {active}});  
     }
   } catch (error) {
     handleError(error)

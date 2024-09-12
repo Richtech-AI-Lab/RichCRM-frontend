@@ -33,9 +33,10 @@ export const updateContactFailure = (error) => ({
 });
 
 //Create Contact
-export const createContactRequest = (payload) => ({
+export const createContactRequest = (payload, navigate) => ({
     type: CREATE_CONTACT_REQUEST,
     payload,
+    navigate
 });
 
 export const createContactSuccess = (contact) => ({

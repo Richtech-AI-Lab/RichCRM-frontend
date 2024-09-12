@@ -463,10 +463,10 @@ export const CONTACTTAG = {
   ATTORNEY: 1,
   TITLE:2,
   LENDER:3,
+  REALESTATE: 4,
+  TRUST: 5,
+  TITLECOMPANY:6
 };
-
- 
-
 
 export const userRole = {
   ADMIN: 0,

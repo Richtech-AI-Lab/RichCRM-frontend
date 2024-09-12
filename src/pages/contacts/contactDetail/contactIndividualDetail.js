@@ -4,7 +4,7 @@ import { caseTypeOptions } from "../../../utils/formItem";
 import { SelectInput } from "../../../components";
 import { Field } from "formik";
 
-const ContactDetail = ({ contact, address }) => {
+const ContactIndividualDetail = ({ contact, address }) => {
     return (
         <>
             <div className="bg-white rounded-2xl mb-5 p-4">
@@ -100,4 +100,4 @@ const ContactDetail = ({ contact, address }) => {
     )
 };
 
-export default ContactDetail;
+export default ContactIndividualDetail;
