@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -108,6 +108,22 @@ const events = [
 // ];
 
 const Calendar = ({ toggleAddReminderModal, filters }) => {
+  const calendarRef = useRef(null);  
+
+  // Function to force resize
+  const handleResize = () => {
+    if (calendarRef.current) {
+      const calendarApi = calendarRef.current.getApi();
+      calendarApi.updateSize(); 
+    }
+  };
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   const transformEvents = (events) => {
     return events.flatMap(event => {
       const dateEvents = [];
@@ -160,18 +176,19 @@ const Calendar = ({ toggleAddReminderModal, filters }) => {
 
   const renderEventContent = (eventInfo) => (
     <>
-    <div onClick={toggleDetailModal} className="calendar-info">
-      <div className="font-semibold mb-1">Mortgage Due</div>
-      <div>Fu, Jack</div>
-      <div className="truncate">1500, skyline avenue, t900</div>
-      
-    </div>
-    {isDetailOpen && <DetailCaseModal onAddReminderClick={toggleAddReminderModal} onClose={toggleDetailModal} />}
+      <div onClick={toggleDetailModal} className="calendar-info">
+        <div className="font-semibold mb-1">Mortgage Due</div>
+        <div>Fu, Jack</div>
+        <div className="truncate">1500, skyline avenue, t900</div>
+
+      </div>
+      {isDetailOpen && <DetailCaseModal onAddReminderClick={toggleAddReminderModal} onClose={toggleDetailModal} />}
     </>
   );
 
   return (
     <FullCalendar
+    ref={calendarRef}
       height="100%"
       plugins={[dayGridPlugin, interactionPlugin]}
       initialView="dayGridMonth"

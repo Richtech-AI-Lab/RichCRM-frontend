@@ -70,6 +70,8 @@ const ContactPartnerCard = ({ isEdit, toggleEdit }) => {
       // line: values.line,
       note: values?.note,
       mailingAddress: values?.mailingAddress,
+      ssn: values?.ssn,
+      driverLicense: values?.driverLicense,
     };
 
     const secondApiPayload = {
@@ -84,6 +86,7 @@ const ContactPartnerCard = ({ isEdit, toggleEdit }) => {
       contact: firstApiPayload,
       util: secondApiPayload
     }
+
     dispatch(createAddressRequest(data))
     toggleEdit()
   }, []);
@@ -113,6 +116,8 @@ const ContactPartnerCard = ({ isEdit, toggleEdit }) => {
     city: addressDetails?.city || '',
     state: addressDetails?.state || '',
     zipCode: addressDetails?.zipCode || '',
+    ssn: contactdetails?.ssn || '',
+    driverLicense: contactdetails?.driverLicense || '',
 
   };
 

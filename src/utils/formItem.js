@@ -1,6 +1,6 @@
 // participant.js
 
-import { CASETYPE } from "../constants/constants";
+import { CASETYPE, CONTACTTAG } from "../constants/constants";
 import { IMAGES } from "../constants/imagePath";
 import states from "../constants/states.json"
 
@@ -334,6 +334,12 @@ export const caseTypeOptions = [
     { value: CASETYPE.SELLING, label: "Selling" },
 ];
 
+export const contactTagOption = [
+    { value: CONTACTTAG.REALTORS, label: "Realtor" },
+    { value: CONTACTTAG.ATTORNEY, label: "Attorney" },
+    { value: CONTACTTAG.TITLE, label: "Title" },
+    { value: CONTACTTAG.LENDER, label: "Lender" },
+];
 // utils/stageUtils.js
 export const stageTypes = [
     { value: 0, label: "Setting up" },

@@ -78,6 +78,19 @@ const ContactDetail = ({ contact, address }) => {
 
                 <ul className="card-details">
                     <li>
+                        <span className="left-txt flex items-center" > SSN</span>
+                        <span className="left-txt flex items-center" > {contact?.ssn} </span>
+                    </li>
+                    <li>
+                        <span className="left-txt flex items-center" >Driving License</span>
+                        <span className="left-txt flex items-center" >{contact?.drivinglicense}</span>
+                    </li>
+                </ul>
+            </div>
+            <div className="bg-white p-4 rounded-2xl mb-5">
+
+                <ul className="card-details">
+                    <li>
                         <span className="left-txt flex items-center" > Note</span>
                         <span className="left-txt flex items-center" > {contact?.note} </span>
                     </li>

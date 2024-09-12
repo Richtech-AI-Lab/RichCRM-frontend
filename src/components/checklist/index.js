@@ -93,33 +93,33 @@ const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optio
     switch (taskType) {
         case 'Action':
             if (status === 0) {
-                label = 'Unfinished';
+                label = 'To-do';
                 displayColor = 'yellow';
             } else if (status === 2) {
-                label = 'Finished';
+                label = 'Done';
                 displayColor = 'green';
             }
             break;
         
         case 'Upload':
             if (status === 0) {
-                label = 'Unuploaded';
+                label = 'To-do';
                 displayColor = 'yellow';
             } else if (status === 2) {
-                label = 'Uploaded';
+                label = 'Done';
                 displayColor = 'green';
             }
             break;
         
         case 'Contact':
             if (status === 0) {
-                label = 'Unfinished';
+                label = 'To-do';
                 displayColor = 'yellow';
             } else if (status === 1) {
                 label = 'Waiting';
                 displayColor = 'grey';
             } else if (status === 2) {
-                label = 'Finished';
+                label = 'Done';
                 displayColor = 'green';
             } else if (status === 3) {
                 label = 'No response';
