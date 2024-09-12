@@ -84,7 +84,7 @@ const NewOrganizationContactModalV1 = ({ onSubmit, onClose }) => {
                                         form={{ errors, touched }}
                                     />
 
-                                    <div className={`items-dropdown ${values.tag = ! "" ? "" : "default"}  single-select mt-3`}>
+                                    <div className={`items-dropdown  ${values.contactType == null || values.contactType == undefined || values.contactType == "" ? "default" :""} single-select mt-3`}>
                                         <Field
                                             as={NewCaseDropdown}
                                             defaultLabel="Select Tag"
