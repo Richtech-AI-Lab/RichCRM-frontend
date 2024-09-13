@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Checkbox } from "flowbite-react";
 import Label from "../label";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
@@ -9,7 +9,8 @@ import NewCaseDropdown from "../newcasedropdown";
 
 const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optionsValue, checkboxId, currentStep }) => {
 
-  const getOptionsByAction = ( option = "Not Started") => {
+  const [isCompose,setIsCompose] = useState(false);
+  const getOptionsByAction = (option = "Not Started") => {
     switch (action) {
       // case "Action":
       case ACTIONTYPE.ACTION:
@@ -89,65 +90,70 @@ const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optio
     let displayColor = '';
 
     switch (taskType) {
-        case 'Action':
-            if (status === 0) {
-                label = 'To-do';
-                displayColor = 'yellow';
-            } else if (status === 2) {
-                label = 'Done';
-                displayColor = 'green';
-            }
-            break;
-        
-        case 'Upload':
-            if (status === 0) {
-                label = 'To-do';
-                displayColor = 'yellow';
-            } else if (status === 2) {
-                label = 'Done';
-                displayColor = 'green';
-            }
-            break;
-        
-        case 'Contact':
-            if (status === 0) {
-                label = 'To-do';
-                displayColor = 'yellow';
-            } else if (status === 1) {
-                label = 'Waiting';
-                displayColor = 'grey';
-            } else if (status === 2) {
-                label = 'Done';
-                displayColor = 'green';
-            } else if (status === 3) {
-                label = 'No response';
-                displayColor = 'red';
-            }
-            break;
+      case 'Action':
+        if (status === 0) {
+          label = 'To-do';
+          displayColor = 'yellow';
+        } else if (status === 2) {
+          label = 'Done';
+          displayColor = 'green';
+        }
+        break;
 
-        default:
-            label = 'Unknown';
-            displayColor = 'black';
+      case 'Upload':
+        if (status === 0) {
+          label = 'To-do';
+          displayColor = 'yellow';
+        } else if (status === 2) {
+          label = 'Done';
+          displayColor = 'green';
+        }
+        break;
+
+      case 'Contact':
+        if (status === 0) {
+          label = 'To-do';
+          displayColor = 'yellow';
+        } else if (status === 1) {
+          label = 'Waiting';
+          displayColor = 'grey';
+        } else if (status === 2) {
+          label = 'Done';
+          displayColor = 'green';
+        } else if (status === 3) {
+          label = 'No response';
+          displayColor = 'red';
+        }
+        break;
+
+      default:
+        label = 'Unknown';
+        displayColor = 'black';
     }
 
     return { label, badgeClass: displayColor };
-}
+  }
+  const handleOption = (option) => {
+    if (option == "compose message") {
+      setIsCompose(true)
+    }
+  }
 
   const displayIcon = getIconByAction(action)
   const displayOption = getOptionsByAction();
   const disabled = isOptionDisable(action, options);
   const taskStatusColor = getTaskLabelAndColor(ACTIONTYPELABEL[action], status);
-  
-// console.log(taskStatusColor?.badgeClass,"displayOption");
+
+  // console.log(taskStatusColor?.badgeClass,"displayOption");
   return (
-    <div className="border-t-2 border-black-10">
+   <> <div className="border-t-2 border-black-10">
       <li className="flex justify-between items-center mb-5 pb-5 task-checklist mt-2">
         <div className="flex items-center gap-2 custom-radio">
-          <Checkbox  id={checkboxId} defaultChecked={status} className="mr-6" />
+          <Checkbox id={checkboxId} defaultChecked={status} className="mr-6" />
           <Label htmlFor={checkboxId} className="flex items-center lg:text-base xl:text-base text-title font-medium">
             {displayIcon && <span className="mr-2 text-2xl">{displayIcon}</span>}
             {/* {ACTIONTYPELABEL[action]}: */}
-             {actionInfo}
+            {actionInfo}
           </Label>
         </div>
         <div>
@@ -157,16 +163,16 @@ const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optio
             </span>
           </p>
           <div className="items-dropdown single-select mt-3">
-        <NewCaseDropdown 
-         disabled={disabled}
-         defaultLabel="Options"
-         name="checklistSelect"
-         value={options}
-         onChange={(e) => console.log(e.target.value)}
-         options={displayOption}
-         inputClassName="border-border rounded-full py-[10px] px-[16px] text-secondary-700 leading-5 font-semibold"
-        />
-        </div>
+            <NewCaseDropdown
+              disabled={disabled}
+              defaultLabel="Options"
+              name="checklistSelect"
+              value={options}
+              onChange={(e) => handleOption(e.target.value)}
+              options={displayOption}
+              inputClassName="border-border rounded-full py-[10px] px-[16px] text-secondary-700 leading-5 font-semibold"
+            />
+          </div>
           {/* <SelectInput
             disabled={disabled}
             name="checklistSelect"
@@ -178,7 +184,7 @@ const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optio
         </div>
       </li>
     </div>
-    // </div>
+     </>
   );
 };
 
