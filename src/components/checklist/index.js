@@ -1,11 +1,9 @@
 import React from "react";
 import { Checkbox } from "flowbite-react";
 import Label from "../label";
-import SelectInput from "../selectinput";
-import { IoChatbubbles } from "react-icons/io5";
+import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
+import { HiOutlineCube } from "react-icons/hi";
 import { LuUpload } from "react-icons/lu";
-import { FaClipboardList } from "react-icons/fa";
-import Badge from "../badge";
 import { ACTIONTYPE, ACTIONTYPELABEL } from "../../constants/constants";
 import NewCaseDropdown from "../newcasedropdown";
 
@@ -70,11 +68,11 @@ const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optio
   const getIconByAction = (action) => {
     switch (action) {
       case ACTIONTYPE.ACTION:
-        return <FaClipboardList />
+        return <HiOutlineCube />
       case ACTIONTYPE.CONTACT:
         return <LuUpload />
       case ACTIONTYPE.UPLOAD:
-        return <IoChatbubbles />
+        return <IoChatbubbleEllipsesOutline />
       default: <></>
     }
   }
@@ -147,8 +145,9 @@ const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optio
         <div className="flex items-center gap-2 custom-radio">
           <Checkbox  id={checkboxId} defaultChecked={status} className="mr-6" />
           <Label htmlFor={checkboxId} className="flex items-center lg:text-base xl:text-base text-title font-medium">
-            {displayIcon && <span className="mr-2">{displayIcon}</span>}
-            {ACTIONTYPELABEL[action]}: {actionInfo}
+            {displayIcon && <span className="mr-2 text-2xl">{displayIcon}</span>}
+            {/* {ACTIONTYPELABEL[action]}: */}
+             {actionInfo}
           </Label>
         </div>
         <div>
