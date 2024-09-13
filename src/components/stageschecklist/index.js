@@ -155,7 +155,7 @@ const StagesChecklist = () => {
   }, [dispatch, currentStep, data])
 
   const progressItems = [
-    "Setting up",
+    "To-do",
     "Contract Reviewing",
     "Contract Signing",
     "Mortgage & Title",
@@ -174,7 +174,7 @@ const StagesChecklist = () => {
   const getHeadLabel = (currentStep) => {
     switch (currentStep) {
       case 0:
-        return "Setting up Tasks";
+        return "To-do Tasks";
       case 1:
         return "Contract Reviewing Tasks";
       case 2:
