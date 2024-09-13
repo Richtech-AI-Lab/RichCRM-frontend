@@ -22,10 +22,12 @@ import { STAGESNAMES } from "../../constants/constants";
 import { isEmpty } from "lodash";
 import XSpinnerLoader from "../spinnerLoader/XSpinnerLoader";
 import { caseCreateSuccess, closeCaseRequest, getClientByIdRequest, updateCaseRequest } from "../../redux/actions/caseAction";
+import StageUncompleteAlert from "../../pages/cases/stagealert";
 
 const StagesChecklist = () => {
   const dispatch = useDispatch();
   const [currentStep, setCurrentStep] = useState(0);
+  const [isUncomplete, setIsUncomplete] = useState(false);
   const [activeTab, setActiveTab] = useState('mortgage');
   const menuOption1 = ['Create a Task', 'Add a Task']
   const menuOption2 = ['Finish all', 'Edit task']
@@ -187,7 +189,9 @@ const StagesChecklist = () => {
         return <></>;
     }
   };
-
+  const toggleStageModal = () => {
+    setIsUncomplete(!isUncomplete);
+  };
 
   const handlePreviousStage = async () => {
     if (currentStep > 0) {
@@ -214,6 +218,7 @@ const StagesChecklist = () => {
   };
 
   const handleNextStage = async () => {
+    setIsUncomplete(true)
     if (currentStep < progressItems.length - 1) {
       const createStagePayload = {
         stageType: currentStep + 1,
@@ -455,6 +460,8 @@ const StagesChecklist = () => {
                   className="bg-active-blue text-active-blue-text shadow-shadow-light rounded-full text-sm font-medium py-[10px] px-6" onClick={handleNextStage} />
               </div>
             </div></>}
+
+          {isUncomplete && <StageUncompleteAlert onBack={handlePreviousStage} onClose={toggleStageModal}/>}
       </div>
     </>
   );
