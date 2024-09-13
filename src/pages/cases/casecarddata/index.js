@@ -128,6 +128,7 @@ const CaseCardData = () => {
           />
           <ContactCard
             clientDetails={clientDetails}
+            casedetails={casedetails}
           />
           {/* } */}
         </div>
