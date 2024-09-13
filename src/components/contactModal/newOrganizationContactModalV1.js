@@ -6,60 +6,32 @@ import states from "../../constants/states.json";
 import { Label, Modal, Textarea } from "flowbite-react";
 import { useDispatch } from "react-redux";
 import NewCaseDropdown from "../newcasedropdown";
-import { caseTypeOptions, contactTagOption } from "../../utils/formItem";
 import { createAddressContactRequest, createAddressRequest } from "../../redux/actions/utilsActions";
+import { contactTagOrganizationOption } from "../../utils/formItem";
+import { createContactRequest } from "../../redux/actions/contactActions";
+import { useNavigate } from "react-router-dom";
 
 // Initial form values for new contact
 const initialValues = {
-    position: '',
-    company: '',
-    email: '',
-    cellNumber: '',
-    workNumber: '',
-    wechatAccount: '',
-    whatsAppNumber: '',
-    lineNumber: '',
-    addressLine1: '',
-    addressLine2: '',
-    city: '',
-    state: '',
-    zipCode: '',
+    company:'',
+    contactType:'',
     note: ''
 };
 
 const NewOrganizationContactModalV1 = ({ onSubmit, onClose }) => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleNewContact = async (values) => {
-        return true;
         try {
-            const combinePayload = {
-                contact: {
-                    contactType: 2,
-                    firstName: values?.firstName,
-                    lastName: values?.lastName,
-                    company: values?.company,
-                    position: values?.position,
-                    cellNumber: values?.cellNumber,
-                    email: values?.email,
-                    workNumber: values?.workNumber,
-                    wechatAccount: values?.wechatAccount,
-                    whatsAppNumber: values?.whatsAppNumber,
-                    lineNumber: values?.lineNumber,
-                    note: values?.note
-                },
-                util: {
-                    addressLine1: values?.addressLine1,
-                    addressLine2: values?.addressLine2,
-                    city: values?.city,
-                    state: values?.state,
-                    zipCode: values?.zipCode,
-                }
-
-            }
-
-            dispatch(createAddressContactRequest(combinePayload))
-
+            const payload = {
+                contactType: values.contactType,
+                firstName: values?.company,
+                lastName:"",
+                company: values?.company,
+                note: values?.note
+            };
+            dispatch(createContactRequest(payload, navigate))
             onClose();
         } catch (error) {
             console.error("Error while handling new contact information", error);
@@ -98,38 +70,29 @@ const NewOrganizationContactModalV1 = ({ onSubmit, onClose }) => {
                     }) => (
 
                         <form onSubmit={handleSubmit} className="">
-                            {/* <div className="block">
-                                <Label htmlFor="caseType" value="Case Type" />
-                                <div className="grid grid-cols-2 gap-4 mb-8">
-                                    <div className="block">
-
-
-                                    </div>
-                                </div>
-                            </div> */}
                             
                             <div className="block">
                                 <div className="grid grid-cols-1">
                                     <TextInput
-                                        name="organizationName"
+                                        name="company"
                                         type="text"
                                         placeholder="Organization name*"
-                                        value={values.organizationName}
+                                        value={values.company}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        field={{ name: "organizationName" }}
+                                        field={{ name: "company" }}
                                         form={{ errors, touched }}
                                     />
 
-                                    <div className={`items-dropdown ${values.tag = ! "" ? "" : "default"}  single-select mt-3`}>
+                                    <div className={`items-dropdown  ${values.contactType == null || values.contactType == undefined || values.contactType == "" ? "default" :""} single-select mt-3`}>
                                         <Field
                                             as={NewCaseDropdown}
                                             defaultLabel="Select Tag"
-                                            name="tag"
-                                            value={values.tag}
+                                            name="contactType"
+                                            value={values.contactType}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            options={contactTagOption}
+                                            options={contactTagOrganizationOption}
                                         />
                                     </div>
                                 </div>

@@ -6,10 +6,11 @@ import states from "../../constants/states.json";
 import { Label, Modal, Textarea } from "flowbite-react";
 import { useDispatch } from "react-redux";
 import NewCaseDropdown from "../newcasedropdown";
-import { caseTypeOptions, contactTagOption } from "../../utils/formItem";
+import {  contactTagIndividualOption } from "../../utils/formItem";
 import { createAddressContactRequest, createAddressRequest } from "../../redux/actions/utilsActions";
 import { createContactRequest } from "../../redux/actions/contactActions";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
 
 // Initial form values for new contact
 const initialValues = {
@@ -25,6 +26,7 @@ const initialValues = {
 
 const NewIndividualContactModalV1 = ({ onSubmit, onClose }) => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const validationSchema = Yup.object({
         contactType: Yup.string().required('Contact Tag is required'),
         firstName: Yup.string().required("First Name is required"),
@@ -48,7 +50,7 @@ const NewIndividualContactModalV1 = ({ onSubmit, onClose }) => {
             };
 
 
-            dispatch(createContactRequest(payload))
+            dispatch(createContactRequest(payload, navigate))
 
             onClose();
         } catch (error) {
@@ -131,7 +133,7 @@ const NewIndividualContactModalV1 = ({ onSubmit, onClose }) => {
                                                 value={values.contactType}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
-                                                options={contactTagOption}
+                                                options={contactTagIndividualOption}
 
                                             />
 

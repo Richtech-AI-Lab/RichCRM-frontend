@@ -27,9 +27,9 @@ const ContactListingV1 = ({ active, parent }) => {
   };
 
   const handleNavigation = (item) => {
-    dispatch(setSelectedContact(item));
-    localStorage.setItem("contact_id", item)
-    navigate(ROUTES.CONTACT_PARTNER);
+      dispatch(setSelectedContact(item));
+      localStorage.setItem("contact_id", item)
+      navigate(ROUTES.CONTACT_PARTNER, {state: {active}});   
   }
   const header = headers[active] ?? ["Name", "Position", "Company", "Email", "Cell Phone"];
 
