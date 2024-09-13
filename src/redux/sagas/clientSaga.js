@@ -1,6 +1,8 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { API_ENDPOINTS } from "../../constants/api";
 import {
+  fetchAdditionalClientByIdsFailure,
+  fetchAdditionalClientByIdsSuccess,
   fetchClientByIdFailure,
   fetchClientByIdSuccess,
   registerClientFailure,
@@ -8,7 +10,7 @@ import {
   updateClientByIdFailure,
   updateClientByIdSuccess,
 } from "../actions/clientActions";
-import { FETCH_CLIENT_BY_ID_REQUEST, REGISTER_CLIENT_REQUEST, UPDATE_CLIENT_BY_ID_REQUEST } from "../type";
+import { FETCH_ADDITIONAL_CLIENTS_BY_IDS_REQUEST, FETCH_CLIENT_BY_ID_REQUEST, FETCH_CLIENTS_BY_IDS_REQUEST, REGISTER_CLIENT_REQUEST, UPDATE_CLIENT_BY_ID_REQUEST } from "../type";
 import { getRequest, postRequest } from "../../axios/interceptor";
 import { toast } from "react-toastify";
 import { registerAddressRequest } from "../actions/utilsActions";
@@ -85,9 +87,30 @@ function* updateClientById(action) {
     yield put(updateClientByIdFailure(error.response?.data || error));
   }
 }
+function* fetchClientsByIds(action) {
+  try {
+    const clientIds  = action.payload;
 
+    const clientResponses = yield all(
+      clientIds.map(clientId =>
+        call(getRequest, `${API_ENDPOINTS.FETCH_CLIENT_BY_ID}/${clientId}`)
+      )
+    );
+
+    // Map over responses to extract the relevant data
+    const clients = clientResponses.map(response => response?.data?.data[0]);
+    // Dispatch success with merged client data
+    yield put(fetchAdditionalClientByIdsSuccess(clients));
+
+  } catch (error) {
+    handleError(error);
+    yield put(fetchAdditionalClientByIdsFailure(error.response?.data || error));
+  }
+}
 export function* clientSaga() {
   yield takeLatest(REGISTER_CLIENT_REQUEST, registerClient);
   yield takeLatest(FETCH_CLIENT_BY_ID_REQUEST, fetchClientById);
   yield takeLatest(UPDATE_CLIENT_BY_ID_REQUEST, updateClientById);
+  yield takeLatest(FETCH_ADDITIONAL_CLIENTS_BY_IDS_REQUEST, fetchClientsByIds);
+
 }

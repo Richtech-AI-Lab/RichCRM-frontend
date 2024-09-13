@@ -846,7 +846,7 @@ const NewCaseModal = ({ onClose }) => {
                         field={{ name: "city" }}
                         form={{ errors, touched }}
                       />
-                      <div className={`items-dropdown ${values.state == null || values.state == undefined || values.state == "" ? "default" : ""} single-select mt-3`}  >                      <Field
+                      {/* <div className={`items-dropdown ${values.state == null || values.state == undefined || values.state == "" ? "default" : ""} single-select mt-3`}  >                      <Field
                         as={NewCaseDropdown}
                         defaultLabel="Select State"
                         name="state"
@@ -858,7 +858,20 @@ const NewCaseModal = ({ onClose }) => {
                         form={{ errors, touched }}
                       />
 
-                      </div>
+                      </div> */}
+
+                      <Field
+                        as={SelectInput}
+                        defaultLabel="Select State"
+                        name="state"
+                        value={values.state}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        options={states}
+                        error={errors.state}
+                        touched={touched.state}
+                        inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
+                      />
 
                       <TextInput
                         name="zipCode"
