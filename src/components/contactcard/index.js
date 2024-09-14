@@ -14,7 +14,7 @@ import {
 import AddFromContactModal from "../caseModal/addFromContactModal";
 import { IMAGES } from "../../constants/imagePath";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAdditionalClientByIdsRequest } from "../../redux/actions/clientActions";
+import { cleanupAdditionalClientRequest, fetchAdditionalClientByIdsRequest } from "../../redux/actions/clientActions";
 
 const ContactCard = ({
   clientDetails,
@@ -29,15 +29,27 @@ const ContactCard = ({
   // address,
 }) => {
   const dispatch = useDispatch();
+  const [addtionalInfo, setAdditionalInfo] = useState([]); // Modal state
   const [isAddFromContactsModalOpen, setIsAddFromContactsModalOpen] = useState(false); // Modal state
   const { additionalClient } = useSelector((state) => state.client);
+
   useEffect(() => {
     dispatch(fetchAdditionalClientByIdsRequest(casedetails?.additionalClients));
+   return () => {
+    dispatch(cleanupAdditionalClientRequest()); 
+  };    
   }, []);
+
+  useEffect(() => {
+    if (additionalClient?.length > 0) {
+      setAdditionalInfo(additionalClient)
+    }
+  }, [additionalClient]);
+
   const toggleAddFromContactsModal = () => {
     setIsAddFromContactsModalOpen(!isAddFromContactsModalOpen);
   };
-  // console.log(additionalClients)
+  // console.log(additionalClient, "addtionalClient")
   return (
     <div className="bg-white pt-4 rounded-2xl mb-5">
       <div className="flex justify-between items-center mb-4 px-4">
@@ -103,9 +115,10 @@ const ContactCard = ({
             </AccordionContent>
           </AccordionPanel>
         ))}
-
-        {additionalClient?.map((data, index) => (
-          <AccordionPanel key={index}>
+      </Accordion>
+      <Accordion className="border-0" collapseAll>
+        {addtionalInfo?.map((data, index) => (
+          <AccordionPanel key={index} >
             <AccordionTitle className="py-3 px-4 border-t border-badge-gray rounded-none first:rounded-t-none bg-white hover:bg-white focus:ring-transparent contact-accordian-title">
               <div className="flex items-center">
                 <img
@@ -129,17 +142,17 @@ const ContactCard = ({
                   content="Add a referral"
                   isInput={false}
                   className="text-text-blue-400 font-semibold"
-                /> */}
+                  /> */}
                 <ContactDetailItem
                   // icon={<MdOutlineEmail className="text-xl" />}
                   label="Email"
-                  content={data.email || 'not available'}
+                  content={data?.email || 'not available'}
                   isInput={false}
                 />
                 <ContactDetailItem
                   // icon={<MdOutlinePhone className="text-xl" />}
                   label="Cell Phone"
-                  content={data.cellNumber || 'not available'}
+                  content={data?.cellNumber || 'not available'}
                   isInput={false}
                 />
                 <ContactDetailItem
@@ -158,7 +171,6 @@ const ContactCard = ({
             </AccordionContent>
           </AccordionPanel>
         ))}
-
       </Accordion>
       {isAddFromContactsModalOpen && <AddFromContactModal onClose={toggleAddFromContactsModal} />}
     </div>

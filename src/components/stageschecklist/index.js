@@ -377,13 +377,13 @@ const StagesChecklist = () => {
                     <span
                       className={`pb-4 cursor-pointer ${activeTab === 'mortgage' ? 'text-base text-secondary-800 font-medium border-b-[3px] border-primary' : 'text-gray-400'}`} onClick={() => setActiveTab('mortgage')}
                     >
-                      Mortgage Task ({getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]])}/{taskData.data[STAGESNAMES[currentStep]].length})
+                      Mortgage Task ({getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]])}/{taskData.data[STAGESNAMES[currentStep]]?.length})
                     </span>
                     <span
                       className={`pb-4 cursor-pointer ${activeTab === 'title' ? 'text-base text-secondary-800 font-medium border-b-[3px] border-primary' : 'text-gray-400'}`}
                       onClick={() => setActiveTab('title')}
                     >
-                      Title Task ({getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]])}/{taskData.data[STAGESNAMES[currentStep]].length})
+                      Title Task ({getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]])}/{taskData.data[STAGESNAMES[currentStep]]?.length})
                     </span>
                   </div>
                 ) : (
