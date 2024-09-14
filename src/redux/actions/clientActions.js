@@ -1,4 +1,5 @@
 import {
+  CLEAN_ADDITIONAL_CLIENT,
   FETCH_ADDITIONAL_CLIENTS_BY_IDS_FAILURE,
   FETCH_ADDITIONAL_CLIENTS_BY_IDS_REQUEST,
   FETCH_ADDITIONAL_CLIENTS_BY_IDS_SUCCESS,
@@ -72,4 +73,8 @@ export const fetchAdditionalClientByIdsSuccess = (data) => ({
 export const fetchAdditionalClientByIdsFailure = (error) => ({
   type: FETCH_ADDITIONAL_CLIENTS_BY_IDS_FAILURE,
   payload: error
+});
+
+export const cleanupAdditionalClientRequest = () => ({
+  type: CLEAN_ADDITIONAL_CLIENT
 });

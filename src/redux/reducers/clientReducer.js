@@ -1,4 +1,5 @@
 import {
+  CLEAN_ADDITIONAL_CLIENT,
   CLEAR_DATA,
   FETCH_ADDITIONAL_CLIENTS_BY_IDS_FAILURE,
   FETCH_ADDITIONAL_CLIENTS_BY_IDS_REQUEST,
@@ -48,6 +49,8 @@ const clientReducer = (state = initialState, action) => {
       return { ...state, loading: false, additionalClient: action.payload, error: null };
     case FETCH_ADDITIONAL_CLIENTS_BY_IDS_FAILURE:
       return { ...state, loading: false, error: action.payload };
+    case CLEAN_ADDITIONAL_CLIENT:
+      return { ...state, loading: false, additionalClient: null, error: null };
     case CLEAR_DATA:
       return initialState;
     default:

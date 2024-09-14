@@ -27,4 +27,9 @@ sagaMiddleware.run(rootSaga);
 
 const persistor = persistStore(store);
 
+// persistor.purge().then(() => {
+//   console.log('Persisted Redux state has been purged');
+//   alert('State cleared successfully!');
+// })
+
 export { store, persistor };
