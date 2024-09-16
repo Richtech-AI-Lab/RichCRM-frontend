@@ -13,6 +13,7 @@ import { debounce } from "lodash";
 import { contactTypeLabels } from "../../constants/constants";
 import { setSelectedContact } from "../../redux/actions/contactActions";
 import Search from "../search";
+import { persistor } from "../../redux/store";
 
 const Header = ({ toggleDrawer, title }) => {
   const navigate = useNavigate();
@@ -53,9 +54,13 @@ const Header = ({ toggleDrawer, title }) => {
     setSearchValue("");
   };
   const handleLogout = () => {
+    // persistor.purge().then(() => {
+    //   alert('Logged out and persisted state cleared');}
+    // )
     dispatch(logout());
     localStorage.removeItem('authEmail');
     localStorage.setItem("headerTitle", 'Dashboard');
+    // localStorage.clear()
     navigate(ROUTES.LOGIN);
   };
 
