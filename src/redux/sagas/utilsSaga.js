@@ -6,8 +6,10 @@ import {
   fetchAddressByIdSuccess,
   registerAddressFailure,
   registerAddressSuccess,
+  sendEmailFailure,
+  sendEmailSuccess,
 } from "../actions/utilsActions";
-import { CREATE_ADDRESS_CONTACT_REQUEST, CREATE_ADDRESS_REQUEST, FETCH_ADDRESS_BY_ID_REQUEST, REGISTER_ADDRESS_REQUEST } from "../type";
+import { CREATE_ADDRESS_CONTACT_REQUEST, CREATE_ADDRESS_REQUEST, FETCH_ADDRESS_BY_ID_REQUEST, REGISTER_ADDRESS_REQUEST, SEND_MAIL_REQUEST } from "../type";
 import { registerPremisesRequest, updatePremisesRequest } from "../actions/premisesActions";
 import { toast } from "react-toastify";
 import { handleError } from "../../utils/eventHandler";
@@ -150,9 +152,23 @@ function* createAddressThenContact(action) {
   }
 }
 
+function* sendMail(action) {
+  try {
+    const { payload } = action;
+    const response = yield call(() => postRequest(API_ENDPOINTS.SEND_MAIL, payload));
+    yield put(sendEmailSuccess(response.data));
+  } catch (error) {
+    handleError(error)
+    yield put(sendEmailFailure(error.response.data || error));
+  }
+}
+
+
 export function* utilsSaga() {
   yield takeLatest(REGISTER_ADDRESS_REQUEST, registerAddress);
   yield takeLatest(CREATE_ADDRESS_REQUEST, createAddress);
   yield takeLatest(CREATE_ADDRESS_CONTACT_REQUEST, createAddressThenContact);
   yield takeLatest(FETCH_ADDRESS_BY_ID_REQUEST, fetchAddressById);
+  yield takeLatest(SEND_MAIL_REQUEST, sendMail);
+  
 }
