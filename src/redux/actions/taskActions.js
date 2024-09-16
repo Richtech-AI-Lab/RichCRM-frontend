@@ -1,4 +1,4 @@
-import { CREATE_TASK_FAILURE, CREATE_TASK_REQUEST, CREATE_TASK_SUCCESS, GET_TASK_REQUEST } from "../type";
+import { CLEAR_DATA, CREATE_TASK_FAILURE, CREATE_TASK_REQUEST, CREATE_TASK_SUCCESS, GET_TASK_REQUEST } from "../type";
 
 
 export const createTaskRequest = (taskData) => ({
@@ -19,4 +19,8 @@ export const createTaskFailure = (error) => ({
 export const getTaskRequest = (payload) => ({
   type: GET_TASK_REQUEST,
   payload,
+});
+
+export const clearTaskData = () => ({
+  type: CLEAR_DATA
 });

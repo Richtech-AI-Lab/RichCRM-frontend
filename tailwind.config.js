@@ -66,6 +66,7 @@ module.exports = {
       'bg-gray': {
         100: '#E2E2E7',
         200: '#EEEDF2',
+        300: '#f5f5f5',
       },
       'border-line': {
         100: '#BCC0C9',

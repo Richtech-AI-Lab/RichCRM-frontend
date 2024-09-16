@@ -31,6 +31,7 @@ export const API_ENDPOINTS = {
   GET_CONTACT_BY_KEYWORD:"/contact/query",
   UPDATE_CONTACT:"/contact/update",
   CREATE_CONTACT:"/contact/register",
+  SEND_MAIL:"/utils/email/send",
 };
 
 export const ROUTES = {

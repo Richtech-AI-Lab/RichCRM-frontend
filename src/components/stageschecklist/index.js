@@ -27,7 +27,7 @@ import StageUncompleteAlert from "../../pages/cases/stagealert";
 const StagesChecklist = () => {
   const dispatch = useDispatch();
   const [currentStep, setCurrentStep] = useState(0);
-  const [isUncomplete, setIsUncomplete] = useState(false);
+  const [isComplete, setIsComplete] = useState(true);
   const [activeTab, setActiveTab] = useState('mortgage');
   const menuOption1 = ['Create a Task', 'Add a Task']
   const menuOption2 = ['Finish all', 'Edit task']
@@ -40,13 +40,13 @@ const StagesChecklist = () => {
     // if stage is not exist then create stage.
     if (isEmpty(data)) {
       let sagaPayload = {
-        stageType: 0,
+        stageType: currentStep,
         caseId: localStorage.getItem('c_id'),
       }
       dispatch(getStageRequest(sagaPayload));
     }
 
-  }, [data])
+  }, [data, currentStep])
 
   useEffect(() => {
     // if cases have stage then set stage
@@ -190,7 +190,7 @@ const StagesChecklist = () => {
     }
   };
   const toggleStageModal = () => {
-    setIsUncomplete(!isUncomplete);
+    setIsComplete(!isComplete);
   };
 
   const handlePreviousStage = async () => {
@@ -217,8 +217,21 @@ const StagesChecklist = () => {
     }
   };
 
+  const isAllTaskDone = () => {
+    let status = false;
+    return status
+  };
+
+  const CheckAndMoveStage = () => {
+    if(isAllTaskDone()){
+      handleNextStage()
+    }else{
+      setIsComplete(false)
+    }
+  };
+
   const handleNextStage = async () => {
-    setIsUncomplete(true)
+    setIsComplete(true)
     if (currentStep < progressItems.length - 1) {
       const createStagePayload = {
         stageType: currentStep + 1,
@@ -259,6 +272,7 @@ const StagesChecklist = () => {
       }
     }
   };
+
 
   const getCompletedTasksCount = (tasks) => {
     return tasks?.filter((task) => {
@@ -457,11 +471,12 @@ const StagesChecklist = () => {
                 />
                 <XButton
                   text={currentStep === progressItems?.length - 1 ? "Close Case" : "Move to next stage"}
-                  className="bg-active-blue text-active-blue-text shadow-shadow-light rounded-full text-sm font-medium py-[10px] px-6" onClick={handleNextStage} />
+                  className="bg-active-blue text-active-blue-text shadow-shadow-light rounded-full text-sm font-medium py-[10px] px-6" 
+                  onClick={CheckAndMoveStage} />
               </div>
             </div></>}
 
-          {isUncomplete && <StageUncompleteAlert onBack={handlePreviousStage} onClose={toggleStageModal}/>}
+          {!isComplete && <StageUncompleteAlert onMove={handleNextStage} onClose={toggleStageModal}/>}
       </div>
     </>
   );

@@ -6,6 +6,9 @@ import {
   REGISTER_ADDRESS_FAILURE,
   REGISTER_ADDRESS_REQUEST,
   REGISTER_ADDRESS_SUCCESS,
+  SEND_MAIL_FAILURE,
+  SEND_MAIL_REQUEST,
+  SEND_MAIL_SUCCESS,
 } from "../type";
 
 const initialState = {
@@ -41,6 +44,12 @@ const utilsReducer = (state = initialState, action) => {
       return { ...state, address:[], loading: false, error: action.payload };
     case CLEAR_DATA:
       return initialState;
+    case SEND_MAIL_REQUEST:
+      return { ...state, loading: true, error: null };
+    case SEND_MAIL_SUCCESS:
+      return { ...state, loading: false, error: null };
+    case SEND_MAIL_FAILURE:
+      return { ...state, loading: false, error: null };
     default:
       return state;
   }

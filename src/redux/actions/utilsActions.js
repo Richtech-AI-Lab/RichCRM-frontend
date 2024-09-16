@@ -7,6 +7,9 @@ import {
   REGISTER_ADDRESS_FAILURE,
   REGISTER_ADDRESS_REQUEST,
   REGISTER_ADDRESS_SUCCESS,
+  SEND_MAIL_FAILURE,
+  SEND_MAIL_REQUEST,
+  SEND_MAIL_SUCCESS,
 } from "../type";
 
 export const registerAddressRequest = (address,navigate) => ({
@@ -47,5 +50,21 @@ export const fetchAddressByIdSuccess = (data) => ({
 
 export const fetchAddressByIdFailure = (error) => ({
   type: FETCH_ADDRESS_BY_ID_FAILURE,
+  payload: error
+});
+
+
+export const sendEmailRequest = (data) => ({
+  type: SEND_MAIL_REQUEST,
+  payload:data
+});
+
+export const sendEmailSuccess = (data) => ({
+  type: SEND_MAIL_SUCCESS,
+  payload: data
+});
+
+export const sendEmailFailure = (error) => ({
+  type: SEND_MAIL_FAILURE,
   payload: error
 });

@@ -6,6 +6,8 @@ import ClosedCasesGrid from "../../components/closedcasesgrid";
 import { useDispatch, useSelector} from "react-redux";
 import { fetchAllCasesRequest } from "../../redux/actions/caseAction";
 import { stageTypes } from "../../utils/formItem";
+import { clearStageData } from "../../redux/actions/stagesActions";
+import { clearTaskData } from "../../redux/actions/taskActions";
 
 const Cases = () => {
   const dispatch = useDispatch();
@@ -35,6 +37,11 @@ const Cases = () => {
 
     fetchAllCases();
   }, [filter, dispatch]);
+
+  useEffect(()=>{
+    dispatch(clearStageData())
+    dispatch(clearTaskData())
+  },[dispatch])
 
   return (
     <>

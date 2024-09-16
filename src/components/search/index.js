@@ -32,7 +32,7 @@ const Search = ({searchResults}) => {
     // Search results based on the active tab
 
     return (
-        <div className="card absolute w-full max-w-md p-4 mt-4 shadow-shadow-light-2">
+        <div className="card absolute w-full max-w-md p-4 mt-4 shadow-shadow-light-2 z-[1]">
             <div className="flex border-b">
                 <button
                     className={`px-4 py-2 text-sm font-medium ${activeTab === 'case' ? 'text-blue-500 border-b-2 border-blue-500' : ''
