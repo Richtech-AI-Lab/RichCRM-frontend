@@ -6,10 +6,14 @@ import { HiOutlineCube } from "react-icons/hi";
 import { LuUpload } from "react-icons/lu";
 import { ACTIONTYPE, ACTIONTYPELABEL } from "../../constants/constants";
 import NewCaseDropdown from "../newcasedropdown";
+import ComposeEmail from "../composeEmail/index"
 
 const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optionsValue, checkboxId, currentStep }) => {
 
   const [isCompose,setIsCompose] = useState(false);
+  const toggleComposeModal = () => {
+    setIsCompose(!isCompose);
+  };
   const getOptionsByAction = (option = "Not Started") => {
     switch (action) {
       // case "Action":
@@ -146,7 +150,8 @@ const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optio
 
   // console.log(taskStatusColor?.badgeClass,"displayOption");
   return (
-   <> <div className="border-t-2 border-black-10">
+   <> 
+   <div className="border-t-2 border-black-10">
       <li className="flex justify-between items-center mb-5 pb-5 task-checklist mt-2">
         <div className="flex items-center gap-2 custom-radio">
           <Checkbox id={checkboxId} defaultChecked={status} className="mr-6" />
@@ -184,6 +189,7 @@ const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optio
         </div>
       </li>
     </div>
+    {isCompose ? <ComposeEmail onClose={toggleComposeModal} /> : ""}
      </>
   );
 };
