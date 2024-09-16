@@ -54,13 +54,13 @@ const Header = ({ toggleDrawer, title }) => {
     setSearchValue("");
   };
   const handleLogout = () => {
-    // persistor.purge().then(() => {
-    //   alert('Logged out and persisted state cleared');}
-    // )
+    persistor.purge().then(() => {
+      alert('Logged out and persisted state cleared');}
+    )
     dispatch(logout());
     localStorage.removeItem('authEmail');
     localStorage.setItem("headerTitle", 'Dashboard');
-    // localStorage.clear()
+    localStorage.clear()
     navigate(ROUTES.LOGIN);
   };
 

@@ -40,13 +40,13 @@ const StagesChecklist = () => {
     // if stage is not exist then create stage.
     if (isEmpty(data)) {
       let sagaPayload = {
-        stageType: 0,
+        stageType: currentStep,
         caseId: localStorage.getItem('c_id'),
       }
       dispatch(getStageRequest(sagaPayload));
     }
 
-  }, [data])
+  }, [data, currentStep])
 
   useEffect(() => {
     // if cases have stage then set stage
