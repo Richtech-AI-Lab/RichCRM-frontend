@@ -1,66 +1,59 @@
 import React from 'react';
-import { Modal } from 'flowbite-react';
 import XButton from "../../components/button/XButton"
-
+import { IoIosClose } from 'react-icons/io';
+import logo from '../../assets/images/logo-dark.png'
+import avatar from '../../assets/images/contact_avtar.png'
 
 const ComposeEmail = ({ onClose }) => {
   return (
-    <Modal show={true} size="md" onClose={onClose} className="new-case-modal calendar-modal">
-    <Modal.Header className="border-b-0">
-      <h2 className="text-4 font-medium text-secondary-800">Compose Message</h2>
-    </Modal.Header>
-
-    <Modal.Body className="pt-3">
-      <div className="rounded-2xl mb-2">
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-secondary-800">To</label>
-          <input
-            type="text"
-            value="Jack Fu"
-            readOnly
-            className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-lg bg-gray-100"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-secondary-800">Subject</label>
-          <input
-            type="text"
-            value="Contract review scheduling"
-            className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-lg"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-secondary-800">Message</label>
-          <textarea
-            className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-lg h-40"
-            defaultValue={`Dear Counsel,
-
-Enclosed please find the proposed contract of sale and rider regarding the above-referenced transaction. Please kindly review and if it is acceptable to you and your clients, please have your client sign one (1) original and return to our office together with the downpayment check in the amount of $20,000.00 made payable to "MG LAW GROUP PLLC, as attorney".
-
-Please be advised that nothing is binding on our client until approved and signed by our client. Should you have any questions regarding this matter you may call our office. Thank you!
-
-Thank you!
-Gary Tang
-Paralegal ; Office Manager`}
-          ></textarea>
-        </div>
-
-        <div className="flex justify-end mt-6">
-          <XButton
-            text="Cancel"
-            onClick={onClose}
-            className="bg-badge-gray text-base text-primary2 py-[10px] px-6 rounded-[100px] w-1/3"
-          />
-          <XButton
-            text="Send"
-            className="bg-primary2 text-white text-base py-[10px] px-6 rounded-[100px] ml-4 w-1/3"
-          />
-        </div>
+    <div className="bg-white rounded-2xl shadow-card fixed bottom-3 right-3 w-[552px]">
+    <div className="flex justify-between items-center p-4">
+      <h3 className="text-base text-secondary-800 font-medium">Compose Message</h3>
+      <IoIosClose size={28} className="text-text-gray-100 cursor-pointer" />
+    </div>
+    <div className="mx-4">
+      <div className="border-b border-b-border py-[6px] flex items-center">
+        <label className="inline text-sm font-medium text-text-gray-100 mr-2">To</label>
+        <ul>
+          <li className="flex items-center p-2 bg-bg-gray-300 rounded-full">
+            <img src={avatar} alt="" className="mr-2" />
+            <span>Jack Fu</span>
+            <IoIosClose size={28} className="text-text-gray-100 cursor-pointer" />
+          </li>
+        </ul>
+        <input
+          type="text"
+          className="inline border-0 focus:ring-transparent"
+        />
       </div>
-    </Modal.Body>
-  </Modal>
+      <div className="border-b border-b-border py-[6px]">
+        <label className="inline text-sm font-medium text-text-gray-100 mr-2">Subject</label>
+        <input
+          type="text"
+          className="inline border-0 focus:ring-transparent"
+        />
+      </div>
+    </div>
+    <div className="mx-4 py-3">
+      <textarea
+        rows={15}
+        className="inline border-0 p-0 resize-none w-full focus:ring-transparent"
+      />
+    </div>
+    <div className="mx-4 pb-3 flex">
+      <img src={logo} alt="" className="mr-4" />
+      <div>
+        <h3 className="text-base text-secondary-800 font-semibold">Gary Tang</h3>
+        <p className="text-sm text-text-gray-100 font-medium">Paralegal ; Office Manager </p>
+      </div>
+    </div>
+    <div className="text-end px-4 py-3 shadow-full rounded-bl-2xl rounded-br-2xl">
+      <XButton
+        text="Send"
+        className="bg-active-blue text-active-blue-text text-base py-[10px] px-6 rounded-[100px]"
+      />
+    </div>
+  </div>
   );
 };
 
