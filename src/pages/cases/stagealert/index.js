@@ -3,12 +3,7 @@ import { Modal } from 'flowbite-react';
 import XButton from '../../../components/button/XButton';
 
 
-const StageUncompleteAlert = ({ onBack, onClose }) => {
-
-    const movetoBack = () => {
-        onClose()
-        onBack()
-    };
+const StageUncompleteAlert = ({ onMove, onClose }) => {
 
     return (
         <Modal show={true} size="md" onClose={onClose} className="new-case-modal calendar-modal">
@@ -19,8 +14,8 @@ const StageUncompleteAlert = ({ onBack, onClose }) => {
                 <div className="rounded-2xl mb-2">
                     <p className="text-sm text-secondary-800 font-medium mb-1">There are unfinished tasks in the current stage, do you want to ignore it and move on to the next stage? You can always go back to the current phase to view the tasks.</p>
                     <div className="flex justify-end mt-6">
-                        <XButton text="Move Anyway" onClick={onClose} className="bg-badge-gray text-base text-primary2 py-[10px] px-6 rounded-[100px] w-1/2" />
-                        <XButton text="Back" onClick={()=>movetoBack()} className="bg-primary2 text-white text-base py-[10px] px-6 rounded-[100px] ml-4 w-1/2" />
+                        <XButton text="Move Anyway" onClick={()=>onMove()} className="bg-badge-gray text-base text-primary2 py-[10px] px-6 rounded-[100px] w-1/2" />
+                        <XButton text="Back" onClick={()=>onClose()} className="bg-primary2 text-white text-base py-[10px] px-6 rounded-[100px] ml-4 w-1/2" />
                     </div>
                 </div>
             </Modal.Body>
