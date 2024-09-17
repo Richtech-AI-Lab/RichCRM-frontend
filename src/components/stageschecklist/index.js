@@ -147,13 +147,15 @@ const StagesChecklist = () => {
 
 
   const getChecklistItems = useCallback(() => {
-    let currentstepstr = `${currentStep}`;
+    const highestStageType = Math.max(
+      ...Object.values(data).map(stage => stage.stageType)
+  );
+    let currentstepstr = `${highestStageType}`;
     const getTaskPayload = {
       currentStageData: data[STAGESNAMES[currentstepstr]]?.tasks,
       currentStep: currentstepstr
     }
-    const response = dispatch(getTaskRequest(getTaskPayload));
-
+    dispatch(getTaskRequest(getTaskPayload));
   }, [dispatch, currentStep, data])
 
   const progressItems = [

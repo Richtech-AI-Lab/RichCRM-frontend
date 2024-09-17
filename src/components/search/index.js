@@ -52,8 +52,6 @@ const Search = ({ searchResults }) => {
             </div>
 
             <div className="mt-2">
-                {/* {console.log(searchResults[activeTab])} */}
-                {/* <p className="text-xs text-gray-500">Recently Viewed</p> */}
                 <ul
                 className="z-50 overflow-hidden"
                 >
