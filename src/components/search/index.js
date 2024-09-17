@@ -55,9 +55,8 @@ const Search = ({ searchResults }) => {
                 {/* {console.log(searchResults[activeTab])} */}
                 {/* <p className="text-xs text-gray-500">Recently Viewed</p> */}
                 <ul
-                // className="mt-2 bg-white z-50 search-list-dropdown overflow-hidden rounded-2xl shadow-shadow-light-2"
+                className="z-50 overflow-hidden"
                 >
-                    {console.log(searchResults[activeTab])}
                     {searchResults[activeTab]?.map((item) => (
 
                         <li
