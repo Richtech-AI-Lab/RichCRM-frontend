@@ -26,7 +26,7 @@ import StageUncompleteAlert from "../../pages/cases/stagealert";
 
 const StagesChecklist = () => {
   const dispatch = useDispatch();
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState();
   const [isComplete, setIsComplete] = useState(true);
   const [activeTab, setActiveTab] = useState('mortgage');
   const menuOption1 = ['Create a Task', 'Add a Task']
@@ -147,14 +147,23 @@ const StagesChecklist = () => {
 
 
   const getChecklistItems = useCallback(() => {
+    let currentstepstr;
+    // if we have a stage value is highest and current step is 0 then we need to show 
     const highestStageType = Math.max(
       ...Object.values(data).map(stage => stage.stageType)
   );
-    let currentstepstr = `${highestStageType}`;
+  if(currentStep == undefined){
+    currentstepstr = `${highestStageType}`;
+  }else{
+    currentstepstr = `${currentStep}`;
+  }
+
+    console.log(currentstepstr)
     const getTaskPayload = {
       currentStageData: data[STAGESNAMES[currentstepstr]]?.tasks,
       currentStep: currentstepstr
     }
+    console.log(currentstepstr)
     dispatch(getTaskRequest(getTaskPayload));
   }, [dispatch, currentStep, data])
 
