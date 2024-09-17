@@ -156,7 +156,11 @@ function* sendMail(action) {
   try {
     const { payload } = action;
     const response = yield call(() => postRequest(API_ENDPOINTS.SEND_MAIL, payload));
-    yield put(sendEmailSuccess(response.data));
+    if (response.status === 200) {
+      toast.success("Email Sent!");
+      yield put(sendEmailSuccess(response.data));
+    }
+
   } catch (error) {
     handleError(error)
     yield put(sendEmailFailure(error.response.data || error));
