@@ -18,18 +18,26 @@ import { persistor } from "../../redux/store";
 const Header = ({ toggleDrawer, title }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchResults, setSearchResults] = useState({});
   const [searchValue, setSearchValue] = useState(""); // Add this state
 
   const debouncedFunction = useCallback(
     debounce(async (value, index) => {
       if (value != "" || value.length > 0) {
-        const response = await postRequest(API_ENDPOINTS.GET_CONTACT_BY_KEYWORD, {
+        const contactResponse = await postRequest(API_ENDPOINTS.GET_CONTACT_BY_KEYWORD, {
           keyword: value
-        }
-        )
-        const filteredResults = response?.data?.data;
-        setSearchResults(filteredResults);
+        })
+        const casesResponse = await postRequest(API_ENDPOINTS.GET_CASES_BY_KEYWORD, {
+          keyword: value
+        })
+        const contactResults = contactResponse?.data?.data;
+        const caseResults = casesResponse?.data?.data;
+        setSearchResults(prevResults => ({
+          ...prevResults,          
+          contact: contactResults,
+          case: caseResults
+        }));
+        console.log(contactResults,caseResults)
       } else {
         setSearchResults([]);
       }
@@ -81,14 +89,14 @@ const Header = ({ toggleDrawer, title }) => {
             value={searchValue}
             onChange={handleInputChange}
           />
-          {searchResults?.length > 0 ?
+          {searchResults?.contact?.length > 0 || searchResults?.case?.length > 0 ?
           <IoMdClose className="absolute right-5 top-[10px] cursor-pointer" onClick={handleInputReset} />
             : <img
               src={IMAGES.searchIcon}
               alt="icon"
               className="absolute right-5 top-[10px]"
             />}
-          {searchResults.length > 0 ? <Search searchResults={searchResults} /> : ""}
+          {searchResults?.contact?.length > 0 || searchResults?.case?.length > 0 ? <Search searchResults={searchResults} /> : ""}
 
         </div>
         <Dropdown

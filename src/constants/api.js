@@ -32,6 +32,7 @@ export const API_ENDPOINTS = {
   UPDATE_CONTACT:"/contact/update",
   CREATE_CONTACT:"/contact/register",
   SEND_MAIL:"/utils/email/send",
+  GET_CASES_BY_KEYWORD:"/case/query/keyword",
 };
 
 export const ROUTES = {
