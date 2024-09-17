@@ -55,7 +55,7 @@ const Header = ({ toggleDrawer, title }) => {
   };
   const handleLogout = () => {
     persistor.purge().then(() => {
-      alert('Logged out and persisted state cleared');}
+      console.log('Logged out and persisted state cleared');}
     )
     dispatch(logout());
     localStorage.removeItem('authEmail');
