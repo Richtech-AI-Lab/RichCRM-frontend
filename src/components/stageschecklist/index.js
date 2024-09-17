@@ -186,7 +186,7 @@ const StagesChecklist = () => {
       case 4:
         return "Closing Tasks";
       default:
-        return <></>;
+        return <>loading..</>;
     }
   };
   const toggleStageModal = () => {
@@ -289,7 +289,7 @@ const StagesChecklist = () => {
         default:
           return false; // For unknown task types
       }
-    }).length;
+    }).length || 0;
   };
 
   const checkStageExists = async ({ stageType }) => {
@@ -354,7 +354,6 @@ const StagesChecklist = () => {
   // };
   return (
     <>
-
       <div className="md:col-span-12 lg:col-span-8">
         <div className="bg-white py-4 rounded-2xl mb-5">
           <div className="px-4">
@@ -391,17 +390,17 @@ const StagesChecklist = () => {
                     <span
                       className={`pb-4 cursor-pointer ${activeTab === 'mortgage' ? 'text-base text-secondary-800 font-medium border-b-[3px] border-primary' : 'text-gray-400'}`} onClick={() => setActiveTab('mortgage')}
                     >
-                      Mortgage Task ({getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]])}/{taskData.data[STAGESNAMES[currentStep]]?.length})
+                      Mortgage Task ({getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]])}/{taskData.data[STAGESNAMES[currentStep]]?.length || 0})
                     </span>
                     <span
                       className={`pb-4 cursor-pointer ${activeTab === 'title' ? 'text-base text-secondary-800 font-medium border-b-[3px] border-primary' : 'text-gray-400'}`}
                       onClick={() => setActiveTab('title')}
                     >
-                      Title Task ({getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]])}/{taskData.data[STAGESNAMES[currentStep]]?.length})
+                      Title Task ({getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]])}/{taskData.data[STAGESNAMES[currentStep]]?.length || 0})
                     </span>
                   </div>
                 ) : (
-                  <span className="text-base text-secondary-800 font-medium">{`${getHeadLabel(currentStep)} (${getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]])}/${taskData.data[STAGESNAMES[currentStep]]?.length})`}</span>
+                  <span className="text-base text-secondary-800 font-medium">{`${getHeadLabel(currentStep)} (${getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]])}/${taskData.data[STAGESNAMES[currentStep]]?.length || 0})`}</span>
                 )}
                 <div className="flex items-center gap-2">
 
