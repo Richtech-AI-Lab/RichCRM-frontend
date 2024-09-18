@@ -1,0 +1,7 @@
+[
+    { "id": "en_US", "value": "en_US", "label": "English (United States)" },
+    { "id": "es_ES", "value": "es_ES", "label": "Spanish (Spain)" },
+    { "id": "fr_FR", "value": "fr_FR", "label": "French (France)" },
+    { "id": "de_DE", "value": "de_DE", "label": "German (Germany)" }
+  ]
+  

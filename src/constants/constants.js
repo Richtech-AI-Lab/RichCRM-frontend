@@ -527,3 +527,14 @@ export const PREMISES_TYPE = {
   5: "Co-op",
   6: "Condo-op",
 };
+
+export const settingTab = {
+  PROFILE: 1,
+  GENERAL: 2,
+  LINK_PREFRENCES: 3,
+};
+export const settingTabLabel = [
+  { id: settingTab.PROFILE, label: "Profile" },
+  { id: settingTab.GENERAL, label: "General" },
+  { id: settingTab.LINK_PREFRENCES, label: "Link Prefrences" }
+];
