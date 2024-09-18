@@ -17,6 +17,7 @@ import {
   FETCH_ALL_CASES_SUCCESS,
   FETCH_ALL_CASES_FAILURE,
   SET_STAGE,
+  SET_SEARCH_CASES,
 } from "../type";
 
 const initialCasesState = {
@@ -108,6 +109,13 @@ const casesReducer = (state = initialCasesState, action) => {
         };
     case CLEAR_DATA:
       return initialCasesState;
+    case SET_SEARCH_CASES:
+     return {
+        ...state,
+        loading: false,
+        searchData: action.payload,
+        error: null,
+      }
     default:
       return state;
   }

@@ -9,12 +9,19 @@ import { Dropdown } from "flowbite-react";
 import { FaCheck } from "react-icons/fa";
 import DropdownMenu from "../dropdownmenu";
 import { IoCheckmarkSharp } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllCasesSuccess, setSearchCases } from "../../redux/actions/caseAction";
 
 const Actionbar = ({ onFilterChange }) => {
+  const dispatch = useDispatch();
   const location = useLocation();
   const [sortBy, setSortBy] = useState(SORT_OPTIONS.STATUS);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState("Open");
+  const [searchArr, setSearchArr] = useState([]);
+  const { cases } = useSelector((state) => state.case.casesData);
+  // const filteredCases = cases?.filter((caseItem) => caseItem.stage === card.value);
+
 
   useEffect(()=>{
     if(activeFilter==="Open"){
@@ -81,6 +88,10 @@ const Actionbar = ({ onFilterChange }) => {
     setIsModalOpen(!isModalOpen);
   };
 
+  // const handleAddOrRemove = (x) => {
+  //   console.log(x,"_________")
+  // };
+
   const handleFilterChange = (filter) => {
     setActiveFilter(filter);
     if (onFilterChange) {
@@ -91,12 +102,32 @@ const Actionbar = ({ onFilterChange }) => {
     const pathsToShow = [ROUTES.CASES];
     return pathsToShow.includes(location.pathname);
   };
+
+  const filterCases = (cases, searchArr) => {
+    return cases.filter(caseRecord => {
+      // Check if "selling" is in searchArr and caseType is 1
+      const isSelling = searchArr.includes("selling") && caseRecord.caseStatus===1 &&caseRecord.caseType === 1;
+  
+      // Check if "purchasing" is in searchArr and caseType is 2
+      const isPurchasing = searchArr.includes("purchasing") && caseRecord.caseStatus===1 && caseRecord.caseType === 0;
+  
+      // Return true if either condition is met
+      return isSelling || isPurchasing;
+    });
+  };
+
   const handleApply = () => {
-    console.log("Apply button clicked");
+    if(searchArr.length > 0){
+      let mainCases=filterCases(cases, searchArr)
+      dispatch(setSearchCases(mainCases))
+    }
   };
 
   const handleReset = () => {
-    console.log("Reset button clicked");
+    if(searchArr.length > 0){
+      setSearchArr([])
+      dispatch(setSearchCases([]))
+    }
   };
   const label = activeFilter === "Open" ? `Sort by: ${sortBy}` : `Closed Date: ${sortBy}`;
 
@@ -129,12 +160,15 @@ const Actionbar = ({ onFilterChange }) => {
         )}
       </div>
       <div className="flex">
+        {console.log(searchArr)}
         <DropdownMenu
           filterSections={activeFilter === "Open" ? openfilterSections : closedfilterSections}
           onFilterChange={handleFilterChange}
           onApply={handleApply}
           onReset={handleReset}
-          onClick={()=>alert('helo')}
+          // onClick={handleAddOrRemove}
+          searchArr={searchArr}
+          setSearchArr={setSearchArr}
         />
         <div className={`items-dropdown single-select ${activeFilter === "Open"?'sort-by-filter':''}`}>
           <Dropdown

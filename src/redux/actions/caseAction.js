@@ -18,7 +18,8 @@ import {
     READ_CASE_BY_CLIENT,
     CLOSE_CASE,
     READ_CASE_BY_CONTACT,
-    SET_STAGE
+    SET_STAGE,
+    SET_SEARCH_CASES
 } from "../type";
 
 
@@ -131,3 +132,7 @@ export const caseSetStage = (data) => ({
     payload: data,
 });
 
+export const setSearchCases = (cases) => ({
+    type: SET_SEARCH_CASES,
+    payload: cases ,
+});

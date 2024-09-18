@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import CardItem from "../carditem";
 import { IoIosArrowForward } from "react-icons/io";
 import { useSelector } from "react-redux";
@@ -8,9 +8,14 @@ import { useNavigate } from "react-router-dom";
 const CardData = ({ title, count, items, cardClass, onClick, includeClasses, card }) => {
   const navigate = useNavigate();
   const { cases } = useSelector((state) => state.case.casesData);
+  const { searchData } = useSelector((state) => state.case.casesData);
   const filteredCases = cases?.filter((caseItem) => caseItem.stage === card.value);
   const stageCount = filteredCases?.length;
 
+  // useEffect(()=>{
+  //   console.log(searchData,"searchData")
+  // },[searchData])
+  // alert(searchData)
   const handleCardClick = () => {
     const filteredCases = cases?.filter((caseItem) => caseItem.stage === card.value);
     onClick(card, filteredCases, stageCount);
@@ -35,7 +40,7 @@ const CardData = ({ title, count, items, cardClass, onClick, includeClasses, car
       <div className="pl-2 pr-2">
         {/* {items?.map((item, index) => ( */}
         {stageCount > 0 ? (
-          filteredCases.map((item, index) => (
+          (searchData && searchData.length > 0 ? searchData : filteredCases).map((item, index) => (
             <CardItem
               onClick={()=>{handleCaseCardClick(item)}}
               key={index}
