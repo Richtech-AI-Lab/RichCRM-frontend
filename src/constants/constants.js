@@ -536,5 +536,5 @@ export const settingTab = {
 export const settingTabLabel = [
   { id: settingTab.PROFILE, label: "Profile" },
   { id: settingTab.GENERAL, label: "General" },
-  { id: settingTab.LINK_PREFRENCES, label: "Link Prefrences" }
+  { id: settingTab.LINK_PREFRENCES, label: "Link Preferences" }
 ];
