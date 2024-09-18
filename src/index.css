@@ -271,4 +271,13 @@
   .fc-h-event:has(.calendar-info.gray) {
     @apply bg-bg-gray-200 border-l-8 border-l-text-gray-200
   }
+  .gray-btn button {
+    @apply bg-bg-gray-400 shadow-none
+  }
+  .avatar-hover .edit-btn {
+    @apply invisible
+  }
+  .avatar-hover:hover .edit-btn {
+    @apply visible
+  }
 }
