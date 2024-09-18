@@ -67,6 +67,8 @@ module.exports = {
         100: '#E2E2E7',
         200: '#EEEDF2',
         300: '#f5f5f5',
+        400: '#EDEDED',
+        500: '#929395',
       },
       'border-line': {
         100: '#BCC0C9',

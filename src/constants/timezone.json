@@ -1,0 +1,7 @@
+[
+    { "id": "America/Los_Angeles", "value": "America/Los_Angeles", "label": "Los Angeles, CA (GMT-7)" },
+    { "id": "America/New_York", "value": "America/New_York", "label": "New York, NY (GMT-4)" },
+    { "id": "Europe/London", "value": "Europe/London", "label": "London, England (GMT+1)" },
+    { "id": "Asia/Tokyo", "value": "Asia/Tokyo", "label": "Tokyo, Japan (GMT+9)" }
+  ]
+  
