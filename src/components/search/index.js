@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { IMAGES } from '../../constants/imagePath';
 
-const Search = ({searchResults}) => {
+const Search = ({ searchResults }) => {
+    console.log(searchResults)
     // Sample data for case and contact tabs
     const caseData = [
         { id: 1, firstName: 'James', lastName: 'Wilson', address: '456 Oakwood Avenue' },
@@ -51,50 +52,43 @@ const Search = ({searchResults}) => {
             </div>
 
             <div className="mt-2">
-                {/* <p className="text-xs text-gray-500">Recently Viewed</p> */}
-                <ul 
-                // className="mt-2 bg-white z-50 search-list-dropdown overflow-hidden rounded-2xl shadow-shadow-light-2"
+                <ul
+                className="z-50 overflow-hidden"
                 >
-                    {searchResults?.map((item) => (
+                    {searchResults[activeTab]?.map((item) => (
+
                         <li
                             className="px-4 py-2 hover:bg-input-surface flex justify-between items-center"
                             key={item.id}
                         >
-                            <div className="flex items-center">
-                                <img src={IMAGES.contact_avtar} className="w-8 h-8 mr-3 rounded-full" alt="Avatar" />
-                                <div>
-                                    <p className="text-base text-secondary-800">
-                                        {item.firstName} {item.lastName}
-                                    </p>
-                                        <span className="text-text-gray-100 text-sm">
-                                            {contactTypeLabels[item.contactType] || ''}
-                                        </span>
-                                </div>
-                            </div>
+                            {activeTab === "case" &&
+                                <div className="flex items-center cursor-pointer">
+                                    <img src={IMAGES.searchcase} className="w-8 h-8 mr-3 rounded-full" alt="Avatar" />
+                                    <div>
+                                        <p className="text-base text-secondary-800">
+                                            {item?.clientName} {item?.premisesName}
+                                        </p>
+                                    </div> 
+                                 </div>   }
+                                    {activeTab === "contact" &&
+                                        <div className="flex items-center cursor-pointer">
+                                            <img src={IMAGES.searchuser} className="w-8 h-8 mr-3 rounded-full" alt="Avatar" />
+                                            <div>
+                                                <p className="text-base text-secondary-800">
+                                                    {item.firstName} {item.lastName}
+                                                </p>
+                                                <span className="text-text-gray-100 text-sm">
+                                                    {contactTypeLabels[item.contactType] || ''}
+                                                </span>
+                                            </div>
+
+                                        </div>}
                             {/* <button className="text-red-500 hover:text-red-700">X</button> */}
-                        </li>
+                                </li>
                     ))}
-                </ul>
+                        </ul>
             </div>
         </div>
-
-    //     <ul className={'absolute left-0 right-0 mt-2 bg-white z-50 search-list-dropdown overflow-hidden rounded-2xl shadow-shadow-light-2'}>
-    //     {caseData?.map((item) => (
-    //       <li
-    //         className={'px-4 py-2 hover:bg-input-surface'}
-    //         // onClick={() => handleItemClick(item)} // Use the new handler
-    //         key={item.id} // Adding a key for each list item for better performance
-    //       >
-    //         <div className="flex items-center">
-    //           {/* <img src={IMAGES.contact_avtar} className="w-8 mr-3" /> */}
-    //           <div>
-    //             <p className="text-base text-secondary-800">{item?.firstName} {item?.lastName}</p>
-    //             <span className="text-text-gray-100 text-sm">{contactTypeLabels[item?.contactType] || ""}</span>
-    //           </div>
-    //         </div>
-    //       </li>
-    //     ))}
-    //   </ul>
     );
 };
 

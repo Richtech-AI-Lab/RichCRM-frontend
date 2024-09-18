@@ -26,7 +26,7 @@ import StageUncompleteAlert from "../../pages/cases/stagealert";
 
 const StagesChecklist = () => {
   const dispatch = useDispatch();
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState();
   const [isComplete, setIsComplete] = useState(true);
   const [activeTab, setActiveTab] = useState('mortgage');
   const menuOption1 = ['Create a Task', 'Add a Task']
@@ -147,13 +147,24 @@ const StagesChecklist = () => {
 
 
   const getChecklistItems = useCallback(() => {
-    let currentstepstr = `${currentStep}`;
+    let currentstepstr;
+    // if we have a stage value is highest and current step is 0 then we need to show 
+    const highestStageType = Math.max(
+      ...Object.values(data).map(stage => stage.stageType)
+  );
+  if(currentStep == undefined){
+    currentstepstr = `${highestStageType}`;
+  }else{
+    currentstepstr = `${currentStep}`;
+  }
+
+    console.log(currentstepstr)
     const getTaskPayload = {
       currentStageData: data[STAGESNAMES[currentstepstr]]?.tasks,
       currentStep: currentstepstr
     }
-    const response = dispatch(getTaskRequest(getTaskPayload));
-
+    console.log(currentstepstr)
+    dispatch(getTaskRequest(getTaskPayload));
   }, [dispatch, currentStep, data])
 
   const progressItems = [
@@ -186,7 +197,7 @@ const StagesChecklist = () => {
       case 4:
         return "Closing Tasks";
       default:
-        return <></>;
+        return <>loading..</>;
     }
   };
   const toggleStageModal = () => {
@@ -289,7 +300,7 @@ const StagesChecklist = () => {
         default:
           return false; // For unknown task types
       }
-    }).length;
+    }).length || 0;
   };
 
   const checkStageExists = async ({ stageType }) => {
@@ -354,7 +365,6 @@ const StagesChecklist = () => {
   // };
   return (
     <>
-
       <div className="md:col-span-12 lg:col-span-8">
         <div className="bg-white py-4 rounded-2xl mb-5">
           <div className="px-4">
@@ -391,17 +401,17 @@ const StagesChecklist = () => {
                     <span
                       className={`pb-4 cursor-pointer ${activeTab === 'mortgage' ? 'text-base text-secondary-800 font-medium border-b-[3px] border-primary' : 'text-gray-400'}`} onClick={() => setActiveTab('mortgage')}
                     >
-                      Mortgage Task ({getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]])}/{taskData.data[STAGESNAMES[currentStep]]?.length})
+                      Mortgage Task ({getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]])}/{taskData.data[STAGESNAMES[currentStep]]?.length || 0})
                     </span>
                     <span
                       className={`pb-4 cursor-pointer ${activeTab === 'title' ? 'text-base text-secondary-800 font-medium border-b-[3px] border-primary' : 'text-gray-400'}`}
                       onClick={() => setActiveTab('title')}
                     >
-                      Title Task ({getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]])}/{taskData.data[STAGESNAMES[currentStep]]?.length})
+                      Title Task ({getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]])}/{taskData.data[STAGESNAMES[currentStep]]?.length || 0})
                     </span>
                   </div>
                 ) : (
-                  <span className="text-base text-secondary-800 font-medium">{`${getHeadLabel(currentStep)} (${getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]])}/${taskData.data[STAGESNAMES[currentStep]]?.length})`}</span>
+                  <span className="text-base text-secondary-800 font-medium">{`${getHeadLabel(currentStep)} (${getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]])}/${taskData.data[STAGESNAMES[currentStep]]?.length || 0})`}</span>
                 )}
                 <div className="flex items-center gap-2">
 

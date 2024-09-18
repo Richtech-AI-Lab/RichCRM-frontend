@@ -5,6 +5,8 @@ import subtractIcon from "../assets/images/subtract.svg";
 import logo from "../assets/images/logo.png";
 import contact_avtar from "../assets/images/contact_avtar.png"
 import avatarpic from "../assets/images/avatarpic.png";
+import searchCase from "../assets/images/searchCase.svg";
+import searchUser from "../assets/images/searchUser.svg";
 
 export const IMAGES = {
   profile: avatarImage,
@@ -13,6 +15,8 @@ export const IMAGES = {
   removeIcon: subtractIcon,
   logo:logo,
   contact_avtar:contact_avtar,
-  avatarpic : avatarpic
+  avatarpic : avatarpic,
+  searchcase : searchCase,
+  searchuser: searchUser
 
 };
