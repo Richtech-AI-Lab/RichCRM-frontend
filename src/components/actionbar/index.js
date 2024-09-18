@@ -104,16 +104,18 @@ const Actionbar = ({ onFilterChange }) => {
   };
 
   const filterCases = (cases, searchArr) => {
-    return cases.filter(caseRecord => {
+    let data=cases?.filter(caseRecord => {
       // Check if "selling" is in searchArr and caseType is 1
-      const isSelling = searchArr.includes("selling") && caseRecord.caseStatus===1 &&caseRecord.caseType === 1;
+      const isSelling = searchArr?.includes("selling") && caseRecord.caseStatus===0 &&caseRecord.caseType === 1;
   
       // Check if "purchasing" is in searchArr and caseType is 2
-      const isPurchasing = searchArr.includes("purchasing") && caseRecord.caseStatus===1 && caseRecord.caseType === 0;
-  
+      const isPurchasing = searchArr?.includes("purchasing") && caseRecord.caseStatus===0 && caseRecord.caseType === 0;
+      // console.log(searchArr?.includes("purchasing") && caseRecord.caseStatus===1,"+++++")
       // Return true if either condition is met
       return isSelling || isPurchasing;
     });
+
+    return data;
   };
 
   const handleApply = () => {
@@ -124,10 +126,10 @@ const Actionbar = ({ onFilterChange }) => {
   };
 
   const handleReset = () => {
-    if(searchArr.length > 0){
+    // if(searchArr.length > 0){
       setSearchArr([])
       dispatch(setSearchCases([]))
-    }
+    // }
   };
   const label = activeFilter === "Open" ? `Sort by: ${sortBy}` : `Closed Date: ${sortBy}`;
 

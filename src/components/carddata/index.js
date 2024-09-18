@@ -9,6 +9,7 @@ const CardData = ({ title, count, items, cardClass, onClick, includeClasses, car
   const navigate = useNavigate();
   const { cases } = useSelector((state) => state.case.casesData);
   const { searchData } = useSelector((state) => state.case.casesData);
+  const searchfilterData  = searchData?.filter((caseItem) => caseItem.stage === card.value);
   const filteredCases = cases?.filter((caseItem) => caseItem.stage === card.value);
   const stageCount = filteredCases?.length;
 
@@ -39,22 +40,26 @@ const CardData = ({ title, count, items, cardClass, onClick, includeClasses, car
       </div>
       <div className="pl-2 pr-2">
         {/* {items?.map((item, index) => ( */}
-        {stageCount > 0 ? (
-          (searchData && searchData.length > 0 ? searchData : filteredCases).map((item, index) => (
-            <CardItem
-              onClick={()=>{handleCaseCardClick(item)}}
-              key={index}
-              badgeColor={item.badgeColor}
-              badgeText={item.badgeText}
-              caseDetails={item?.premisesName}
-              caseTitle={item?.clientName}
-              caseCount={item.caseCount}
-              caseType={item?.caseType}
-              caseStatus={item?.caseStatus}
-              innerCardClass={includeClasses ? "bg-input-surface" : "bg-white shadow-shadow-light"}
-            />
-          ))
-        ) : (
+        {stageCount > 0? 
+          (searchData && searchData.length > 0 ? searchfilterData : filteredCases).map((item, index) => {
+            // Console log the item for debugging
+            console.log("Item at index", index, ":", item);
+          
+            return (
+              <CardItem
+                onClick={() => { handleCaseCardClick(item); }}
+                key={index}
+                badgeColor={item.badgeColor}
+                badgeText={item.badgeText}
+                caseDetails={item?.premisesName}
+                caseTitle={item?.clientName}
+                caseCount={item.caseCount}
+                caseType={item?.caseType}
+                caseStatus={item?.caseStatus}
+                innerCardClass={includeClasses ? "bg-input-surface" : "bg-white shadow-shadow-light"}
+              />
+            );
+          }): (
           <div className="text-center p-4 text-gray-500 h-full">
             No cases available
           </div>
