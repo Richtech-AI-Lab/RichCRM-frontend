@@ -113,7 +113,8 @@ const casesReducer = (state = initialCasesState, action) => {
      return {
         ...state,
         loading: false,
-        searchData: action.payload,
+        searchData: action.payload.cases,
+        filterStatus: action.payload.filterStatus,
         error: null,
       }
     default:

@@ -1,6 +1,6 @@
 import { takeLatest, put, call } from "redux-saga/effects";
 import { caseCreateSuccess, caseCreateFailure, updateCaseSuccess, updateCaseFailure, deleteCaseSuccess, deleteCaseFailure, fetchAllCasesSuccess, fetchAllCasesFailure, caseSetStage } from "../actions/caseAction";
-import { POST_CASE_REQUEST, UPDATE_CASE_REQUEST, DELETE_CASE_REQUEST, FETCH_ALL_CASES_REQUEST, READ_CASE_REQUEST, READ_CASE_BY_CLIENT, CLOSE_CASE, READ_CASE_BY_CONTACT } from "../type";
+import { POST_CASE_REQUEST, UPDATE_CASE_REQUEST, DELETE_CASE_REQUEST, FETCH_ALL_CASES_REQUEST, READ_CASE_REQUEST, READ_CASE_BY_CLIENT, CLOSE_CASE, READ_CASE_BY_CONTACT, UPDATE_CASE_DATE_REQUEST } from "../type";
 import { postRequest, getRequest } from "../../axios/interceptor";
 import { API_ENDPOINTS, ROUTES } from "../../constants/api";
 import { toast } from "react-toastify";
@@ -216,6 +216,18 @@ function* closeCaseByCaseId(action) {
     }
 }
 
+function* updateCasedate(action) {
+    try {
+        const { payload } = action;
+        const response = yield call(() => postRequest(API_ENDPOINTS.UPDATE_CASE, payload));
+        if (response.status == 200) {
+            toast.success("Close Date Added!");
+        }
+    } catch (error) {
+        handleError(error)
+    }
+}
+
 
 export function* caseSaga() {
     yield takeLatest(POST_CASE_REQUEST, createCase);
@@ -225,6 +237,7 @@ export function* caseSaga() {
     yield takeLatest(READ_CASE_REQUEST, getCase);
     yield takeLatest(READ_CASE_BY_CLIENT, getCaseByClient);
     yield takeLatest(READ_CASE_BY_CONTACT, getCaseByContact);
+    yield takeLatest(UPDATE_CASE_DATE_REQUEST,updateCasedate);
 
     yield takeLatest(CLOSE_CASE, closeCaseByCaseId);
 }

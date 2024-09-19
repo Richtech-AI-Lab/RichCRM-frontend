@@ -19,7 +19,8 @@ import {
     CLOSE_CASE,
     READ_CASE_BY_CONTACT,
     SET_STAGE,
-    SET_SEARCH_CASES
+    SET_SEARCH_CASES,
+    UPDATE_CASE_DATE_REQUEST
 } from "../type";
 
 
@@ -132,7 +133,15 @@ export const caseSetStage = (data) => ({
     payload: data,
 });
 
-export const setSearchCases = (cases) => ({
+export const setSearchCases = (cases, filterStatus) => ({
     type: SET_SEARCH_CASES,
-    payload: cases ,
+    payload: {cases, filterStatus },
 });
+
+
+//Update Case
+export const updateCaseDateRequest = (payload) => ({
+    type: UPDATE_CASE_DATE_REQUEST,
+    payload,
+});
+

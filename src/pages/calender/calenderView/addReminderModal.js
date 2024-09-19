@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Formik, ErrorMessage, Field } from "formik";
-import { Checkbox, Label, Modal } from "flowbite-react";
+import { Checkbox, Label, Modal, Radio } from "flowbite-react";
 
 
 import { debounce } from "lodash";
@@ -12,32 +12,36 @@ import { API_ENDPOINTS } from "../../../constants/api";
 import { postRequest } from "../../../axios/interceptor";
 import NewCaseDropdown from "../../../components/newcasedropdown";
 import XButton from "../../../components/button/XButton";
+import { getDateAfterDays } from "../../../utils";
+import { useDispatch } from "react-redux";
+import { updateCaseDateRequest } from "../../../redux/actions/caseAction";
 
 const ReminderTypeOptions = [
-  { value: 1, label: "Mortgage " },
-  { value: 2, label: "Closing" },
+  { value: 0, label: "Mortgage " },
+  { value: 1, label: "Closing" },
 ];
 
 const ReminderDueDaysOptions = [
-  { value: 1, label: "30 Days From Today" },
-  { value: 2, label: "45 Days From Today" },
+  { value: 30, label: "30 Days From Today" },
+  { value: 45, label: "45 Days From Today" },
 ];
 
 const ReminderTimeOptions = [
-  { value: 1, label: "7 Days Before" },
-  { value: 2, label: "14 Days Before" },
-  { value: 3, label: "30 Days Before" },
+  { value: 7, label: "7 Days Before" },
+  { value: 14, label: "14 Days Before" },
+  { value: 30, label: "30 Days Before" },
 ];
 
 
 
 const AddReminderModal = ({ onClose }) => {
+  const dispatch= useDispatch();
   const [searchResults, setSearchResults] = useState([]);
 
   const debouncedFunction = useCallback(
     debounce(async (value) => {
       if (value != "" || value.length > 0) {
-        const response = await postRequest(API_ENDPOINTS.FETCH_CLIENT_BY_QUERY, {
+        const response = await postRequest(API_ENDPOINTS.GET_CASES_BY_KEYWORD, {
           keyword: value
         }
         )
@@ -59,17 +63,44 @@ const AddReminderModal = ({ onClose }) => {
     []
   );
   const initialValues = {
+    caseId: "",
     caseName: "",
     reminderType: "",
     dueDate: "",
-    dueDateType: "",
+    dueDateType: null,
     reminderTime: "",
-    popupReminder: "",
-    emailRemider: ""
+    popupReminder: false,
+    emailReminder: false
   };
   const handleNewCaseInfo = async (values) => {
-    console.log(values, "add modal")
-    return true;
+    let mainDate;
+    let duedatetype = parseInt(values.dueDateType);
+
+    // get date based on type
+    if (duedatetype) {
+      mainDate = getDateAfterDays(values.dueDate)
+    } else {
+      mainDate = getDateAfterDays(values.dueDate)
+    }
+
+    // get reminder type key name based on type
+    let data;
+    if (values.reminderType) {
+      data={
+        closingDate: mainDate,
+      }
+    } else {
+      data={
+        mortgageContingencyDate: mainDate,
+      }
+    }
+
+    const payload={
+      caseId: values.caseId,
+      ...data
+    }
+    dispatch(updateCaseDateRequest(payload))
+    onClose()
   };
 
   return (
@@ -100,6 +131,7 @@ const AddReminderModal = ({ onClose }) => {
               handleBlur,
               handleSubmit,
               isSubmitting,
+              setFieldValue
             }) => (
 
               <form onSubmit={handleSubmit} className="">
@@ -122,28 +154,37 @@ const AddReminderModal = ({ onClose }) => {
                         }}
                         form={{ errors, touched }}
                       />
+                      <div className="hidden">
+
+                        <TextInput
+                          name={`caseId`}
+                          type="text"
+                          placeholder="Enter Case Name"
+                          value={values.caseId}
+                          field={{
+                            name: `caseId`,
+                          }}
+                        />
+                      </div>
+
 
                       <ul className={'search-list-dropdown overflow-hidden rounded-2xl shadow-shadow-light-2'}>
                         {searchResults.map((item) => (
                           <li
                             className={'px-4 py-2 hover:bg-input-surface'}
-                            // onClick={() => {
-                            //   replace(index, {
-                            //     isCard: true,
-                            //     clientfirstName: item.firstName,
-                            //     clientLastName: item.lastName,
-                            //     clientcellNumber: item.cellNumber,
-                            //     clientemail: item.email,
-                            //   });
-                            //   setSearchResults([]);
-                            // }}
+                            onClick={() => {
+                              setFieldValue('caseName', `${item.clientName}-${item.premisesName}`);
+                              setFieldValue('caseId', item.caseId);
+                              setSearchResults([]);
+                            }}
                             key={item.id} // Adding a key for each list item for better performance
                           >
                             <div className="flex items-center">
                               {/* <img src={avatar} className="w-8 mr-3" /> */}
+                              {/* {console.log(item)} */}
                               <div>
-                                <p className="text-base text-secondary-800">Case name</p>
-                                <span className="text-text-gray-100 text-sm">707684</span>
+                                <p className="text-base text-secondary-800">{item.clientName}</p>
+                                <span className="text-text-gray-100 text-sm">{item.premisesName}</span>
                               </div>
                             </div>
                           </li>
@@ -191,17 +232,18 @@ const AddReminderModal = ({ onClose }) => {
                         <div className="flex justify-start items-center w-full gap-7">
                           <div className="grid grid-cols-2 gap-x-12">
                             {[
-                              { id: 1, value: 1, label: "Auto Filling" },
-                              { id: 0, value: 0, label: "Manual Filling" },
+                              { id: 0, value: 0, label: "Auto Filling" },
+                              { id: 1, value: 1, label: "Manual Filling" },
                             ].map((option, index) => (
                               <div className="flex items-center gap-2 custom-radio" key={index}>
-                                <Field
-                                  type="radio"
+                                <Radio
                                   id={option.id}
-                                  name="vacantAtClosing"
+                                  name="dueDateType"
                                   value={option.value}
-                                  checked={values.vacantAtClosing == option.id}
-                                  className="mr-2"
+                                  checked={values.dueDateType == option.value}
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  className="form-radio"
                                 />
                                 <Label
                                   htmlFor={option.id}
@@ -219,16 +261,16 @@ const AddReminderModal = ({ onClose }) => {
                         <Field
                           as={NewCaseDropdown}
                           defaultLabel="Due Day"
-                          name="duedate"
+                          name="dueDate"
                           // value={values?.duedate}
                           onChange={handleChange}
                           onBlur={handleBlur}
                           options={ReminderDueDaysOptions}
                           inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
                         />
-                        {touched.reminderType && errors.reminderType ? (
+                        {touched.dueDate && errors.dueDate ? (
                           <div className="text-red-500 text-sm">
-                            {errors.reminderType}
+                            {errors.dueDate}
                           </div>
                         ) : null}
                       </div>
@@ -260,13 +302,45 @@ const AddReminderModal = ({ onClose }) => {
 
                   <div className="flex flex-col gap-4 p-5">
                     <div className="flex items-start gap-2">
-                      <Checkbox />
+                      <Checkbox
+                        id="popupReminder"
+                        name="popupReminder"
+                        checked={values.popupReminder}
+                        onChange={(e) => {
+                          handleChange(e);
+
+                          handleChange({
+                            target: {
+                              name: e.target.name,
+                              value: e.target.checked
+                            }
+                          });
+                        }}
+                        onBlur={handleBlur} // Update Formik state when the checkbox is checked/unchecked
+                        className="form-checkbox" // Optional: Apply custom Tailwind styling
+                      />
                       <Label className="text-secondary-800">
                         Popup Window Reminder
                       </Label>
                     </div>
                     <div className="flex items-start gap-2">
-                      <Checkbox />
+                      <Checkbox
+                        id="emailReminder"
+                        name="emailReminder"
+                        checked={values.emailReminder}
+                        onChange={(e) => {
+                          handleChange(e);
+
+                          handleChange({
+                            target: {
+                              name: e.target.name,
+                              value: e.target.checked
+                            }
+                          });
+                        }}
+                        onBlur={handleBlur}
+                        className="form-checkbox"
+                      />
                       <Label className="text-secondary-800">
                         Email Reminder
                       </Label>
