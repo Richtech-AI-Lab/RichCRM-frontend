@@ -44,3 +44,10 @@ export const countCasesByStage = (cases) => {
 
   return stageCount;
 };
+
+export const getDateAfterDays =(days) =>{
+  console.log(days)
+  const today = new Date();
+  today.setDate(today.getDate() + days); // Add the number of days
+  return today;
+}
