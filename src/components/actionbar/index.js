@@ -96,6 +96,8 @@ const Actionbar = ({ onFilterChange }) => {
     setActiveFilter(filter);
     if (onFilterChange) {
       onFilterChange(filter);
+      setSearchArr([])
+      dispatch(setSearchCases([]))
     }
   };
   const shouldShowOpenClosed = () => {
@@ -105,14 +107,18 @@ const Actionbar = ({ onFilterChange }) => {
 
   const filterCases = (cases, searchArr) => {
     let data=cases?.filter(caseRecord => {
-      // Check if "selling" is in searchArr and caseType is 1
-      const isSelling = searchArr?.includes("selling") && caseRecord.caseStatus===0 &&caseRecord.caseType === 1;
+
+      const isWarning = searchArr?.includes("warning") && caseRecord.caseStatus===0 ;
+
+      const isWaiting  = searchArr?.includes("waiting") && caseRecord.caseStatus===1 ;
+
+      const isFinished = searchArr?.includes("finished") && caseRecord.caseStatus===2;
+
+      const isSelling = searchArr?.includes("selling") &&caseRecord.caseType === 1;
   
-      // Check if "purchasing" is in searchArr and caseType is 2
-      const isPurchasing = searchArr?.includes("purchasing") && caseRecord.caseStatus===0 && caseRecord.caseType === 0;
-      // console.log(searchArr?.includes("purchasing") && caseRecord.caseStatus===1,"+++++")
-      // Return true if either condition is met
-      return isSelling || isPurchasing;
+      const isPurchasing = searchArr?.includes("purchasing") && caseRecord.caseType === 0;
+
+      return isSelling || isPurchasing ||  isWarning || isWaiting || isFinished;
     });
 
     return data;
@@ -121,7 +127,7 @@ const Actionbar = ({ onFilterChange }) => {
   const handleApply = () => {
     if(searchArr.length > 0){
       let mainCases=filterCases(cases, searchArr)
-      dispatch(setSearchCases(mainCases))
+      dispatch(setSearchCases(mainCases, true))
     }
   };
 
@@ -162,7 +168,6 @@ const Actionbar = ({ onFilterChange }) => {
         )}
       </div>
       <div className="flex">
-        {console.log(searchArr)}
         <DropdownMenu
           filterSections={activeFilter === "Open" ? openfilterSections : closedfilterSections}
           onFilterChange={handleFilterChange}

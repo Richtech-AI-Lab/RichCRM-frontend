@@ -9,6 +9,7 @@ const CardData = ({ title, count, items, cardClass, onClick, includeClasses, car
   const navigate = useNavigate();
   const { cases } = useSelector((state) => state.case.casesData);
   const { searchData } = useSelector((state) => state.case.casesData);
+  const { filterStatus } = useSelector((state) => state.case.casesData);
   const searchfilterData  = searchData?.filter((caseItem) => caseItem.stage === card.value);
   const filteredCases = cases?.filter((caseItem) => caseItem.stage === card.value);
   const stageCount = filteredCases?.length;
@@ -40,30 +41,59 @@ const CardData = ({ title, count, items, cardClass, onClick, includeClasses, car
       </div>
       <div className="pl-2 pr-2">
         {/* {items?.map((item, index) => ( */}
-        {stageCount > 0? 
-          (searchData && searchData.length > 0 ? searchfilterData : filteredCases).map((item, index) => {
-            // Console log the item for debugging
-            console.log("Item at index", index, ":", item);
-          
-            return (
-              <CardItem
-                onClick={() => { handleCaseCardClick(item); }}
-                key={index}
-                badgeColor={item.badgeColor}
-                badgeText={item.badgeText}
-                caseDetails={item?.premisesName}
-                caseTitle={item?.clientName}
-                caseCount={item.caseCount}
-                caseType={item?.caseType}
-                caseStatus={item?.caseStatus}
-                innerCardClass={includeClasses ? "bg-input-surface" : "bg-white shadow-shadow-light"}
-              />
-            );
-          }): (
-          <div className="text-center p-4 text-gray-500 h-full">
-            No cases available
-          </div>
-        )}
+        {/* Copy code */}
+{stageCount > 0 ? (
+  searchData && searchData.length > 0 ? (
+    // If searchData has results, display searchfilterData
+    searchfilterData.map((item, index) => {
+      // console.log("Item at index", index, ":", item);
+
+      return (
+        <CardItem
+          onClick={() => { handleCaseCardClick(item); }}
+          key={index}
+          badgeColor={item.badgeColor}
+          badgeText={item.badgeText}
+          caseDetails={item?.premisesName}
+          caseTitle={item?.clientName}
+          caseCount={item.caseCount}
+          caseType={item?.caseType}
+          caseStatus={item?.caseStatus}
+          innerCardClass={includeClasses ? "bg-input-surface" : "bg-white shadow-shadow-light"}
+        />
+      );
+    })
+  ) : searchData && searchData.length === 0 && filterStatus ? (
+    // If searchData is empty after filtering, show "No cases available"
+    <div className="text-center p-4 text-gray-500 h-full">
+      No cases available
+    </div>
+  ) : (
+    // If no filter is applied and searchData is initially empty, display all cases (filteredCases)
+    filteredCases.map((item, index) => {
+      // console.log("Item at index", index, ":", item);
+
+      return (
+        <CardItem
+          onClick={() => { handleCaseCardClick(item); }}
+          key={index}
+          badgeColor={item.badgeColor}
+          badgeText={item.badgeText}
+          caseDetails={item?.premisesName}
+          caseTitle={item?.clientName}
+          caseCount={item.caseCount}
+          caseType={item?.caseType}
+          caseStatus={item?.caseStatus}
+          innerCardClass={includeClasses ? "bg-input-surface" : "bg-white shadow-shadow-light"}
+        />
+      );
+    })
+  )
+) : (
+  <div className="text-center p-4 text-gray-500 h-full">
+    No cases available
+  </div>
+)}
       </div>
     </div>
   );

@@ -132,7 +132,7 @@ export const caseSetStage = (data) => ({
     payload: data,
 });
 
-export const setSearchCases = (cases) => ({
+export const setSearchCases = (cases, filterStatus) => ({
     type: SET_SEARCH_CASES,
-    payload: cases ,
+    payload: {cases, filterStatus },
 });
