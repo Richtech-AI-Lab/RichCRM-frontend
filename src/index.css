@@ -256,19 +256,19 @@
   .calendar-info {
     @apply text-danger-200
   }
-  .fc-h-event:has(.calendar-info) {
+  .fc-event:has(.calendar-info) {
     @apply bg-badge-red border-0 border-l-8 border-l-danger-100 p-2
   }
   .calendar-info.yellow {
     @apply text-warning-200
   }
-  .fc-h-event:has(.calendar-info.yellow) {
+  .fc-event:has(.calendar-info.yellow) {
     @apply bg-badge-yellow border-l-8 border-l-warning-100
   }
   .calendar-info.gray {
     @apply text-secondary-800
   }
-  .fc-h-event:has(.calendar-info.gray) {
+  .fc-event:has(.calendar-info.gray) {
     @apply bg-bg-gray-200 border-l-8 border-l-text-gray-200
   }
   .gray-btn button {
