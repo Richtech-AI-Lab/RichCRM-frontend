@@ -37,7 +37,7 @@ const AddReminderModal = ({ onClose }) => {
   const debouncedFunction = useCallback(
     debounce(async (value) => {
       if (value != "" || value.length > 0) {
-        const response = await postRequest(API_ENDPOINTS.FETCH_CLIENT_BY_QUERY, {
+        const response = await postRequest(API_ENDPOINTS.GET_CASES_BY_KEYWORD, {
           keyword: value
         }
         )
@@ -59,6 +59,7 @@ const AddReminderModal = ({ onClose }) => {
     []
   );
   const initialValues = {
+    caseId: "",
     caseName: "",
     reminderType: "",
     dueDate: "",
@@ -100,6 +101,7 @@ const AddReminderModal = ({ onClose }) => {
               handleBlur,
               handleSubmit,
               isSubmitting,
+              setFieldValue
             }) => (
 
               <form onSubmit={handleSubmit} className="">
@@ -122,28 +124,37 @@ const AddReminderModal = ({ onClose }) => {
                         }}
                         form={{ errors, touched }}
                       />
+                      <div className="hidden">
+
+                        <TextInput
+                          name={`caseId`}
+                          type="text"
+                          placeholder="Enter Case Name"
+                          value={values.caseId}
+                          field={{
+                            name: `caseId`,
+                          }}
+                        />
+                      </div>
+
 
                       <ul className={'search-list-dropdown overflow-hidden rounded-2xl shadow-shadow-light-2'}>
                         {searchResults.map((item) => (
                           <li
                             className={'px-4 py-2 hover:bg-input-surface'}
-                            // onClick={() => {
-                            //   replace(index, {
-                            //     isCard: true,
-                            //     clientfirstName: item.firstName,
-                            //     clientLastName: item.lastName,
-                            //     clientcellNumber: item.cellNumber,
-                            //     clientemail: item.email,
-                            //   });
-                            //   setSearchResults([]);
-                            // }}
+                            onClick={() => {
+                              setFieldValue('caseName', `${item.clientName}-${item.premisesName}`);
+                              setFieldValue('caseId', item.caseId);
+                              setSearchResults([]);
+                            }}
                             key={item.id} // Adding a key for each list item for better performance
                           >
                             <div className="flex items-center">
                               {/* <img src={avatar} className="w-8 mr-3" /> */}
+                              {console.log(item)}
                               <div>
-                                <p className="text-base text-secondary-800">Case name</p>
-                                <span className="text-text-gray-100 text-sm">707684</span>
+                                <p className="text-base text-secondary-800">{item.clientName}</p>
+                                <span className="text-text-gray-100 text-sm">{item.premisesName}</span>
                               </div>
                             </div>
                           </li>
