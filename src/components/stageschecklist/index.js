@@ -42,7 +42,7 @@ const StagesChecklist = () => {
     // if stage is not exist then create stage.
     if (isEmpty(data)) {
       let sagaPayload = {
-        stageType: currentStep,
+        stageType: currentStep || 0,
         caseId: localStorage.getItem('c_id'),
       }
       dispatch(getStageRequest(sagaPayload));
