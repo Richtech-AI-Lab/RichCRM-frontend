@@ -51,3 +51,16 @@ export const getDateAfterDays =(days) =>{
   today.setDate(today.getDate() + days); // Add the number of days
   return today;
 }
+
+
+export const daysLeft= (targetDateStr) =>{
+  const targetDate = new Date(targetDateStr);
+  
+  const currentDate = new Date();
+  
+  const differenceInTime = targetDate - currentDate;
+  
+  const daysLeft = Math.ceil(differenceInTime / (1000 * 60 * 60 * 24));
+  
+  return daysLeft;
+}
