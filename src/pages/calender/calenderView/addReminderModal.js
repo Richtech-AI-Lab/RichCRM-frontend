@@ -70,7 +70,7 @@ const AddReminderModal = ({ onClose }) => {
     day: null,
     month: null,
     year: null,
-    dueDateType: null,
+    dueDateType: 0,
     reminderTime: "",
     popupReminder: false,
     emailReminder: false
