@@ -23,9 +23,11 @@ import { isEmpty } from "lodash";
 import XSpinnerLoader from "../spinnerLoader/XSpinnerLoader";
 import { caseCreateSuccess, closeCaseRequest, getClientByIdRequest, updateCaseRequest } from "../../redux/actions/caseAction";
 import StageUncompleteAlert from "../../pages/cases/stagealert";
+import { useNavigate } from "react-router-dom";
 
 const StagesChecklist = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState();
   const [isComplete, setIsComplete] = useState(true);
   const [activeTab, setActiveTab] = useState('mortgage');
@@ -54,7 +56,7 @@ const StagesChecklist = () => {
     if (foundCase) {
       setCurrentStep(foundCase?.stage);
     }
-  }, [casesData.cases[0].stage])
+  }, [casesData.cases[0]?.stage])
 
   //   const foundCase = caseDataGet.find(item => item.caseId === caseId);
 
@@ -277,7 +279,7 @@ const StagesChecklist = () => {
         const closeCasePayload = {
           caseId: localStorage.getItem('c_id'),
         };
-        dispatch(closeCaseRequest(closeCasePayload))
+        dispatch(closeCaseRequest(closeCasePayload, navigate))
       } catch (error) {
         console.error("Error closer stage:", error.message);
       }
