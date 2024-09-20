@@ -132,7 +132,7 @@ const Calendar = ({ toggleAddReminderModal, filters }) => {
   
     return (
       <>
-        <div onClick={toggleDetailModal} className="calendar-info">
+        <div onClick={toggleDetailModal} className={`calendar-info w-full ${title=="Closing Due"? "yellow": "gray"}`}>
           <div className="font-semibold mb-1">{title}</div>
           <div>{clientName}</div>
           <div className="truncate">{premisesName}</div>
@@ -143,7 +143,11 @@ const Calendar = ({ toggleAddReminderModal, filters }) => {
           <DetailCaseModal 
             onAddReminderClick={toggleAddReminderModal} 
             onClose={toggleDetailModal} 
-            eventData={eventInfo.event} // Pass event data if needed
+            eventData={extendedProps.caseItem}
+            title={title}
+            clientName={clientName}
+            premisesName={premisesName}
+            
           />
         )}
       </>

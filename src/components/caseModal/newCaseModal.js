@@ -526,8 +526,8 @@ const NewCaseModal = ({ onClose }) => {
                                                 <div className="flex items-center">
                                                   <img src={avatar} className="w-8 mr-3" />
                                                   <div>
-                                                    <p className="text-base text-secondary-800">{item.firstName}</p>
-                                                    <span className="text-text-gray-100 text-sm">707684</span>
+                                                    <p className="text-base text-secondary-800">{item.firstName} {item.lastName}</p>
+                                                    <span className="text-text-gray-100 text-sm">{item?.email}</span>
                                                   </div>
                                                 </div>
                                               </li>

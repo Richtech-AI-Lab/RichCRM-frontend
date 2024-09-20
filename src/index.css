@@ -190,18 +190,27 @@
   .contacts-table {
     @apply rounded-2xl shadow-shadow-light px-4 bg-white
   }
+  .contacts-table.db-contacts{
+    @apply bg-input-surface 
+  }
+  .contacts-table.db-contacts td{
+    @apply bg-input-surface 
+  }
+  .contacts-table.db-contacts th{
+    @apply bg-input-surface 
+  }
   .contacts-table th {
     @apply py-[14px] bg-white text-sm text-secondary-800 capitalize font-medium px-4 first:pl-0 last:pr-0
   }
   .contacts-table td {
     @apply py-2 text-sm text-secondary-800 font-medium px-4 first:pl-0 last:pr-0
   }
-  .db-contacts td {
+  /* .db-contacts td {
     @apply bg-input-surface py-[10px]
   }
   .db-contacts input  {
     @apply bg-transparent
-  }
+  } */
   .contacts-table.addFromContactModal {
     @apply  bg-input-surface
   }

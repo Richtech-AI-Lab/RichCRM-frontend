@@ -187,6 +187,7 @@ const StagesChecklist = () => {
   // ];
 
   const getHeadLabel = (currentStep) => {
+    console.log(currentStep)
     switch (currentStep) {
       case 0:
         return "To-do Tasks";
@@ -199,7 +200,7 @@ const StagesChecklist = () => {
       case 4:
         return "Closing Tasks";
       default:
-        return <>loading..</>;
+        return  "To-do Tasks";
     }
   };
   const toggleStageModal = () => {
@@ -448,7 +449,7 @@ const StagesChecklist = () => {
 
                 {!loading && (
                   <div className="w-full">
-                    {taskData.data[STAGESNAMES[currentStep]]
+                    {taskData.data[STAGESNAMES[currentStep? currentStep : 0]]
                       ?.slice(
                         currentStep === 3
                           ? activeTab === 'title'
@@ -459,7 +460,7 @@ const StagesChecklist = () => {
                           ? activeTab === 'title'
                             ? 10
                             : 5
-                          : taskData.data[STAGESNAMES[currentStep]].length // End index for slice when currentStep is 3, otherwise show all
+                          : taskData.data[STAGESNAMES[currentStep? currentStep : 0]]?.length // End index for slice when currentStep is 3, otherwise show all
                       )
                       .map((item, index) => (
                         <ChecklistItem

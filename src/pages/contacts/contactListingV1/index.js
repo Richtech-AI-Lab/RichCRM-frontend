@@ -94,7 +94,7 @@ const ContactListingV1 = ({ active, parent }) => {
   }
 
   return (
-    <div className={`overflow-x-auto h-[68vh]  ${parent === `dashboard` ? `` : `contacts-table`}`}>
+    <div className={`overflow-x-auto h-[68vh]  ${parent === `dashboard` ? `` : `contacts-table db-contacts`}`}>
       <XSpinnerLoader loading={loading} size="lg" />
       <Table className="">
 
