@@ -158,7 +158,7 @@
     @apply border-b-0
   }
   .task-checklist input[type="checkbox"] {
-    @apply bg-white border-black
+    @apply bg-white border-black w-6 h-6
   }
   .task-checklist input[type="checkbox"]:checked {
     @apply bg-primary2 border-primary2
