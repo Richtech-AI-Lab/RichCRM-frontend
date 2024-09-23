@@ -8,13 +8,13 @@ import { ACTIONTYPE, ACTIONTYPELABEL } from "../../constants/constants";
 import NewCaseDropdown from "../newcasedropdown";
 import ComposeEmail from "../composeEmail/index"
 
-const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optionsValue, checkboxId, currentStep }) => {
+const ChecklistItem = ({ icon, label, status, action, actionInfo, optionsValue, checkboxId, currentStep , templates }) => {
 
   const [isCompose,setIsCompose] = useState(false);
   const toggleComposeModal = () => {
     setIsCompose(!isCompose);
   };
-  const getOptionsByAction = (option = "Not Started") => {
+  const getOptionsByAction = (option) => {
     switch (action) {
       // case "Action":
       case ACTIONTYPE.ACTION:
@@ -25,21 +25,24 @@ const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optio
         break;
       // case "Contact":
       case ACTIONTYPE.CONTACT:
-        if (option === "Not Started") {
+        if (option === 0) {
           return [
             { value: "compose message", label: "Compose Message" },
           ];
-        } else if (option === "Waiting") {
+        } else if (option === 1) {
           return [
-            { value: "reupload", label: "Resend Message" },
-            { value: "view", label: "Extended Waiting Time" },
+            { value: "compose message", label: "Compose Message" },
           ];
-        } else if (option === "No Response") {
-          return [
-            { value: "reupload", label: "Resend Message" },
-            { value: "view", label: "Extended Waiting Time" },
-          ];
-        } else if (option === "Completed") {
+          // return [
+          //   { value: "reupload", label: "Resend Message" },
+          //   { value: "view", label: "Extended Waiting Time" },
+          // ];
+        // } else if (option === "No Response") {
+        //   // return [
+        //   //   { value: "reupload", label: "Resend Message" },
+        //   //   { value: "view", label: "Extended Waiting Time" },
+        //   // ];
+        } else if (option === 2) {
           return [
             { value: "compose message", label: "Compose Message" },
           ];
@@ -50,11 +53,11 @@ const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optio
         break;
       // case "Upload":
       case ACTIONTYPE.UPLOAD:
-        if (option === "Unuploaded") {
+        if (option === 0) {
           return [
             { value: "upload", label: "Upload" },
           ];
-        } else if (option === "Uploaded") {
+        } else if (option === 1) {
           return [
             { value: "reupload", label: "Re-upload" },
             { value: "view", label: "View" },
@@ -82,8 +85,8 @@ const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optio
     }
   }
 
-  const isOptionDisable = (acc, opt) => {
-    if (acc == "Action" && (opt == "Finished" || opt == "Unfinished")) {
+  const isOptionDisable = (acc) => {
+    if (acc == 0 ) {
       return true
     }
     return false
@@ -144,8 +147,8 @@ const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optio
   }
 
   const displayIcon = getIconByAction(action)
-  const displayOption = getOptionsByAction();
-  const disabled = isOptionDisable(action, options);
+  const displayOption = getOptionsByAction(status);
+  const disabled = isOptionDisable(action);
   const taskStatusColor = getTaskLabelAndColor(ACTIONTYPELABEL[action], status);
 
   // console.log(taskStatusColor?.badgeClass,"displayOption");
@@ -172,7 +175,8 @@ const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optio
               disabled={disabled}
               defaultLabel="Options"
               name="checklistSelect"
-              value={options}
+              // defaultChecked={!status}
+              // value={!status}
               onChange={(e) => handleOption(e.target.value)}
               options={displayOption}
               inputClassName="border-border rounded-full py-[10px] px-[16px] text-secondary-700 leading-5 font-semibold"

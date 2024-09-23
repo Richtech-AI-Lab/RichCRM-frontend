@@ -468,7 +468,8 @@ const StagesChecklist = () => {
                           status={item.status}
                           action={item.taskType}
                           actionInfo={item.name}
-                          options={item.options}
+                          templates={item?.templates}
+                          // options={item.options}
                           checkboxId={item.checkboxId}
                         />
                       ))}
