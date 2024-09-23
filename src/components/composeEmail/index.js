@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import XButton from "../../components/button/XButton"
 import { IoIosClose } from 'react-icons/io';
 import logo from '../../assets/images/logo-dark.png'
@@ -8,23 +8,63 @@ import { Formik } from 'formik';
 import { sendEmailRequest } from '../../redux/actions/utilsActions';
 import { Spinner } from 'flowbite-react';
 import emailTemplate from './emailTemplate';
+import { API_ENDPOINTS } from '../../constants/api';
+import { postRequest } from '../../axios/interceptor';
 
-const ComposeEmail = ({ onClose }) => {
+const ComposeEmail = ({ onClose , templates}) => {
   const dispatch = useDispatch();
   const { client } = useSelector((state) => state.client);
-  // const { loading} = useSelector((state) => state.utils);
-  const clientDetails = client?.data?.length > 0 ? client?.data : null;
+  const clientObj = client?.data?.length > 0 ? client?.data : null;
+  const { casesData } = useSelector((state) => state.case);
+  const caseObj = casesData?.cases?.find(item => item.caseId === localStorage.getItem('c_id'));
   const [inputValue, setInputValue] = useState('');
   const [toEmail, setToEmail] = useState([]);
+  const [template, setTemplate] = useState('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await postRequest(API_ENDPOINTS.READ_TEMPLATE_BY_NAME, {
+          templateTitle: templates[0],
+        });
+        const results = response?.data?.data[0];
+        setTemplate(results);
+      } catch (error) {
+        console.error("Error fetching client data:", error);
+      }
+    };
+  
+    fetchData(); // Call the async function
+  
+  }, []);
+
 
   // Initial values for the form fields
   const initialValues = {
     toAddresses: [""],
     ccAddresses: [""],
-    templateTitle: "",
-    templateContent: emailTemplate
+    templateTitle: template?.templateTitle,
+    templateContent: template?.templateContent
   };
-  const handleSubmit = (values) => {
+  const updateTemplate = async() => {
+    try {
+      const response = await postRequest(API_ENDPOINTS.UPDATE_TEMPLATE_BY_NAME, {
+        templateTitle: templates[0],
+        data: {
+          clientObj: clientObj[0],
+          caseObj,
+        }
+      });
+      const results = response?.data?.data[0];
+      setTemplate(results);
+    } catch (error) {
+      console.error("Error fetching client data:", error);
+    }
+
+  };
+
+  const handleSubmit = async(values) => {
+    await updateTemplate()
     const payload = {
       toAddresses: toEmail,
       ccAddresses: toEmail,
@@ -52,7 +92,7 @@ const ComposeEmail = ({ onClose }) => {
     const updatedEmails = toEmail.filter((_, i) => i !== index);
     setToEmail(updatedEmails);
   }
-
+  // alert(initialValues.templateTitle)
   return (
     <>
       <div className="bg-white rounded-2xl shadow-card fixed bottom-3 right-3 w-[552px]">
@@ -61,6 +101,7 @@ const ComposeEmail = ({ onClose }) => {
           <IoIosClose size={28} onClick={onClose} className="text-text-gray-100 cursor-pointer" />
         </div>
         <Formik
+          enableReinitialize
           initialValues={initialValues}
           // validationSchema={validationSchema}
           onSubmit={handleSubmit}

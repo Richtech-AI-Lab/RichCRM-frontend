@@ -193,7 +193,7 @@ const ChecklistItem = ({ icon, label, status, action, actionInfo, optionsValue, 
         </div>
       </li>
     </div>
-    {isCompose ? <ComposeEmail onClose={toggleComposeModal} /> : ""}
+    {isCompose ? <ComposeEmail templates={templates} onClose={toggleComposeModal} /> : ""}
      </>
   );
 };
