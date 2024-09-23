@@ -187,7 +187,7 @@ const StagesChecklist = () => {
   // ];
 
   const getHeadLabel = (currentStep) => {
-    console.log(currentStep)
+    // console.log(currentStep)
     switch (currentStep) {
       case 0:
         return "To-do Tasks";
@@ -464,6 +464,8 @@ const StagesChecklist = () => {
                       )
                       .map((item, index) => (
                         <ChecklistItem
+                          item={item}
+                          stageName={currentStep? currentStep : 0}
                           key={index}
                           status={item.status}
                           action={item.taskType}

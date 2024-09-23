@@ -1,7 +1,7 @@
 import { call, fork, put, takeLatest } from 'redux-saga/effects';
-import { CREATE_TASK_REQUEST, GET_TASK_REQUEST } from '../type';
+import { CREATE_TASK_REQUEST, GET_TASK_REQUEST, UPDATE_STATUS_TASK_REQUEST } from '../type';
 import { API_ENDPOINTS } from '../../constants/api';
-import { createTaskFailure, createTaskSuccess } from '../actions/taskActions';
+import { createTaskFailure, createTaskSuccess, updateTaskStatusFailure, updateTaskStatusSuccess } from '../actions/taskActions';
 import { getRequest, postRequest } from '../../axios/interceptor';
 import { all } from 'redux-saga/effects';
 import { STAGESNAMES } from '../../constants/constants';
@@ -27,6 +27,24 @@ function* createtaskSaga(action) {
 //     yield put(createTaskFailure(error.response?.data || error));
 //   }
 // }
+function* updateStatusTaskSaga(action) {
+  const { payload } = action;
+  console.log(payload,"______")
+  try {
+    const response = yield call(() => postRequest(API_ENDPOINTS.UPDATE_TASK, payload?.taskData));
+    const data = {
+      stageName:payload.currentStep,
+      taskData: {
+        ...response.data.data[0],
+        taskId:payload?.taskData.taskId
+      },
+    };
+    yield put(updateTaskStatusSuccess(data));
+  } catch (error) {
+    handleError(error)
+    yield put(updateTaskStatusFailure(error.response?.data || error));
+  }
+}
 function* getAllTaskSaga(action) {
   const { currentStageData, currentStep } = action.payload;
   // console.log(currentStageData, currentStep,"currentStageData, currentStep")
@@ -57,4 +75,5 @@ function* fetchDataForStage(taskId) {
 export function* taskSaga() {
   yield takeLatest(CREATE_TASK_REQUEST, createtaskSaga);
   yield takeLatest(GET_TASK_REQUEST, getAllTaskSaga);
+  yield takeLatest(UPDATE_STATUS_TASK_REQUEST, updateStatusTaskSaga);
 }
