@@ -1,13 +1,14 @@
 import { takeLatest, put, call } from "redux-saga/effects";
-import { caseCreateSuccess, caseCreateFailure, updateCaseSuccess, updateCaseFailure, deleteCaseSuccess, deleteCaseFailure, fetchAllCasesSuccess, fetchAllCasesFailure, caseSetStage } from "../actions/caseAction";
+import { caseCreateSuccess, caseCreateFailure, updateCaseSuccess, updateCaseFailure, deleteCaseSuccess, deleteCaseFailure, fetchAllCasesSuccess, fetchAllCasesFailure, caseSetStage, clearCasesData } from "../actions/caseAction";
 import { POST_CASE_REQUEST, UPDATE_CASE_REQUEST, DELETE_CASE_REQUEST, FETCH_ALL_CASES_REQUEST, READ_CASE_REQUEST, READ_CASE_BY_CLIENT, CLOSE_CASE, READ_CASE_BY_CONTACT, UPDATE_CASE_DATE_REQUEST } from "../type";
 import { postRequest, getRequest } from "../../axios/interceptor";
 import { API_ENDPOINTS, ROUTES } from "../../constants/api";
 import { toast } from "react-toastify";
-import { createStageRequest } from "../actions/stagesActions";
+import { clearStageData, createStageRequest } from "../actions/stagesActions";
 import { fetchClientByIdRequest } from "../actions/clientActions";
 import { all } from "redux-saga/effects";
 import { handleError } from "../../utils/eventHandler";
+import { clearTaskData } from "../actions/taskActions";
 
 
 function* createCase(action) {
@@ -207,9 +208,15 @@ function* getCaseByContact(action) {
 
 function* closeCaseByCaseId(action) {
     try {
-        const { payload } = action;
+        const { payload, navigate } = action;
         const response = yield call(() => postRequest(API_ENDPOINTS.CLOSE_CASE, payload));
-        yield put(caseCreateSuccess(response.data));
+        if (response.status == 200) {
+            yield put(clearTaskData());
+            yield put(clearStageData());
+            yield put(clearCasesData());
+            toast.success("Case Closed Success!");
+            navigate(ROUTES.CASES);
+        }
     } catch (error) {
         handleError(error)
         yield put(updateCaseFailure(error.response.data || error));

@@ -13,7 +13,7 @@ import ContactButtonWithModal from "../newContactButton";
 import NewIndividualContactModalV1 from "../contactModal/newIndividualContactModalV1";
 import NewOrganizationContactModalV1 from "../contactModal/newOrganizationContactModalV1";
 
-const ContactsActionbar = ({ active = "", setActive = "", isAddFromContactModal , isEdit, toggleEdit}) => {
+const ContactsActionbar = ({ active = "", setActive = "", isAddFromContactModal, isEdit, toggleEdit }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -25,18 +25,34 @@ const ContactsActionbar = ({ active = "", setActive = "", isAddFromContactModal 
     return pathsToShow.includes(location.pathname);
   };
 
-  
+
   return (
     <>
       {shouldShow(ROUTES.CONTACTS) && (
         <div className="flex justify-between items-center mb-6">
           <ContactTabs active={active} setActive={setActive} tabs={addFromContactV1Tabs} />
           <div>
-          <ContactButtonWithModal
-                buttonClass="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium mt-4"
-                // modalClass=""  
-                modalContent={active == 0? <NewIndividualContactModalV1 /> : <NewOrganizationContactModalV1 />} 
-              />
+            <ContactButtonWithModal
+              buttonClass="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium mt-4"
+              // modalClass=""  
+              modalContent={active == 0 ? <NewIndividualContactModalV1 /> : <NewOrganizationContactModalV1 />}
+            />
+            {/* <XButton
+              text="New Contact"
+              icon={<FiPlus className="text-base mr-2 inline-block" />}
+              className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium ml-4"
+              onClick={toggleModal}
+            />
+            {isModalOpen && <NewContactModal onClose={toggleModal} />} */}
+          </div>
+        </div>
+      )}
+
+      {shouldShow(ROUTES.DASHBOARD) && (
+        <div className="flex justify-between items-center mb-6">
+          <ContactTabs active={active} setActive={setActive} tabs={addFromContactV1Tabs} />
+          <div>
+           
             {/* <XButton
               text="New Contact"
               icon={<FiPlus className="text-base mr-2 inline-block" />}
@@ -59,11 +75,11 @@ const ContactsActionbar = ({ active = "", setActive = "", isAddFromContactModal 
 
             <XButton
               text="Connect"
-              icon={<AiOutlineLink className="text-base mr-2 inline-block"/>}
+              icon={<AiOutlineLink className="text-base mr-2 inline-block" />}
               className="shadow-shadow-light-2 text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium"
             />
-           {!isEdit && <XButton
-              onClick={()=>toggleEdit()}
+            {!isEdit && <XButton
+              onClick={() => toggleEdit()}
               text="Edit"
               icon={<FiEdit3 className="text-base mr-2 inline-block" />}
               className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium ml-4"

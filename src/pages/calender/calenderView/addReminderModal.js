@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Formik, ErrorMessage, Field } from "formik";
-import { Checkbox, Label, Modal, Radio } from "flowbite-react";
+import { Checkbox, Datepicker, Label, Modal, Radio } from "flowbite-react";
 
 
 import { debounce } from "lodash";
@@ -35,7 +35,7 @@ const ReminderTimeOptions = [
 
 
 const AddReminderModal = ({ onClose }) => {
-  const dispatch= useDispatch();
+  const dispatch = useDispatch();
   const [searchResults, setSearchResults] = useState([]);
 
   const debouncedFunction = useCallback(
@@ -67,7 +67,10 @@ const AddReminderModal = ({ onClose }) => {
     caseName: "",
     reminderType: "",
     dueDate: "",
-    dueDateType: null,
+    day: null,
+    month: null,
+    year: null,
+    dueDateType: 0,
     reminderTime: "",
     popupReminder: false,
     emailReminder: false
@@ -78,24 +81,24 @@ const AddReminderModal = ({ onClose }) => {
 
     // get date based on type
     if (duedatetype) {
-      mainDate = getDateAfterDays(values.dueDate)
+      mainDate = getDateAfterDays(values.dueDate);
     } else {
-      mainDate = getDateAfterDays(values.dueDate)
+      mainDate = getDateAfterDays(values.dueDate);
     }
 
     // get reminder type key name based on type
     let data;
     if (values.reminderType) {
-      data={
+      data = {
         closingDate: mainDate,
       }
     } else {
-      data={
+      data = {
         mortgageContingencyDate: mainDate,
       }
     }
 
-    const payload={
+    const payload = {
       caseId: values.caseId,
       ...data
     }
@@ -223,8 +226,6 @@ const AddReminderModal = ({ onClose }) => {
                     </div>
                   </div>
 
-
-
                   <div className="grid grid-col gap-4 mt-4">
                     <div className="block">
                       <Label htmlFor="Due Day" value="Due Day" />
@@ -234,8 +235,8 @@ const AddReminderModal = ({ onClose }) => {
                             {[
                               { id: 0, value: 0, label: "Auto Filling" },
                               { id: 1, value: 1, label: "Manual Filling" },
-                            ].map((option, index) => (
-                              <div className="flex items-center gap-2 custom-radio" key={index}>
+                            ].map((option) => (
+                              <div className="flex items-center gap-2 custom-radio" key={option.id}>
                                 <Radio
                                   id={option.id}
                                   name="dueDateType"
@@ -254,26 +255,58 @@ const AddReminderModal = ({ onClose }) => {
                               </div>
                             ))}
                           </div>
-
                         </div>
                       </div>
-                      <div className="items-dropdown single-select mt-3">
-                        <Field
-                          as={NewCaseDropdown}
-                          defaultLabel="Due Day"
-                          name="dueDate"
-                          // value={values?.duedate}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          options={ReminderDueDaysOptions}
-                          inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
-                        />
-                        {touched.dueDate && errors.dueDate ? (
-                          <div className="text-red-500 text-sm">
-                            {errors.dueDate}
-                          </div>
-                        ) : null}
-                      </div>
+
+                      {/* Conditionally render date inputs or dropdown */}
+                      {values.dueDateType == 0 ? (
+                        // Auto Filling
+                        <div className="items-dropdown single-select mt-3">
+                          <Field
+                            as={NewCaseDropdown}
+                            defaultLabel="Due Day"
+                            name="dueDate"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            options={ReminderDueDaysOptions}
+                            inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
+                          />
+                          <ErrorMessage
+                            name="dueDate"
+                            component="div"
+                            className="text-red-500 text-sm"
+                          />
+                        </div>
+                      ) : (
+                        // Manual Filling
+                        <div className="grid grid-cols-3 gap-4 mt-3">
+                          <TextInput
+                            name="day"
+                            type="number"
+                            placeholder="Day"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.day}
+                          />
+                          <TextInput
+                            name="month"
+                            type="number"
+                            placeholder="Month"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.month}
+                          />
+                          <TextInput
+                            name="year"
+                            type="number"
+                            placeholder="Year"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.year}
+                          />
+                        </div>
+                      )}
+
                     </div>
                   </div>
 

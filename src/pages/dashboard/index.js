@@ -10,11 +10,12 @@ import { addFromContactTabs } from "../../constants/constants";
 import CaseOverview from "./caseOverview";
 import CaseAlert from "./caseAlert";
 import { fetchAllCasesRequest } from "../../redux/actions/caseAction";
+import Contacts from "../contacts";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(0);
- 
+
   useEffect(() => {
     const fetchAllCases = async () => {
       try {
@@ -42,8 +43,14 @@ const Dashboard = () => {
   return (
     <div>
       <CaseOverview />
-      <CaseAlert /* eventData={events} */   />
+      <CaseAlert />
       <div className="card">
+        <p className="text-[22px] text-secondary-800 font-medium leading-[30px] mb-[18px]">
+          <span>Recent Contacts</span>
+        </p>
+        <Contacts />
+      </div>
+      {/* <div className="card">
         <p className="text-[22px] text-secondary-800 font-medium leading-[30px] mb-[18px]">
           <span>Recent Contacts</span>
         </p>
@@ -51,7 +58,7 @@ const Dashboard = () => {
         <div className="contacts-table db-contacts mt-2 bg-input-surface px-4 py-0 rounded-2xl">
         <ContactListing active={activeTab} parent={"dashboard"} />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

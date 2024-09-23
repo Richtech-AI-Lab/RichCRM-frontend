@@ -20,7 +20,8 @@ import {
     READ_CASE_BY_CONTACT,
     SET_STAGE,
     SET_SEARCH_CASES,
-    UPDATE_CASE_DATE_REQUEST
+    UPDATE_CASE_DATE_REQUEST,
+    CLEAR_DATA
 } from "../type";
 
 
@@ -123,9 +124,10 @@ export const getCaseByContactRequest = (payload) => ({
     payload,
 });
 //close case
-export const closeCaseRequest = (payload) => ({
+export const closeCaseRequest = (payload,navigate) => ({
     type: CLOSE_CASE,
     payload,
+    navigate
 });
 
 export const caseSetStage = (data) => ({
@@ -145,3 +147,8 @@ export const updateCaseDateRequest = (payload) => ({
     payload,
 });
 
+
+
+export const clearCasesData = () => ({
+    type: CLEAR_DATA
+});

@@ -23,9 +23,11 @@ import { isEmpty } from "lodash";
 import XSpinnerLoader from "../spinnerLoader/XSpinnerLoader";
 import { caseCreateSuccess, closeCaseRequest, getClientByIdRequest, updateCaseRequest } from "../../redux/actions/caseAction";
 import StageUncompleteAlert from "../../pages/cases/stagealert";
+import { useNavigate } from "react-router-dom";
 
 const StagesChecklist = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState();
   const [isComplete, setIsComplete] = useState(true);
   const [activeTab, setActiveTab] = useState('mortgage');
@@ -40,7 +42,7 @@ const StagesChecklist = () => {
     // if stage is not exist then create stage.
     if (isEmpty(data)) {
       let sagaPayload = {
-        stageType: currentStep,
+        stageType: currentStep || 0,
         caseId: localStorage.getItem('c_id'),
       }
       dispatch(getStageRequest(sagaPayload));
@@ -54,7 +56,7 @@ const StagesChecklist = () => {
     if (foundCase) {
       setCurrentStep(foundCase?.stage);
     }
-  }, [casesData.cases[0].stage])
+  }, [casesData.cases[0]?.stage])
 
   //   const foundCase = caseDataGet.find(item => item.caseId === caseId);
 
@@ -185,6 +187,7 @@ const StagesChecklist = () => {
   // ];
 
   const getHeadLabel = (currentStep) => {
+    console.log(currentStep)
     switch (currentStep) {
       case 0:
         return "To-do Tasks";
@@ -197,7 +200,7 @@ const StagesChecklist = () => {
       case 4:
         return "Closing Tasks";
       default:
-        return <>loading..</>;
+        return  "To-do Tasks";
     }
   };
   const toggleStageModal = () => {
@@ -277,7 +280,7 @@ const StagesChecklist = () => {
         const closeCasePayload = {
           caseId: localStorage.getItem('c_id'),
         };
-        dispatch(closeCaseRequest(closeCasePayload))
+        dispatch(closeCaseRequest(closeCasePayload, navigate))
       } catch (error) {
         console.error("Error closer stage:", error.message);
       }
@@ -446,7 +449,7 @@ const StagesChecklist = () => {
 
                 {!loading && (
                   <div className="w-full">
-                    {taskData.data[STAGESNAMES[currentStep]]
+                    {taskData.data[STAGESNAMES[currentStep? currentStep : 0]]
                       ?.slice(
                         currentStep === 3
                           ? activeTab === 'title'
@@ -457,7 +460,7 @@ const StagesChecklist = () => {
                           ? activeTab === 'title'
                             ? 10
                             : 5
-                          : taskData.data[STAGESNAMES[currentStep]].length // End index for slice when currentStep is 3, otherwise show all
+                          : taskData.data[STAGESNAMES[currentStep? currentStep : 0]]?.length // End index for slice when currentStep is 3, otherwise show all
                       )
                       .map((item, index) => (
                         <ChecklistItem
