@@ -7,14 +7,17 @@ import { LuUpload } from "react-icons/lu";
 import { ACTIONTYPE, ACTIONTYPELABEL } from "../../constants/constants";
 import NewCaseDropdown from "../newcasedropdown";
 import ComposeEmail from "../composeEmail/index"
+import { useDispatch } from "react-redux";
+import { updateTaskStatusRequest } from "../../redux/actions/taskActions";
 
-const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optionsValue, checkboxId, currentStep }) => {
-
-  const [isCompose,setIsCompose] = useState(false);
+const ChecklistItem = ({ item, stageName, icon, label, status, action, actionInfo, optionsValue, checkboxId, currentStep, templates }) => {
+  const dispatch = useDispatch();
+  const [isCompose, setIsCompose] = useState(false);
+  const [taskStatus, setTaskStatus] = useState(status);
   const toggleComposeModal = () => {
     setIsCompose(!isCompose);
   };
-  const getOptionsByAction = (option = "Not Started") => {
+  const getOptionsByAction = (option) => {
     switch (action) {
       // case "Action":
       case ACTIONTYPE.ACTION:
@@ -25,21 +28,24 @@ const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optio
         break;
       // case "Contact":
       case ACTIONTYPE.CONTACT:
-        if (option === "Not Started") {
+        if (option === 0) {
           return [
             { value: "compose message", label: "Compose Message" },
           ];
-        } else if (option === "Waiting") {
+        } else if (option === 1) {
           return [
-            { value: "reupload", label: "Resend Message" },
-            { value: "view", label: "Extended Waiting Time" },
+            { value: "compose message", label: "Compose Message" },
           ];
-        } else if (option === "No Response") {
-          return [
-            { value: "reupload", label: "Resend Message" },
-            { value: "view", label: "Extended Waiting Time" },
-          ];
-        } else if (option === "Completed") {
+          // return [
+          //   { value: "reupload", label: "Resend Message" },
+          //   { value: "view", label: "Extended Waiting Time" },
+          // ];
+          // } else if (option === "No Response") {
+          //   // return [
+          //   //   { value: "reupload", label: "Resend Message" },
+          //   //   { value: "view", label: "Extended Waiting Time" },
+          //   // ];
+        } else if (option === 2) {
           return [
             { value: "compose message", label: "Compose Message" },
           ];
@@ -50,11 +56,11 @@ const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optio
         break;
       // case "Upload":
       case ACTIONTYPE.UPLOAD:
-        if (option === "Unuploaded") {
+        if (option === 0) {
           return [
             { value: "upload", label: "Upload" },
           ];
-        } else if (option === "Uploaded") {
+        } else if (option === 1) {
           return [
             { value: "reupload", label: "Re-upload" },
             { value: "view", label: "View" },
@@ -82,8 +88,8 @@ const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optio
     }
   }
 
-  const isOptionDisable = (acc, opt) => {
-    if (acc == "Action" && (opt == "Finished" || opt == "Unfinished")) {
+  const isOptionDisable = (acc) => {
+    if (acc == 0) {
       return true
     }
     return false
@@ -142,43 +148,57 @@ const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optio
       setIsCompose(true)
     }
   }
+  
+  const handleChangeStatus = () => {
+    const newStatus = taskStatus === 0 ? 2 : 0;
+    setTaskStatus(newStatus)
+    const updatedTask = {
+      currentStep: stageName,  
+      taskData: {
+        taskId: item?.taskId,
+        status: newStatus,
+      },
+    };
+    dispatch(updateTaskStatusRequest(updatedTask));
+  }
 
   const displayIcon = getIconByAction(action)
-  const displayOption = getOptionsByAction();
-  const disabled = isOptionDisable(action, options);
+  const displayOption = getOptionsByAction(status);
+  const disabled = isOptionDisable(action);
   const taskStatusColor = getTaskLabelAndColor(ACTIONTYPELABEL[action], status);
 
   // console.log(taskStatusColor?.badgeClass,"displayOption");
   return (
-   <> 
-   <div className="border-t-2 border-black-10">
-      <li className="flex justify-between items-center mb-5 pb-5 task-checklist mt-2">
-        <div className="flex items-center gap-2 custom-radio">
-          <Checkbox id={checkboxId} defaultChecked={status} className="mr-6" />
-          <Label htmlFor={checkboxId} className="flex items-center lg:text-base xl:text-base text-title font-medium">
-            {displayIcon && <span className="mr-2 text-2xl">{displayIcon}</span>}
-            {/* {ACTIONTYPELABEL[action]}: */}
-            {actionInfo}
-          </Label>
-        </div>
-        <div>
-          <p className="text-end mb-2">
-            <span className={`bg-badge-${taskStatusColor?.badgeClass} text-secondary-100 text-sm font-semibold px-4 py-1 rounded-full inline-block`}>
-              {taskStatusColor?.label}
-            </span>
-          </p>
-          <div className="items-dropdown single-select mt-3">
-            <NewCaseDropdown
-              disabled={disabled}
-              defaultLabel="Options"
-              name="checklistSelect"
-              value={options}
-              onChange={(e) => handleOption(e.target.value)}
-              options={displayOption}
-              inputClassName="border-border rounded-full py-[10px] px-[16px] text-secondary-700 leading-5 font-semibold"
-            />
+    <>
+      <div className="border-t-2 border-black-10">
+        <li className="flex justify-between items-center mb-5 pb-5 task-checklist mt-2">
+          <div className="flex items-center gap-2 custom-radio">
+            <Checkbox id={checkboxId} defaultChecked={taskStatus} className="mr-6" onChange={(e) => handleChangeStatus(e)} />
+            <Label htmlFor={checkboxId} className="flex items-center lg:text-base xl:text-base text-title font-medium">
+              {displayIcon && <span className="mr-2 text-2xl">{displayIcon}</span>}
+              {/* {ACTIONTYPELABEL[action]}: */}
+              {actionInfo}
+            </Label>
           </div>
-          {/* <SelectInput
+          <div>
+            <p className="text-end mb-2">
+              <span className={`bg-badge-${taskStatusColor?.badgeClass} text-secondary-100 text-sm font-semibold px-4 py-1 rounded-full inline-block`}>
+                {taskStatusColor?.label}
+              </span>
+            </p>
+            <div className="items-dropdown single-select mt-3">
+              <NewCaseDropdown
+                disabled={disabled}
+                defaultLabel="Options"
+                name="checklistSelect"
+                // defaultChecked={!status}
+                // value={!status}
+                onChange={(e) => handleOption(e.target.value)}
+                options={displayOption}
+                inputClassName="border-border rounded-full py-[10px] px-[16px] text-secondary-700 leading-5 font-semibold"
+              />
+            </div>
+            {/* <SelectInput
             disabled={disabled}
             name="checklistSelect"
             value={options}
@@ -186,11 +206,11 @@ const ChecklistItem = ({ icon, label, status, options, action, actionInfo, optio
             options={displayOption}
             inputClassName="border-border rounded-full py-[10px] px-[16px] bg-transparent text-secondary-700 leading-5 font-semibold"
           /> */}
-        </div>
-      </li>
-    </div>
-    {isCompose ? <ComposeEmail onClose={toggleComposeModal} /> : ""}
-     </>
+          </div>
+        </li>
+      </div>
+      {isCompose ? <ComposeEmail templates={templates} onClose={toggleComposeModal} /> : ""}
+    </>
   );
 };
 

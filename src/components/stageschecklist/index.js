@@ -187,7 +187,7 @@ const StagesChecklist = () => {
   // ];
 
   const getHeadLabel = (currentStep) => {
-    console.log(currentStep)
+    // console.log(currentStep)
     switch (currentStep) {
       case 0:
         return "To-do Tasks";
@@ -414,7 +414,7 @@ const StagesChecklist = () => {
                     </span>
                   </div>
                 ) : (
-                  <span className="text-base text-secondary-800 font-medium">{`${getHeadLabel(currentStep)} (${getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]])}/${taskData.data[STAGESNAMES[currentStep]]?.length || 0})`}</span>
+                  <span className="text-base text-secondary-800 font-medium text-lg">{`${getHeadLabel(currentStep)} (${getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]])}/${taskData.data[STAGESNAMES[currentStep]]?.length || 0})`}</span>
                 )}
                 <div className="flex items-center gap-2">
 
@@ -464,11 +464,14 @@ const StagesChecklist = () => {
                       )
                       .map((item, index) => (
                         <ChecklistItem
+                          item={item}
+                          stageName={currentStep? currentStep : 0}
                           key={index}
                           status={item.status}
                           action={item.taskType}
                           actionInfo={item.name}
-                          options={item.options}
+                          templates={item?.templates}
+                          // options={item.options}
                           checkboxId={item.checkboxId}
                         />
                       ))}

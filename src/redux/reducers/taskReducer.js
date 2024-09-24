@@ -1,5 +1,5 @@
 import { STAGESNAMES } from "../../constants/constants";
-import { CLEAR_DATA, CREATE_TASK_FAILURE, CREATE_TASK_REQUEST, CREATE_TASK_SUCCESS } from "../type";
+import { CLEAR_DATA, CREATE_TASK_FAILURE, CREATE_TASK_REQUEST, CREATE_TASK_SUCCESS, UPDATE_STATUS_TASK_SUCCESS } from "../type";
 
 const initialState = {
   loading: false,
@@ -19,6 +19,17 @@ const taskReducer = (state = initialState, action) => {
       } };
     case CREATE_TASK_FAILURE:
       return { ...state, loading: false, error: action.payload };
+    case UPDATE_STATUS_TASK_SUCCESS:
+      const { stageName,taskData } = action.payload;
+      return { ...state, loading: false, 
+        data: {
+        ...state.data,
+        [STAGESNAMES[stageName]]: state.data[STAGESNAMES[stageName]].map(task => 
+          task.taskId === taskData.taskId 
+            ? { ...task, status: taskData.status }
+            : task 
+        ),
+      } };
     case CLEAR_DATA:
       return initialState;
     default:
