@@ -102,9 +102,9 @@ const ContactListingV1 = ({ active, parent }) => {
           ?
           <>
             <Table.Head>
-              {header.map(key => {
+              {header.map((key,index)=> {
                 return (
-                  <Table.HeadCell>{key}</Table.HeadCell>
+                  <Table.HeadCell key={index}>{key}</Table.HeadCell>
                 )
               })}
             </Table.Head>
