@@ -24,12 +24,12 @@ const CardItem = ({
         badgeText = 'To-do';
         break;
       case 1:
-        badgeColor = 'yellow';
-        badgeText = 'Unfinished';
-        break;
-      case 2:
         badgeColor = 'gray';
         badgeText = 'Waiting';
+        break;
+      case 2:
+        badgeColor = 'green';
+        badgeText = 'Done';
         break;
       case 3:
         badgeColor = 'red';

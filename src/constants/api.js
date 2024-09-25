@@ -36,6 +36,7 @@ export const API_ENDPOINTS = {
   READ_TEMPLATE_BY_NAME:"/template/read",
   UPDATE_TEMPLATE_BY_NAME:"/template/fill",
   UPDATE_TASK: "/task/update",
+  UPDATE_STAGE: "/stage/update",
 };
 
 export const ROUTES = {

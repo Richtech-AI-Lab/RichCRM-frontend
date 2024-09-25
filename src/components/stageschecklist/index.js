@@ -471,8 +471,8 @@ const StagesChecklist = () => {
                           action={item.taskType}
                           actionInfo={item.name}
                           templates={item?.templates}
-                          // options={item.options}
                           checkboxId={item.checkboxId}
+                          stageId={data[STAGESNAMES[currentStep? currentStep : 0]]?.stageId}
                         />
                       ))}
                   </div>
