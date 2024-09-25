@@ -1,19 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Checkbox } from "flowbite-react";
 import Label from "../label";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { HiOutlineCube } from "react-icons/hi";
 import { LuUpload } from "react-icons/lu";
-import { ACTIONTYPE, ACTIONTYPELABEL } from "../../constants/constants";
+import { ACTIONTYPE, ACTIONTYPELABEL, STAGESNAMES } from "../../constants/constants";
 import NewCaseDropdown from "../newcasedropdown";
 import ComposeEmail from "../composeEmail/index"
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateTaskStatusRequest } from "../../redux/actions/taskActions";
+import { updateStageStatusRequest } from "../../redux/actions/stagesActions";
 
-const ChecklistItem = ({ item, stageName, icon, label, status, action, actionInfo, optionsValue, checkboxId, currentStep, templates }) => {
+const ChecklistItem = ({ item, stageName, icon, label, status, action, actionInfo, optionsValue, checkboxId, currentStep, templates, stageId }) => {
   const dispatch = useDispatch();
   const [isCompose, setIsCompose] = useState(false);
   const [taskStatus, setTaskStatus] = useState(status);
+  const taskData = useSelector((state) => state.task);
+
   const toggleComposeModal = () => {
     setIsCompose(!isCompose);
   };
@@ -149,18 +152,77 @@ const ChecklistItem = ({ item, stageName, icon, label, status, action, actionInf
     }
   }
   
-  const handleChangeStatus = () => {
+  const handleChangeTaskStatus = () => {
     const newStatus = taskStatus === 0 ? 2 : 0;
     setTaskStatus(newStatus)
-    const updatedTask = {
+
+    const currentStageTasks = taskData?.data[STAGESNAMES[stageName ? stageName : 0]];
+
+    const otherTasks = currentStageTasks.filter(task => task.taskId != item?.taskId);
+
+    let updatedTask = {
+      ...item,
+      status: newStatus,
+    };
+    const updatedTasksArray = [...otherTasks, updatedTask];
+
+    const newStageStatus = handleChangeStageStatus(updatedTasksArray, getCompletedTasksCount(updatedTasksArray) )
+    const updatedStatusTask = {
       currentStep: stageName,  
       taskData: {
         taskId: item?.taskId,
         status: newStatus,
       },
     };
-    dispatch(updateTaskStatusRequest(updatedTask));
+
+    const updatedStatusStage = {
+      stageId:stageId,
+      stageStatus: newStageStatus
+    };
+    dispatch(updateTaskStatusRequest(updatedStatusTask));
+    dispatch(updateStageStatusRequest(updatedStatusStage));
   }
+
+
+  const getCompletedTasksCount = (tasks) => {
+    return tasks?.filter((task) => {
+      switch (task.taskType) {
+        case 0:
+          return task.status === 2; // 'Finished'
+  
+        case 1:
+          return task.status === 2; // 'Uploaded'
+  
+        case 2:
+          return task.status === 2; // 'Finished'
+  
+        default:
+          return false; // For unknown task types
+      }
+    }).length || 0;
+  };
+
+  const handleChangeStageStatus = (updatedTaskStatuses, completedCount) => {
+    const totalTasks = Object.keys(updatedTaskStatuses).length;
+
+    if (completedCount === totalTasks) {
+        return 0; // All tasks completed
+    } else if (completedCount === 0) {
+        return 2; // No tasks completed
+    } else {
+        return 1; // Some tasks completed
+    }
+};
+
+  // const handleChangeStageStatus = () => {
+  //   if(getCompletedTasksCount(taskData.data[STAGESNAMES[stageName? stageName : 0]]) == taskData.data[STAGESNAMES[stageName? stageName : 0]]?.length){
+  //     return 0;
+  //   }else if (getCompletedTasksCount(taskData.data[STAGESNAMES[stageName? stageName : 0]]) == 0) {
+  //     return 2
+  //   } else {
+  //     return 1
+  //   }
+  // }
 
   const displayIcon = getIconByAction(action)
   const displayOption = getOptionsByAction(status);
@@ -173,10 +235,10 @@ const ChecklistItem = ({ item, stageName, icon, label, status, action, actionInf
       <div className="border-t-2 border-black-10">
         <li className="flex justify-between items-center mb-5 pb-5 task-checklist mt-2">
           <div className="flex items-center gap-2 custom-radio">
-            <Checkbox id={checkboxId} defaultChecked={taskStatus} className="mr-6" onChange={(e) => handleChangeStatus(e)} />
+            <Checkbox id={checkboxId} defaultChecked={taskStatus} className="mr-6" onChange={(e) => handleChangeTaskStatus(e)} />
             <Label htmlFor={checkboxId} className="flex items-center lg:text-base xl:text-base text-title font-medium">
               {displayIcon && <span className="mr-2 text-2xl">{displayIcon}</span>}
-              {/* {ACTIONTYPELABEL[action]}: */}
+              {/* {stageId }: */}
               {actionInfo}
             </Label>
           </div>

@@ -1,4 +1,4 @@
-import { CLEAR_DATA, CREATE_STAGE_FAILURE, CREATE_STAGE_REQUEST, CREATE_STAGE_SUCCESS, GET_STAGE_REQUEST, START_LOADING, STOP_LOADING } from "../type";
+import { CLEAR_DATA, CREATE_STAGE_FAILURE, CREATE_STAGE_REQUEST, CREATE_STAGE_SUCCESS, GET_STAGE_REQUEST, START_LOADING, STOP_LOADING, UPDATE_STATUS_STAGE_REQUEST } from "../type";
 
 
 export const createStageRequest = (stageData) => ({
@@ -31,5 +31,10 @@ export const stopStageLoading = () => ({
 
 export const clearStageData = () => ({
   type: CLEAR_DATA
+});
+
+export const updateStageStatusRequest = (stageData) => ({
+  type: UPDATE_STATUS_STAGE_REQUEST,
+  payload:stageData,
 });
 

@@ -4,12 +4,17 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Routing from "./routes/Routing";
 
-const App = () => (
+import { MsalProvider } from "@azure/msal-react";
+
+
+const App = ({ pca }) => (
   <>
+    <MsalProvider instance={pca}>
     <BrowserRouter>
       <Routing />
     </BrowserRouter>
     <ToastContainer />
+    </MsalProvider>
   </>
 );
 

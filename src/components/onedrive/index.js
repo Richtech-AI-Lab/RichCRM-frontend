@@ -1,78 +1,70 @@
 import React, {useEffect, useState} from "react";
-import { PublicClientApplication } from "@azure/msal-browser";
+import { useMsal, useAccount } from "@azure/msal-react";
 
 const OneDrive = (props) => {
-     const [app, setApp] = useState(null);
+    const { instance, accounts, inProgress } = useMsal();
+    const account = useAccount(accounts[0] || {});
+    const [apiData, setApiData] = useState(null);
     const baseUrl = "https://onedrive.live.com/picker";
-    const authority = "https://login.microsoftonline.com/consumers";
-    const redirectUri = process.env.ONEDRIVE_REDIRECT_URL; // your web url
-    const clientId = process.env.ONEDRIVE_CLIENT_ID; // your client id
-    useEffect(() => {
-        const script = document.createElement("script");
-        script.src = "https://alcdn.msauth.net/browser/2.19.0/js/msal-browser.min.js";
-        script.async = true;
-        script.onload = apiLoaded;
-        document.body.appendChild(script);
-        return () => {
-            document.body.removeChild(script);
-        };
-    }, []);
-
-     const apiLoaded = async () => {
-        let pca = new PublicClientApplication({
-            auth: {
-                clientId,
-                authority,
-                redirectUri
-            }
-        });
-        await pca.initialize();
-        setApp(pca);
-    };
+    
 
     const params = {
         sdk: "8.0",
         entry: {
-            oneDrive: {
-                files: {}
-            }
+            oneDrive: {}
         },
         authentication: {},
         messaging: {
-            origin: "localhost:3000",
+            origin: "http://localhost:3000",
             channelId: "27"
         },
         typesAndSources: {
-            mode: "files",
+            mode: "multiple",
             pivots: {
                 oneDrive: true,
-                recent: true
-            }
-        }
+                recent: true,
+            },
+        },
     };
+
+    useEffect(() => {
+
+        if (accounts.length > 0) {
+            console.log("User is signed in!");
+        } else {
+            console.log("User is not signed in!");
+        }
+    }, [accounts]);
+    
+    async function getToken() {
+        if (!accounts && accounts.length === 0) {
+            return null;
+        }
+        const request = {
+            scopes: ["User.Read", "Files.ReadWrite"],
+            account: accounts[0]
+        };
+    
+        const authResult = await instance.acquireTokenSilent(request);
+
+        return authResult.accessToken
+    }
 
     let win = null;
     let port = null;
 
-    function combine(...paths) {
-        return paths
-            .map(path => path.replace(/^[\\|/]/, "").replace(/[\\|/]$/, ""))
-            .join("/")
-            .replace(/\\/g, "/");
-    }
-
     async function launchPicker(e) {
         e.preventDefault();
 
-        win = window.open("", "Picker", "height=600,width=1200");
+        win = window.open("", "Picker", "width=800,height=600");
 
         const authToken = await getToken();
 
         const queryString = new URLSearchParams({
-            filePicker: JSON.stringify(params)
+            filePicker: JSON.stringify(params),
         });
 
-        const url = `${baseUrl}?${queryString}`;     
+        const url = `${baseUrl}?${queryString}`;
 
         const form = win.document.createElement("form");
         form.setAttribute("action", url);
@@ -88,13 +80,12 @@ const OneDrive = (props) => {
         form.submit();
 
         window.addEventListener("message", (event) => {
+            // console.log(event.data);
 
             if (event.source && event.source === win) {
-
                 const message = event.data;
 
                 if (message.type === "initialize" && message.channelId === params.messaging.channelId) {
-
                     port = event.ports[0];
 
                     port.addEventListener("message", messageListener);
@@ -102,7 +93,7 @@ const OneDrive = (props) => {
                     port.start();
 
                     port.postMessage({
-                        type: "activate"
+                        type: "activate",
                     });
                 }
             }
@@ -110,22 +101,23 @@ const OneDrive = (props) => {
     }
 
     async function messageListener(message) {
+        
         switch (message.data.type) {
             case "notification":
-                console.log(`Notification: ${message.data.message}`);
+                console.log(message.data);
+                // console.log(`notification: ${message.data}`);
                 break;
-
             case "command":
                 port.postMessage({
                     type: "acknowledge",
-                    id: message.data.id
+                    id: message.data.id,
                 });
 
                 const command = message.data.data;
 
                 switch (command.command) {
-                    case "authentication":
-                        console.log(`Authentication: ${command.data}`);
+                    case "authenticate":
+                        // Get token!
                         const token = await getToken();
 
                         if (typeof token !== "undefined" && token !== null) {
@@ -133,44 +125,44 @@ const OneDrive = (props) => {
                                 type: "result",
                                 id: message.data.id,
                                 data: {
-                                    result: "token",
-                                    token
-                                }
+                                    result: token,
+                                    token,
+                                },
                             });
                         } else {
                             console.error(`Could not get auth token for command: ${JSON.stringify(command)}`);
                         }
-                        
+
                         break;
 
                     case "close":
                         win.close();
                         break;
-
+                    
                     case "pick":
-                        uploadFiles(command);
+                        console.log(`Picking file: ${command.data}`);
 
                         port.postMessage({
                             type: "result",
                             id: message.data.id,
                             data: {
-                                result: "success"
-                            }
+                                result: "success",
+                            },
                         });
 
                         win.close();
                         break;
-                    
+
                     default:
-                        console.warn(`Unknown command: ${command.command}`);
+                        console.warn(`Unsupported command: ${JSON.stringify(command)}`, 2);
 
                         port.postMessage({
                             type: "error",
                             error: {
                                 code: "unsupportedCommand",
-                                message: command.command
+                                message: command.command,
                             },
-                            isExpected: true
+                            isExpected: true,
                         });
                         break;
                 }
@@ -179,80 +171,24 @@ const OneDrive = (props) => {
         }
     }
 
-    async function getToken() {
-        let accessToken = "";
-
-        let authParams = { scopes: ["OneDrive.ReadWrite"] };
-    
-        try {
-    
-            // see if we have already the idtoken saved
-            const resp = await app.acquireTokenSilent(authParams);
-            accessToken = resp.accessToken;
-    
-        } catch (e) {
-    
-            // per examples we fall back to popup
-            const resp = await app.loginPopup(authParams);
-            app.setActiveAccount(resp.account);
-    
-            if (resp.idToken) {
-    
-                const resp2 = await app.acquireTokenSilent(authParams);
-                accessToken = resp2.accessToken;
-    
-            }
-        }
-    
-        return accessToken;
+    if (accounts.length > 0) {
+        return (
+            <div>
+                <p>There are currently {accounts.length} users signed in!</p>
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={launchPicker}>Open File Picker</button>
+            </div>
+        );
+        
+    } else if (inProgress === "login") {
+        return <p>Login is currently in progress!</p>
+    } else {
+        return (
+            <>
+                <p>There are currently no users signed in!</p>
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => instance.loginPopup()}>Login</button>
+            </>
+        );
     }
-    
-    const uploadFiles = (commandData) => {
-        let data = commandData.items[0];
-        let tokenObj = getToken();
-
-        let url = `${data["@sharePoint.endpoint"]}drives/${data.parentReference.driveId}/items/${data.id}`;
-
-        tokenObj.then(token => {
-            const headers = {
-                "Authorization": `Bearer ${token}`,
-                "Content-Type": "image/jpeg"
-            };
-            fetch(url, {
-                method: "GET",
-                headers
-            }).then(response => {
-                const reader = response.body.getReader();
-                const decoder = new TextDecoder("utf-8");
-                let chunk = "";
-                return reader.read().then(function processResult(result) {
-                    if (result.done) {
-                        return JSON.parse(chunk);
-                    }
-                    chunk += decoder.decode(result.value, {stream: true});
-                    return reader.read().then(processResult);
-                });
-            }).then(data => {
-                processSelectedFile(data);
-            }).catch(err => {
-                console.log(" some error occured ",err);
-            });
-        });
-    }
-
-    const processSelectedFile = (fileObj) => {
-        let link = fileObj["@content.downloadUrl"];
-    }
-
-
-    return (
-        <span id="original-tab-id">
-           
-            <button onClick={(e) => {
-                launchPicker(e); 
-            }}>One drive</button>
-        </span>
-    ); 
 };
 
 export default OneDrive;

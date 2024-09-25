@@ -29,7 +29,7 @@ function* createtaskSaga(action) {
 // }
 function* updateStatusTaskSaga(action) {
   const { payload } = action;
-  console.log(payload,"______")
+  // console.log(payload,"______")
   try {
     const response = yield call(() => postRequest(API_ENDPOINTS.UPDATE_TASK, payload?.taskData));
     const data = {
