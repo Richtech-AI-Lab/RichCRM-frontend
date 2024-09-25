@@ -6,12 +6,12 @@ import avatar from '../../assets/images/contact_avtar.png'
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import { sendEmailRequest } from '../../redux/actions/utilsActions';
-import { Spinner } from 'flowbite-react';
-import emailTemplate from './emailTemplate';
 import { API_ENDPOINTS } from '../../constants/api';
 import { postRequest } from '../../axios/interceptor';
+import { toast } from 'react-toastify';
+import { Spinner } from 'flowbite-react';
 
-const ComposeEmail = ({ onClose , templates}) => {
+const ComposeEmail = ({ onClose, templates }) => {
   const dispatch = useDispatch();
   const { client } = useSelector((state) => state.client);
   const clientObj = client?.data?.length > 0 ? client?.data : null;
@@ -20,33 +20,34 @@ const ComposeEmail = ({ onClose , templates}) => {
   const [inputValue, setInputValue] = useState('');
   const [toEmail, setToEmail] = useState([]);
   const [template, setTemplate] = useState('');
+  const [loader, setLoader] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoader(true)
       try {
         const response = await postRequest(API_ENDPOINTS.READ_TEMPLATE_BY_NAME, {
           templateTitle: templates[0],
         });
         const results = response?.data?.data[0];
-        setTemplate(results);
+        await updateTemplate()
       } catch (error) {
+        setLoader(false)
         console.error("Error fetching client data:", error);
       }
     };
-  
-    fetchData(); // Call the async function
-  
+
+    fetchData();
+
   }, []);
 
-
-  // Initial values for the form fields
   const initialValues = {
     toAddresses: [""],
     ccAddresses: [""],
     templateTitle: template?.templateTitle,
     templateContent: template?.templateContent
   };
-  const updateTemplate = async() => {
+  const updateTemplate = async () => {
     try {
       const response = await postRequest(API_ENDPOINTS.UPDATE_TEMPLATE_BY_NAME, {
         templateTitle: templates[0],
@@ -57,24 +58,36 @@ const ComposeEmail = ({ onClose , templates}) => {
       });
       const results = response?.data?.data[0];
       setTemplate(results);
+      setLoader(false)
+      return results;
     } catch (error) {
+      setLoader(false)
       console.error("Error fetching client data:", error);
     }
 
   };
 
-  const handleSubmit = async(values) => {
-    await updateTemplate()
-    const payload = {
-      toAddresses: toEmail,
-      ccAddresses: toEmail,
-      templateTitle: values.templateTitle,
-      templateContent: values.templateContent
+  const handleSubmit = async (values) => {
+    if (!toEmail.length > 0) {
+      toast.error("Please Enter to Address")
+      return false
     }
-    dispatch(sendEmailRequest(payload))
-    onClose()
+    try {
+      const payload = {
+        toAddresses: toEmail,
+        ccAddresses: toEmail,
+        templateTitle: values.templateTitle,
+        templateContent: values.templateContent,
+      };
 
+      dispatch(sendEmailRequest(payload));
+      onClose();
+    } catch (error) {
+      toast.error(error)
+      console.error("Error updating template or sending email:", error);
+    }
   };
+
   // For To Email 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
@@ -153,18 +166,32 @@ const ComposeEmail = ({ onClose , templates}) => {
                   />
                 </div>
               </div>
-              <div className="mx-4 py-3">
-                <textarea
-                  name='templateContent'
-                  // placeholder="templateContent"
-                  value={values.templateContent}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  field={{ name: "templateContent" }}
-                  rows={15}
-                  className="inline border-0 p-0 resize-none w-full focus:ring-transparent"
-                />
-              </div>
+
+              {loader ? <div className='flex justify-center items-center min-h-[calc(100vh-440px)]'>
+                <Spinner
+                  size="xl"
+                  animation="border"
+                  role="status"
+                  variant="primary"
+                // className={`spinner-5`}
+                >
+                  <span className="visually-hidden">Loading...</span>
+
+                </Spinner></div> :
+
+                <div className="mx-4 py-3">
+                  <textarea
+                    name='templateContent'
+                    // placeholder="templateContent"
+                    value={values.templateContent}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    field={{ name: "templateContent" }}
+                    rows={15}
+                    className="inline border-0 p-0 resize-none w-full focus:ring-transparent"
+                  />
+                </div>
+              }
               <div className="mx-4 pb-3 flex">
                 <img src={logo} alt="" className="mr-4" />
                 <div>
