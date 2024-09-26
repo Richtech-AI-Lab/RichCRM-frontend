@@ -13,19 +13,20 @@ const Calendar = ({ toggleAddReminderModal, filters }) => {
   const calendarRef = useRef(null);  
 
   const calendarEvents = casesWithDates.flatMap((caseItem) => [
-    caseItem.closingDate ? {
-      id: caseItem.caseId,
+    filters.closingDue && caseItem.closingDate ? {
+      id: `${caseItem.caseId}_Closing Due`,
       title: `Closing Due`, 
       start: caseItem.closingDate,
       extendedProps: { caseItem }
     } : null,
-    caseItem.mortgageContingencyDate ? {
-      id: caseItem.caseId,
+    filters.mortgageDue && caseItem.mortgageContingencyDate ? {
+      id: `${caseItem.caseId}_Mortgage Due`,
       title: `Mortgage Due`, 
       start: caseItem.mortgageContingencyDate,
       extendedProps: { caseItem }
     } : null
   ]).filter(event => event !== null);
+  
 
   useEffect(() => {
     const fetchAllCases = async () => {
