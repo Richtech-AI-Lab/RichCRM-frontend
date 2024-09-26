@@ -10,6 +10,7 @@ import ContactPartner from "../contacts/contactPartner";
 import CalendarPage from "../calender";
 import Setting from "../settings";
 import Documents from "../documents";
+import OneDrive from "../../components/onedrive";
 
 
 const Content = () => {
@@ -24,7 +25,7 @@ const Content = () => {
       <Route path="/contacts" element={<Contacts />} />
       <Route path="/contactpartner" element={<ContactPartner />} />
       <Route path="/calendar" element={<CalendarPage />} />
-      <Route path="/documents" element={<Documents />} />
+      <Route path="/documents" element={<OneDrive />} />
       <Route path="/settings" element={<Setting />} />
     </Routes>
   );
