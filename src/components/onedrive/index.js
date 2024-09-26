@@ -56,28 +56,28 @@ const OneDrive = (props) => {
     async function launchPicker(e) {
         e.preventDefault();
 
-        win = window.open("", "Picker", "width=800,height=600");
-
+        
         const authToken = await getToken();
-
+        console.log(authToken)
         const queryString = new URLSearchParams({
             filePicker: JSON.stringify(params),
         });
-
+        
         const url = `${baseUrl}?${queryString}`;
+        win = window.open(`${baseUrl}?${queryString}`, "Picker", "width=800,height=600");
+        
+        // const form = win.document.createElement("form");
+        // form.setAttribute("action", url);
+        // form.setAttribute("method", "POST");
+        // win.document.body.append(form);
 
-        const form = win.document.createElement("form");
-        form.setAttribute("action", url);
-        form.setAttribute("method", "POST");
-        win.document.body.append(form);
+        // const input = win.document.createElement("input");
+        // input.setAttribute("type", "hidden");
+        // input.setAttribute("name", "access_token");
+        // input.setAttribute("value", authToken);
+        // form.appendChild(input);
 
-        const input = win.document.createElement("input");
-        input.setAttribute("type", "hidden");
-        input.setAttribute("name", "access_token");
-        input.setAttribute("value", authToken);
-        form.appendChild(input);
-
-        form.submit();
+        // form.submit();
 
         window.addEventListener("message", (event) => {
             // console.log(event.data);

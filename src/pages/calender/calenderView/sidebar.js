@@ -38,13 +38,19 @@ const Sidebar = ({ onAddReminderClick, filters, onFilterChange }) => {
       </div> */}
       <div className="flex flex-col gap-4 p-5">
         <div className="flex items-center gap-2">
-          <Checkbox />
+          <Checkbox 
+          checked={filters.mortgageDue}
+          onChange={(e) => onFilterChange('mortgageDue', e.target.checked)}
+          />
           <Label className="text-secondary-800">
             Mortgage Due Date
           </Label>
         </div>
         <div className="flex items-center gap-2">
-          <Checkbox />
+          <Checkbox 
+           checked={filters.closingDue}
+           onChange={(e) => onFilterChange('closingDue', e.target.checked)}
+           />
           <Label className="text-secondary-800">
             Closing Due Date
           </Label>
