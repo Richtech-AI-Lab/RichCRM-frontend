@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import OneDrive from "../../components/onedrive";
+import OneDriveFileBrowser from "../../components/onedrive/OneDriveFileBrowser";
 
 
 const Documents = () => {
     return (
         <div className="mt-14">
-            <OneDrive />
+             <OneDriveFileBrowser />
         </div>
     );
 }
