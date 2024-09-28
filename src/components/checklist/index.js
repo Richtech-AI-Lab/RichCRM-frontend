@@ -202,17 +202,6 @@ const ChecklistItem = ({ item, stageName, icon, label, status, action, actionInf
     }).length || 0;
   };
 
-  const handleChangeStageStatus = (updatedTaskStatuses, completedCount) => {
-    const totalTasks = Object.keys(updatedTaskStatuses).length;
-
-    if (completedCount === totalTasks) {
-        return 0; // All tasks completed
-    } else if (completedCount === 0) {
-        return 2; // No tasks completed
-    } else {
-        return 1; // Some tasks completed
-    }
-};
 
   // const handleChangeStageStatus = () => {
   //   if(getCompletedTasksCount(taskData.data[STAGESNAMES[stageName? stageName : 0]]) == taskData.data[STAGESNAMES[stageName? stageName : 0]]?.length){
@@ -223,6 +212,18 @@ const ChecklistItem = ({ item, stageName, icon, label, status, action, actionInf
   //     return 1
   //   }
   // }
+
+  const handleChangeStageStatus = (updatedTaskStatuses, completedCount) => {
+    
+    const totalTasks = Object.keys(updatedTaskStatuses).length;
+    if (completedCount === totalTasks) {
+        return 2; // All tasks completed
+    } else if (completedCount === 0) {
+        return 0; // No tasks completed
+    } else {
+        return 1; // Some tasks completed
+    }
+};
 
   const displayIcon = getIconByAction(action)
   const displayOption = getOptionsByAction(status);

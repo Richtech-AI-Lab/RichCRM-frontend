@@ -72,8 +72,8 @@ const AddReminderModal = ({ onClose }) => {
     year: null,
     dueDateType: 0,
     reminderTime: "",
-    popupReminder: false,
-    emailReminder: false
+    // popupReminder: false,
+    // emailReminder: false
   };
   const handleNewCaseInfo = async (values) => {
     let mainDate;
@@ -333,7 +333,7 @@ const AddReminderModal = ({ onClose }) => {
                     </div>
                   </div>
 
-                  <div className="flex flex-col gap-4 p-5">
+                  {/* <div className="flex flex-col gap-4 p-5">
                     <div className="flex items-start gap-2">
                       <Checkbox
                         id="popupReminder"
@@ -378,7 +378,7 @@ const AddReminderModal = ({ onClose }) => {
                         Email Reminder
                       </Label>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
 
                 <div className="text-end mt-8">
