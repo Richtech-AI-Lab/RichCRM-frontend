@@ -11,7 +11,7 @@ const CasesCategory = () => {
   const { card, filteredCases,stageCount } = location.state || {};
   const headerItems = [
     { text: "Cases", className: "mr-4" },
-    { text: "Contract Preparing", separator: <SlArrowRight className="inline mr-4" />},
+    { text: `${card?.label}`, separator: <SlArrowRight className="inline mr-4" />},
   ];
   const handleCaseCardClick = (casedetails) => {
     localStorage.setItem("c_id", casedetails?.caseId)
