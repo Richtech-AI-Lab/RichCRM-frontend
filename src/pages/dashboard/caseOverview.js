@@ -12,6 +12,10 @@ const CaseOverview = () => {
 
 
     const handleCountClick = (type) => {
+        if(type ==5){
+            navigate(ROUTES.CASES);
+            return true;
+        }
         const filteredCases = cases?.filter((caseItem) => caseItem.stage === type );
         const stageCount = filteredCases?.length;
         const card = stageTypes.find((stage) => stage.value === type);
@@ -24,7 +28,7 @@ const CaseOverview = () => {
             <div className="col-span-12">
                 <div className="grid grid-cols-6 gap-6">
                     <div className="card shadow-card flex flex-col justify-between h-full hover:bg-badge-gray">
-                        <p className="text-[22px] text-secondary-800 font-medium leading-[30px] mb-[18px]" onClick={()=>handleCountClick(5)}>
+                        <p className="text-[22px] text-secondary-800 font-medium leading-[30px] mb-[18px] cursor-pointer" onClick={()=>handleCountClick(5)}>
                             <span>Total Open Cases</span>
                         </p>
 
@@ -32,7 +36,7 @@ const CaseOverview = () => {
                             <span>{cases?.length > 0 ? cases?.length : 0}</span>
                         </p>
                     </div>
-                    <div className="card shadow-card flex flex-col justify-between h-full hover:bg-badge-gray" onClick={()=>handleCountClick(0)}>
+                    <div className="card shadow-card flex flex-col justify-between h-full hover:bg-badge-gray cursor-pointer" onClick={()=>handleCountClick(0)}>
                         <span className="text-sm text-secondary-300">Cases</span>
                         <p className="text-[18px] text-secondary-800 font-medium leading-[30px] mb-[18px]">
                             <span>Setting Up</span>
@@ -44,7 +48,7 @@ const CaseOverview = () => {
 
 
                     </div>
-                    <div className="card shadow-card flex flex-col justify-between h-full hover:bg-badge-gray" onClick={()=>handleCountClick(1)}>
+                    <div className="card shadow-card flex flex-col justify-between h-full hover:bg-badge-gray cursor-pointer" onClick={()=>handleCountClick(1)}>
                         <span className="text-sm text-secondary-300">Cases</span>
                         <p className="text-[18px] text-secondary-800 font-medium leading-[30px] mb-[18px]">
                             <span>Contract Preparing</span>
@@ -56,7 +60,7 @@ const CaseOverview = () => {
 
 
                     </div>
-                    <div className="card shadow-card flex flex-col justify-between h-full hover:bg-badge-gray" onClick={()=>handleCountClick(2)}>
+                    <div className="card shadow-card flex flex-col justify-between h-full hover:bg-badge-gray cursor-pointer" onClick={()=>handleCountClick(2)}>
                         <span className="text-sm text-secondary-300">Cases</span>
                         <p className="text-[18px] text-secondary-800 font-medium leading-[30px] mb-[18px]">
                             <span>Contract Signing</span>
@@ -68,7 +72,7 @@ const CaseOverview = () => {
 
 
                     </div>
-                    <div className="card shadow-card flex flex-col justify-between h-full hover:bg-badge-gray" onClick={()=>handleCountClick(3)}>
+                    <div className="card shadow-card flex flex-col justify-between h-full hover:bg-badge-gray cursor-pointer" onClick={()=>handleCountClick(3)}>
                         <span className="text-sm text-secondary-300">Cases</span>
                         <p className="text-[18px] text-secondary-800 font-medium leading-[30px] mb-[18px]">
                             <span>Mortgage & Title</span>
@@ -80,7 +84,7 @@ const CaseOverview = () => {
 
 
                     </div>
-                    <div className="card shadow-card flex flex-col justify-between h-full hover:bg-badge-gray" onClick={()=>handleCountClick(4)}>
+                    <div className="card shadow-card flex flex-col justify-between h-full hover:bg-badge-gray cursor-pointer" onClick={()=>handleCountClick(4)}>
                         <span className="text-sm text-secondary-300">Cases</span>
                         <p className="text-[18px] text-secondary-800 font-medium leading-[30px] mb-[18px]">
                             <span>Closing</span>
