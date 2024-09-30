@@ -108,7 +108,7 @@ const Actionbar = ({ onFilterChange }) => {
   const filterCases = (cases, searchArr) => {
     let data=cases?.filter(caseRecord => {
 
-      const isWarning = searchArr?.includes("warning") && caseRecord.caseStatus===0 ;
+      const isWarning = searchArr?.includes("warning") && caseRecord.caseStatus===3 ;
 
       const isWaiting  = searchArr?.includes("waiting") && caseRecord.caseStatus===1 ;
 

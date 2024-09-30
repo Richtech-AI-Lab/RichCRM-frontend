@@ -8,6 +8,7 @@ const ClosedCasesGrid = ({ closedCases }) => {
         {closedCases.map((item, index) => (
           <CardItem
             key={index}
+            caseStatus={item?.caseStatus}
             caseDetails={item?.premisesId}
             caseTitle={item?.clientName }
             closedCases={closedCases}
