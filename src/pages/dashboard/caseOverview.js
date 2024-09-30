@@ -19,7 +19,6 @@ const CaseOverview = () => {
         const filteredCases = cases?.filter((caseItem) => caseItem.stage === type );
         const stageCount = filteredCases?.length;
         const card = stageTypes.find((stage) => stage.value === type);
-        console.log(card)
         navigate(ROUTES.CASES_CATEGORY, { state: { card, filteredCases, stageCount } });
     };
 
@@ -27,8 +26,8 @@ const CaseOverview = () => {
         <div className="grid grid-cols-12 gap-6 mb-6">
             <div className="col-span-12">
                 <div className="grid grid-cols-6 gap-6">
-                    <div className="card shadow-card flex flex-col justify-between h-full hover:bg-badge-gray">
-                        <p className="text-[22px] text-secondary-800 font-medium leading-[30px] mb-[18px] cursor-pointer" onClick={()=>handleCountClick(5)}>
+                    <div className="card shadow-card flex flex-col justify-between h-full hover:bg-badge-gray cursor-pointer" onClick={()=>handleCountClick(5)}>
+                        <p className="text-[22px] text-secondary-800 font-medium leading-[30px] mb-[18px] " >
                             <span>Total Open Cases</span>
                         </p>
 
