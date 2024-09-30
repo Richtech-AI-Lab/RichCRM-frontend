@@ -151,7 +151,9 @@ const ChecklistItem = ({ item, stageName, icon, label, status, action, actionInf
       setIsCompose(true)
     }
   }
-  
+  useEffect(() => {
+    setTaskStatus(status);
+  }, [status]);
   const handleChangeTaskStatus = () => {
     const newStatus = taskStatus === 0 ? 2 : 0;
     setTaskStatus(newStatus)
@@ -236,7 +238,7 @@ const ChecklistItem = ({ item, stageName, icon, label, status, action, actionInf
       <div className="border-t-2 border-black-10">
         <li className="flex justify-between items-center mb-5 pb-5 task-checklist mt-2">
           <div className="flex items-center gap-2 custom-radio">
-            <Checkbox id={checkboxId} defaultChecked={taskStatus} className="mr-6" onChange={(e) => handleChangeTaskStatus(e)} />
+            <Checkbox id={checkboxId} checked={taskStatus} className="mr-6" onChange={(e) => handleChangeTaskStatus(e)} />
             <Label htmlFor={checkboxId} className="flex items-center lg:text-base xl:text-base text-title font-medium">
               {displayIcon && <span className="mr-2 text-2xl">{displayIcon}</span>}
               {/* {stageId }: */}
