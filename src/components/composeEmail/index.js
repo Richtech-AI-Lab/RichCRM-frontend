@@ -23,6 +23,13 @@ const ComposeEmail = ({ onClose, templates }) => {
   const [loader, setLoader] = useState();
 
   useEffect(() => {
+    if (clientObj?.length > 0 && clientObj[0]?.email) {
+      setToEmail([clientObj[0]?.email]);
+    } else {
+      if (clientObj?.length > 0) {
+        toast.error("Please update client email, No email exist!");
+      }
+    }
     const fetchData = async () => {
       setLoader(true)
       try {
