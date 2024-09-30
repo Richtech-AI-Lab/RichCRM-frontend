@@ -96,21 +96,33 @@ const casesReducer = (state = initialCasesState, action) => {
         loading: false,
         error: action.payload,
       };
-      case SET_STAGE:
-        return {
-          ...state,
-          cases: state.cases.map((caseItem) =>
-            caseItem.caseId === action.payload.caseId
-              ? { ...caseItem, stage: action.payload.stage }
-              : caseItem
-          ),
-          loading: false,
-          error: null,
-        };
+    case SET_STAGE:
+      return {
+        ...state,
+        cases: state.cases.map((caseItem) =>
+          caseItem.caseId === action.payload.caseId
+            ? { ...caseItem, stage: action.payload.stage }
+            : caseItem
+        ),
+        loading: false,
+        error: null,
+      };
+    case 'UPDATE_CASE_DATE_SUCCESS':
+      return {
+        ...state,
+        cases: state.cases.map((caseItem) =>
+          caseItem.caseId === action.payload.caseId
+            ? { ...caseItem, ...action.payload }
+            : caseItem
+        ),
+        loading: false,
+        error: null,
+      };
     case CLEAR_DATA:
       return initialCasesState;
+
     case SET_SEARCH_CASES:
-     return {
+      return {
         ...state,
         loading: false,
         searchData: action.payload.cases,
