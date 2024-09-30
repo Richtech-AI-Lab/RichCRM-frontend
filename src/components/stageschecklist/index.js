@@ -404,13 +404,13 @@ const StagesChecklist = () => {
                     <span
                       className={`pb-4 cursor-pointer ${activeTab === 'mortgage' ? 'text-base text-secondary-800 font-medium border-b-[3px] border-primary' : 'text-gray-400'}`} onClick={() => setActiveTab('mortgage')}
                     >
-                      Mortgage Task ({getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]])}/{taskData.data[STAGESNAMES[currentStep]]?.length || 0})
+                      Mortgage Task ({getCompletedTasksCount( taskData.data[STAGESNAMES[currentStep]]?.slice(0, 5))}/{ taskData.data[STAGESNAMES[currentStep]]?.slice(0, 5)?.length || 0})
                     </span>
                     <span
                       className={`pb-4 cursor-pointer ${activeTab === 'title' ? 'text-base text-secondary-800 font-medium border-b-[3px] border-primary' : 'text-gray-400'}`}
                       onClick={() => setActiveTab('title')}
                     >
-                      Title Task ({getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]])}/{taskData.data[STAGESNAMES[currentStep]]?.length || 0})
+                      Title Task ({getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]]?.slice(5, 10))}/{taskData.data[STAGESNAMES[currentStep]]?.slice(5, 10)?.length || 0})
                     </span>
                   </div>
                 ) : (
@@ -471,7 +471,7 @@ const StagesChecklist = () => {
                           action={item.taskType}
                           actionInfo={item.name}
                           templates={item?.templates}
-                          checkboxId={item.checkboxId}
+                          checkboxId={item.taskId}
                           stageId={data[STAGESNAMES[currentStep? currentStep : 0]]?.stageId}
                         />
                       ))}

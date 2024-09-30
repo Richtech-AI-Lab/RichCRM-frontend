@@ -1,5 +1,5 @@
 import { takeLatest, put, call } from "redux-saga/effects";
-import { caseCreateSuccess, caseCreateFailure, updateCaseSuccess, updateCaseFailure, deleteCaseSuccess, deleteCaseFailure, fetchAllCasesSuccess, fetchAllCasesFailure, caseSetStage, clearCasesData } from "../actions/caseAction";
+import { caseCreateSuccess, caseCreateFailure, updateCaseSuccess, updateCaseFailure, deleteCaseSuccess, deleteCaseFailure, fetchAllCasesSuccess, fetchAllCasesFailure, caseSetStage, clearCasesData, caseDateSuccess } from "../actions/caseAction";
 import { POST_CASE_REQUEST, UPDATE_CASE_REQUEST, DELETE_CASE_REQUEST, FETCH_ALL_CASES_REQUEST, READ_CASE_REQUEST, READ_CASE_BY_CLIENT, CLOSE_CASE, READ_CASE_BY_CONTACT, UPDATE_CASE_DATE_REQUEST } from "../type";
 import { postRequest, getRequest } from "../../axios/interceptor";
 import { API_ENDPOINTS, ROUTES } from "../../constants/api";
@@ -227,6 +227,7 @@ function* updateCasedate(action) {
     try {
         const { payload } = action;
         const response = yield call(() => postRequest(API_ENDPOINTS.UPDATE_CASE, payload));
+        yield put(caseDateSuccess(payload)); 
         if (response.status == 200) {
             toast.success("Close Date Added!");
         }

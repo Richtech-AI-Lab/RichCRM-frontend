@@ -36,6 +36,7 @@ const Actionbar = ({ onFilterChange }) => {
       title: "Status",
       options: [
         // { value: "allStatus", label: "All Status" },
+        { value: "todo", label: "Todo" },
         { value: "warning", label: "Warning" },
         { value: "waiting", label: "Waiting" },
         { value: "finished", label: "Finished" },
@@ -106,9 +107,12 @@ const Actionbar = ({ onFilterChange }) => {
   };
 
   const filterCases = (cases, searchArr) => {
+
     let data=cases?.filter(caseRecord => {
 
-      const isWarning = searchArr?.includes("warning") && caseRecord.caseStatus===0 ;
+      const isTodo = searchArr?.includes("todo") && caseRecord.caseStatus=== 0 ;
+
+      const isWarning = searchArr?.includes("warning") && caseRecord.caseStatus===3 ;
 
       const isWaiting  = searchArr?.includes("waiting") && caseRecord.caseStatus===1 ;
 
@@ -118,7 +122,7 @@ const Actionbar = ({ onFilterChange }) => {
   
       const isPurchasing = searchArr?.includes("purchasing") && caseRecord.caseType === 0;
 
-      return isSelling || isPurchasing ||  isWarning || isWaiting || isFinished;
+      return isSelling || isPurchasing ||  isWarning || isWaiting || isFinished || isTodo;
     });
 
     return data;

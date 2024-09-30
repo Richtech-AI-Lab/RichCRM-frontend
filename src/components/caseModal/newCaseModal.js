@@ -293,7 +293,7 @@ const NewCaseModal = ({ onClose }) => {
           {/* <AuthFormContainer title="New Case" subtitle="Create a new case by filling the basic information."> */}
           <Formik
             initialValues={initialValues}
-            // validationSchema={validationSchema}
+            validationSchema={validationSchema}
             onSubmit={handleNewCaseInfo}
           >
             {({
