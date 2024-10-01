@@ -10,7 +10,7 @@ const ContactPartner = () => {
   const [isEdit, setIsEdit] = useState(false);
   const { active } = location.state || {};
   const toggleEdit = () => {
-    console.log(isEdit)
+    // console.log(isEdit)
     setIsEdit(prevState => !prevState);
   };
   return (
