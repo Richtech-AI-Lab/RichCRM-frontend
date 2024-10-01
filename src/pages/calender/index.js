@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Sidebar from './calenderView/sidebar';
 import Calendar from './calenderView';
 import AddReminderModal from './calenderView/addReminderModal';
+import { clearStageData } from '../../redux/actions/stagesActions';
+import { clearTaskData } from '../../redux/actions/taskActions';
+import { useDispatch } from 'react-redux';
 
 const CalendarPage = () => {
+  const dispatch = useDispatch();
   const [isAddReminderOpen, setIsAddReminderOpen] = useState(false);
   const [filters, setFilters] = useState({
     mortgageDue: true,
@@ -21,6 +25,10 @@ const CalendarPage = () => {
       [filterName]: checked,
     }));
   };
+  useEffect(()=>{
+    dispatch(clearStageData())
+    dispatch(clearTaskData())
+  },[])
   return (
     <div className="calendar-page-container" style={{ display: 'flex', height: '100vh' }}>
      
