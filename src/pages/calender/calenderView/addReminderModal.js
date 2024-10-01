@@ -1,31 +1,33 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Formik, ErrorMessage, Field } from "formik";
 import { Checkbox, Datepicker, Label, Modal, Radio } from "flowbite-react";
-
-
 import { debounce } from "lodash";
-
-
-
+import * as Yup from "yup";
 import TextInput from "../../../components/TextInput";
 import { API_ENDPOINTS } from "../../../constants/api";
 import { postRequest } from "../../../axios/interceptor";
 import NewCaseDropdown from "../../../components/newcasedropdown";
 import XButton from "../../../components/button/XButton";
-import { getDateAfterDays } from "../../../utils";
+import { getDateAfterDays, isValidDate, makeDate } from "../../../utils";
 import { useDispatch } from "react-redux";
 import { updateCaseDateRequest } from "../../../redux/actions/caseAction";
+import { dayOption, monthOption, yearOption } from "../../../constants/constants";
+import { toast } from "react-toastify";
 
 const ReminderTypeOptions = [
   { value: 0, label: "Mortgage " },
   { value: 1, label: "Closing" },
 ];
 
-const ReminderDueDaysOptions = [
+const ReminderMortgageDueDaysOptions = [
   { value: 30, label: "30 Days From Today" },
   { value: 45, label: "45 Days From Today" },
 ];
 
+const ReminderClosingDueDaysOptions = [
+  { value: 60, label: "60 Days From Today" },
+  { value: 90, label: "90 Days From Today" },
+];
 const ReminderTimeOptions = [
   { value: 7, label: "7 Days Before" },
   { value: 14, label: "14 Days Before" },
@@ -34,7 +36,7 @@ const ReminderTimeOptions = [
 
 
 
-const AddReminderModal = ({ onClose }) => {
+const AddReminderModal = ({ onClose, reminderData }) => {
   const dispatch = useDispatch();
   const [searchResults, setSearchResults] = useState([]);
 
@@ -50,15 +52,6 @@ const AddReminderModal = ({ onClose }) => {
       } else {
         setSearchResults([]);
       }
-      // if (value != "" || value.length > 0) {
-      //   const filteredResults = searchOption.filter(option =>
-      //     option.firstName.toLowerCase().includes(value.toLowerCase())
-      //   );
-      //   setSearchResults(filteredResults);
-      // } else {
-      //   setSearchResults([]);
-      // }
-      // You can call any API or perform any other actions here
     }, 1000),
     []
   );
@@ -75,13 +68,33 @@ const AddReminderModal = ({ onClose }) => {
     // popupReminder: false,
     // emailReminder: false
   };
+
+  const initialEditValues = {
+    caseId: reminderData?.caseId,
+    caseName: `${reminderData?.clientName}-${reminderData?.premisesName}`,
+    reminderType: reminderData?.title == "Mortgage Due" ? 0 : 1,
+    dueDate: "",
+    day: null,
+    month: null,
+    year: null,
+    dueDateType: 0,
+    reminderTime: "",
+    // popupReminder: false,
+    // emailReminder: false
+  };
   const handleNewCaseInfo = async (values) => {
+    console.log(values)
     let mainDate;
     let duedatetype = parseInt(values.dueDateType);
 
     // get date based on type
     if (duedatetype) {
-      mainDate = getDateAfterDays(values.dueDate);
+      if (isValidDate(values.day, values.month, values.year)) {
+        mainDate = makeDate(values.day, values.month, values.year);
+      } else {
+        toast.error("Please Enter Valid Date!")
+        return true
+      }
     } else {
       mainDate = getDateAfterDays(values.dueDate);
     }
@@ -105,6 +118,31 @@ const AddReminderModal = ({ onClose }) => {
     dispatch(updateCaseDateRequest(payload))
     onClose()
   };
+  const validationSchema = Yup.object({
+    caseId: Yup.string().required('Case is required'),
+    reminderType: Yup.string().required('Reminder Type is required'),
+    dueDateType: Yup.string().required('Due Date Type is required'),
+    dueDate: Yup.mixed().when('dueDateType', {
+      is: (value) => value == 0,
+      then: () => Yup.mixed().required('Due Date is required'),
+      otherwise: () => Yup.mixed().notRequired(),
+    }),
+    year: Yup.mixed().when('dueDateType', {
+      is: (value) => value == 1,
+      then: () => Yup.mixed().required('Year is required'),
+      otherwise: () => Yup.mixed().notRequired(),
+    }),
+    day: Yup.mixed().when('dueDateType', {
+      is: (value) => value == 1,
+      then: () => Yup.mixed().required('Day is required'),
+      otherwise: () => Yup.mixed().notRequired(),
+    }),
+    month: Yup.mixed().when('dueDateType', {
+      is: (value) => value == 1,
+      then: () => Yup.mixed().required('Month is required'),
+      otherwise: () => Yup.mixed().notRequired(),
+    }),
+  });
 
   return (
     <>
@@ -122,8 +160,8 @@ const AddReminderModal = ({ onClose }) => {
         <Modal.Body >
           {/* <AuthFormContainer title="New Case" subtitle="Create a new case by filling the basic information."> */}
           <Formik
-            initialValues={initialValues}
-            // validationSchema={validationSchema}
+            initialValues={reminderData === null ? initialValues : initialEditValues}
+            validationSchema={validationSchema}
             onSubmit={handleNewCaseInfo}
           >
             {({
@@ -136,8 +174,9 @@ const AddReminderModal = ({ onClose }) => {
               isSubmitting,
               setFieldValue
             }) => (
-
+             
               <form onSubmit={handleSubmit} className="">
+                 {console.log(errors)}
                 <div className="block">
                   <Label htmlFor="Case" value="Case" />
                   <div className="grid grid-col">
@@ -147,13 +186,14 @@ const AddReminderModal = ({ onClose }) => {
                         type="text"
                         placeholder="Enter Case Name"
                         value={values.caseName}
+                        autoComplete="off"
                         onChange={(e) => {
                           handleChange(e);
                           debouncedFunction(e.target.value);
                         }}
                         onBlur={handleBlur}
                         field={{
-                          name: `caseName`,
+                          name: `caseId`,
                         }}
                         form={{ errors, touched }}
                       />
@@ -167,20 +207,21 @@ const AddReminderModal = ({ onClose }) => {
                           field={{
                             name: `caseId`,
                           }}
+                          onChange={handleChange}
                         />
                       </div>
 
 
                       <ul className={'search-list-dropdown overflow-hidden rounded-2xl shadow-shadow-light-2'}>
-                        {searchResults.map((item) => (
+                        {searchResults.map((item, index) => (
                           <li
+                            key={index} // Adding a key for each list item for better performance
                             className={'px-4 py-2 hover:bg-input-surface'}
                             onClick={() => {
                               setFieldValue('caseName', `${item.clientName}-${item.premisesName}`);
                               setFieldValue('caseId', item.caseId);
                               setSearchResults([]);
                             }}
-                            key={item.id} // Adding a key for each list item for better performance
                           >
                             <div className="flex items-center">
                               {/* <img src={avatar} className="w-8 mr-3" /> */}
@@ -254,6 +295,11 @@ const AddReminderModal = ({ onClose }) => {
                                 </Label>
                               </div>
                             ))}
+                            {/* {touched.dueDateType && errors.dueDateType ? (
+                              <div className="text-red-500 text-sm">
+                                {errors.dueDateType}
+                              </div>
+                            ) : null} */}
                           </div>
                         </div>
                       </div>
@@ -268,42 +314,69 @@ const AddReminderModal = ({ onClose }) => {
                             name="dueDate"
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            options={ReminderDueDaysOptions}
+                            options={values?.reminderType == 0 ? ReminderMortgageDueDaysOptions : ReminderClosingDueDaysOptions}
                             inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
                           />
-                          <ErrorMessage
-                            name="dueDate"
-                            component="div"
-                            className="text-red-500 text-sm"
-                          />
+                           {touched.dueDate && errors.dueDate ? (
+                              <div className="text-red-500 text-sm">
+                                {errors.dueDate}
+                              </div>
+                            ) : null}
                         </div>
                       ) : (
                         // Manual Filling
                         <div className="grid grid-cols-3 gap-4 mt-3">
-                          <TextInput
-                            name="day"
-                            type="number"
-                            placeholder="Day"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.day}
-                          />
-                          <TextInput
-                            name="month"
-                            type="number"
-                            placeholder="Month"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.month}
-                          />
-                          <TextInput
-                            name="year"
-                            type="number"
-                            placeholder="Year"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.year}
-                          />
+                          <div className="items-dropdown single-select mt-3">
+                            <Field
+                              as={NewCaseDropdown}
+                              defaultLabel="Select date"
+                              name="day"
+                              value={values?.day}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              options={dayOption}
+                              inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
+                            />
+                            {touched.day && errors.day ? (
+                              <div className="text-red-500 text-sm">
+                                {errors.day}
+                              </div>
+                            ) : null}
+                          </div>
+                          <div className="items-dropdown single-select mt-3">
+                            <Field
+                              as={NewCaseDropdown}
+                              defaultLabel="Select month"
+                              name="month"
+                              value={values?.month}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              options={monthOption}
+                              inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
+                            />
+                            {touched.month && errors.month ? (
+                              <div className="text-red-500 text-sm">
+                                {errors.month}
+                              </div>
+                            ) : null}
+                          </div>
+                          <div className="items-dropdown single-select mt-3">
+                            <Field
+                              as={NewCaseDropdown}
+                              defaultLabel="Select year"
+                              name="year"
+                              value={values?.year}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              options={yearOption}
+                              inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
+                            />
+                            {touched.year && errors.year ? (
+                              <div className="text-red-500 text-sm">
+                                {errors.year}
+                              </div>
+                            ) : null}
+                          </div>
                         </div>
                       )}
 
@@ -324,9 +397,9 @@ const AddReminderModal = ({ onClose }) => {
                           options={ReminderTimeOptions}
                           inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
                         />
-                        {touched.reminderType && errors.reminderType ? (
+                        {touched.reminderTime && errors.reminderTime ? (
                           <div className="text-red-500 text-sm">
-                            {errors.reminderType}
+                            {errors.reminderTime}
                           </div>
                         ) : null}
                       </div>
