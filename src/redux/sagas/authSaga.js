@@ -11,6 +11,7 @@ function* login(action) {
     const response = yield call(() => postRequest(API_ENDPOINTS.LOGIN, payload));
     if (response.status == 200) {
       localStorage.setItem('authEmail', response.data.data[0].emailAddress);
+      localStorage.setItem("isAuthenticated", true);
     }
     yield put(loginSuccess(response?.data));
     // localStorage.setItem('authToken', response.data);

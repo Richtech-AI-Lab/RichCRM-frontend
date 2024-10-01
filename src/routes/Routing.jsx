@@ -5,10 +5,7 @@ import { ForgotPasswordOne, ForgotPasswordThree, ForgotPasswordTwo, Layout, Logi
 import { ROUTES } from "../constants/api";
 
 const Routing = () => {
-  useEffect(() => {
-    localStorage.setItem("isAuthenticated", true);
-  }, []);
-
+  
   return (
     <Routes>
       <Route path={ROUTES.LOGIN} element={<Login />} />
