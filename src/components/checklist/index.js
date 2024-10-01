@@ -129,7 +129,7 @@ const ChecklistItem = ({ item, stageName, icon, label, status, action, actionInf
           displayColor = 'yellow';
         } else if (status === 1) {
           label = 'Waiting';
-          displayColor = 'grey';
+          displayColor = 'gray';
         } else if (status === 2) {
           label = 'Done';
           displayColor = 'green';
@@ -154,10 +154,17 @@ const ChecklistItem = ({ item, stageName, icon, label, status, action, actionInf
   useEffect(() => {
     setTaskStatus(status);
   }, [status]);
-  const handleChangeTaskStatus = () => {
-    const newStatus = taskStatus === 0 ? 2 : 0;
-    setTaskStatus(newStatus)
 
+  const handleChangeTaskStatus = (value) => {
+    let newStatus ;
+    
+    if(value){
+      newStatus= value
+    }else{
+      newStatus = taskStatus === 0 || taskStatus === 1 ? 2 : 0;
+    }
+    setTaskStatus(newStatus)
+    console.log(newStatus)
     const currentStageTasks = taskData?.data[STAGESNAMES[stageName ? stageName : 0]];
 
     const otherTasks = currentStageTasks.filter(task => task.taskId != item?.taskId);
@@ -238,7 +245,7 @@ const ChecklistItem = ({ item, stageName, icon, label, status, action, actionInf
       <div className="border-t-2 border-black-10">
         <li className="flex justify-between items-center mb-5 pb-5 task-checklist mt-2">
           <div className="flex items-center gap-2 custom-radio">
-            <Checkbox id={checkboxId} checked={taskStatus} className="mr-6" onChange={(e) => handleChangeTaskStatus(e)} />
+            <Checkbox id={checkboxId} checked={taskStatus === 2} className="mr-6" onChange={() => handleChangeTaskStatus()} />
             <Label htmlFor={checkboxId} className="flex items-center lg:text-base xl:text-base text-title font-medium">
               {displayIcon && <span className="mr-2 text-2xl">{displayIcon}</span>}
               {/* {stageId }: */}
@@ -274,7 +281,7 @@ const ChecklistItem = ({ item, stageName, icon, label, status, action, actionInf
           </div>
         </li>
       </div>
-      {isCompose ? <ComposeEmail templates={templates} onClose={toggleComposeModal} /> : ""}
+      {isCompose ? <ComposeEmail templates={templates} onClose={toggleComposeModal} onSendEmail={(value) => handleChangeTaskStatus(value)} /> : ""}
     </>
   );
 };
