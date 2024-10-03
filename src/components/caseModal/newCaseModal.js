@@ -29,34 +29,12 @@ import NewCaseDropdown from "../newcasedropdown";
 import { caseTypeOptions, premisesTypes } from "../../utils/formItem";
 import axios from "axios";
 import { getRequest, postRequest } from "../../axios/interceptor";
+import { registerOrganizationRequest } from "../../redux/actions/organizationActions";
 
 const clientTypeOptions = [
   { value: CLIENTTYPE.INDIVIDUAL, label: "Individual" },
   { value: CLIENTTYPE.COMPANY, label: "Company" },
   { value: CLIENTTYPE.TRUST, label: "Trust" },
-];
-const searchOption = [
-  {
-    "clientId": "123456789",
-    "firstName": "John",
-    "lastName": "Doe",
-    "cellNumber": "1234567890",
-    "email": "john.doe@hotmail.com"
-  },
-  {
-    "clientId": "123-45-6789",
-    "firstName": "Marry",
-    "lastName": "Doe",
-    "cellNumber": "1234567890",
-    "email": "john.doe@hotmail.com"
-  },
-  {
-    "clientId": "123-45-6789",
-    "firstName": "Aqua",
-    "lastName": "Doe",
-    "cellNumber": "1234567890",
-    "email": "john.doe@hotmail.com"
-  }
 ];
 
 const NewCaseModal = ({ onClose }) => {
@@ -69,7 +47,7 @@ const NewCaseModal = ({ onClose }) => {
   const { premises } = useSelector((state) => state.premises);
   const [showClientFields, setShowClientFields] = useState(false);
 
-  const debouncedFunction = useCallback(
+  const debouncedClientFunction = useCallback(
     debounce(async (value, index) => {
       if (value != "" || value.length > 0) {
         const response = await postRequest(API_ENDPOINTS.FETCH_CLIENT_BY_QUERY, {
@@ -81,14 +59,23 @@ const NewCaseModal = ({ onClose }) => {
       } else {
         setSearchResults([]);
       }
-      // if (value != "" || value.length > 0) {
-      //   const filteredResults = searchOption.filter(option =>
-      //     option.firstName.toLowerCase().includes(value.toLowerCase())
-      //   );
-      //   setSearchResults(filteredResults);
-      // } else {
-      //   setSearchResults([]);
-      // }
+      setActiveSearchIndex(index)
+    }, 1000),
+    []
+  );
+
+  const debouncedCompanyFunction = useCallback(
+    debounce(async (value, index) => {
+      if (value != "" || value.length > 0) {
+        const response = await postRequest(API_ENDPOINTS.FETCH_ORGANIZATION_BY_QUERY, {
+          keyword: value
+        }
+        )
+        const filteredResults = response?.data?.data;
+        setSearchResults(filteredResults);
+      } else {
+        setSearchResults([]);
+      }
       setActiveSearchIndex(index)
       // You can call any API or perform any other actions here
     }, 1000),
@@ -125,12 +112,18 @@ const NewCaseModal = ({ onClose }) => {
     ],
     companyInfo: [
       {
-        companyname: ""
+        companyName: "",
+        companyCellNumber: "",
+        companyEmail: "",
+        companyOrganizationId: ""
       },
     ],
     trustInfo: [
       {
-        trustname: ""
+        trustName: "",
+        trustCellNumber: "",
+        trustEmail: "",
+        trustOrganizationId: ""
       },
     ],
   };
@@ -145,57 +138,109 @@ const NewCaseModal = ({ onClose }) => {
     zipCode: Yup.string().required("Zip code is required"),
     clients: Yup.array().of(
       Yup.object().shape({
-        clientfirstName: Yup.string().required("Client First Name is required"),
-        clientLastName: Yup.string().required("Client Last Name is required"),
-        clientcellNumber: Yup.string()
-          .matches(/^[0-9]+$/, 'Cell number must be a number')
-        // .required('Cell Number is required')
-        ,
-        clientemail: Yup.string().email('Invalid email format')
-        //  .required('Email is required'),
+        clientfirstName: Yup.string().when('$clientType', {
+          is: (value) => value == 0,
+          then: () => Yup.string().required("Client First Name is required"),
+          otherwise: () => Yup.string().notRequired()
+        }),
+        clientLastName: Yup.string().when('$clientType', {
+          is: (value) => value == 0,
+          then: () => Yup.string().required("Client Last Name is required"),
+          otherwise: () => Yup.string().notRequired()
+        }),
+        clientcellNumber: Yup.string().matches(/^[0-9]+$/, 'Cell number must be a number'),
+        clientemail: Yup.string().email('Invalid email format'),
+      })
+    ),
+    companyInfo: Yup.array().of(
+      Yup.object().shape({
+        companyName: Yup.string().when('$clientType', {
+          is: (value) => value == 1,
+          then: () => Yup.string().required("Company Name is required"),
+          otherwise: () => Yup.string().notRequired()
+        }),
+        companyCellNumber: Yup.string().matches(/^[0-9]+$/, 'Cell number must be a number'),
+        companyEmail: Yup.string().email('Invalid email format'),
+      })
+    ),
+    trustInfo: Yup.array().of(
+      Yup.object().shape({
+        trustName: Yup.string().when('$clientType', {
+          is: (value) => value == 2,
+          then: () => Yup.string().required("Trust Name is required"),
+          otherwise: () => Yup.string().notRequired()
+        }),
+        trustCellNumber: Yup.string().matches(/^[0-9]+$/, 'Cell number must be a number'),
+        trustEmail: Yup.string().email('Invalid email format'),
       })
     ),
   });
-  const processClients = (values) => {
-    // Destructure the clients array from the values object
-    const { clients } = values;
+  const processEntities = (values, entityType) => {
+    const { [entityType]: entityInfo } = values;
 
-    // Check if the length of the clients array is greater than 1
-    if (clients.length > 1) {
-      // Remove the first object from the array
-      const remainingClients = clients.slice(1);
+    if (entityInfo.length <= 1) return []; // Return early if not enough entities
 
-      // Iterate over the remaining clients to create an array of objects
-      const processedClients = remainingClients.map((clientData) => ({
-        clientType: values.clientType,
-        firstName: clientData.clientfirstName,
-        lastName: clientData.clientLastName,
-        ...(clientData.clientcellNumber && { cellNumber: clientData.clientcellNumber }),
-        ...(clientData.clientemail && { email: clientData.clientemail }),
-        ...(clientData.clientId && { clientId: clientData.clientId })
-      }));
+    const remainingEntities = entityInfo.slice(1);
 
-      return processedClients; // Return the array of processed clients
-    }
+    return remainingEntities.map(entity => {
+      const isClient = entityType === 'clients';
+      const isCompany = entityType === 'companyInfo';
+      const isTrust = entityType === 'trustInfo';
 
-    // If the length is 1, return an empty array or the original clients array
-    return [];
+      return {
+        ...(isClient && { clientType: values.clientType }),
+        ...(isClient && entity.clientfirstName && { firstName: entity.clientfirstName }),
+        ...(isClient && entity.clientLastName && { lastName: entity.clientLastName }),
+        ...(isClient && entity.clientcellNumber && { cellNumber: entity.clientcellNumber }),
+        ...(isClient && entity.clientemail && { email: entity.clientemail }),
+        ...(isClient && entity.clientId && { clientId: entity.clientId }),
+
+        ...(isCompany && { organizationType: values.clientType }),
+        ...(isCompany && entity.companyName && { organizationName: entity.companyName }),
+        ...(isCompany && entity.companyCellNumber && { cellNumber: entity.companyCellNumber }),
+        ...(isCompany && entity.companyEmail && { email: entity.companyEmail }),
+        ...(isCompany && entity.companyOrganizationId && { organizationId: entity.companyOrganizationId }),
+
+        ...(isTrust && { organizationType: values.clientType }),
+        ...(isTrust && entity.trustName && { organizationName: entity.trustName }),
+        ...(isTrust && entity.trustCellNumber && { cellNumber: entity.trustCellNumber }),
+        ...(isTrust && entity.trustEmail && { email: entity.trustEmail }),
+        ...(isTrust && entity.trustOrganizationId && { organizationId: entity.trustOrganizationId }),
+      };
+    });
   };
 
   const handleNewCaseInfo = async (values) => {
-    const clientList = processClients(values)
-    const clientData = values.clients[0];
-    const clientDetails = {
-      clientType: values.clientType,
-      firstName: clientData.clientfirstName,
-      lastName: clientData.clientLastName,
-      ...(clientData.clientcellNumber && { cellNumber: clientData.clientcellNumber }),
-      ...(clientData.clientemail && { email: clientData.clientemail }),
-      ...(clientData.clientId && { clientId: clientData.clientId })
+    const entityType = values.clientType === 0 ? 'clients' : (values.clientType === 1 ? 'companyInfo' : 'trustInfo');
+    const mainEntity = values[entityType][0];
+
+    const processedList = processEntities(values, entityType);
+
+    const isClient = entityType === 'clients';
+    const isCompany = entityType === 'companyInfo';
+    const isTrust = entityType === 'trustInfo';
+    const mainDetails = {
+      ...(isClient && { clientType: values.clientType }),
+      ...(isClient && mainEntity.clientfirstName && { firstName: mainEntity.clientfirstName }),
+      ...(isClient && mainEntity.clientLastName && { lastName: mainEntity.clientLastName }),
+      ...(isClient && mainEntity.clientcellNumber && { cellNumber: mainEntity.clientcellNumber }),
+      ...(isClient && mainEntity.clientemail && { email: mainEntity.clientemail }),
+      ...(isClient && mainEntity.clientId && { clientId: mainEntity.clientId }),
+
+      ...(isCompany && { organizationType: values.clientType }),
+      ...(isCompany && mainEntity.companyName && { organizationName: mainEntity.companyName }),
+      ...(isCompany && mainEntity.companyCellNumber && { cellNumber: mainEntity.companyCellNumber }),
+      ...(isCompany && mainEntity.companyEmail && { email: mainEntity.companyEmail }),
+      ...(isCompany && mainEntity.companyOrganizationId && { organizationId: mainEntity.companyOrganizationId }),
+
+      ...(isTrust && { organizationType: values.clientType }),
+      ...(isTrust && mainEntity.trustName && { organizationName: mainEntity.trustName }),
+      ...(isTrust && mainEntity.trustCellNumber && { cellNumber: mainEntity.trustCellNumber }),
+      ...(isTrust && mainEntity.trustEmail && { email: mainEntity.trustEmail }),
+      ...(isTrust && mainEntity.trustOrganizationId && { organizationId: mainEntity.trustOrganizationId }),
     };
+
     const combinedPayload = {
-      clientList,
-      clientDetails,
       addressDetails: {
         addressLine1: values.address,
         city: values.city,
@@ -208,66 +253,20 @@ const NewCaseModal = ({ onClose }) => {
       casePayload: {
         creatorId: localStorage.getItem("authEmail"),
         stage: 0,
-        caseType: parseInt(values.caseType)
-      }
+        caseType: parseInt(values.caseType),
+        clientType: parseInt(values.clientType),
+      },
+      ...(isClient && { clientList: processedList, clientDetails: mainDetails }),
+      ...(isCompany && { companyList: processedList, companyDetails: mainDetails }),
+      ...(isTrust && { trustList: processedList, trustDetail: mainDetails }),
     };
-    // console.log(combinedPayload, values)
-    // return true;
+
     try {
-      dispatch(registerClientRequest(combinedPayload, navigate))
-
-      // if (client?.status === "success") {
-      //   toast.success("Client created successfully");
-
-      //   const addressrResponse = await dispatch(
-      //     registerAddressRequest(addressPayload)
-      //   );
-      //   console.log(address,"addresst")
-
-      //   if (address?.status === "success" && address?.data?.length > 0) {
-      //     toast.success("Address successfully registered!");
-      //     const addressId = address?.data[0]?.addressId;
-      //     const premisesPayload = {
-      //       name: `${clientDetails.clientfirstName} ${clientDetails.clientLastName}`,
-      //       addressId: addressId,
-      //       propertyType: 2,
-      //     };
-      //     const fetchResponse = await dispatch(
-      //       registerPremisesRequest(premisesPayload)
-      //     );
-      //     console.log(premises,"premises")
-      //     if (premises?.status === "success" && premises?.data?.length > 0) {
-      //       toast.success("Premises successfully registered!");
-      //       navigate(ROUTES.NEW_CASE_INFO);
-
-      //       const premisesId = premises.data[0]?.premisesId;
-      //       //   const casePayload = {
-      //       //     premisesId: premisesId,
-      //       //     creatorId: "test1@gmail.com",
-      //       //     stage: 0,
-      //       //     clientType: clientDetails.clientType,
-      //       //     buyerId: "f3117eaa-e3a7-4b3e-88fb-37a8741a181e",
-      //       //   };
-      //       //   const createCaseResponse = await dispatch(
-      //       //     caseCreateRequest(casePayload)
-      //       //   );
-
-      //       //   if (cases.status === "success") {
-      //       //     toast.success("Case created successfully!");
-      //       //     navigate("/rich-crm/newcaseinfo");
-      //       //   } else {
-      //       //     toast.error("Failed to create case.");
-      //       //   }
-      //     } else {
-      //         toast.error("Failed to register premises.");
-      //     }
-      //   } else {
-      //     toast.error("Failed to register address.");
-      //   }
-      // } else {
-      //     toast.error("Failed to register client.");
-      // }
-
+      if (isClient) {
+        dispatch(registerClientRequest(combinedPayload, navigate));
+      } else {
+        dispatch(registerOrganizationRequest(combinedPayload, navigate));
+      }
       dispatch(clearData());
     } catch (error) {
       console.error("Error while handling new case information", error);
@@ -307,6 +306,7 @@ const NewCaseModal = ({ onClose }) => {
             }) => (
 
               <form onSubmit={handleSubmit} className="">
+                {/* {console.log(errors)} */}
                 <div className="block">
                   <Label htmlFor="caseType" value="Case Type" />
                   <div className="grid grid-cols-2 gap-4 mb-8">
@@ -497,7 +497,7 @@ const NewCaseModal = ({ onClose }) => {
                                           value={client.clientfirstName}
                                           onChange={(e) => {
                                             handleChange(e);
-                                            debouncedFunction(e.target.value, index);
+                                            debouncedClientFunction(e.target.value, index);
                                           }}
                                           onBlur={handleBlur}
                                           field={{
@@ -507,8 +507,9 @@ const NewCaseModal = ({ onClose }) => {
                                         />
                                         {activeSearchIndex == index && (
                                           <ul className={'search-list-dropdown overflow-hidden rounded-2xl shadow-shadow-light-2'}>
-                                            {searchResults.map((item) => (
+                                            {searchResults.map((item, i) => (
                                               <li
+                                                key={i}
                                                 className={'px-4 py-2 hover:bg-input-surface'}
                                                 onClick={() => {
                                                   replace(index, {
@@ -624,143 +625,302 @@ const NewCaseModal = ({ onClose }) => {
                         </FieldArray>
                       </div>
                     }
-                    {/* {clientType == CLIENTTYPE.INDIVIDUAL &&
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="mb-2 block">
-                        
-                          <TextInput
-                            name={`clientfirstName`}
-                            type="text"
-                            placeholder="First Name"
-                            // value={client.clientfirstName}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            field={{
-                              name: `clientfirstName`,
-                            }}
-                            form={{ errors, touched }}
-                          />
-                        </div>
-                        <div className="mb-2 block">
-                          <TextInput
-                            name={`clientLastName`}
-                            type="text"
-                            placeholder="Last Name"
-                            // value={client.clientLastName}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            field={{
-                              name: `clientLastName`,
-                            }}
-                            form={{ errors, touched }}
-                          />
-                        </div>
-                      </div>
-                    } */}
+
                     {clientType == CLIENTTYPE.COMPANY &&
-                      <FieldArray name="companyInfo">
-                        {({ remove, push, replace }) => (
-                          <>
-                            {values.companyInfo.map((company, index) => (
-                              <div className="relative pt-4 block" key={index}>
-                                <div className="">
-                                  {index >= 0 && (
-                                    <IoIosClose
-                                      onClick={() => remove(index)}
-                                      className="absolute top-0 right-0 cursor-pointer"
-                                      size={24}
-                                    />
-                                  )}
-                                </div>
-                                <TextInput
-                                  name={`companyInfo.${index}.companyname`}
-                                  type="text"
-                                  placeholder="Company Name"
-                                  value={company.companyname}
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                  field={{
-                                    name: `companyInfo.${index}.companyname`,
-                                  }}
-                                  form={{ errors, touched }}
-                                />
-                                {/* <ErrorMessage
-                                name={`companyInfo.${index}.companyname`}
-                                component="div"
-                                className="text-red-500 text-sm"
-                              /> */}
-
-                              </div>
-                            ))}
-                            <a
-                              className="text-primary2 flex items-center mt-4"
-                              onClick={() =>
-                                push({
-                                  companyname: "",
-                                })
-                              }
-                            >
-                              <IoIosAdd className="mr-1" /> Add a client
-                            </a>
-                          </>
-                        )}
-
-                      </FieldArray>
-                    }
-                    {clientType == CLIENTTYPE.TRUST &&
                       <div className="mb-8">
-                        <FieldArray name="trustInfo">
+                        <FieldArray name="companyInfo">
                           {({ remove, push, replace }) => (
                             <>
-                              {
-                                values.trustInfo.map((trust, index) => (
-                                  <div className="relative pt-4 block" key={index}>
-                                    <div className="">
-                                      {index >= 0 && (
-                                        <div>
+                              {values?.companyInfo.map((company, index) => (
+                                <div key={index} className="block pt-4 relative">
+                                  {/* <Label htmlFor={`clients.${index}.clientType`} value="Client" /> */}
+                                  {company.isCard !== true ? (<div>
+                                    {index >= 0 && (
+                                      <IoIosClose
+                                        onClick={() => remove(index)}
+                                        className="absolute top-0 right-0 cursor-pointer"
+                                        size={24}
+                                      />
+                                    )}
+                                  </div>) : ""}
 
-                                          <IoIosClose
-                                            onClick={() => remove(index)}
-                                            className="absolute top-0 right-0 cursor-pointer"
-                                            size={24}
-                                          />
-                                          {/* <h1>close</h1> */}
-                                        </div>
-                                      )}
-                                    </div>
-                                    <TextInput
-                                      name={`trustInfo.${index}.trustname`}
-                                      type="text"
-                                      placeholder="Trust Name"
-                                      value={trust.trustname}
-                                      onChange={handleChange}
-                                      onBlur={handleBlur}
-                                      field={{
-                                        name: `trustInfo.${index}.trustname`,
-                                      }}
-                                      form={{ errors, touched }}
-                                    />
-                                    {/* <ErrorMessage
-                                name={`trustInfo.${index}.trustname`}
-                                component="div"
-                                className="text-red-500 text-sm"
-                              /> */}
+                                  {company.isCard === true ?
+                                    <div className="flex justify-between items-center border border-card-300 p-4 rounded-2xl">
+                                      <div className="flex items-center">
+                                        <img src={avatar} className="w-8 mr-3" />
+                                        <span>{company.companyName}</span>
+                                      </div>
+                                      <IoCloseCircleOutline
+                                        onClick={() => remove(index)}
+                                        className="text-xl text-text-gray-100 cursor-pointer"
+                                        size={24}
+                                      />
+                                      {/* <IoCloseCircleOutline className="" /> */}
+                                    </div> :
+                                    <div className="grid grid-cols-2 gap-x-3">
+                                      <div className="block">
+                                        <TextInput
+                                          name={`companyInfo.${index}.companyName`}
+                                          type="text"
+                                          placeholder="Company Name"
+                                          value={company.companyName}
+                                          onChange={(e) => {
+                                            handleChange(e);
+                                            debouncedCompanyFunction(e.target.value, index);
+                                          }}
+                                          onBlur={handleBlur}
+                                          field={{
+                                            name: `companyInfo.${index}.companyName`,
+                                          }}
+                                          form={{ errors, touched }}
+                                        />
+                                        {activeSearchIndex == index && (
+                                          <ul className={'search-list-dropdown overflow-hidden rounded-2xl shadow-shadow-light-2'}>
+                                            {searchResults.map((item, i) => (
+                                              <li
+                                                key={i}
+                                                className={'px-4 py-2 hover:bg-input-surface'}
+                                                onClick={() => {
+                                                  replace(index, {
+                                                    isCard: true,
+                                                    companyName: item.organizationName,
+                                                    companyCellNumber: item.cellNumber,
+                                                    companyEmail: item.email,
+                                                    companyOrganizationId: item.organizationId
+                                                  });
+                                                  setSearchResults([]);
+                                                }}
+                                                key={item.id} // Adding a key for each list item for better performance
+                                              >
+                                                <div className="flex items-center">
+                                                  <img src={avatar} className="w-8 mr-3" />
+                                                  <div>
+                                                    <p className="text-base text-secondary-800">{item?.organizationName}</p>
+                                                    <span className="text-text-gray-100 text-sm">{item?.email}</span>
+                                                  </div>
+                                                </div>
+                                              </li>
+                                            ))}
+                                          </ul>
+                                        )}
 
-                                  </div>))}
+                                        <ErrorMessage
+                                          name={`companyInfo.${index}.companyName`}
+                                          component="div"
+                                          className="text-red-500 text-sm"
+                                        />
+                                      </div>
+                                      <div className="">
+                                        <TextInput
+                                          type="number"
+                                          name={`companyInfo.${index}.companyCellNumber`}
+                                          value={company.companyCellNumber}
+                                          onChange={handleChange}
+                                          onBlur={handleBlur}
+                                          placeholder="Cell Number"
+                                          field={{
+                                            name: `companyInfo.${index}.companyCellNumber`,
+                                          }}
+                                          form={{ errors, touched }}
+                                        />
+                                        <ErrorMessage
+                                          name={`companyInfo.${index}.companyCellNumber`}
+                                          component="div"
+                                          className="text-red-500 text-sm"
+                                        />
+                                      </div>
+                                      <div className="">
+                                        <TextInput
+                                          type="email"
+                                          name={`companyInfo.${index}.companyEmail`}
+                                          id={`companyInfo.${index}.companyEmail`}
+                                          value={company.companyEmail}
+                                          onChange={handleChange}
+                                          onBlur={handleBlur}
+                                          placeholder="Email"
+                                          field={{ name: `companyInfo.${index}.companyEmail` }}
+                                          form={{ errors, touched }}
+                                        />
+                                        <ErrorMessage
+                                          name={`companyInfo.${index}.companyEmail`}
+                                          component="div"
+                                          className="text-red-500 text-sm"
+                                        />
+                                      </div>
+                                    </div>}
+                                  {/* <div className="relative mb-8">
+                                                          {index > 0 && (
+                                                              <IoIosClose onClick={() => remove(index)} className="absolute top-0 right-0 cursor-pointer" size={24} />
+                                                          )}
+                                                      </div> */}
+                                </div>
+                              ))}
+                              {/* <a className="ml-6 text-primary2" onClick={() => push({ clientType: "", clientfirstName: "", clientLastName: "" })}>  <IoIosAdd /> Add a client</a> */}
                               <a
                                 className="text-primary2 flex items-center mt-4"
                                 onClick={() =>
                                   push({
-                                    trustname: "",
+                                    companyName: "",
+                                    companyCellNumber: "",
+                                    companyEmail: "",
+                                    companyOrganizationId: ""
                                   })
                                 }
                               >
                                 <IoIosAdd className="mr-1" /> Add a client
                               </a>
                             </>
-
                           )}
-                        </ FieldArray>
+                        </FieldArray>
+                      </div>
+                    }
+
+                    {clientType == CLIENTTYPE.TRUST &&
+                      <div className="mb-8">
+                        <FieldArray name="trustInfo">
+                          {({ remove, push, replace }) => (
+                            <>
+                              {values?.trustInfo.map((trust, index) => (
+                                <div key={index} className="block pt-4 relative">
+                                  {/* <Label htmlFor={`clients.${index}.clientType`} value="Client" /> */}
+                                  {trust.isCard !== true ? (<div>
+                                    {index >= 0 && (
+                                      <IoIosClose
+                                        onClick={() => remove(index)}
+                                        className="absolute top-0 right-0 cursor-pointer"
+                                        size={24}
+                                      />
+                                    )}
+                                  </div>) : ""}
+
+                                  {trust.isCard === true ?
+                                    <div className="flex justify-between items-center border border-card-300 p-4 rounded-2xl">
+                                      <div className="flex items-center">
+                                        <img src={avatar} className="w-8 mr-3" />
+                                        <span>{trust.trustName}</span>
+                                      </div>
+                                      <IoCloseCircleOutline
+                                        onClick={() => remove(index)}
+                                        className="text-xl text-text-gray-100 cursor-pointer"
+                                        size={24}
+                                      />
+                                      {/* <IoCloseCircleOutline className="" /> */}
+                                    </div> :
+                                    <div className="grid grid-cols-2 gap-x-3">
+                                      <div className="block">
+                                        <TextInput
+                                          name={`trustInfo.${index}.trustName`}
+                                          type="text"
+                                          placeholder="Trust Name"
+                                          value={trust.trustName}
+                                          onChange={(e) => {
+                                            handleChange(e);
+                                            debouncedCompanyFunction(e.target.value, index);
+                                          }}
+                                          onBlur={handleBlur}
+                                          field={{
+                                            name: `trustInfo.${index}.trustName`,
+                                          }}
+                                          form={{ errors, touched }}
+                                        />
+                                        {activeSearchIndex == index && (
+                                          <ul className={'search-list-dropdown overflow-hidden rounded-2xl shadow-shadow-light-2'}>
+                                            {searchResults.map((item, i) => (
+                                              <li
+                                                key={i}
+                                                className={'px-4 py-2 hover:bg-input-surface'}
+                                                onClick={() => {
+                                                  replace(index, {
+                                                    isCard: true,
+                                                    trustName: item.organizationName,
+                                                    trustCellNumber: item.cellNumber,
+                                                    trustEmail: item.email,
+                                                    trustOrganizationId: item.organizationId
+                                                  });
+                                                  setSearchResults([]);
+                                                }}
+                                                key={item.id} // Adding a key for each list item for better performance
+                                              >
+                                                <div className="flex items-center">
+                                                  <img src={avatar} className="w-8 mr-3" />
+                                                  <div>
+                                                    <p className="text-base text-secondary-800">{item.organizationName}</p>
+                                                    <span className="text-text-gray-100 text-sm">{item?.email}</span>
+                                                  </div>
+                                                </div>
+                                              </li>
+                                            ))}
+                                          </ul>
+                                        )}
+
+                                        <ErrorMessage
+                                          name={`trustInfo.${index}.trustName`}
+                                          component="div"
+                                          className="text-red-500 text-sm"
+                                        />
+                                      </div>
+                                      <div className="">
+                                        <TextInput
+                                          type="number"
+                                          name={`trustInfo.${index}.trustCellNumber`}
+                                          value={trust.trustCellNumber}
+                                          onChange={handleChange}
+                                          onBlur={handleBlur}
+                                          placeholder="Cell Number"
+                                          field={{
+                                            name: `trustInfo.${index}.trustCellNumber`,
+                                          }}
+                                          form={{ errors, touched }}
+                                        />
+                                        <ErrorMessage
+                                          name={`trustInfo.${index}.trustCellNumber`}
+                                          component="div"
+                                          className="text-red-500 text-sm"
+                                        />
+                                      </div>
+                                      <div className="">
+                                        <TextInput
+                                          type="email"
+                                          name={`trustInfo.${index}.trustEmail`}
+                                          id={`trustInfo.${index}.trustEmail`}
+                                          value={trust.trustEmail}
+                                          onChange={handleChange}
+                                          onBlur={handleBlur}
+                                          placeholder="Email"
+                                          field={{ name: `trustInfo.${index}.trustEmail` }}
+                                          form={{ errors, touched }}
+                                        />
+                                        <ErrorMessage
+                                          name={`trustInfo.${index}.trustEmail`}
+                                          component="div"
+                                          className="text-red-500 text-sm"
+                                        />
+                                      </div>
+                                    </div>}
+                                  {/* <div className="relative mb-8">
+                                                          {index > 0 && (
+                                                              <IoIosClose onClick={() => remove(index)} className="absolute top-0 right-0 cursor-pointer" size={24} />
+                                                          )}
+                                                      </div> */}
+                                </div>
+                              ))}
+                              {/* <a className="ml-6 text-primary2" onClick={() => push({ clientType: "", clientfirstName: "", clientLastName: "" })}>  <IoIosAdd /> Add a client</a> */}
+                              <a
+                                className="text-primary2 flex items-center mt-4"
+                                onClick={() =>
+                                  push({
+                                    trustName: "",
+                                    trustCellNumber: "",
+                                    trustEmail: "",
+                                    trustOrganizationId: ""
+                                  })
+                                }
+                              >
+                                <IoIosAdd className="mr-1" /> Add a client
+                              </a>
+                            </>
+                          )}
+                        </FieldArray>
                       </div>
                     }
                   </div>
@@ -859,7 +1019,7 @@ const NewCaseModal = ({ onClose }) => {
                       />
 
                       </div>
-{/* 
+                      {/* 
                       <Field
                         as={SelectInput}
                         defaultLabel="Select State"
