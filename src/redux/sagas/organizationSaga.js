@@ -11,14 +11,16 @@ import { fetchOrganizationByIdFailure, fetchOrganizationByIdSuccess } from "../a
 
 
 function* registerOrganization(action) {
+
   try {
     const { payload, navigate } = action;
-    console.log(payload,"payload");
+    let details= payload.casePayload.clientType == 1 ? payload.companyDetails : payload.trustDetail;
+    let list= payload.casePayload.clientType == 1 ? payload.companyList : payload.trustList;
     const response = yield call(() =>
-      postRequest(API_ENDPOINTS.REGISTER_ORGANIZATION, payload.companyDetails)
+      postRequest(API_ENDPOINTS.REGISTER_ORGANIZATION, details)
     );
     const organizationListRes = yield all(
-      payload.companyList?.map(companydetails =>
+      list?.map(companydetails =>
         call(postRequest, API_ENDPOINTS.REGISTER_ORGANIZATION, companydetails)
       )
     );
@@ -31,7 +33,7 @@ function* registerOrganization(action) {
         ...payload,
         casePayload: {
           ...payload.casePayload,
-          additionalClients: organizationIds,
+          additionalOrganizations: organizationIds,
           organizationId: response.data?.data[0]?.organizationId,
         }
       };
