@@ -46,12 +46,30 @@ export const countCasesByStage = (cases) => {
 };
 
 export const getDateAfterDays =(days) =>{
-  console.log(days)
   const today = new Date();
   today.setDate(today.getDate() + days); // Add the number of days
   return today;
 }
 
+export const makeDate =(d, mon, yr) =>{
+const day = parseInt(d, 10);
+const month = parseInt(mon, 10) - 1; // Month is zero-based (0-11)
+const year = parseInt(yr, 10);
+// Create a new Date object
+const date = new Date(year, month, day);
+return date;
+
+}
+
+export function isValidDate(day, month, year) {
+  // JavaScript months are zero-based (0-11), so subtract 1 from month
+  const date = new Date(year, month - 1, day);
+  
+  // Check if the date components match the input
+  return date.getFullYear() === year && 
+         date.getMonth() === month - 1 && 
+         date.getDate() === day;
+}
 
 export const daysLeft= (targetDateStr) =>{
   const targetDate = new Date(targetDateStr);

@@ -6,7 +6,7 @@ import DetailCaseModal from './detailCaseModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllCasesRequest } from '../../../redux/actions/caseAction';
 
-const Calendar = ({ toggleAddReminderModal, filters }) => {
+const Calendar = ({ toggleAddReminderModal, filters, selectedCase, setSelectedCase }) => {
   const dispatch = useDispatch();
   const { cases } = useSelector((state) => state.case.casesData);
   const casesWithDates = cases.filter((caseItem) => caseItem.closingDate || caseItem.mortgageContingencyDate);
@@ -59,7 +59,7 @@ const Calendar = ({ toggleAddReminderModal, filters }) => {
   }, []);
 
   const [isDetailOpen, setIsDetailOpen] = useState(false);
-  const [selectedCase, setSelectedCase] = useState(null);
+  
 
   const toggleDetailModal = () => {
     setIsDetailOpen(!isDetailOpen);

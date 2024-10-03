@@ -18,6 +18,8 @@ import {
   FETCH_ALL_CASES_FAILURE,
   SET_STAGE,
   SET_SEARCH_CASES,
+  UPDATE_CASE_DATE_SUCCESS,
+  READ_CASE_BY_CONTACT,
 } from "../type";
 
 const initialCasesState = {
@@ -107,7 +109,7 @@ const casesReducer = (state = initialCasesState, action) => {
         loading: false,
         error: null,
       };
-    case 'UPDATE_CASE_DATE_SUCCESS':
+    case UPDATE_CASE_DATE_SUCCESS:
       return {
         ...state,
         cases: state.cases.map((caseItem) =>
@@ -129,6 +131,12 @@ const casesReducer = (state = initialCasesState, action) => {
         filterStatus: action.payload.filterStatus,
         error: null,
       }
+    case READ_CASE_BY_CONTACT:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
     default:
       return state;
   }

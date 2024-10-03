@@ -30,6 +30,7 @@ const CaseCardData = () => {
   const caseTypeLabel = caseTypeOptions.find(option => option.value === casedetails?.caseType)?.label || "Unknown";
   const { premises, loading } = useSelector((state) => state.premises);
   const { client } = useSelector((state) => state.client);
+  const utilData = useSelector((state) => state?.utils);
   const clientDetails = client?.data?.length > 0 ? client?.data : null;
   const premisesDetails = premises?.data?.length > 0 ? premises?.data[0] : null;
   const premisesTypeLabel = premisesTypes.find(option => option.value === premisesDetails?.propertyType)?.label || "Unknown";
@@ -81,7 +82,7 @@ const CaseCardData = () => {
 
   const headerItems = [
     { text: "Cases", className: "mr-8" },
-    { text: "Fu, Jack - 1500 Skyline Avenue ", separator: <SlArrowRight className="inline mr-10" /> },
+    { text: `${casedetails?.clientName} - ${premisesDetails?.name}`, separator: <SlArrowRight className="inline mr-10" /> },
   ];
 
   const [isUploadFileModalOpen, setIsUploadFileModalOpen] = useState(false);
@@ -120,12 +121,21 @@ const CaseCardData = () => {
             }
           />
           {/* } */}
-          <XButton
-            text="Case Details"
-            // icon={<FaRegEdit className="text-base mr-2 inline-block" />}
-            className="bg-badge-gray text-secondary-800  rounded-full text-sm font-medium w-full py-3 px-3 mb-7 flex items-center justify-center"
-            onClick={handleCaseDetails}
-          />
+          {utilData?.loading ?
+            <XButton
+              text="Case Details"
+              // icon={<FaRegEdit className="text-base mr-2 inline-block" />}
+              className="bg-badge-gray text-secondary-800  rounded-full text-sm font-medium w-full py-3 px-3 mb-7 flex items-center justify-center"
+              // onClick={handleCaseDetails}
+            />
+            :
+            <XButton
+              text="Case Details"
+              // icon={<FaRegEdit className="text-base mr-2 inline-block" />}
+              className="bg-badge-gray text-secondary-800  rounded-full text-sm font-medium w-full py-3 px-3 mb-7 flex items-center justify-center"
+              onClick={handleCaseDetails}
+            />
+          }
           <ContactCard
             clientDetails={clientDetails}
             casedetails={casedetails}

@@ -11,7 +11,7 @@ import { postRequest } from '../../axios/interceptor';
 import { toast } from 'react-toastify';
 import { Spinner } from 'flowbite-react';
 
-const ComposeEmail = ({ onClose, templates }) => {
+const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
   const dispatch = useDispatch();
   const { client } = useSelector((state) => state.client);
   const clientObj = client?.data?.length > 0 ? client?.data : null;
@@ -88,6 +88,7 @@ const ComposeEmail = ({ onClose, templates }) => {
       };
 
       dispatch(sendEmailRequest(payload));
+      onSendEmail(1)
       onClose();
     } catch (error) {
       toast.error(error)
