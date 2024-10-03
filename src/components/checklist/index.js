@@ -129,7 +129,7 @@ const ChecklistItem = ({ item, stageName, icon, label, status, action, actionInf
           displayColor = 'yellow';
         } else if (status === 1) {
           label = 'Waiting';
-          displayColor = 'grey';
+          displayColor = 'gray';
         } else if (status === 2) {
           label = 'Done';
           displayColor = 'green';
@@ -154,10 +154,17 @@ const ChecklistItem = ({ item, stageName, icon, label, status, action, actionInf
   useEffect(() => {
     setTaskStatus(status);
   }, [status]);
-  const handleChangeTaskStatus = () => {
-    const newStatus = taskStatus === 0 ? 2 : 0;
-    setTaskStatus(newStatus)
 
+  const handleChangeTaskStatus = (value) => {
+    let newStatus;
+
+    if (value) {
+      newStatus = value
+    } else {
+      newStatus = taskStatus === 0 || taskStatus === 1 ? 2 : 0;
+    }
+    setTaskStatus(newStatus)
+    // console.log(newStatus)
     const currentStageTasks = taskData?.data[STAGESNAMES[stageName ? stageName : 0]];
 
     const otherTasks = currentStageTasks.filter(task => task.taskId != item?.taskId);
@@ -168,9 +175,9 @@ const ChecklistItem = ({ item, stageName, icon, label, status, action, actionInf
     };
     const updatedTasksArray = [...otherTasks, updatedTask];
 
-    const newStageStatus = handleChangeStageStatus(updatedTasksArray, getCompletedTasksCount(updatedTasksArray) )
+    const newStageStatus = handleChangeStageStatus(updatedTasksArray, getCompletedTasksCount(updatedTasksArray), getWaitingTasksCount(updatedTasksArray))
     const updatedStatusTask = {
-      currentStep: stageName,  
+      currentStep: stageName,
       taskData: {
         taskId: item?.taskId,
         status: newStatus,
@@ -178,7 +185,7 @@ const ChecklistItem = ({ item, stageName, icon, label, status, action, actionInf
     };
 
     const updatedStatusStage = {
-      stageId:stageId,
+      stageId: stageId,
       stageStatus: newStageStatus
     };
     dispatch(updateTaskStatusRequest(updatedStatusTask));
@@ -191,13 +198,32 @@ const ChecklistItem = ({ item, stageName, icon, label, status, action, actionInf
       switch (task.taskType) {
         case 0:
           return task.status === 2; // 'Finished'
-  
+
         case 1:
           return task.status === 2; // 'Uploaded'
-  
+
         case 2:
           return task.status === 2; // 'Finished'
-  
+
+        default:
+          return false; // For unknown task types
+      }
+    }).length || 0;
+  };
+
+
+  const getWaitingTasksCount = (tasks) => {
+    return tasks?.filter((task) => {
+      switch (task.taskType) {
+        case 0:
+          return task.status === 1; // 'Finished'
+
+        case 1:
+          return task.status === 1; // 'Uploaded'
+
+        case 2:
+          return task.status === 1; // 'Finished'
+
         default:
           return false; // For unknown task types
       }
@@ -215,17 +241,18 @@ const ChecklistItem = ({ item, stageName, icon, label, status, action, actionInf
   //   }
   // }
 
-  const handleChangeStageStatus = (updatedTaskStatuses, completedCount) => {
-    
+  const handleChangeStageStatus = (updatedTaskStatuses, completedCount, waitingCount) => {
     const totalTasks = Object.keys(updatedTaskStatuses).length;
-    if (completedCount === totalTasks) {
-        return 2; // All tasks completed
-    } else if (completedCount === 0) {
-        return 0; // No tasks completed
+    if (completedCount === totalTasks) { // all task is completed
+      return 2; // All tasks completed
+    } else if (waitingCount > 0) { // if there is any task in waiting
+      return 1; // No tasks completed
+    }else if (completedCount === 0) { // dont have any completed task
+      return 0; // No tasks completed
     } else {
-        return 1; // Some tasks completed
+      return 1; // Some tasks completed
     }
-};
+  };
 
   const displayIcon = getIconByAction(action)
   const displayOption = getOptionsByAction(status);
@@ -238,7 +265,7 @@ const ChecklistItem = ({ item, stageName, icon, label, status, action, actionInf
       <div className="border-t-2 border-black-10">
         <li className="flex justify-between items-center mb-5 pb-5 task-checklist mt-2">
           <div className="flex items-center gap-2 custom-radio">
-            <Checkbox id={checkboxId} checked={taskStatus} className="mr-6" onChange={(e) => handleChangeTaskStatus(e)} />
+            <Checkbox id={checkboxId} checked={taskStatus === 2} className="mr-6" onChange={() => handleChangeTaskStatus()} />
             <Label htmlFor={checkboxId} className="flex items-center lg:text-base xl:text-base text-title font-medium">
               {displayIcon && <span className="mr-2 text-2xl">{displayIcon}</span>}
               {/* {stageId }: */}
@@ -274,7 +301,7 @@ const ChecklistItem = ({ item, stageName, icon, label, status, action, actionInf
           </div>
         </li>
       </div>
-      {isCompose ? <ComposeEmail templates={templates} onClose={toggleComposeModal} /> : ""}
+      {isCompose ? <ComposeEmail templates={templates} onClose={toggleComposeModal} onSendEmail={(value) => handleChangeTaskStatus(value)} /> : ""}
     </>
   );
 };

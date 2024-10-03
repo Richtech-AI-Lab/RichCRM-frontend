@@ -1,4 +1,4 @@
-import { Table, Textarea, TextInput } from "flowbite-react";
+import { Spinner, Table, Textarea, TextInput } from "flowbite-react";
 import React, { useCallback, useEffect, useState } from "react";
 import * as Yup from "yup";
 import dummyData from "../../../utils/dummyData.json";
@@ -187,7 +187,7 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
                   <div className="card bg-card-300 px-2 py-3">
                     <h1 className="px-5">Involved Open Cases</h1>
                     <div className="grid">
-                      {cases[0][0]?.map((item, index) => (
+                      {cases[0][1]?.map((item, index) => (
 
                         <CardItem
                           key={index}
@@ -206,7 +206,7 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
                   <div className="card bg-card-300 px-2 py-3">
                     <h1 className="px-5">Involved Closed Cases</h1>
                     <div className="grid">
-                      {cases[0][1]?.map((item, index) => (
+                      {cases[0][0]?.map((item, index) => (
                         <CardItem
                           key={index}
                           caseDetails={item?.premisesName}
@@ -231,8 +231,19 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
             <div className="col-span-3">
               <div className="card bg-card-300 px-2 py-3">
                 <h1 className="px-5">Involved Open Cases</h1>
+                {loading ?
+                <div className="flex justify-center items-center">
+                  <Spinner
+                  size="xl"
+                  animation="border"
+                  role="status"
+                  variant="primary"
+                // className={`spinner-${size}`}
+                >
+                  <span className="visually-hidden">Loading...</span>
+                </Spinner></div>:
                 <div className="grid">
-                  {cases[0][0]?.map((item, index) => (
+                  {cases[0][1]?.map((item, index) => (
                     <CardItem
                       key={index}
                       caseDetails={item?.premisesName}
@@ -243,14 +254,25 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
                       innerCardClass="m-2"
                     />
                   ))}
-                </div>
+                </div>}
               </div>
             </div>
             <div className="col-span-3">
               <div className="card bg-card-300 px-2 py-3">
                 <h1 className="px-5">Involved Closed Cases</h1>
                 <div className="grid">
-                  {cases[0][1]?.map((item, index) => (
+                {loading ?
+                <div className="flex justify-center items-center">
+                  <Spinner
+                  size="xl"
+                  animation="border"
+                  role="status"
+                  variant="primary"
+                // className={`spinner-${size}`}
+                >
+                  <span className="visually-hidden">Loading...</span>
+                </Spinner></div>:
+                  cases[0][0]?.map((item, index) => (
                     <CardItem
                       // onClick={()=>{handleCaseCardClick(item)}}
                       // key={index}

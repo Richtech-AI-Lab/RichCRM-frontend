@@ -3,13 +3,17 @@ import XButton from '../../../components/button/XButton';
 import { FiPlus } from 'react-icons/fi';
 import { Checkbox, Label } from 'flowbite-react';
 
-const Sidebar = ({ onAddReminderClick, filters, onFilterChange }) => {
+const Sidebar = ({ onAddReminderClick, filters, onFilterChange, setSelectedCase }) => {
+  const setNullCallReminderModal = () => {
+    setSelectedCase(null)
+    onAddReminderClick()
+  };
   return (
     <div className="sidebar p-4">
 
       <XButton
         icon={<FiPlus className="text-base mr-2 inline-block" />}
-        onClick={onAddReminderClick}
+        onClick={setNullCallReminderModal}
         text="Add a reminder"
         type="button"
         // onClick={onCancel} 
