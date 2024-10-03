@@ -7,6 +7,7 @@ import stageReducer from "./stagesReducer";
 import taskReducer from "./taskReducer";
 import casesReducer from "./caseReducer"
 import contactReducer from "./contactReducer";
+import organizationReducer from "./organizationReducer";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
   utils: utilsReducer,
   stages:stageReducer,
   task:taskReducer,
-  contact:contactReducer
+  contact:contactReducer,
+  organization: organizationReducer,
 });
 
 export default rootReducer;

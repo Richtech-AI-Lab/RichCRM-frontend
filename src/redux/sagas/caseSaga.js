@@ -20,7 +20,6 @@ function* createCase(action) {
                 ...payload.casePayload
             }
         };
-        console.log(updatedPayload);
 
         const response = yield call(() => postRequest(API_ENDPOINTS.CREATE_CASE, updatedPayload.casePayload));
         yield put(caseCreateSuccess(response.data));

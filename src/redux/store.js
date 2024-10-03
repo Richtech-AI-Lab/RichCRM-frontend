@@ -4,7 +4,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import rootReducer from './reducers'; // Ensure this path is correct
 import rootSaga from './sagas'; // Ensure this path is correct
-import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
+// import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 
 const persistConfig = {
   key: 'root',
