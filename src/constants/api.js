@@ -37,6 +37,9 @@ export const API_ENDPOINTS = {
   UPDATE_TEMPLATE_BY_NAME:"/template/fill",
   UPDATE_TASK: "/task/update",
   UPDATE_STAGE: "/stage/update",
+  FETCH_ORGANIZATION_BY_QUERY:"organization/query",
+  REGISTER_ORGANIZATION:"organization/register",
+  FETCH_ORGANIZATION_BY_ID:"organization",
 };
 
 export const ROUTES = {
