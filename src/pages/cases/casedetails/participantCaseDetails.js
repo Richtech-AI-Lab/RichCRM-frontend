@@ -17,6 +17,8 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit }) => {
   const { client } = useSelector((state) => state.client);
   const { cases } = useSelector((state) => state.case.casesData);
   const clientDetails = client?.data?.length > 0 ? client?.data : null;
+  const { organization } = useSelector((state) => state.organization);
+  const organizationDetails = organization?.data?.length > 0 ? organization?.data : null;
   const { data } = useSelector((state) => state?.utils?.address);
   const addressDetails = data?.length > 0 ? data : null;
 
@@ -165,7 +167,7 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit }) => {
         </Formik>)
         :
         (<div className="grid grid-cols-12 gap-6">
-          <div className="col-span-6"><ParticipantDetail client={clientDetails} title={cases[0]?.caseType ? "Seller" : "Purchaser"} address={addressDetails} /></div></div>)}
+          <div className="col-span-6"><ParticipantDetail client={clientDetails} organization={organizationDetails} title={cases[0]?.caseType ? "Seller" : "Purchaser"} address={addressDetails} /></div></div>)}
     </>
   );
 };
