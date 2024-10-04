@@ -232,7 +232,7 @@ const StagesChecklist = () => {
   };
 
   const isAllTaskDone = () => {
-    let status = false;
+    let status = getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]]) === taskData.data[STAGESNAMES[currentStep]]?.length
     return status
   };
 
@@ -492,7 +492,7 @@ const StagesChecklist = () => {
               </div>
             </div></>}
 
-          {!isComplete && <StageUncompleteAlert onMove={handleNextStage} onClose={toggleStageModal}/>}
+          {!isComplete && <StageUncompleteAlert onMove={handleNextStage} onClose={toggleStageModal} currentStep={currentStep} />}
       </div>
     </>
   );
