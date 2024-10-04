@@ -4,6 +4,9 @@ import {
     FETCH_ADDITIONAL_CLIENTS_BY_IDS_FAILURE,
     FETCH_ADDITIONAL_CLIENTS_BY_IDS_REQUEST,
     FETCH_ADDITIONAL_CLIENTS_BY_IDS_SUCCESS,
+    FETCH_ADDITIONAL_ORG_BY_IDS_FAILURE,
+    FETCH_ADDITIONAL_ORG_BY_IDS_REQUEST,
+    FETCH_ADDITIONAL_ORG_BY_IDS_SUCCESS,
     FETCH_CLIENT_BY_ID_FAILURE,
     FETCH_CLIENT_BY_ID_REQUEST,
     FETCH_CLIENT_BY_ID_SUCCESS,
@@ -45,12 +48,12 @@ import {
       //   return { ...state, loading: false, organization: action.payload, error: null };
       // case REGISTER_CLIENT_FAILURE:
       //   return { ...state, loading: false, error: action.payload };
-      // case FETCH_ADDITIONAL_CLIENTS_BY_IDS_REQUEST:
-      //   return { ...state, loading: true, error: null };
-      // case FETCH_ADDITIONAL_CLIENTS_BY_IDS_SUCCESS:
-      //   return { ...state, loading: false, additionalClient: action.payload, error: null };
-      // case FETCH_ADDITIONAL_CLIENTS_BY_IDS_FAILURE:
-      //   return { ...state, loading: false, error: action.payload };
+      case FETCH_ADDITIONAL_ORG_BY_IDS_REQUEST:
+        return { ...state, loading: true, error: null };
+      case FETCH_ADDITIONAL_ORG_BY_IDS_SUCCESS:
+        return { ...state, loading: false, additionalOrganization: action.payload, error: null };
+      case FETCH_ADDITIONAL_ORG_BY_IDS_FAILURE:
+        return { ...state, loading: false, error: action.payload };
       // case CLEAN_ADDITIONAL_CLIENT:
       //   return { ...state, loading: false, additionalClient: null, error: null };
       case CLEAR_DATA:

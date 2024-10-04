@@ -1,4 +1,4 @@
-import { FETCH_ORG_BY_ID_REQUEST, REGISTER_ORG_REQUEST } from "../type";
+import { FETCH_ADDITIONAL_ORG_BY_IDS_REQUEST, FETCH_ORG_BY_ID_REQUEST, REGISTER_ORG_REQUEST } from "../type";
 import { API_ENDPOINTS } from "../../constants/api";
 import { getRequest, postRequest } from "../../axios/interceptor";
 import { call, put } from "redux-saga/effects";
@@ -7,7 +7,7 @@ import { all } from "redux-saga/effects";
 import { toast } from "react-toastify";
 import { takeLatest } from "redux-saga/effects";
 import { registerAddressRequest } from "../actions/utilsActions";
-import { fetchOrganizationByIdFailure, fetchOrganizationByIdSuccess } from "../actions/organizationActions";
+import { fetchAdditionalOrganizationByIdsFailure, fetchAdditionalOrganizationByIdsSuccess, fetchOrganizationByIdFailure, fetchOrganizationByIdSuccess } from "../actions/organizationActions";
 
 
 function* registerOrganization(action) {
@@ -26,7 +26,6 @@ function* registerOrganization(action) {
     );
     const organizationIds = organizationListRes.map(res => res.data.data[0].organizationId);
     
-    console.log(organizationIds, "organizationIds")
     // yield put(registerorganizationSuccess(response.data));
     if(response.status ==200){
       const updatedPayload = {
@@ -38,7 +37,7 @@ function* registerOrganization(action) {
         }
       };
       yield put(registerAddressRequest(updatedPayload,navigate))
-      toast.success("Client created successfully");
+      toast.success("Organization created successfully");
     }
   } catch (error) {
     handleError(error)
@@ -59,7 +58,30 @@ function* fetchOrganizationById(action) {
     yield put(fetchOrganizationByIdFailure(error.response.data || error));
   }
 }
+
+function* fetchOrganizationsByIds(action) {
+  try {
+    const organizationIds  = action.payload;
+
+    const organizationResponses = yield all(
+      organizationIds.map(organizationId =>
+        call(getRequest, `${API_ENDPOINTS.FETCH_ORGANIZATION_BY_ID}/${organizationId}`)
+      )
+    );
+
+    // Map over responses to extract the relevant data
+    const organizations = organizationResponses.map(response => response?.data?.data[0]);
+    console.log(organizations,"organizations")
+    // Dispatch success with merged client data
+    yield put(fetchAdditionalOrganizationByIdsSuccess(organizations));
+
+  } catch (error) {
+    handleError(error);
+    yield put(fetchAdditionalOrganizationByIdsFailure(error.response?.data || error));
+  }
+}
 export function* organizationSaga() {
   yield takeLatest(REGISTER_ORG_REQUEST, registerOrganization);
   yield takeLatest(FETCH_ORG_BY_ID_REQUEST, fetchOrganizationById);
+  yield takeLatest(FETCH_ADDITIONAL_ORG_BY_IDS_REQUEST, fetchOrganizationsByIds);
 }
