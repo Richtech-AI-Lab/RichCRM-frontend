@@ -1,4 +1,4 @@
-import { FETCH_ADDITIONAL_ORG_BY_IDS_REQUEST, FETCH_ORG_BY_ID_REQUEST, REGISTER_ORG_REQUEST } from "../type";
+import { FETCH_ADDITIONAL_ORG_BY_IDS_REQUEST, FETCH_ORG_BY_ID_REQUEST, REGISTER_ORG_REQUEST, UPDATE_ORG_BY_ID_REQUEST } from "../type";
 import { API_ENDPOINTS } from "../../constants/api";
 import { getRequest, postRequest } from "../../axios/interceptor";
 import { call, put } from "redux-saga/effects";
@@ -7,7 +7,7 @@ import { all } from "redux-saga/effects";
 import { toast } from "react-toastify";
 import { takeLatest } from "redux-saga/effects";
 import { registerAddressRequest } from "../actions/utilsActions";
-import { fetchAdditionalOrganizationByIdsFailure, fetchAdditionalOrganizationByIdsSuccess, fetchOrganizationByIdFailure, fetchOrganizationByIdSuccess } from "../actions/organizationActions";
+import { fetchAdditionalOrganizationByIdsFailure, fetchAdditionalOrganizationByIdsSuccess, fetchOrganizationByIdFailure, fetchOrganizationByIdSuccess, updateOrganizationByIdFailure, updateOrganizationByIdSuccess } from "../actions/organizationActions";
 
 
 function* registerOrganization(action) {
@@ -41,7 +41,7 @@ function* registerOrganization(action) {
     }
   } catch (error) {
     handleError(error)
-    // yield put(registerClientFailure(error.response?.data || error));
+    // yield put(registerOrganizationFailure(error.response?.data || error));
   }
 }
 
@@ -80,8 +80,32 @@ function* fetchOrganizationsByIds(action) {
     yield put(fetchAdditionalOrganizationByIdsFailure(error.response?.data || error));
   }
 }
+
+function* updateOrganizationById(action) {
+  try {
+    const { payload } = action;
+    const response = yield call(() =>
+      postRequest(API_ENDPOINTS.UPDATE_ORGANIZATION, payload?.organization)
+    );
+    console.log(payload?.organization,"__organization__")
+    yield put(updateOrganizationByIdSuccess(response.data));
+    if(response.status ==200){
+      // const updatedPayload = {
+      //   ...payload.util,
+      //   addressId: response.data.data[0].addressId
+      // };
+      // yield put(registerAddressRequest(updatedPayload))
+      toast.success("Organization Updated!");
+    }
+  } catch (error) {
+    handleError(error)
+    yield put(updateOrganizationByIdFailure(error.response?.data || error));
+  }
+}
+
 export function* organizationSaga() {
   yield takeLatest(REGISTER_ORG_REQUEST, registerOrganization);
   yield takeLatest(FETCH_ORG_BY_ID_REQUEST, fetchOrganizationById);
   yield takeLatest(FETCH_ADDITIONAL_ORG_BY_IDS_REQUEST, fetchOrganizationsByIds);
+  yield takeLatest(UPDATE_ORG_BY_ID_REQUEST, updateOrganizationById);
 }

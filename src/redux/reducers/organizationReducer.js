@@ -19,6 +19,9 @@ import {
     UPDATE_CLIENT_BY_ID_FAILURE,
     UPDATE_CLIENT_BY_ID_REQUEST,
     UPDATE_CLIENT_BY_ID_SUCCESS,
+    UPDATE_ORG_BY_ID_FAILURE,
+    UPDATE_ORG_BY_ID_REQUEST,
+    UPDATE_ORG_BY_ID_SUCCESS,
   } from "../type";
   
   const initialState = {
@@ -36,12 +39,12 @@ import {
         return { ...state, loading: false, organization: action.payload, error: null };
       case FETCH_ORG_BY_ID_FAILURE:
         return { ...state, loading: false, error: action.payload };
-      // case UPDATE_CLIENT_BY_ID_REQUEST:
-      //   return { ...state, loading: true, error: null };
-      // case UPDATE_CLIENT_BY_ID_SUCCESS:
-      //   return { ...state, loading: false, organization: action.payload, error: null };
-      // case UPDATE_CLIENT_BY_ID_FAILURE:
-      //   return { ...state, loading: false, error: action.payload };
+      case UPDATE_ORG_BY_ID_REQUEST:
+        return { ...state, loading: true, error: null };
+      case UPDATE_ORG_BY_ID_SUCCESS:
+        return { ...state, loading: false, organization: action.payload, error: null };
+      case UPDATE_ORG_BY_ID_FAILURE:
+        return { ...state, loading: false, error: action.payload };
       // case REGISTER_CLIENT_REQUEST:
       //   return { ...state, loading: true };
       // case REGISTER_CLIENT_SUCCESS:
