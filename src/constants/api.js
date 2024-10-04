@@ -40,6 +40,7 @@ export const API_ENDPOINTS = {
   FETCH_ORGANIZATION_BY_QUERY:"/organization/query",
   REGISTER_ORGANIZATION:"/organization/register",
   FETCH_ORGANIZATION_BY_ID:"/organization",
+  UPDATE_ORGANIZATION:"/organization/update",
 };
 
 export const ROUTES = {
