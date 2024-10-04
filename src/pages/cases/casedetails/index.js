@@ -29,7 +29,7 @@ const CaseDetails = () => {
   const headerItems = [
     { text: "Cases", className: "mr-8" },
     {
-      text: "Fu - Skyline #5712",
+      text: `${getCaseValue()?.clientName} - ${getCaseValue()?.premisesName}`,
       separator: <SlArrowRight className="inline mr-10" />,
       className: "mr-8",
     },
