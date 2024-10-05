@@ -19,8 +19,8 @@ import { caseTypeOptions, premisesTypes } from "../../../utils/formItem";
 import { fetchPremisesByQueryIdRequest } from "../../../redux/actions/premisesActions";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchClientByIdRequest } from "../../../redux/actions/clientActions";
-import { Spinner } from "flowbite-react";
 import { fetchAddressByIdRequest } from "../../../redux/actions/utilsActions";
+import { fetchOrganizationByIdRequest } from "../../../redux/actions/organizationActions";
 
 const CaseCardData = () => {
   const navigate = useNavigate();
@@ -65,11 +65,11 @@ const CaseCardData = () => {
   }, [premisesDetails])
 
   useEffect(() => {
-    let id = casedetails?.buyerId || casedetails?.sellerId
-    const fetchClientByQueryId = async () => {
+
+    const fetchClientByQueryId = async (id) => {
       try {
         const payload = {
-          clientId: casedetails && id,
+          clientId: id
         };
         dispatch(fetchClientByIdRequest(payload.clientId));
       } catch (error) {
@@ -77,8 +77,26 @@ const CaseCardData = () => {
       }
     };
 
-    fetchClientByQueryId();
-  }, [casedetails.buyerId, casedetails.sellerId]);
+    const fetchOrganizationByQueryId = async (id) => {
+      try {
+        const payload = {
+          organizationId: id
+        };
+        dispatch(fetchOrganizationByIdRequest(payload.organizationId));
+      } catch (error) {
+        console.error("failed to fetch client", error);
+      }
+    };
+
+
+    if (casedetails?.clientType == 0) {
+      let id = casedetails?.clientId
+      fetchClientByQueryId(id);
+    } else {
+      let id = casedetails?.organizationId
+      fetchOrganizationByQueryId(id);
+    }
+  }, [casedetails?.clientType]);
 
   const headerItems = [
     { text: "Cases", className: "mr-8" },
@@ -126,7 +144,7 @@ const CaseCardData = () => {
               text="Case Details"
               // icon={<FaRegEdit className="text-base mr-2 inline-block" />}
               className="bg-badge-gray text-secondary-800  rounded-full text-sm font-medium w-full py-3 px-3 mb-7 flex items-center justify-center"
-              // onClick={handleCaseDetails}
+            // onClick={handleCaseDetails}
             />
             :
             <XButton
@@ -136,10 +154,14 @@ const CaseCardData = () => {
               onClick={handleCaseDetails}
             />
           }
-          <ContactCard
+          {casedetails?.clientType == 0 && <ContactCard
             clientDetails={clientDetails}
             casedetails={casedetails}
-          />
+          />}
+           {/* {casedetails?.clientType == 0 && <ContactCard
+            clientDetails={clientDetails}
+            casedetails={casedetails}
+          />} */}
           {/* } */}
         </div>
         <StagesChecklist />
