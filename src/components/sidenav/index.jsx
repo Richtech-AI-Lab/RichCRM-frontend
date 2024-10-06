@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Sidebar } from "flowbite-react";
-import { PiLayout, PiUsersThree, PiFolderSimple, PiLinkSimpleHorizontal  } from "react-icons/pi";
+import { PiLayout, PiUsersThree, PiFolderSimple  } from "react-icons/pi";
 import { BiCalendar } from "react-icons/bi";
 import { IoSettingsOutline } from "react-icons/io5";
 import { FiFileText } from "react-icons/fi";
 import { ROUTES } from "../../constants/api";
 import { IMAGES } from "../../constants/imagePath";
+
+
 
 const SideNav = ({ isDrawerOpen, toggleDrawer, setTitle }) => {
   const location = useLocation();
@@ -56,16 +58,20 @@ const SideNav = ({ isDrawerOpen, toggleDrawer, setTitle }) => {
           <Sidebar.Item as={Link} to={ROUTES.DASHBOARD} icon={PiLayout} className={isActive(ROUTES.DASHBOARD) ? "active-item" : ""} onClick={() => handleTitleChange('Dashboard')}>
             Dashboard
           </Sidebar.Item>
-          <Sidebar.Item as={Link} to={ROUTES.CASES} icon={FiFileText}  className={isActive(ROUTES.CASES) ? "active-item" : ""} onClick={() => handleTitleChange('Cases')}>
+          <Sidebar.Item as={Link} to={ROUTES.CASES} icon={() => (
+            <img src={IMAGES.searchcase} alt="Cases" className="h-6 w-6"  />)} 
+            className={isActive(ROUTES.CASES) ? "active-item" : ""} onClick={() => handleTitleChange('Cases')}>
             Cases
           </Sidebar.Item>
           <Sidebar.Item as={Link} to={ROUTES.CALENDAR} icon={BiCalendar} className={isActive(ROUTES.CALENDAR) ? "active-item" : ""} onClick={() => handleTitleChange('Calendar')}>
             Calender
           </Sidebar.Item>
-          <Sidebar.Item as={Link} to={ROUTES.CONTACTS} icon={PiUsersThree} className={isActive(ROUTES.CONTACTS) ? "active-item" : ""} onClick={() => handleTitleChange('Contacts')}>
+          <Sidebar.Item as={Link} to={ROUTES.CONTACTS} icon={() => (
+            <img src={IMAGES.contacticon} alt="Contacts" className="h-6 w-6"  />)} className={isActive(ROUTES.CONTACTS) ? "active-item" : ""} onClick={() => handleTitleChange('Contacts')}>
             Contacts
           </Sidebar.Item>
-          <Sidebar.Item as={Link} to={ROUTES.DOCUMENTS} icon={PiFolderSimple} className={isActive(ROUTES.DOCUMENTS) ? "active-item" : ""} onClick={() => handleTitleChange('Documents')}>
+          <Sidebar.Item as={Link} to={ROUTES.DOCUMENTS} icon={() => (
+            <img src={IMAGES.multifileicon} alt="Documents" className="h-6 w-6"  />)} className={isActive(ROUTES.DOCUMENTS) ? "active-item" : ""} onClick={() => handleTitleChange('Documents')}>
             Documents
           </Sidebar.Item>
         </Sidebar.ItemGroup>
