@@ -7,6 +7,8 @@ import contact_avtar from "../assets/images/contact_avtar.png"
 import avatarpic from "../assets/images/avatarpic.png";
 import searchCase from "../assets/images/searchCase.svg";
 import searchUser from "../assets/images/searchUser.svg";
+import contactIcon from "../assets/images/contact.svg";
+import MultiFileIcon from "../assets/images/multifie.svg";
 
 export const IMAGES = {
   profile: avatarImage,
@@ -17,6 +19,8 @@ export const IMAGES = {
   contact_avtar:contact_avtar,
   avatarpic : avatarpic,
   searchcase : searchCase,
-  searchuser: searchUser
+  searchuser : searchUser,
+  contacticon : contactIcon,
+  multifileicon : MultiFileIcon,
 
 };
