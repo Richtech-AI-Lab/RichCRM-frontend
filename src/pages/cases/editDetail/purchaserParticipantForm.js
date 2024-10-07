@@ -6,10 +6,8 @@ import { sellerItems, buyerItems, titleMortgageItems } from "../../../utils/form
 import FormButton from "../../../components/formButton";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import ShowDetail from "../showdetail/participantdetail";
 import { fetchAddressByIdRequest } from "../../../redux/actions/utilsActions";
 import { fetchPremisesRequest } from "../../../redux/actions/premisesActions";
-import ParticipantDetail from "../showdetail/participantdetail";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IMAGES } from "../../../constants/imagePath";
 import states from "../../../constants/states.json"
