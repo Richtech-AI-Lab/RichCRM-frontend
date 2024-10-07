@@ -4,9 +4,8 @@ import { v4 as uuid } from "uuid";
 
 const OneDrive = (props) => {
     const { instance, accounts, inProgress } = useMsal();
-    const account = useAccount(accounts[0] || {});
+    const [account, setAccount] = useState(instance.getActiveAccount());
     const baseUrl = "https://onedrive.live.com/picker";
-    
 
     // const options = {
     //     sdk: "8.0",
@@ -18,13 +17,13 @@ const OneDrive = (props) => {
     //         origin: "http://localhost:3000",
     //         channelId: "27"
     //     },
-    //     typesAndSources: {
-    //         mode: "multiple",
-    //         pivots: {
-    //             oneDrive: true,
-    //             recent: true,
-    //         },
-    //     },
+        // typesAndSources: {
+        //     mode: "multiple",
+        //     pivots: {
+        //         oneDrive: true,
+        //         recent: true,
+        //     },
+        // },
     // };
 
     const channelId = uuid(); // Always use a unique id for the channel when hosting the picker.
@@ -40,6 +39,13 @@ const OneDrive = (props) => {
         messaging: {
             origin: "http://localhost:3000",
             channelId: channelId
+        },
+        typesAndSources: {
+            mode: "multiple",
+            pivots: {
+                oneDrive: true,
+                recent: true,
+            },
         },
     };
 
@@ -59,11 +65,11 @@ const OneDrive = (props) => {
         }
         const request = {
             scopes: ["User.Read", "Files.ReadWrite"],
-            account: accounts[0]
+            account: account
         };
         
-        const _ = await instance.loginPopup(request);
-        const authResult = await instance.acquireTokenSilent(request);
+        // const _ = await instance.loginPopup(request);
+        const authResult = await instance.acquireTokenPopup(request);
 
         return authResult.accessToken
     }
@@ -223,11 +229,49 @@ const OneDrive = (props) => {
         }
     }
 
+    async function login(e) {
+        e.preventDefault();
+
+        const loginRequest = {
+            scopes: ["User.ReadWrite"],
+        };
+
+        instance
+            .loginPopup(loginRequest)
+            .then(function (loginResponse) {
+                instance.setActiveAccount(loginResponse.account);
+                setAccount(loginResponse.account);
+                console.log("User signed in!");
+            // Display signed-in user content, call API, etc.
+            })
+            .catch(function (error) {
+                //login failure
+                console.log(error);
+            });
+    }
+
+    async function logout(e) {
+        e.preventDefault();
+
+        instance.logoutPopup()
+            .then(function (logoutResponse) {
+                //call API to sign out
+                setAccount(null);
+                console.log("User signed out!");
+            })
+            .catch(function (error) {
+                //logout failure
+                console.log(error);
+            });
+    }
+
     if (accounts.length > 0) {
         return (
             <div>
                 <p>There are currently {accounts.length} users signed in!</p>
+                <p>Current user: {account.username}</p>
                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={launchPicker}>Open File Picker</button>
+                <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={logout}>Logout</button>
             </div>
         );
         
@@ -237,7 +281,7 @@ const OneDrive = (props) => {
         return (
             <>
                 <p>There are currently no users signed in!</p>
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => instance.loginPopup()}>Login</button>
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={login}>Login</button>
             </>
         );
     }
