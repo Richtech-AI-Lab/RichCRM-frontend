@@ -52,9 +52,10 @@ function* createAddress(action) {
       postRequest(API_ENDPOINTS.REGISTER_ADDRESS, payload?.util)
     );
     // yield put(registerAddressSuccess(response.data));
+    // console.log(payload)
     if (response.status === 200) {
       let updatedPayload;
-
+      // console.log(payload,"_________")
       if (payload.client) {
         updatedPayload = {
           client: {
@@ -69,22 +70,24 @@ function* createAddress(action) {
 
         yield put(updateClientByIdRequest(updatedPayload));
         toast.success("Address updated!");
-      }else if (payload.tenant && payload.premises) {
-        updatedPayload = {
-          ...payload,
-          premises: {
-            ...payload.premises,
-            addressId: response.data?.data[0]?.addressId,
-            name: `${response.data?.data[0]?.addressLine1}_${response.data?.data[0]?.addressId}`,
-          },
-          util: {
-            ...payload.util,
-            addressId: response.data?.data[0]?.addressId,
-          },
-        };
-        yield put(createTenantRequest(updatedPayload));
-        toast.success("Address updated!");
-      }else if (payload.premises && !payload.tenant) {
+      }
+      // else if (payload.tenant && payload.premises) {
+      //   updatedPayload = {
+      //     ...payload,
+      //     premises: {
+      //       ...payload.premises,
+      //       addressId: response.data?.data[0]?.addressId,
+      //       name: `${response.data?.data[0]?.addressLine1}_${response.data?.data[0]?.addressId}`,
+      //     },
+      //     util: {
+      //       ...payload.util,
+      //       addressId: response.data?.data[0]?.addressId,
+      //     },
+      //   };
+      //   yield put(createTenantRequest(updatedPayload));
+      //   toast.success("Address updated!");
+      // }
+      else if (payload.premises) {
         yield put(registerAddressSuccess(response.data));
         updatedPayload = {
           ...payload,
@@ -131,7 +134,6 @@ function* createAddress(action) {
         toast.success("Address updated!");
       }
     } 
-
   } catch (error) {
     handleError(error)
     yield put(registerAddressFailure(error.response?.data || error));

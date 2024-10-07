@@ -85,14 +85,17 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
           lease: values?.lease1f,
         }
       ];
-  
+
     let data = {
       util: addressPayload,
       premises: premisesPayload,
-      tenant: tenantPayload
+      ...(values?.fname1f && tenantPayload.length > 0 && { tenant: tenantPayload })
     }
-    dispatch(createAddressRequest(data))
-    // dispatch(createTenantRequest(tenantPayload))
+    if(values?.fname1f && tenantPayload.length > 0){
+      dispatch(createTenantRequest(data))
+    }else{
+      dispatch(createAddressRequest(data))
+    }
     toggleEdit()
   }
   const initialValues = {
@@ -161,16 +164,16 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
       inspectionDate : premisesDetails[0]?.inspectionDate,
       receivedDate: premisesDetails[0]?.receivedDate,
       needTermitesInspection: premisesDetails[0]?.needTermitesInspection,
-      fname1f:premisesDetails[0]?.fname1f,
-      lname1f:premisesDetails[0]?.lname1f,
-      rent1f:premisesDetails[0]?.rent1f,
-      sec1f:premisesDetails[0]?.sec1f,
-      lease1f:premisesDetails[0]?.lease1f,
-      fname2f:premisesDetails[0]?.fname2f,
-      lname2f:premisesDetails[0]?.lname2f,
-      rent2f:premisesDetails[0]?.rent2f,
-      sec2f:premisesDetails[0]?.sec2f,
-      lease2f:premisesDetails[0]?.lease2f,
+      fname1f: premisesDetails?.[0]?.tenant?.[0]?.firstName || "",
+      lname1f: premisesDetails?.[0]?.tenant?.[0]?.lastName || "",
+      rent1f: premisesDetails?.[0]?.tenant?.[0]?.rent1f || "",
+      sec1f: premisesDetails?.[0]?.tenant?.[0]?.sec1f || "",
+      lease1f: premisesDetails?.[0]?.tenant?.[0]?.lease1f || "",
+      fname2f: premisesDetails?.[0]?.tenant?.[1]?.firstName || "",
+      lname2f: premisesDetails?.[0]?.tenant?.[1]?.lastName || "",
+      rent2f: premisesDetails?.[0]?.tenant?.[1]?.rent2f || "",
+      sec2f: premisesDetails?.[0]?.tenant?.[1]?.sec2f || "",
+      lease2f: premisesDetails?.[0]?.tenant?.[1]?.lease2f || "",
     }
     :
     {

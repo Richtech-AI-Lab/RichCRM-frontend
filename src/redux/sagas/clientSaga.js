@@ -13,7 +13,7 @@ import {
 import { FETCH_ADDITIONAL_CLIENTS_BY_IDS_REQUEST, FETCH_CLIENT_BY_ID_REQUEST, FETCH_CLIENTS_BY_IDS_REQUEST, REGISTER_CLIENT_REQUEST, REGISTER_TENANT_REQUEST, UPDATE_CLIENT_BY_ID_REQUEST } from "../type";
 import { getRequest, postRequest } from "../../axios/interceptor";
 import { toast } from "react-toastify";
-import { registerAddressRequest } from "../actions/utilsActions";
+import { createAddressRequest, registerAddressRequest } from "../actions/utilsActions";
 import { handleError } from "../../utils/eventHandler";
 import { update } from "lodash";
 import { all } from "redux-saga/effects";
@@ -130,18 +130,25 @@ function* registerTenant(action) {
         call(postRequest, API_ENDPOINTS.REGISTER_CLIENT, tenantDetails)
       )
     );
-    const clientIds = tenantListRes.map(res => res.data.data[0].clientId);
-    if(clientIds.length > 0){
+    const clientData = tenantListRes.map(res => res.data.data[0]);
+    // console.log(clientData);
+    
+    if (clientData.length > 0) {
       let updatedPayload = {
         ...payload,
+        tenant: [
+          ...clientData
+        ],
         premises: {
           ...payload.premises,
-          twoFamilyFirstFloorTenantId: clientIds[0],
-          twoFamilySecondFloorTenantId: clientIds[1],
+          ...(clientData.length >= 1  && payload.premises.isTwoFamily == 0 && { twoFamilyFirstFloorTenantId:clientData[0]?.clientId }),
+          ...(clientData.length === 2 && payload.premises.isTwoFamily == 1 && { twoFamilySecondFloorTenantId:clientData[1]?.clientId })
         },
       };
-      yield put(updatePremisesRequest(updatedPayload));
+      // console.log(updatedPayload, "cliue");
+      yield put(createAddressRequest(updatedPayload));
     }
+    
     toast.success("Tenant updated successfully");
   } catch (error) {
     handleError(error)

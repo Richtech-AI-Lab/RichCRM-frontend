@@ -1,5 +1,5 @@
 import { call, put, takeLatest } from "redux-saga/effects";
-import { postRequest } from "../../axios/interceptor";
+import { getRequest, postRequest } from "../../axios/interceptor";
 import { API_ENDPOINTS, ROUTES } from "../../constants/api";
 import {
   fetchPremisesByIdFailure,
@@ -16,6 +16,7 @@ import { FETCH_PREMISES_BY_ID_REQUEST, FETCH_PREMISES_BY_QUERY_ID_FAILURE, FETCH
 import { toast } from "react-toastify";
 import { caseCreateRequest } from "../actions/caseAction";
 import { handleError } from "../../utils/eventHandler";
+import { all } from "redux-saga/effects";
 
 //Register Premises Saga
 function* registerPremises(action) {
@@ -76,10 +77,33 @@ function* fetchPremisesById(action) {
 function* fetchPremisesByQueryId(action) {
   try {
     const { premisesId } = action.payload;
-    const response = yield call(() =>
+    const preResponse = yield call(() =>
       postRequest(API_ENDPOINTS.FETCH_PREMISES_BY_QUERY_ID, premisesId)
     );
-    yield put(fetchPremisesByQueryIdSuccess(response.data));
+    if (preResponse.status == 200) {
+
+      const { isTwoFamily, twoFamilyFirstFloorTenantId, twoFamilySecondFloorTenantId } = preResponse.data.data[0];
+      if (isTwoFamily != undefined && (twoFamilyFirstFloorTenantId || twoFamilySecondFloorTenantId)) {
+        const tenantIds = isTwoFamily == 1
+          ? [twoFamilyFirstFloorTenantId, twoFamilySecondFloorTenantId]
+          : [twoFamilyFirstFloorTenantId];
+
+        const tenantResponses = yield all(
+          tenantIds.map(tenantId =>
+            call(getRequest, `${API_ENDPOINTS.FETCH_CLIENT_BY_ID}/${tenantId}`)
+          )
+        );
+
+        const tenants = tenantResponses.map(response => response?.data?.data[0]);
+        preResponse.data.data[0] = {
+          ...preResponse?.data?.data[0],
+          tenant: tenants
+        };
+      }
+      // console.log(preResponse)
+
+    }
+    yield put(fetchPremisesByQueryIdSuccess(preResponse.data));
   } catch (error) {
     yield put(fetchPremisesByQueryIdFailure(error.response?.data || error));
   }
@@ -89,9 +113,17 @@ function* fetchPremisesByQueryId(action) {
 function* updatePremises(action) {
   try {
     const { payload } = action;
+    // console.log(payload,"{{{")
     const response = yield call(() =>
       postRequest(API_ENDPOINTS.UPDATE_PREMISES, payload.premises)
     );
+    if(payload.tenant){
+
+      response.data.data[0] = {
+        ...response?.data?.data[0],
+        tenant: payload.tenant,
+      };
+    }
     yield put(registerPremisesSuccess(response.data));
     toast.success("Premises updated!");
   } catch (error) {

@@ -565,6 +565,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue }
                 className="text-right p-0 border-none focus:ring-transparent"
                 name="fname1f"
                 type="text"
+                value={values.fname1f}
                 onChange={handleChange}
                 onBlur={handleBlur}
               // value={values.}
@@ -575,6 +576,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue }
               <input
                 className="text-right p-0 border-none focus:ring-transparent"
                 name="lname1f"
+                value={values.lname1f}
                 type="text"
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -587,6 +589,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue }
                 className="text-right p-0 border-none focus:ring-transparent"
                 name="rent1f"
                 type="text"
+                value={values.rent1f}
                 onChange={handleChange}
                 onBlur={handleBlur}
               // value={values.addressLine1}
@@ -598,6 +601,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue }
                 className="text-right p-0 border-none focus:ring-transparent"
                 name="sec1f"
                 type="text"
+                value={values.sec1f}
                 onChange={handleChange}
                 onBlur={handleBlur}
               // value={values.addressLine1}
@@ -609,6 +613,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue }
                 className="text-right p-0 border-none focus:ring-transparent"
                 name="lease1f"
                 type="text"
+                value={values.lease1f}
                 onChange={handleChange}
                 onBlur={handleBlur}
               // value={values.addressLine1}
@@ -625,7 +630,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue }
                     type="text"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.tenant2Name}
+                    value={values.fname2f}
                   />
                 </li>
                 <li>
@@ -636,7 +641,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue }
                     type="text"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.tenant2Name}
+                    value={values.lname2f}
                   />
                 </li>
                 <li>
@@ -647,7 +652,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue }
                     type="text"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.tenant2Rent}
+                    value={values.rent2f}
                   />
                 </li>
                 <li>
@@ -658,7 +663,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue }
                     type="text"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.tenant2Sec}
+                    value={values.sec2f}
                   />
                 </li>
                 <li>
@@ -669,7 +674,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue }
                     type="text"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.tenant2Lease}
+                    value={values.lease2f}
                   />
                 </li>
               </>
