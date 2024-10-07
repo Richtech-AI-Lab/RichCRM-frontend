@@ -16,8 +16,8 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit , caseType}) => {
   const { cases } = useSelector((state) => state.case.casesData);
   const { organization } = useSelector((state) => state.organization);
   const organizationDetails = organization?.data?.length > 0 ? organization?.data : null;
-  const { data } = useSelector((state) => state?.utils?.address);
-  const addressDetails = data?.length > 0 ? data : null;
+  // const { data } = useSelector((state) => state?.utils?.address);
+  // const addressDetails = data?.length > 0 ? data : null;
 
   const toggleEdit = () => {
     setIsEdit(prevState => !prevState);
@@ -57,11 +57,11 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit , caseType}) => {
     website: organizationDetails[0]?.website || '',
     email: organizationDetails[0]?.email || '',
     cellNumber: organizationDetails[0]?.cellNumber || '',
-    addressLine1: addressDetails[0]?.addressLine1 || '',
-    addressLine2: addressDetails[0]?.addressLine2 || '',
-    city: addressDetails[0]?.city || '',
-    state: addressDetails[0]?.state || '',
-    zipCode: addressDetails[0]?.zipCode || '',
+    addressLine1: organizationDetails[0]?.addressLine1 || '',
+    addressLine2: organizationDetails[0]?.addressLine2 || '',
+    city: organizationDetails[0]?.city || '',
+    state: organizationDetails[0]?.state || '',
+    zipCode: organizationDetails[0]?.zipCode || '',
   } : {
     organizationName: '',
     website: '',
@@ -110,7 +110,7 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit , caseType}) => {
         </Formik>)
         :
         (<div className="grid grid-cols-12 gap-6">
-          <div className="col-span-6"><ParticipantBothDetail organization={organizationDetails}  title={ caseType  ? "Seller" : "Purchaser"} address={addressDetails} /></div></div>)}
+          <div className="col-span-6"><ParticipantBothDetail organization={organizationDetails}  title={ caseType  ? "Seller" : "Purchaser"} /></div></div>)}
     </>
   );
 };

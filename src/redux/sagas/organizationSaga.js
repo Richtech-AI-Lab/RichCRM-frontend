@@ -49,10 +49,18 @@ function* registerOrganization(action) {
 function* fetchOrganizationById(action) {
   try {
     const { organizationId } = action.payload;
-    const response = yield call(() =>
+    const orgResponse = yield call(() =>
       getRequest(`${API_ENDPOINTS.FETCH_ORGANIZATION_BY_ID}/${organizationId}`)
     );
-    yield put(fetchOrganizationByIdSuccess(response.data));
+    if (orgResponse.status == 200 && orgResponse?.data?.data[0]?.addressId) {
+      let payload = {
+        addressId: orgResponse?.data?.data[0]?.addressId,
+        // addressId: 'Virginia Beach VA 23462-3012',
+      }
+      const addResponse = yield call(() => postRequest(API_ENDPOINTS.FETCH_ADDRESS_BY_QUERY_ID, payload));
+      orgResponse.data.data[0] = { ...orgResponse?.data?.data[0], ...addResponse?.data?.data[0] };
+    }
+    yield put(fetchOrganizationByIdSuccess(orgResponse.data));
   } catch (error) {
     handleError(error)
     yield put(fetchOrganizationByIdFailure(error.response.data || error));
@@ -87,7 +95,14 @@ function* updateOrganizationById(action) {
     const response = yield call(() =>
       postRequest(API_ENDPOINTS.UPDATE_ORGANIZATION, payload?.organization)
     );
-    console.log(payload?.organization,"__organization__")
+    if (response.status == 200 && response?.data?.data[0]?.addressId && payload.util) {
+      // let payload = {
+      //   addressId: response?.data?.data[0]?.addressId,
+      //   // addressId: 'Virginia Beach VA 23462-3012',
+      // }
+      // const addResponse = yield call(() => postRequest(API_ENDPOINTS.FETCH_ADDRESS_BY_QUERY_ID, payload));
+      response.data.data[0] = { ...response?.data?.data[0], ...payload.util};
+    }
     yield put(updateOrganizationByIdSuccess(response.data));
     if(response.status ==200){
       // const updatedPayload = {
