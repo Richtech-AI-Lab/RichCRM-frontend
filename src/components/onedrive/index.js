@@ -1,29 +1,45 @@
 import React, {useEffect, useState} from "react";
 import { useMsal, useAccount } from "@azure/msal-react";
+import { v4 as uuid } from "uuid";
 
 const OneDrive = (props) => {
     const { instance, accounts, inProgress } = useMsal();
     const account = useAccount(accounts[0] || {});
-    const [apiData, setApiData] = useState(null);
     const baseUrl = "https://onedrive.live.com/picker";
     
 
-    const params = {
+    // const options = {
+    //     sdk: "8.0",
+    //     entry: {
+    //         oneDrive: {}
+    //     },
+    //     authentication: {},
+    //     messaging: {
+    //         origin: "http://localhost:3000",
+    //         channelId: "27"
+    //     },
+    //     typesAndSources: {
+    //         mode: "multiple",
+    //         pivots: {
+    //             oneDrive: true,
+    //             recent: true,
+    //         },
+    //     },
+    // };
+
+    const channelId = uuid(); // Always use a unique id for the channel when hosting the picker.
+
+    const options = {
         sdk: "8.0",
         entry: {
             oneDrive: {}
         },
+        // Applications must pass this empty `authentication` option in order to obtain details item data
+        // from the picker, or when embedding the picker in an iframe.
         authentication: {},
         messaging: {
             origin: "http://localhost:3000",
-            channelId: "27"
-        },
-        typesAndSources: {
-            mode: "multiple",
-            pivots: {
-                oneDrive: true,
-                recent: true,
-            },
+            channelId: channelId
         },
     };
 
@@ -37,6 +53,7 @@ const OneDrive = (props) => {
     }, [accounts]);
     
     async function getToken() {
+        console.log(accounts)
         if (!accounts && accounts.length === 0) {
             return null;
         }
@@ -44,7 +61,8 @@ const OneDrive = (props) => {
             scopes: ["User.Read", "Files.ReadWrite"],
             account: accounts[0]
         };
-    
+        
+        const _ = await instance.loginPopup(request);
         const authResult = await instance.acquireTokenSilent(request);
 
         return authResult.accessToken
@@ -60,24 +78,24 @@ const OneDrive = (props) => {
         const authToken = await getToken();
         console.log(authToken)
         const queryString = new URLSearchParams({
-            filePicker: JSON.stringify(params),
+            filePicker: JSON.stringify(options),
         });
         
-        const url = `${baseUrl}?${queryString}`;
-        win = window.open(`${baseUrl}?${queryString}`, "Picker", "width=800,height=600");
-        
-        // const form = win.document.createElement("form");
-        // form.setAttribute("action", url);
-        // form.setAttribute("method", "POST");
-        // win.document.body.append(form);
+        const win = window.open("", "Picker", "width=1080,height=680");
+        const url = baseUrl + `/_layouts/15/FilePicker.aspx?${queryString}`;
+        const form = win.document.createElement("form");
 
-        // const input = win.document.createElement("input");
-        // input.setAttribute("type", "hidden");
-        // input.setAttribute("name", "access_token");
-        // input.setAttribute("value", authToken);
-        // form.appendChild(input);
+        form.setAttribute("action", url);
+        form.setAttribute("method", "POST");
+        const tokenInput = win.document.createElement("input");
+        tokenInput.setAttribute("type", "hidden");
+        tokenInput.setAttribute("name", "access_token");
+        tokenInput.setAttribute("value", authToken);
+        form.appendChild(tokenInput);
 
-        // form.submit();
+        win.document.body.append(form);
+        form.submit();
+
 
         window.addEventListener("message", (event) => {
             // console.log(event.data);
@@ -85,7 +103,7 @@ const OneDrive = (props) => {
             if (event.source && event.source === win) {
                 const message = event.data;
 
-                if (message.type === "initialize" && message.channelId === params.messaging.channelId) {
+                if (message.type === "initialize" && message.channelId === options.messaging.channelId) {
                     port = event.ports[0];
 
                     port.addEventListener("message", messageListener);
@@ -101,11 +119,16 @@ const OneDrive = (props) => {
     }
 
     async function messageListener(message) {
+        const payload = message.data;
         
-        switch (message.data.type) {
+        switch (payload.type) {
             case "notification":
+                const notification = payload.data;
+                if (notification.notification === "page-loaded") {
+                    // here we know that the picker page is loaded and ready for user interaction
+                }
+    
                 console.log(message.data);
-                // console.log(`notification: ${message.data}`);
                 break;
             case "command":
                 port.postMessage({
@@ -113,26 +136,38 @@ const OneDrive = (props) => {
                     id: message.data.id,
                 });
 
-                const command = message.data.data;
+                const command = payload.data;
 
                 switch (command.command) {
                     case "authenticate":
                         // Get token!
-                        const token = await getToken();
-
-                        if (typeof token !== "undefined" && token !== null) {
+                        try {
+                            const token = await getToken();
+                            if (!token) {
+                                throw new Error("Unable to obtain a token.");
+                            }
                             port.postMessage({
                                 type: "result",
                                 id: message.data.id,
                                 data: {
-                                    result: token,
-                                    token,
-                                },
+                                    result: "token",
+                                    token: token,
+                                }
                             });
-                        } else {
-                            console.error(`Could not get auth token for command: ${JSON.stringify(command)}`);
+                        } catch (error) {
+                            port.postMessage({
+                                type: "result",
+                                id: message.data.id,
+                                data: {
+                                    result: "error",
+                                    error: {
+                                        code: "unableToObtainToken",
+                                        message: error.message
+                                    }
+                                }
+                            });
                         }
-
+        
                         break;
 
                     case "close":
@@ -142,28 +177,45 @@ const OneDrive = (props) => {
                     case "pick":
                         console.log(`Picking file: ${command.data}`);
 
-                        port.postMessage({
-                            type: "result",
-                            id: message.data.id,
-                            data: {
-                                result: "success",
-                            },
-                        });
-
-                        win.close();
+                        try {
+                            // await pick(command);
+                            port.postMessage({
+                                type: "result",
+                                id: message.data.id,
+                                data: {
+                                    result: "success"
+                                }
+                            });
+                        } catch (error) {
+                            port.postMessage({
+                                type: "result",
+                                id: message.data.id,
+                                data: {
+                                    result: "error",
+                                    error: {
+                                        code: "unusableItem",
+                                        message: error.message
+                                    }
+                                }
+                            });
+                        }
                         break;
 
                     default:
                         console.warn(`Unsupported command: ${JSON.stringify(command)}`, 2);
 
                         port.postMessage({
-                            type: "error",
-                            error: {
-                                code: "unsupportedCommand",
-                                message: command.command,
-                            },
-                            isExpected: true,
+                            type: "result",
+                            id: message.data.id,
+                            data: {
+                                result: "error",
+                                error: {
+                                    code: "unsupportedCommand",
+                                    message: command.command
+                                }
+                            }
                         });
+    
                         break;
                 }
 
