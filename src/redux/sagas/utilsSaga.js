@@ -51,7 +51,7 @@ function* createAddress(action) {
     const response = yield call(() =>
       postRequest(API_ENDPOINTS.REGISTER_ADDRESS, payload?.util)
     );
-    yield put(registerAddressSuccess(response.data));
+    // yield put(registerAddressSuccess(response.data));
     if (response.status === 200) {
       let updatedPayload;
 
@@ -70,6 +70,7 @@ function* createAddress(action) {
         yield put(updateClientByIdRequest(updatedPayload));
         toast.success("Address updated!");
       } else if (payload.premises) {
+        yield put(registerAddressSuccess(response.data));
         updatedPayload = {
           premises: {
             ...payload.premises,
@@ -85,6 +86,7 @@ function* createAddress(action) {
         yield put(updatePremisesRequest(updatedPayload));
         toast.success("address updated!");
       }else if (payload.contact) {
+        yield put(registerAddressSuccess(response.data));
         updatedPayload = {
           contact: {
             ...payload.contact,
