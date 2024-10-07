@@ -10,13 +10,14 @@ import {
   updateClientByIdFailure,
   updateClientByIdSuccess,
 } from "../actions/clientActions";
-import { FETCH_ADDITIONAL_CLIENTS_BY_IDS_REQUEST, FETCH_CLIENT_BY_ID_REQUEST, FETCH_CLIENTS_BY_IDS_REQUEST, REGISTER_CLIENT_REQUEST, UPDATE_CLIENT_BY_ID_REQUEST } from "../type";
+import { FETCH_ADDITIONAL_CLIENTS_BY_IDS_REQUEST, FETCH_CLIENT_BY_ID_REQUEST, FETCH_CLIENTS_BY_IDS_REQUEST, REGISTER_CLIENT_REQUEST, REGISTER_TENANT_REQUEST, UPDATE_CLIENT_BY_ID_REQUEST } from "../type";
 import { getRequest, postRequest } from "../../axios/interceptor";
 import { toast } from "react-toastify";
 import { registerAddressRequest } from "../actions/utilsActions";
 import { handleError } from "../../utils/eventHandler";
 import { update } from "lodash";
 import { all } from "redux-saga/effects";
+import { updatePremisesRequest } from "../actions/premisesActions";
 
 function* registerClient(action) {
   try {
@@ -120,10 +121,39 @@ function* fetchClientsByIds(action) {
     yield put(fetchAdditionalClientByIdsFailure(error.response?.data || error));
   }
 }
+
+function* registerTenant(action) {
+  try {
+    const { payload } = action;
+    const tenantListRes = yield all(
+      payload.tenant?.map(tenantDetails =>
+        call(postRequest, API_ENDPOINTS.REGISTER_CLIENT, tenantDetails)
+      )
+    );
+    const clientIds = tenantListRes.map(res => res.data.data[0].clientId);
+    if(clientIds.length > 0){
+      let updatedPayload = {
+        ...payload,
+        premises: {
+          ...payload.premises,
+          twoFamilyFirstFloorTenantId: clientIds[0],
+          twoFamilySecondFloorTenantId: clientIds[1],
+        },
+      };
+      yield put(updatePremisesRequest(updatedPayload));
+    }
+    toast.success("Tenant updated successfully");
+  } catch (error) {
+    handleError(error)
+    yield put(registerClientFailure(error.response?.data || error));
+  }
+}
+
 export function* clientSaga() {
   yield takeLatest(REGISTER_CLIENT_REQUEST, registerClient);
   yield takeLatest(FETCH_CLIENT_BY_ID_REQUEST, fetchClientById);
   yield takeLatest(UPDATE_CLIENT_BY_ID_REQUEST, updateClientById);
   yield takeLatest(FETCH_ADDITIONAL_CLIENTS_BY_IDS_REQUEST, fetchClientsByIds);
+  yield takeLatest(REGISTER_TENANT_REQUEST, registerTenant);
 
 }

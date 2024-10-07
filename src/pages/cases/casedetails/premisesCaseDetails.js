@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import PremisesDetail from "../showdetail/premisesdetail";
 import PremisesForm from "../editDetail/permisesParticipantForm";
 import { createAddressRequest } from "../../../redux/actions/utilsActions";
+import { createTenantRequest } from "../../../redux/actions/clientActions";
 
 const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
   const dispatch= useDispatch()
@@ -54,11 +55,44 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
       receivedDate: values?.receivedDate,
       needTermitesInspection: values?.needTermitesInspection,
     };
+
+    const tenantPayload = values.isTwoFamily == 1 
+    ? [
+        {
+          clientType: 0,
+          firstName: values?.fname1f,
+          lastName: values?.lname1f,
+          rent: values?.rent1f,
+          sec: values?.sec1f,
+          lease: values?.lease1f,
+        },
+        {
+          clientType: 0,
+          firstName: values?.fname2f,
+          lastName: values?.lname2f,
+          rent: values?.rent2f,
+          sec: values?.sec2f,
+          lease: values?.lease2f,
+        },
+      ]
+    : [
+        {
+          clientType: 0,
+          firstName: values?.fname1f,
+          lastName: values?.lname1f,
+          rent: values?.rent1f,
+          sec: values?.sec1f,
+          lease: values?.lease1f,
+        }
+      ];
+  
     let data = {
       util: addressPayload,
-      premises: premisesPayload
+      premises: premisesPayload,
+      tenant: tenantPayload
     }
     dispatch(createAddressRequest(data))
+    // dispatch(createTenantRequest(tenantPayload))
     toggleEdit()
   }
   const initialValues = {
@@ -127,6 +161,16 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
       inspectionDate : premisesDetails[0]?.inspectionDate,
       receivedDate: premisesDetails[0]?.receivedDate,
       needTermitesInspection: premisesDetails[0]?.needTermitesInspection,
+      fname1f:premisesDetails[0]?.fname1f,
+      lname1f:premisesDetails[0]?.lname1f,
+      rent1f:premisesDetails[0]?.rent1f,
+      sec1f:premisesDetails[0]?.sec1f,
+      lease1f:premisesDetails[0]?.lease1f,
+      fname2f:premisesDetails[0]?.fname2f,
+      lname2f:premisesDetails[0]?.lname2f,
+      rent2f:premisesDetails[0]?.rent2f,
+      sec2f:premisesDetails[0]?.sec2f,
+      lease2f:premisesDetails[0]?.lease2f,
     }
     :
     {
@@ -150,11 +194,21 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
       assessments: '',
       assessmentsPaidById: '',
       managingCompany: '',
-      isTwoFamily: '',
       needInspection	:'',
       inspectionDate : '',
       receivedDate: '',
       needTermitesInspection: '',
+      isTwoFamily: '',
+      fname1f:'',
+      lname1f:'',
+      rent1f:'',
+      sec1f:'',
+      lease1f:'',
+      fname2f:'',
+      lname2f:'',
+      rent2f:'',
+      sec2f:'',
+      lease2f:'',
     }
 
 

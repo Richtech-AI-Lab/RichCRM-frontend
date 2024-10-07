@@ -21,7 +21,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue }
       <div className="col-span-6">
         <div className="bg-white p-4 rounded-2xl mb-5">
           {title && <div className="flex justify-between items-center mb-5">
-            <span className="text-base text-secondary-800 font-medium">{title}</span>
+            <span className="text-base text-2Fary-800 font-medium">{title}</span>
             <div className="flex items-center gap-2">
               <BsThreeDotsVertical className="text-lg opacity-40" />
             </div>
@@ -415,7 +415,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue }
       <div className="col-span-6">
         <div className="bg-white p-4 rounded-2xl mb-5">
           {<div className="flex justify-between items-center mb-5">
-            <span className="text-base text-secondary-800 font-medium">Engineer Inspection</span>
+            <span className="text-base text-2Fary-800 font-medium">Engineer Inspection</span>
             {/* <div className="flex items-center gap-2">
           <BsThreeDotsVertical className="text-lg opacity-40" />
         </div> */}
@@ -480,7 +480,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue }
         </div>
         <div className="bg-white p-4 rounded-2xl mb-5">
           {<div className="flex justify-between items-center mb-5">
-            <span className="text-base text-secondary-800 font-medium">Termites Inspection</span>
+            <span className="text-base text-2Fary-800 font-medium">Termites Inspection</span>
             {/* <div className="flex items-center gap-2">
           <BsThreeDotsVertical className="text-lg opacity-40" />
         </div> */}
@@ -521,7 +521,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue }
         </div>
         <div className="bg-white p-4 rounded-2xl mb-5">
           {<div className="flex justify-between items-center mb-5">
-            <span className="text-base text-secondary-800 font-medium">Tenant</span>
+            <span className="text-base text-2Fary-800 font-medium">Tenant</span>
             {/* <div className="flex items-center gap-2">
           <BsThreeDotsVertical className="text-lg opacity-40" />
         </div> */}
@@ -530,10 +530,40 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue }
           <ul className="card-details">
 
             <li>
-              <span className="left-txt flex items-center" > Tenant Name</span>
+              <div className="flex justify-between items-center w-full">
+                <span className="left-txt w-full">Is Two Family</span>
+                <div className="flex justify-end items-center w-full gap-7">
+                  <div className="grid grid-cols-2 gap-x-12">
+                    {[
+                      { id: 1, value: 1, label: "Yes" },
+                      { id: 0, value: 0, label: "No" },
+                    ].map((option, index) => (
+                      <div className="flex items-center gap-2 custom-radio" key={index}>
+                        <Field
+                          type="radio"
+                          id={option.id}
+                          name="isTwoFamily"
+                          value={option.value}
+                          checked={values.isTwoFamily == option.id}
+                          className="mr-2"
+                        />
+                        <Label
+                          htmlFor={option.id}
+                          className="flex items-center text-base text-label font-normal"
+                        >
+                          {option.label}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <span className="left-txt flex items-center" >{values.isTwoFamily == 1 && "1F"} First Name</span>
               <input
                 className="text-right p-0 border-none focus:ring-transparent"
-                name="name"
+                name="fname1f"
                 type="text"
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -541,10 +571,21 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue }
               />
             </li>
             <li>
-              <span className="left-txt flex items-center" > Rent</span>
+              <span className="left-txt flex items-center" >{values.isTwoFamily == 1 && "1F"} Last Name</span>
               <input
                 className="text-right p-0 border-none focus:ring-transparent"
-                name="rent"
+                name="lname1f"
+                type="text"
+                onChange={handleChange}
+                onBlur={handleBlur}
+              // value={values.}
+              />
+            </li>
+            <li>
+              <span className="left-txt flex items-center" >{values.isTwoFamily == 1 && "1F Tenant"} Rent</span>
+              <input
+                className="text-right p-0 border-none focus:ring-transparent"
+                name="rent1f"
                 type="text"
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -552,10 +593,21 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue }
               />
             </li>
             <li>
-              <span className="left-txt flex items-center" > Sec.</span>
+              <span className="left-txt flex items-center" >{values.isTwoFamily == 1 && "1F Tenant"} Sec.</span>
               <input
                 className="text-right p-0 border-none focus:ring-transparent"
-                name="sec"
+                name="sec1f"
+                type="text"
+                onChange={handleChange}
+                onBlur={handleBlur}
+              // value={values.addressLine1}
+              />
+            </li>
+            <li>
+              <span className="left-txt flex items-center" >{values.isTwoFamily == 1 && "1F Tenant"} Lease</span>
+              <input
+                className="text-right p-0 border-none focus:ring-transparent"
+                name="lease1f"
                 type="text"
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -563,17 +615,65 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue }
               />
             </li>
 
-            <li>
-              <span className="left-txt flex items-center" > Lease</span>
-              <input
-                className="text-right p-0 border-none focus:ring-transparent"
-                name="lease"
-                type="text"
-                onChange={handleChange}
-                onBlur={handleBlur}
-              // value={values.addressLine1}
-              />
-            </li>
+            {values.isTwoFamily == 1 && (
+              <>
+                <li>
+                  <span className="left-txt flex items-center">2F Tenant First Name</span>
+                  <input
+                    className="text-right p-0 border-none focus:ring-transparent"
+                    name="fname2f"
+                    type="text"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.tenant2Name}
+                  />
+                </li>
+                <li>
+                  <span className="left-txt flex items-center">2F Tenant Last Name</span>
+                  <input
+                    className="text-right p-0 border-none focus:ring-transparent"
+                    name="lname2f"
+                    type="text"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.tenant2Name}
+                  />
+                </li>
+                <li>
+                  <span className="left-txt flex items-center">2F Tenant Rent</span>
+                  <input
+                    className="text-right p-0 border-none focus:ring-transparent"
+                    name="rent2f"
+                    type="text"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.tenant2Rent}
+                  />
+                </li>
+                <li>
+                  <span className="left-txt flex items-center">2F Tenant Sec.</span>
+                  <input
+                    className="text-right p-0 border-none focus:ring-transparent"
+                    name="sec2f"
+                    type="text"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.tenant2Sec}
+                  />
+                </li>
+                <li>
+                  <span className="left-txt flex items-center">2F Tenant Lease</span>
+                  <input
+                    className="text-right p-0 border-none focus:ring-transparent"
+                    name="lease2f"
+                    type="text"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.tenant2Lease}
+                  />
+                </li>
+              </>
+            )}
 
           </ul>
         </div>

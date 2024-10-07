@@ -13,7 +13,7 @@ import { CREATE_ADDRESS_CONTACT_REQUEST, CREATE_ADDRESS_REQUEST, FETCH_ADDRESS_B
 import { registerPremisesRequest, updatePremisesRequest } from "../actions/premisesActions";
 import { toast } from "react-toastify";
 import { handleError } from "../../utils/eventHandler";
-import { updateClientByIdRequest } from "../actions/clientActions";
+import { createTenantRequest, updateClientByIdRequest } from "../actions/clientActions";
 import { createContactRequest, updateContactRequest } from "../actions/contactActions";
 import { updateOrganizationByIdRequest } from "../actions/organizationActions";
 
@@ -69,9 +69,9 @@ function* createAddress(action) {
 
         yield put(updateClientByIdRequest(updatedPayload));
         toast.success("Address updated!");
-      } else if (payload.premises) {
-        yield put(registerAddressSuccess(response.data));
+      }else if (payload.tenant && payload.premises) {
         updatedPayload = {
+          ...payload,
           premises: {
             ...payload.premises,
             addressId: response.data?.data[0]?.addressId,
@@ -82,7 +82,22 @@ function* createAddress(action) {
             addressId: response.data?.data[0]?.addressId,
           },
         };
-  
+        yield put(createTenantRequest(updatedPayload));
+        toast.success("Address updated!");
+      }else if (payload.premises && !payload.tenant) {
+        yield put(registerAddressSuccess(response.data));
+        updatedPayload = {
+          ...payload,
+          premises: {
+            ...payload.premises,
+            addressId: response.data?.data[0]?.addressId,
+            name: `${response.data?.data[0]?.addressLine1}_${response.data?.data[0]?.addressId}`,
+          },
+          util: {
+            ...payload.util,
+            addressId: response.data?.data[0]?.addressId,
+          },
+        };
         yield put(updatePremisesRequest(updatedPayload));
         toast.success("address updated!");
       }else if (payload.contact) {
