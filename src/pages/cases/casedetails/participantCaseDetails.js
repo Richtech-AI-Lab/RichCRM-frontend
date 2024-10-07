@@ -17,8 +17,8 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType }) => {
   const { client } = useSelector((state) => state.client);
   const { cases } = useSelector((state) => state.case.casesData);
   const clientDetails = client?.data?.length > 0 ? client?.data : null;
-  const { data } = useSelector((state) => state?.utils?.address);
-  const addressDetails = data?.length > 0 ? data : null;
+  // const { data } = useSelector((state) => state?.utils?.address);
+  // const addressDetails = data?.length > 0 ? data : null;
 
   const toggleEdit = () => {
     setIsEdit(prevState => !prevState);
@@ -77,11 +77,11 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType }) => {
     wechatAccount: clientDetails[0]?.wechatAccount || '',
     whatsAppNumber: clientDetails[0]?.whatsAppNumber || '',
     lineNumber: clientDetails[0]?.lineNumber || '',
-    addressLine1: addressDetails[0]?.addressLine1 || '',
-    addressLine2: addressDetails[0]?.addressLine2 || '',
-    city: addressDetails[0]?.city || '',
-    state: addressDetails[0]?.state || '',
-    zipCode: addressDetails[0]?.zipCode || '',
+    addressLine1: clientDetails[0]?.addressLine1 || '',
+    addressLine2: clientDetails[0]?.addressLine2 || '',
+    city: clientDetails[0]?.city || '',
+    state: clientDetails[0]?.state || '',
+    zipCode: clientDetails[0]?.zipCode || '',
   } : {
     name: '',
     ssn: '',
@@ -165,7 +165,7 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType }) => {
         </Formik>)
         :
         (<div className="grid grid-cols-12 gap-6">
-          <div className="col-span-6"><ParticipantBothDetail client={clientDetails}  title={ caseType  ? "Seller" : "Purchaser"} address={addressDetails} /></div></div>)}
+          <div className="col-span-6"><ParticipantBothDetail client={clientDetails}  title={ caseType  ? "Seller" : "Purchaser"}  /></div></div>)}
     </>
   );
 };
