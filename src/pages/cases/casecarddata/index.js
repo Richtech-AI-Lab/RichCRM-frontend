@@ -68,7 +68,7 @@ const CaseCardData = () => {
         console.error("failed to fetch attorney", error);
       }
     };
-    // fetchAttorneyById()
+    fetchAttorneyById()
   }, [casedetails.contacts]);
 
 

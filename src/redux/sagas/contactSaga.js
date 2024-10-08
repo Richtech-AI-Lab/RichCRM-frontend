@@ -23,7 +23,7 @@ function* getContactByType(action) {
 
 function* getAttorneyByIds(action) {
   try {
-    const contacts = action.payload;
+    const {contacts} = action.payload;
     const attorneyListRes = yield all(
       contacts.map(id =>
         call(getRequest, `${API_ENDPOINTS.FETCH_CONTACT_BY_ID}/${id}`)
