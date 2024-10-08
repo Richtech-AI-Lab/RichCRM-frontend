@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import PremisesDetail from "../showdetail/premisesdetail";
 import PremisesForm from "../editDetail/permisesParticipantForm";
 import { createAddressRequest } from "../../../redux/actions/utilsActions";
+import { createTenantRequest } from "../../../redux/actions/clientActions";
 
 const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
   const dispatch= useDispatch()
@@ -25,6 +26,7 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
     setIsEdit(prevState => !prevState);
   };
   let handleSubmit = (values, { setSubmitting }) => {
+    // console.log(values)
     const addressPayload = {
       addressLine1: values.addressLine1,
       addressLine2: values.addressLine2,
@@ -54,11 +56,47 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
       receivedDate: values?.receivedDate,
       needTermitesInspection: values?.needTermitesInspection,
     };
+
+    const tenantPayload = values.isTwoFamily == 1 
+    ? [
+        {
+          clientType: 0,
+          firstName: values?.fname1f,
+          lastName: values?.lname1f,
+          rent: values?.rent1f,
+          sec: values?.sec1f,
+          lease: values?.lease1f,
+        },
+        {
+          clientType: 0,
+          firstName: values?.fname2f,
+          lastName: values?.lname2f,
+          rent: values?.rent2f,
+          sec: values?.sec2f,
+          lease: values?.lease2f,
+        },
+      ]
+    : [
+        {
+          clientType: 0,
+          firstName: values?.fname1f,
+          lastName: values?.lname1f,
+          rent: values?.rent1f,
+          sec: values?.sec1f,
+          lease: values?.lease1f,
+        }
+      ];
+
     let data = {
       util: addressPayload,
-      premises: premisesPayload
+      premises: premisesPayload,
+      ...(values?.fname1f && tenantPayload.length > 0 && { tenant: tenantPayload })
     }
-    dispatch(createAddressRequest(data))
+    if(values?.fname1f && tenantPayload.length > 0){
+      dispatch(createTenantRequest(data))
+    }else{
+      dispatch(createAddressRequest(data))
+    }
     toggleEdit()
   }
   const initialValues = {
@@ -127,6 +165,16 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
       inspectionDate : premisesDetails[0]?.inspectionDate,
       receivedDate: premisesDetails[0]?.receivedDate,
       needTermitesInspection: premisesDetails[0]?.needTermitesInspection,
+      fname1f: premisesDetails?.[0]?.tenant?.[0]?.firstName || "",
+      lname1f: premisesDetails?.[0]?.tenant?.[0]?.lastName || "",
+      rent1f: premisesDetails?.[0]?.tenant?.[0]?.rent1f || "",
+      sec1f: premisesDetails?.[0]?.tenant?.[0]?.sec1f || "",
+      lease1f: premisesDetails?.[0]?.tenant?.[0]?.lease1f || "",
+      fname2f: premisesDetails?.[0]?.tenant?.[1]?.firstName || "",
+      lname2f: premisesDetails?.[0]?.tenant?.[1]?.lastName || "",
+      rent2f: premisesDetails?.[0]?.tenant?.[1]?.rent2f || "",
+      sec2f: premisesDetails?.[0]?.tenant?.[1]?.sec2f || "",
+      lease2f: premisesDetails?.[0]?.tenant?.[1]?.lease2f || "",
     }
     :
     {
@@ -150,15 +198,50 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
       assessments: '',
       assessmentsPaidById: '',
       managingCompany: '',
-      isTwoFamily: '',
       needInspection	:'',
       inspectionDate : '',
       receivedDate: '',
       needTermitesInspection: '',
+      isTwoFamily: '',
+      fname1f:'',
+      lname1f:'',
+      rent1f:'',
+      sec1f:'',
+      lease1f:'',
+      fname2f:'',
+      lname2f:'',
+      rent2f:'',
+      sec2f:'',
+      lease2f:'',
     }
 
 
-  // const validationSchema = Yup.object().shape({
+  const validationSchema = Yup.object().shape({
+    fname1f: Yup.string().when('$isTwoFamily', {
+      is: (value) => value == 1 || value == 0,
+      then: () => Yup.string().required("First Name is required"),
+      otherwise: () => Yup.string().notRequired()
+    }),
+    lname1f: Yup.string().when('$isTwoFamily', {
+      is: (value) => value == 1 || value == 0,
+      then: () => Yup.string().required("Last Name is required"),
+      otherwise: () => Yup.string().notRequired()
+    }),
+    fname2f: Yup.string().when('$isTwoFamily', {
+      is: (value) => value == 1,
+      then: () => Yup.string().required("If Two family, Second tenant is required"),
+      otherwise: () => Yup.string().notRequired()
+    }),
+    lname2f: Yup.string().when('$isTwoFamily', {
+      is: (value) => value == 1,
+      then: () => Yup.string().required("If Two family, Second tenant is required"),
+      otherwise: () => Yup.string().notRequired()
+    }),
+    isTwoFamily: Yup.string().when('$fname1f', {
+      is: (value) => value != undefined || value != null,
+      then: () => Yup.string().required("Tenant Family Type is required"),
+      otherwise: () => Yup.string().notRequired()
+    }),
   //   scheduleDate: Yup.date().required('Schedule date is required'),
   //   receivedDate: Yup.date().required('Received date is required'),
   //   premisesType: Yup.string().required('Premises type is required'),
@@ -195,13 +278,14 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
   //   premisesScheduleDate: Yup.date().required('Premises schedule date is required'),
   //   premisesRecievedDate: Yup.date().required('Premises received date is required'),
   //   premisesTermites: Yup.boolean().required('Termites inspection status is required'),
-  // });
+  });
 
   return (
     <>
       {isEdit ?
         (
-          <Formik initialValues={initialPremisesValues} onSubmit={handleSubmit} >
+          <Formik initialValues={initialPremisesValues} 
+          validationSchema={validationSchema} onSubmit={handleSubmit} >
             {({
               handleChange,
               handleSubmit,

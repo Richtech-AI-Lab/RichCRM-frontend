@@ -76,6 +76,9 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
                 <ul className="card-details">
                     <li>
                         <span className={`left-txt flex items-center`}>Email</span>
+                        {form?.errors["email"] && form?.touched["email"] && (
+                        <span className="text-sm text-red-500">{form.errors["email"]}</span>
+                    )}
                         <input
                             className="text-right p-0 border-none focus:ring-transparent"
                             name="email"
@@ -84,11 +87,12 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
                             onBlur={handleBlur}
                             value={values?.email}
                         /></li>
-                    {form?.errors["email"] && form?.touched["email"] && (
-                        <span className="text-sm text-red-500">{form.errors["email"]}</span>
-                    )}
+                   
                     <li>
                         <span className={`left-txt flex items-center`}>Cell Phone</span>
+                        {form?.errors["cellNumber"] && form?.touched["cellNumber"] && (
+                        <span className="text-sm text-red-500">{form.errors["cellNumber"]}</span>
+                    )}
                         <input
                             className="text-right p-0 border-none focus:ring-transparent"
                             name="cellNumber"
@@ -98,9 +102,7 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
                             onBlur={handleBlur}
                             value={values?.cellNumber}
                         /></li>
-                    {form?.errors["cellNumber"] && form?.touched["cellNumber"] && (
-                        <span className="text-sm text-red-500">{form.errors["cellNumber"]}</span>
-                    )}
+
 
                     <li>
                         {optionalFields.workNumber && (

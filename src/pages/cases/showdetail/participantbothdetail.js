@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const ParticipantBothDetail = ({ client, organization, title, address }) => {
+const ParticipantBothDetail = ({ client, organization, title }) => {
 
 
   return (
@@ -43,7 +43,7 @@ const ParticipantBothDetail = ({ client, organization, title, address }) => {
           </li>
           <li>
             <span className="left-txt flex items-center">Mailing address</span>
-            <span className="left-txt flex items-center">{address[0]?.addressLine1} {address[0]?.addressLine2} {address[0]?.city} {address[0]?.state} {address[0]?.zipCode} </span>
+            <span className="left-txt flex items-center">{client[0]?.addressLine1} {client[0]?.addressLine2} {client[0]?.city} {client[0]?.state} {client[0]?.zipCode} </span>
           </li>
           {/* {client[0]?.line && <li>
             <span className="left-txt flex items-center" >Line</span>
@@ -79,7 +79,7 @@ const ParticipantBothDetail = ({ client, organization, title, address }) => {
           </li>
           <li>
             <span className="left-txt flex items-center">Mailing address</span>
-            <span className="left-txt flex items-center">{address[0]?.addressLine1} {address[0]?.addressLine2} {address[0]?.city} {address[0]?.state} {address[0]?.zipCode} </span>
+            <span className="left-txt flex items-center">{organization[0]?.addressLine1} {organization[0]?.addressLine2} {organization[0]?.city} {organization[0]?.state} {organization[0]?.zipCode} </span>
           </li>
           {/* {address[0] && Object.keys(address[0]).some(key =>
             ['addressLine1', 'addressLine2', 'city', 'state', 'zipCode'].includes(key) && address[0][key]

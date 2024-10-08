@@ -10,15 +10,20 @@ import PurchaserParticipantForm from "../editDetail/purchaserParticipantForm";
 import { updateClientByIdRequest } from "../../../redux/actions/clientActions";
 import { createAddressRequest } from "../../../redux/actions/utilsActions";
 import ParticipantBothDetail from "../showdetail/participantbothdetail";
+import { createAttorneyRequest } from "../../../redux/actions/contactActions";
+import AttorneyDetails from "../showdetail/attorneydetail";
+import { updateCaseContactRequest } from "../../../redux/actions/caseAction";
 
 
 const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType }) => {
   const dispatch = useDispatch();
   const { client } = useSelector((state) => state.client);
   const { cases } = useSelector((state) => state.case.casesData);
+  const caseObj = cases?.find(item => item.caseId === localStorage.getItem('c_id'));
   const clientDetails = client?.data?.length > 0 ? client?.data : null;
-  const { data } = useSelector((state) => state?.utils?.address);
-  const addressDetails = data?.length > 0 ? data : null;
+  const attorneyDetails = useSelector((state) => state.contact.attorney);
+  // const { data } = useSelector((state) => state?.utils?.address);
+  // const addressDetails = data?.length > 0 ? data : null;
 
   const toggleEdit = () => {
     setIsEdit(prevState => !prevState);
@@ -35,7 +40,7 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType }) => {
   const handleSubmit = (values, { setSubmitting }) => {
     // Split the name into firstName and lastName
     const [firstName, lastName] = values?.name?.split(' ');
-
+    const attorneyIds = attorneyDetails?.map(attorney => attorney.contactId);
     // Create the payload for the first API call
     const firstApiPayload = {
       firstName,
@@ -62,7 +67,13 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType }) => {
       client: firstApiPayload,
       util: secondApiPayload
     }
+
+    const casePayload = {
+      ...caseObj,
+      contacts: attorneyIds
+    }
     dispatch(createAddressRequest(data))
+    dispatch(updateCaseContactRequest(casePayload))
     toggleEdit()
   }
   const handleAttorneysChange = (attorneys, handleChange) => {
@@ -77,11 +88,11 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType }) => {
     wechatAccount: clientDetails[0]?.wechatAccount || '',
     whatsAppNumber: clientDetails[0]?.whatsAppNumber || '',
     lineNumber: clientDetails[0]?.lineNumber || '',
-    addressLine1: addressDetails[0]?.addressLine1 || '',
-    addressLine2: addressDetails[0]?.addressLine2 || '',
-    city: addressDetails[0]?.city || '',
-    state: addressDetails[0]?.state || '',
-    zipCode: addressDetails[0]?.zipCode || '',
+    addressLine1: clientDetails[0]?.addressLine1 || '',
+    addressLine2: clientDetails[0]?.addressLine2 || '',
+    city: clientDetails[0]?.city || '',
+    state: clientDetails[0]?.state || '',
+    zipCode: clientDetails[0]?.zipCode || '',
   } : {
     name: '',
     ssn: '',
@@ -152,7 +163,7 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType }) => {
                   <PurchaserParticipantForm title={ caseType  ? "Seller" : "Purchaser"} handleChange={handleChange} setFieldValue={setFieldValue} values={values} form={{ errors, touched }} initialValues={initialPurchaserValues} />
                 </div>
                 <div className="col-span-6">
-                <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} errors={errors.attorneys || []}
+                <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} attorneyDetails={attorneyDetails} errors={errors.attorneys || []}
                     touched={touched.attorneys || []} setAttorneys={(attorneys) => handleAttorneysChange(attorneys, handleChange)} />
                   {/* <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} errors={errors.attorneys || []}
                     touched={touched.attorneys || []} setAttorneys={(attorneys) => handleAttorneysChange(attorneys, handleChange)} />
@@ -165,7 +176,9 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType }) => {
         </Formik>)
         :
         (<div className="grid grid-cols-12 gap-6">
-          <div className="col-span-6"><ParticipantBothDetail client={clientDetails}  title={ caseType  ? "Seller" : "Purchaser"} address={addressDetails} /></div></div>)}
+          <div className="col-span-6"><ParticipantBothDetail client={clientDetails} attorneyDetails={attorneyDetails}  title={ caseType  ? "Seller" : "Purchaser"}  /></div>
+         {attorneyDetails?.length > 0  && <div className="col-span-6"><AttorneyDetails  attorneyDetails={attorneyDetails}  title={"Attorney"}  /></div>}
+         </div>)}
     </>
   );
 };

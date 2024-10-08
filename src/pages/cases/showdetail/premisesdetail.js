@@ -143,7 +143,7 @@ const PremisesDetail = ({ premises, address }) => {
             <ul className="card-details">
               <li>
                 <span className="left-txt flex items-center" >Need Engineer Inspection</span>
-                <span className="left-txt flex items-center" >{premises[0]?.needInspection == 1 ? "Yes": "No"}</span>
+                <span className="left-txt flex items-center" >{premises[0]?.needInspection == 1 ? "Yes" : "No"}</span>
               </li>
               <li>
                 <span className="left-txt flex items-center" >Schedule Date</span>
@@ -168,41 +168,44 @@ const PremisesDetail = ({ premises, address }) => {
             <ul className="card-details">
               <li>
                 <span className="left-txt flex items-center" >Need Termites Inspection</span>
-                <span className="left-txt flex items-center" >{premises[0]?.needTermitesInspection  == 1 ? "Yes": "No"}</span>
+                <span className="left-txt flex items-center" >{premises[0]?.needTermitesInspection == 1 ? "Yes" : "No"}</span>
               </li>
 
             </ul> : ""}
         </div>
-        <div className="bg-white p-4 rounded-2xl mb-5">
-          {<div className="flex justify-between items-center mb-5">
-            <span className="text-base text-secondary-800 font-medium">Tenant</span>
-            {/* <div className="flex items-center gap-2">
-          <BsThreeDotsVertical className="text-lg opacity-40" />
-        </div> */}
-          </div>}
-          {premises?.length > 0 ?
-            <ul className="card-details">
+        {premises[0].tenant?.length > 0 &&
+          <div className="bg-white p-4 rounded-2xl mb-5">
+            {<div className="flex justify-between items-center mb-5">
+              <span className="text-base text-secondary-800 font-medium">Tenant</span>
+            </div>}
+            {premises[0].tenant?.length > 0 && (
+              <ul className="card-details">
+                {premises[0].tenant?.map((tenant, index) => (
+                  <>
+                    <li key={index}>
+                      <span className="left-txt flex items-center">Tenant Name</span>
+                      <span className="left-txt flex items-center">{`${tenant.firstName} ${tenant.lastName}`}</span>
+                    </li>
+                    <li>
+                      <span className="left-txt flex items-center">Rent</span>
+                      <span className="left-txt flex items-center">NA</span>
+                    </li>
+                    <li>
+                      <span className="left-txt flex items-center">Sec.</span>
+                      <span className="left-txt flex items-center">NA</span>
+                    </li>
+                    <li>
+                      <span className="left-txt flex items-center">Lease</span>
+                      <span className="left-txt flex items-center">NA</span>
+                    </li>
+                  </>
+                ))}
 
-              <li>
-                <span className="left-txt flex items-center" > Tenant Name</span>
-                <span className="left-txt flex items-center" > NA</span>
-              </li>
-              <li>
-                <span className="left-txt flex items-center" > Rent</span>
-                <span className="left-txt flex items-center" > NA </span>
-              </li>
-              <li>
-                <span className="left-txt flex items-center" > Sec.</span>
-                <span className="left-txt flex items-center" > NA </span>
-              </li>
+              </ul>
+            )}
 
-              <li>
-                <span className="left-txt flex items-center" > Lease</span>
-                <span className="left-txt flex items-center" >NA</span>
-              </li>
-
-            </ul> : ""}
-        </div>
+          </div>
+        }
       </div>
 
     </>
