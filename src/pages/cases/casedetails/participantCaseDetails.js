@@ -10,6 +10,7 @@ import PurchaserParticipantForm from "../editDetail/purchaserParticipantForm";
 import { updateClientByIdRequest } from "../../../redux/actions/clientActions";
 import { createAddressRequest } from "../../../redux/actions/utilsActions";
 import ParticipantBothDetail from "../showdetail/participantbothdetail";
+import { createAttorneyRequest } from "../../../redux/actions/contactActions";
 
 
 const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType }) => {
@@ -17,6 +18,7 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType }) => {
   const { client } = useSelector((state) => state.client);
   const { cases } = useSelector((state) => state.case.casesData);
   const clientDetails = client?.data?.length > 0 ? client?.data : null;
+  const attorneyDetails = useSelector((state) => state.contact.attorney);
   // const { data } = useSelector((state) => state?.utils?.address);
   // const addressDetails = data?.length > 0 ? data : null;
 
@@ -63,6 +65,7 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType }) => {
       util: secondApiPayload
     }
     dispatch(createAddressRequest(data))
+    // dispatch(createAttorneyRequest(values.attorneys))
     toggleEdit()
   }
   const handleAttorneysChange = (attorneys, handleChange) => {
@@ -152,7 +155,7 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType }) => {
                   <PurchaserParticipantForm title={ caseType  ? "Seller" : "Purchaser"} handleChange={handleChange} setFieldValue={setFieldValue} values={values} form={{ errors, touched }} initialValues={initialPurchaserValues} />
                 </div>
                 <div className="col-span-6">
-                <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} errors={errors.attorneys || []}
+                <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} attorneyDetails={attorneyDetails} errors={errors.attorneys || []}
                     touched={touched.attorneys || []} setAttorneys={(attorneys) => handleAttorneysChange(attorneys, handleChange)} />
                   {/* <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} errors={errors.attorneys || []}
                     touched={touched.attorneys || []} setAttorneys={(attorneys) => handleAttorneysChange(attorneys, handleChange)} />
