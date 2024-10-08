@@ -9,6 +9,9 @@ import searchCase from "../assets/images/searchCase.svg";
 import searchUser from "../assets/images/searchUser.svg";
 import contactIcon from "../assets/images/contact.svg";
 import MultiFileIcon from "../assets/images/multifie.svg";
+import CalendarIcon from "../assets/images/calendar.svg";
+import DashboardIcon from "../assets/images/dashboard.svg";
+import SettingIcon from "../assets/images/settings.svg";
 
 export const IMAGES = {
   profile: avatarImage,
@@ -22,5 +25,8 @@ export const IMAGES = {
   searchuser : searchUser,
   contacticon : contactIcon,
   multifileicon : MultiFileIcon,
+  calendaricon : CalendarIcon,
+  dashboardicon : DashboardIcon,
+  settingicon : SettingIcon,
 
 };

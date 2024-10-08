@@ -44,8 +44,48 @@ const SideNav = ({ isDrawerOpen, toggleDrawer, setTitle }) => {
     // }
   };
 
+//   return (
+//     <Sidebar className={`w-[160px] xl:w-[264px] sidebar ${isDrawerOpen ? '' : 'sidebar-toggle'} fixed bg-input-surface`}>
+//       {/* <h1 className="text-secondary-700 text-xl font-bold pt-5 pb-3 px-4 whitespace-nowrap">MG Law Group</h1> */}
+//       {/* <img src={logo}/> */}
+//       <img
+//                   src={IMAGES.logo}
+//                   alt="logo"
+//                   className="mr-4 w-15 ml-5 mt-5 sidebar-logo"
+//                 />
+//       <Sidebar.Items className="mt-10 sidebar-items flex flex-col justify-between h-[calc(100vh-140px)]">
+//         <Sidebar.ItemGroup>
+//           <Sidebar.Item as={Link} to={ROUTES.DASHBOARD} icon={() => (
+//             <img src={IMAGES.dashboardicon} alt="Dashboard" className="w-6 h-6 object-contain"/>)} className={isActive(ROUTES.DASHBOARD) ? "active-item" : ""} onClick={() => handleTitleChange('Dashboard')}>
+//             Dashboard
+//           </Sidebar.Item>
+//           <Sidebar.Item as={Link} to={ROUTES.CASES} icon={FiFileText}  className={isActive(ROUTES.CASES) ? "active-item" : ""} onClick={() => handleTitleChange('Cases')}>
+//             Cases
+//           </Sidebar.Item>
+//           <Sidebar.Item as={Link} to={ROUTES.CALENDAR} icon={BiCalendar} className={isActive(ROUTES.CALENDAR) ? "active-item" : ""} onClick={() => handleTitleChange('Calendar')}>
+//             Calender
+//           </Sidebar.Item>
+//           <Sidebar.Item as={Link} to={ROUTES.CONTACTS} icon={PiUsersThree} className={isActive(ROUTES.CONTACTS) ? "active-item" : ""} onClick={() => handleTitleChange('Contacts')}>
+//             Contacts
+//           </Sidebar.Item>
+//           <Sidebar.Item as={Link} to={ROUTES.DOCUMENTS} icon={PiFolderSimple} className={isActive(ROUTES.DOCUMENTS) ? "active-item" : ""} onClick={() => handleTitleChange('Documents')}>
+//             Documents
+//           </Sidebar.Item>
+//         </Sidebar.ItemGroup>
+//         <Sidebar.ItemGroup>
+//           {/* <Sidebar.Item as={Link} to="/rich-crm/links" icon={PiLinkSimpleHorizontal} className={isActive("/rich-crm/links") ? "active-item" : ""} onClick={() => handleTitleChange('External Links')}>
+//             External Links
+//           </Sidebar.Item> */}
+//           <Sidebar.Item as={Link} to={ROUTES.SETTINGS} icon={IoSettingsOutline} className={isActive(ROUTES.SETTINGS) ? "active-item" : ""} onClick={() => handleTitleChange('Settings')}>
+//             Settings
+//           </Sidebar.Item>
+//         </Sidebar.ItemGroup>
+//       </Sidebar.Items>
+//     </Sidebar>
+//   );
+// };
   return (
-    <Sidebar className={`w-[160px] xl:w-[264px] sidebar ${isDrawerOpen ? '' : 'sidebar-toggle'} fixed bg-input-surface`}>
+     <Sidebar className={`w-[160px] xl:w-[264px] sidebar ${isDrawerOpen ? '' : 'sidebar-toggle'} fixed bg-input-surface`}>
       {/* <h1 className="text-secondary-700 text-xl font-bold pt-5 pb-3 px-4 whitespace-nowrap">MG Law Group</h1> */}
       {/* <img src={logo}/> */}
       <img
@@ -53,25 +93,26 @@ const SideNav = ({ isDrawerOpen, toggleDrawer, setTitle }) => {
                   alt="logo"
                   className="mr-4 w-15 ml-5 mt-5 sidebar-logo"
                 />
-      <Sidebar.Items className="mt-10 sidebar-items flex flex-col justify-between h-[calc(100vh-140px)]">
+       <Sidebar.Items className="mt-10 sidebar-items flex flex-col justify-between h-[calc(100vh-140px)]">
         <Sidebar.ItemGroup>
-          <Sidebar.Item as={Link} to={ROUTES.DASHBOARD} icon={PiLayout} className={isActive(ROUTES.DASHBOARD) ? "active-item" : ""} onClick={() => handleTitleChange('Dashboard')}>
+          <Sidebar.Item as={Link} to={ROUTES.DASHBOARD} icon={() => (
+            <img src={IMAGES.dashboardicon} alt="Dashboard" className="w-5 h-6" />)} className={`${isActive(ROUTES.DASHBOARD) ? "active-item" : ""}  h-14 `} onClick={() => handleTitleChange('Dashboard')}>
             Dashboard
           </Sidebar.Item>
           <Sidebar.Item as={Link} to={ROUTES.CASES} icon={() => (
-            <img src={IMAGES.searchcase} alt="Cases" className="h-6 w-6"  />)} 
-            className={isActive(ROUTES.CASES) ? "active-item" : ""} onClick={() => handleTitleChange('Cases')}>
+            <img src={IMAGES.searchcase} alt="Cases" className="w-5 h-6"  />)} className={`${isActive(ROUTES.CASES) ? "active-item" : ""}  h-14`} onClick={() => handleTitleChange('Cases')}>
             Cases
           </Sidebar.Item>
-          <Sidebar.Item as={Link} to={ROUTES.CALENDAR} icon={BiCalendar} className={isActive(ROUTES.CALENDAR) ? "active-item" : ""} onClick={() => handleTitleChange('Calendar')}>
+          <Sidebar.Item as={Link} to={ROUTES.CALENDAR} icon={() => (
+            <img src={IMAGES.calendaricon} alt="Calendar" className="w-5 h-6" />)} className={`${isActive(ROUTES.CALENDAR) ? "active-item" : ""} h-14 `} onClick={() => handleTitleChange('Calendar')}>
             Calender
           </Sidebar.Item>
           <Sidebar.Item as={Link} to={ROUTES.CONTACTS} icon={() => (
-            <img src={IMAGES.contacticon} alt="Contacts" className="h-6 w-6"  />)} className={isActive(ROUTES.CONTACTS) ? "active-item" : ""} onClick={() => handleTitleChange('Contacts')}>
+            <img src={IMAGES.contacticon} alt="Contacts" className="w-5 h-6" />)} className={`${isActive(ROUTES.CONTACTS) ? "active-item" : ""}  h-14 `} onClick={() => handleTitleChange('Contacts')}>
             Contacts
           </Sidebar.Item>
           <Sidebar.Item as={Link} to={ROUTES.DOCUMENTS} icon={() => (
-            <img src={IMAGES.multifileicon} alt="Documents" className="h-6 w-6"  />)} className={isActive(ROUTES.DOCUMENTS) ? "active-item" : ""} onClick={() => handleTitleChange('Documents')}>
+            <img src={IMAGES.multifileicon} alt="Documents" className="w-5 h-6" />)} className={`${isActive(ROUTES.DOCUMENTS) ? "active-item" : ""} h-14`} onClick={() => handleTitleChange('Documents')}>
             Documents
           </Sidebar.Item>
         </Sidebar.ItemGroup>
@@ -79,7 +120,8 @@ const SideNav = ({ isDrawerOpen, toggleDrawer, setTitle }) => {
           {/* <Sidebar.Item as={Link} to="/rich-crm/links" icon={PiLinkSimpleHorizontal} className={isActive("/rich-crm/links") ? "active-item" : ""} onClick={() => handleTitleChange('External Links')}>
             External Links
           </Sidebar.Item> */}
-          <Sidebar.Item as={Link} to={ROUTES.SETTINGS} icon={IoSettingsOutline} className={isActive(ROUTES.SETTINGS) ? "active-item" : ""} onClick={() => handleTitleChange('Settings')}>
+          <Sidebar.Item as={Link} to={ROUTES.SETTINGS} icon={() => (
+            <img src={IMAGES.settingicon} alt="Documents" className="w-5 h-6" />)} className={`${isActive(ROUTES.SETTINGS) ? "active-item" : ""}  h-14` } onClick={() => handleTitleChange('Settings')}>
             Settings
           </Sidebar.Item>
         </Sidebar.ItemGroup>
