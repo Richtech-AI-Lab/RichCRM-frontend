@@ -12,12 +12,14 @@ import { createAddressRequest } from "../../../redux/actions/utilsActions";
 import ParticipantBothDetail from "../showdetail/participantbothdetail";
 import { createAttorneyRequest } from "../../../redux/actions/contactActions";
 import AttorneyDetails from "../showdetail/attorneydetail";
+import { updateCaseContactRequest } from "../../../redux/actions/caseAction";
 
 
 const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType }) => {
   const dispatch = useDispatch();
   const { client } = useSelector((state) => state.client);
   const { cases } = useSelector((state) => state.case.casesData);
+  const caseObj = cases?.find(item => item.caseId === localStorage.getItem('c_id'));
   const clientDetails = client?.data?.length > 0 ? client?.data : null;
   const attorneyDetails = useSelector((state) => state.contact.attorney);
   // const { data } = useSelector((state) => state?.utils?.address);
@@ -38,7 +40,7 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType }) => {
   const handleSubmit = (values, { setSubmitting }) => {
     // Split the name into firstName and lastName
     const [firstName, lastName] = values?.name?.split(' ');
-
+    const attorneyIds = attorneyDetails?.map(attorney => attorney.contactId);
     // Create the payload for the first API call
     const firstApiPayload = {
       firstName,
@@ -65,8 +67,13 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType }) => {
       client: firstApiPayload,
       util: secondApiPayload
     }
+
+    const casePayload = {
+      ...caseObj,
+      contacts: attorneyIds
+    }
     dispatch(createAddressRequest(data))
-    // dispatch(createAttorneyRequest(values.attorneys))
+    dispatch(updateCaseContactRequest(casePayload))
     toggleEdit()
   }
   const handleAttorneysChange = (attorneys, handleChange) => {

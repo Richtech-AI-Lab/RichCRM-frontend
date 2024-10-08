@@ -22,7 +22,9 @@ import {
     SET_SEARCH_CASES,
     UPDATE_CASE_DATE_REQUEST,
     CLEAR_DATA,
-    UPDATE_CASE_DATE_SUCCESS
+    UPDATE_CASE_DATE_SUCCESS,
+    UPDATE_CASE_CONTACT_REQUEST,
+    UPDATE_CASE_CONTACT_SUCCESS
 } from "../type";
 
 
@@ -148,13 +150,19 @@ export const updateCaseDateRequest = (payload) => ({
     payload,
 });
 
-
-
-export const clearCasesData = () => ({
-    type: CLEAR_DATA
-});
-
 export const caseDateSuccess = (payload) => ({
     type: UPDATE_CASE_DATE_SUCCESS,
     payload,
+});
+export const updateCaseContactRequest = (payload) => ({
+    type: UPDATE_CASE_CONTACT_REQUEST,
+    payload,
+});
+export const updateCaseContactSuccess = (payload) => ({
+    type: UPDATE_CASE_CONTACT_SUCCESS,
+    payload,
+});
+
+export const clearCasesData = () => ({
+    type: CLEAR_DATA
 });

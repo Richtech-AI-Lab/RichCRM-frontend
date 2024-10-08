@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { handleError } from "../../utils/eventHandler";
 import { createAttorneySuccess, deleteAttorneySuccess, getContactFailure, getContactSuccess, setSelectedContact, updateContactFailure, updateContactSuccess } from "../actions/contactActions";
 import { all } from "redux-saga/effects";
+import { updateCaseContactRequest } from "../actions/caseAction";
 
 function* getContactByType(action) {
   try {

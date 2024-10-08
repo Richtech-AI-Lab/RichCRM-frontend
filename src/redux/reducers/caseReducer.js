@@ -20,6 +20,7 @@ import {
   SET_SEARCH_CASES,
   UPDATE_CASE_DATE_SUCCESS,
   READ_CASE_BY_CONTACT,
+  UPDATE_CASE_CONTACT_SUCCESS,
 } from "../type";
 
 const initialCasesState = {
@@ -110,6 +111,17 @@ const casesReducer = (state = initialCasesState, action) => {
         error: null,
       };
     case UPDATE_CASE_DATE_SUCCESS:
+      return {
+        ...state,
+        cases: state.cases.map((caseItem) =>
+          caseItem.caseId === action.payload.caseId
+            ? { ...caseItem, ...action.payload }
+            : caseItem
+        ),
+        loading: false,
+        error: null,
+      };
+      case UPDATE_CASE_CONTACT_SUCCESS:
       return {
         ...state,
         cases: state.cases.map((caseItem) =>
