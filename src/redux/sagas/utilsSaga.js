@@ -102,7 +102,7 @@ function* createAddress(action) {
           },
         };
         yield put(updatePremisesRequest(updatedPayload));
-        toast.success("address updated!");
+        toast.success("Address updated!");
       }else if (payload.contact) {
         yield put(registerAddressSuccess(response.data));
         updatedPayload = {
@@ -117,7 +117,7 @@ function* createAddress(action) {
         };
   
         yield put(updateContactRequest(updatedPayload.contact));
-        toast.success("address updated!");
+        toast.success("Address updated!");
       }else if (payload.organization) {
         updatedPayload = {
           organization: {
@@ -175,7 +175,7 @@ function* createAddressThenContact(action) {
         };
   
         yield put(createContactRequest(updatedPayload.contact));
-        toast.success("address updated!");
+        toast.success("Address updated!");
       }
     } 
 
