@@ -30,8 +30,10 @@ const CaseCardData = () => {
   const caseTypeLabel = caseTypeOptions.find(option => option.value === casedetails?.caseType)?.label || "Unknown";
   const { premises, loading } = useSelector((state) => state.premises);
   const { client } = useSelector((state) => state.client);
+  const { organization } = useSelector((state) => state.organization);
   const utilData = useSelector((state) => state?.utils);
   const clientDetails = client?.data?.length > 0 ? client?.data : null;
+  const organizationDetails = organization?.data?.length > 0 ? organization?.data : null;
   const premisesDetails = premises?.data?.length > 0 ? premises?.data[0] : null;
   const premisesTypeLabel = premisesTypes.find(option => option.value === premisesDetails?.propertyType)?.label || "Unknown";
 
@@ -154,10 +156,11 @@ const CaseCardData = () => {
               onClick={handleCaseDetails}
             />
           }
-          {casedetails?.clientType == 0 && <ContactCard
-            clientDetails={clientDetails}
+          <ContactCard
+            clientDetails={casedetails?.clientType ==0 ? clientDetails : organizationDetails}
             casedetails={casedetails}
-          />}
+
+          />
            {/* {casedetails?.clientType == 0 && <ContactCard
             clientDetails={clientDetails}
             casedetails={casedetails}

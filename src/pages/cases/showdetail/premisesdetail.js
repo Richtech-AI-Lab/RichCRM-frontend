@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { CASETYPE, PREMISES_TYPE } from "../../../constants/constants";
+import { format } from "date-fns";
 
 
 const PremisesDetail = ({ premises, address }) => {
@@ -101,14 +102,18 @@ const PremisesDetail = ({ premises, address }) => {
               <li>
                 <span className="left-txt flex items-center">Maintenance fee</span>
                 <span className="left-txt flex items-center">
-                  {premises[0]?.maintenanceFee === undefined || premises[0]?.maintenanceFee === ""
-                    ? ""
-                    : `${premises[0].maintenanceFee} ${premises[0]?.maintenanceFeePer === 1
-                      ? 'per year'
-                      : premises[0]?.maintenanceFeePer === 2
+                  {
+                    premises[0]?.maintenanceFee === undefined || premises[0]?.maintenanceFee === ""
+                      ? ""
+                      : `${premises[0].maintenanceFee} ${premises[0]?.maintenanceFeePer == 0
                         ? 'per month'
-                        : ''
-                    }`}
+                        : premises[0]?.maintenanceFeePer == 1
+                          ? 'per quarter'
+                          : premises[0]?.maintenanceFeePer == 2
+                            ? 'per year'
+                            : ''
+                      }`
+                  }
                 </span>
               </li>
               <li>
@@ -138,15 +143,15 @@ const PremisesDetail = ({ premises, address }) => {
             <ul className="card-details">
               <li>
                 <span className="left-txt flex items-center" >Need Engineer Inspection</span>
-                <span className="left-txt flex items-center" >NA</span>
+                <span className="left-txt flex items-center" >{premises[0]?.needInspection == 1 ? "Yes": "No"}</span>
               </li>
               <li>
                 <span className="left-txt flex items-center" >Schedule Date</span>
-                <span className="left-txt flex items-center" >NA</span>
+                <span className="left-txt flex items-center" >{premises[0]?.inspectionDate && format(premises[0]?.inspectionDate, 'MMMM dd, yyyy')}</span>
               </li>
               <li>
                 <span className="left-txt flex items-center" >Received Date</span>
-                <span className="left-txt flex items-center" >NA</span>
+                <span className="left-txt flex items-center" >{premises[0]?.receivedDate && format(premises[0]?.receivedDate, 'MMMM dd, yyyy')}</span>
               </li>
 
 
@@ -162,22 +167,9 @@ const PremisesDetail = ({ premises, address }) => {
           {premises?.length > 0 ?
             <ul className="card-details">
               <li>
-                <span className="left-txt flex items-center" >Need Engineer Inspection</span>
-                <span className="left-txt flex items-center" >NA</span>
-              </li>
-              <li>
-                <span className="left-txt flex items-center" >Schedule Date</span>
-                <span className="left-txt flex items-center" >NA</span>
-              </li>
-              <li>
-                <span className="left-txt flex items-center" >Received Date</span>
-                <span className="left-txt flex items-center" > NA</span>
-              </li>
-              <li>
                 <span className="left-txt flex items-center" >Need Termites Inspection</span>
-                <span className="left-txt flex items-center" > NA</span>
+                <span className="left-txt flex items-center" >{premises[0]?.needTermitesInspection  == 1 ? "Yes": "No"}</span>
               </li>
-
 
             </ul> : ""}
         </div>

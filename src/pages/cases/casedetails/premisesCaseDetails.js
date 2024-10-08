@@ -49,6 +49,10 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
       assessmentsPaidById: values?.assessmentsPaidById,
       managingCompany: values?.managingCompany,
       isTwoFamily: values?.isTwoFamily,
+      needInspection	: values?.needInspection,
+      inspectionDate: values?.inspectionDate,
+      receivedDate: values?.receivedDate,
+      needTermitesInspection: values?.needTermitesInspection,
     };
     let data = {
       util: addressPayload,
@@ -119,6 +123,10 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
       assessmentsPaidById: premisesDetails[0]?.assessmentsPaidById,
       managingCompany: premisesDetails[0]?.managingCompany,
       isTwoFamily: premisesDetails[0]?.isTwoFamily,
+      needInspection	: premisesDetails[0]?.needInspection,
+      inspectionDate : premisesDetails[0]?.inspectionDate,
+      receivedDate: premisesDetails[0]?.receivedDate,
+      needTermitesInspection: premisesDetails[0]?.needTermitesInspection,
     }
     :
     {
@@ -143,6 +151,10 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
       assessmentsPaidById: '',
       managingCompany: '',
       isTwoFamily: '',
+      needInspection	:'',
+      inspectionDate : '',
+      receivedDate: '',
+      needTermitesInspection: '',
     }
 
 

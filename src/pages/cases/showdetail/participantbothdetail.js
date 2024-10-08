@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const ParticipantDetail = ({ client, title, address }) => {
+const ParticipantBothDetail = ({ client, organization, title, address }) => {
 
 
   return (
@@ -58,9 +58,41 @@ const ParticipantDetail = ({ client, title, address }) => {
               </li>
             )} */}
         </ul> : ""}
+
+        {organization?.length > 0 ?
+        <ul className="card-details">
+          <li>
+            <span className="left-txt flex items-center" > Name</span>
+            <span className="left-txt flex items-center" >{`${organization[0]?.organizationName}`}</span>
+          </li>
+          <li>
+            <span className="left-txt flex items-center" > Email</span>
+            <span className="left-txt flex items-center" > {organization[0]?.email} </span>
+          </li>
+          <li>
+            <span className="left-txt flex items-center" > Cell Phone</span>
+            <span className="left-txt flex items-center" >{organization[0]?.cellNumber}</span>
+          </li>
+          <li>
+            <span className="left-txt flex items-center" > Website</span>
+            <span className="left-txt flex items-center" >{organization[0]?.website}</span>
+          </li>
+          <li>
+            <span className="left-txt flex items-center">Mailing address</span>
+            <span className="left-txt flex items-center">{address[0]?.addressLine1} {address[0]?.addressLine2} {address[0]?.city} {address[0]?.state} {address[0]?.zipCode} </span>
+          </li>
+          {/* {address[0] && Object.keys(address[0]).some(key =>
+            ['addressLine1', 'addressLine2', 'city', 'state', 'zipCode'].includes(key) && address[0][key]
+          ) && (
+              <li>
+                <span className="left-txt flex items-center">Mailing address</span>
+                <span className="left-txt flex items-center">{address[0]?.addressLine1} {address[0]?.addressLine2} {address[0]?.city} {address[0]?.state} {address[0]?.zipCode} </span>
+              </li>
+            )} */}
+        </ul> : ""}
     </div>
 
   )
 };
 
-export default ParticipantDetail;
+export default ParticipantBothDetail;

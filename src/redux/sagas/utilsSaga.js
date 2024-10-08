@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 import { handleError } from "../../utils/eventHandler";
 import { updateClientByIdRequest } from "../actions/clientActions";
 import { createContactRequest, updateContactRequest } from "../actions/contactActions";
+import { updateOrganizationByIdRequest } from "../actions/organizationActions";
 
 function* registerAddress(action) {
   try {
@@ -97,6 +98,20 @@ function* createAddress(action) {
   
         yield put(updateContactRequest(updatedPayload.contact));
         toast.success("address updated!");
+      }else if (payload.organization) {
+        updatedPayload = {
+          organization: {
+            ...payload.organization,
+            addressId: response.data?.data[0]?.addressId,
+          },
+          util: {
+            ...payload.util,
+            addressId: response.data?.data[0]?.addressId,
+          },
+        };
+
+        yield put(updateOrganizationByIdRequest(updatedPayload));
+        toast.success("Address updated!");
       }
     } 
 

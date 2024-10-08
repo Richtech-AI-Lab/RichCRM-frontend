@@ -6,13 +6,13 @@ import { sellerItems, buyerItems, titleMortgageItems } from "../../../utils/form
 import FormButton from "../../../components/formButton";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import ParticipantDetail from "../showdetail/participantdetail";
 import PurchaserParticipantForm from "../editDetail/purchaserParticipantForm";
 import { updateClientByIdRequest } from "../../../redux/actions/clientActions";
 import { createAddressRequest } from "../../../redux/actions/utilsActions";
+import ParticipantBothDetail from "../showdetail/participantbothdetail";
 
 
-const ParticipantCaseDetails = ({ isEdit, setIsEdit }) => {
+const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType }) => {
   const dispatch = useDispatch();
   const { client } = useSelector((state) => state.client);
   const { cases } = useSelector((state) => state.case.casesData);
@@ -149,7 +149,7 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit }) => {
             <form onSubmit={handleSubmit} className="participant-form">
               <div className="grid grid-cols-12 gap-6">
                 <div className="col-span-6">
-                  <PurchaserParticipantForm title={cases[0]?.caseType ? "Seller" : "Purchaser"} handleChange={handleChange} setFieldValue={setFieldValue} values={values} form={{ errors, touched }} initialValues={initialPurchaserValues} />
+                  <PurchaserParticipantForm title={ caseType  ? "Seller" : "Purchaser"} handleChange={handleChange} setFieldValue={setFieldValue} values={values} form={{ errors, touched }} initialValues={initialPurchaserValues} />
                 </div>
                 <div className="col-span-6">
                 <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} errors={errors.attorneys || []}
@@ -165,7 +165,7 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit }) => {
         </Formik>)
         :
         (<div className="grid grid-cols-12 gap-6">
-          <div className="col-span-6"><ParticipantDetail client={clientDetails} title={cases[0]?.caseType ? "Seller" : "Purchaser"} address={addressDetails} /></div></div>)}
+          <div className="col-span-6"><ParticipantBothDetail client={clientDetails}  title={ caseType  ? "Seller" : "Purchaser"} address={addressDetails} /></div></div>)}
     </>
   );
 };

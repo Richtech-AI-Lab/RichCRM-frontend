@@ -15,6 +15,7 @@ import AddFromContactModal from "../caseModal/addFromContactModal";
 import { IMAGES } from "../../constants/imagePath";
 import { useDispatch, useSelector } from "react-redux";
 import { cleanupAdditionalClientRequest, fetchAdditionalClientByIdsRequest } from "../../redux/actions/clientActions";
+import { fetchAdditionalOrganizationByIdsRequest } from "../../redux/actions/organizationActions";
 
 const ContactCard = ({
   clientDetails,
@@ -32,19 +33,30 @@ const ContactCard = ({
   const [addtionalInfo, setAdditionalInfo] = useState([]); // Modal state
   const [isAddFromContactsModalOpen, setIsAddFromContactsModalOpen] = useState(false); // Modal state
   const { additionalClient } = useSelector((state) => state.client);
+  const { additionalOrganization } = useSelector((state) => state.organization);
 
   useEffect(() => {
-    dispatch(fetchAdditionalClientByIdsRequest(casedetails?.additionalClients));
+    if(casedetails?.clientType ==0){
+      dispatch(fetchAdditionalClientByIdsRequest(casedetails?.additionalClients));
+    }else{
+      dispatch(fetchAdditionalOrganizationByIdsRequest(casedetails?.additionalOrganizations));
+    }
    return () => {
     dispatch(cleanupAdditionalClientRequest()); 
   };    
   }, []);
 
   useEffect(() => {
-    if (additionalClient?.length > 0) {
-      setAdditionalInfo(additionalClient)
+    if(casedetails?.clientType ==0){
+      if (additionalClient?.length > 0) {
+        setAdditionalInfo(additionalClient)
+      }
+    }else{
+      if (additionalOrganization?.length > 0) {
+        setAdditionalInfo(additionalOrganization)
+      }
     }
-  }, [additionalClient]);
+  }, [additionalClient, additionalOrganization]);
 
   const toggleAddFromContactsModal = () => {
     setIsAddFromContactsModalOpen(!isAddFromContactsModalOpen);
@@ -70,10 +82,17 @@ const ContactCard = ({
                   alt="Profile"
                   className="mr-4 w-10 h-10 rounded-full"
                 />
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <span className="left-txt font-medium text-secondary-800">{`${data.firstName} ${data.lastName}`}</span>
-                  <span className="left-txt font-medium text-secondary-800 text-sm">Purchaser (Client)</span>
-                </div>
+                {
+                  casedetails?.clientType ==0 ?
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <span className="left-txt font-medium text-secondary-800">{`${data.firstName} ${data.lastName}`}</span>
+                      <span className="left-txt font-medium text-secondary-800 text-sm">Purchaser (Client)</span>
+                    </div> :
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <span className="left-txt font-medium text-secondary-800">{`${data.organizationName}`}</span>
+                      <span className="left-txt font-medium text-secondary-800 text-sm">Purchaser (Organization)</span>
+                    </div>
+                }
               </div>
             </AccordionTitle>
             <AccordionContent className="bg-light-purple py-3 px-4 contact-accordian-body">
@@ -126,10 +145,17 @@ const ContactCard = ({
                   alt="Profile"
                   className="mr-4 w-10 h-10 rounded-full"
                 />
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <span className="left-txt font-medium text-secondary-800">{`${data.firstName} ${data.lastName}`}</span>
-                  <span className="left-txt font-medium text-secondary-800 text-sm">Purchaser (Additional Client)</span>
-                </div>
+                {
+                  casedetails?.clientType ==0 ?
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <span className="left-txt font-medium text-secondary-800">{`${data.firstName} ${data.lastName}`}</span>
+                      <span className="left-txt font-medium text-secondary-800 text-sm">Purchaser (Additional Organization)</span>
+                    </div> :
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <span className="left-txt font-medium text-secondary-800">{`${data.organizationName}`}</span>
+                      <span className="left-txt font-medium text-secondary-800 text-sm">Purchaser (Additional Organization)</span>
+                    </div>
+                }
               </div>
             </AccordionTitle>
             <AccordionContent className="bg-light-purple py-3 px-4 contact-accordian-body">

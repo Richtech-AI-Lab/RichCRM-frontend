@@ -6,17 +6,15 @@ import { sellerItems, buyerItems, titleMortgageItems } from "../../../utils/form
 import FormButton from "../../../components/formButton";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import ShowDetail from "../showdetail/participantdetail";
 import { fetchAddressByIdRequest } from "../../../redux/actions/utilsActions";
 import { fetchPremisesRequest } from "../../../redux/actions/premisesActions";
-import ParticipantDetail from "../showdetail/participantdetail";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IMAGES } from "../../../constants/imagePath";
 import states from "../../../constants/states.json"
 import DateInput from "../../../components/datePicker";
 
 
-const PremisesForm = ({ title, values, handleChange, handleBlur }) => {
+const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue }) => {
 
   return (
     <>
@@ -358,6 +356,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur }) => {
               <input
                 className="text-right p-0 border-none focus:ring-transparent"
                 name="maintenanceFee"
+                placeholder="fee"
                 type="text"
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -370,8 +369,9 @@ const PremisesForm = ({ title, values, handleChange, handleBlur }) => {
                 name="maintenanceFeePer"
                 value={values.maintenanceFeePer}
                 options={[
-                  { id: 1, label: "yearly" },
-                  { id: 2, label: "monthly" },
+                  { id: 0, label: "Month" },
+                  { id: 1, label: "Quarter" },
+                  { id: 2, label: "Year" },
 
                 ].map((option) => ({
                   value: option.id,
@@ -435,9 +435,9 @@ const PremisesForm = ({ title, values, handleChange, handleBlur }) => {
                         <Field
                           type="radio"
                           id={option.id}
-                          name="needinspection"
+                          name="needInspection"
                           value={option.value}
-                          checked={values.needinspection == option.id}
+                          checked={values.needInspection == option.id}
                           className="mr-2"
                         />
                         <Label
@@ -458,10 +458,10 @@ const PremisesForm = ({ title, values, handleChange, handleBlur }) => {
                   Schedule Date
                 </span>
                 <DateInput
-                  name="scheduleDate"
-                  selected={values.scheduleDate}
-                  // onChange={(date) => setFieldValue("scheduleDate", date)}
-                  onBlur={handleBlur}
+                  name="inspectionDate"
+                  value={values.inspectionDate}
+                  onSelectedDateChanged={(date) => setFieldValue("inspectionDate", date)}
+
                 />
               </>
             </li>
@@ -469,9 +469,9 @@ const PremisesForm = ({ title, values, handleChange, handleBlur }) => {
               <span className="left-txt flex items-center">Received Date</span>
               <DateInput
                 name="receivedDate"
-                selected={values.receivedDate}
-                // onChange={(date) => setFieldValue("receivedDate", date)}
-                onBlur={handleBlur}
+                value={values.receivedDate}
+                onSelectedDateChanged={(date) => setFieldValue("receivedDate", date)}
+
               />
             </li>
 
@@ -500,9 +500,9 @@ const PremisesForm = ({ title, values, handleChange, handleBlur }) => {
                         <Field
                           type="radio"
                           id={option.id}
-                          name="needinspection"
+                          name="needTermitesInspection"
                           value={option.value}
-                          checked={values.needinspection == option.id}
+                          checked={values.needTermitesInspection == option.id}
                           className="mr-2"
                         />
                         <Label

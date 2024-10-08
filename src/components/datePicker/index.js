@@ -7,34 +7,31 @@ const DateInput = ({ name, value, onSelectedDateChanged }) => {
   const [startDate, setStartDate] = useState(value ? new Date(value) : null);
 
   const handleDateChange = (date) => {
-    setStartDate(date);
-    onSelectedDateChanged(date);
+    let v= new Date(date)
+    v.setHours(23, 30, 0);
+    setStartDate(v);
+    onSelectedDateChanged(v);
   };
-  const customtheme= {
+  const customtheme = {
     "popup": {
       "root": {
         "base": "absolute right-0 top-10 z-50 block pt-2",
       },
-    },}
+    },
+  }
   return (
     <div className="custom-datepicker">
+      {/* {value} */}
       <Datepicker
-      theme={customtheme}
+        showClearButton={false}
+        showTodayButton={false}
+        theme={customtheme}
+        defaultDate={new Date(startDate)}
         name={name}
-        selected={startDate}
         onSelectedDateChanged={handleDateChange}
         dateFormat="MMMM dd, yyyy"
-        customInput={
-          <input
-          name={name}
-            className="text-right border-none focus:ring-transparent"
-            value={startDate ? format(startDate, 'MMMM dd, yyyy') : ''}
-            placeholder="Month day, year"
-            readOnly
-          />
-        }
       />
-      </div>
+    </div>
   );
 };
 export default DateInput;

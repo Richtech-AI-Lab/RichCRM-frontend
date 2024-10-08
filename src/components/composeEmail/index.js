@@ -15,6 +15,8 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
   const dispatch = useDispatch();
   const { client } = useSelector((state) => state.client);
   const clientObj = client?.data?.length > 0 ? client?.data : null;
+  const { organization } = useSelector((state) => state.organization);
+  const organizationObj = organization?.data?.length > 0 ? organization?.data : null;
   const { casesData } = useSelector((state) => state.case);
   const caseObj = casesData?.cases?.find(item => item.caseId === localStorage.getItem('c_id'));
   const [inputValue, setInputValue] = useState('');
@@ -23,13 +25,19 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
   const [loader, setLoader] = useState();
 
   useEffect(() => {
-    if (clientObj?.length > 0 && clientObj[0]?.email) {
-      setToEmail([clientObj[0]?.email]);
-    } else {
-      if (clientObj?.length > 0) {
-        toast.error("Please update client email, No email exist!");
+    const isClientTypeIndividual = caseObj?.clientType === 0;
+    const targetObj = isClientTypeIndividual ? clientObj : organizationObj;
+    
+    if (targetObj?.length > 0) {
+      const email = targetObj[0]?.email;
+      
+      if (email) {
+        setToEmail([email]);
+      } else {
+        toast.error("Please update client email, No email exists!");
       }
     }
+    
     const fetchData = async () => {
       setLoader(true)
       try {

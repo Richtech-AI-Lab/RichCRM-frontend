@@ -10,15 +10,26 @@ import ParticipantCaseDetails from "./participantCaseDetails";
 import PremisesCaseDetails from "./premisesCaseDetails";
 import OthersCaseDetails from "./othersCaseDetails";
 import { fetchAddressByIdRequest } from "../../../redux/actions/utilsActions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import OrganizationCaseDetails from "./organizationCaseDetails";
 
 const CaseDetails = () => {
+  const { cases } = useSelector((state) => state.case.casesData);
+  const caseId= localStorage.getItem('c_id')
+  function getCaseValue() {
+    const caseObject = cases.find(caseItem => caseItem.caseId === caseId);
+    if (!caseObject) {
+        return undefined;
+    }
+    return caseObject;
+    // return caseObject[keyName];
+}
   const [activeTab, setActiveTab] = useState(caseDetailTab.PARTICIPANTS);
   const [isEdit, setIsEdit] = useState(false)
   const headerItems = [
     { text: "Cases", className: "mr-8" },
     {
-      text: "Fu - Skyline #5712",
+      text: `${getCaseValue()?.clientName} - ${getCaseValue()?.premisesName}`,
       separator: <SlArrowRight className="inline mr-10" />,
       className: "mr-8",
     },
@@ -31,7 +42,7 @@ const CaseDetails = () => {
   const renderActiveTab = (activeTab) => {
     switch (activeTab) {
       case caseDetailTab.PARTICIPANTS:
-        return <ParticipantCaseDetails isEdit={isEdit} setIsEdit={setIsEdit} />;
+        return getCaseValue()?.clientType == 0 ? <ParticipantCaseDetails isEdit={isEdit} setIsEdit={setIsEdit} caseType={getCaseValue()?.caseType} /> : <OrganizationCaseDetails isEdit={isEdit} setIsEdit={setIsEdit} caseType={getCaseValue()?.caseType}/>;
       case caseDetailTab.PREMISES:
         return <PremisesCaseDetails isEdit={isEdit} setIsEdit={setIsEdit} />;
       case caseDetailTab.OTHERS:
