@@ -1,10 +1,10 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { API_ENDPOINTS, ROUTES } from "../../constants/api";
-import { CREATE_ATTORNEY_REQUEST, CREATE_CONTACT_REQUEST, GET_CONTACT_BY_KEYWORD_REQUEST, GET_CONTACT_BY_TYPE_REQUEST, GET_CONTACT_REQUEST, UPDATE_CONTACT_REQUEST } from "../type";
+import { CREATE_ATTORNEY_REQUEST, CREATE_CONTACT_REQUEST, DELETE_ATTORNEY_REQUEST, GET_CONTACT_BY_KEYWORD_REQUEST, GET_CONTACT_BY_TYPE_REQUEST, GET_CONTACT_REQUEST, UPDATE_CONTACT_REQUEST } from "../type";
 import { getRequest, postRequest } from "../../axios/interceptor";
 import { toast } from "react-toastify";
 import { handleError } from "../../utils/eventHandler";
-import { createAttorneySuccess, getContactFailure, getContactSuccess, setSelectedContact, updateContactFailure, updateContactSuccess } from "../actions/contactActions";
+import { createAttorneySuccess, deleteAttorneySuccess, getContactFailure, getContactSuccess, setSelectedContact, updateContactFailure, updateContactSuccess } from "../actions/contactActions";
 import { all } from "redux-saga/effects";
 
 function* getContactByType(action) {
@@ -78,8 +78,6 @@ function* getContactByKeyword(action) {
 }
 
 function* createAttorney(action) {
-  // check if client id start with new then need to create record of that
-  //  for rest all just store as it is into the
   try {
     const { payload } = action;
     const response = yield call(() =>
@@ -97,6 +95,18 @@ function* createAttorney(action) {
     yield put(updateContactFailure(error.response?.data || error));
   }
 }
+function* deleteAttorney(action) {
+  try {
+    const { payload } = action;
+    const response = yield call(() =>
+      postRequest(API_ENDPOINTS.DELETE_CONTACT,{contactId: payload})
+    );
+    yield put(deleteAttorneySuccess(payload));
+  } catch (error) {
+    handleError(error)
+    yield put(updateContactFailure(error.response?.data || error));
+  }
+}
 
 export function* contactSaga() {
   yield takeLatest(GET_CONTACT_BY_TYPE_REQUEST, getContactByType);
@@ -104,4 +114,5 @@ export function* contactSaga() {
   yield takeLatest(CREATE_CONTACT_REQUEST,createContact);
   yield takeLatest(GET_CONTACT_BY_KEYWORD_REQUEST, getContactByKeyword);
   yield takeLatest(CREATE_ATTORNEY_REQUEST, createAttorney);
+  yield takeLatest(DELETE_ATTORNEY_REQUEST, deleteAttorney);
 }

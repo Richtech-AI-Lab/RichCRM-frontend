@@ -5,7 +5,7 @@ import { FieldArray, useFormikContext } from "formik";
 import { Label, TextInput, XButton } from "../../../components";
 import { IMAGES } from "../../../constants/imagePath";
 import { useDispatch } from "react-redux";
-import { createAttorneyRequest } from "../../../redux/actions/contactActions";
+import { createAttorneyRequest, deleteAttorneyRequest } from "../../../redux/actions/contactActions";
 
 const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, errors, touched }) => {
     const dispatch = useDispatch();
@@ -62,17 +62,20 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
                             {attorneys?.map((item, index) => (
                                 <li key={item.contactId} className="flex justify-between">
                                     <span className="left-txt flex items-center">
-                                        <span className="icon mr-2 cursor-pointer" onClick={() => remove(index)}>
+                                        <span className="icon mr-2 cursor-pointer" /* onClick={() => remove(index)} */ onClick={() => dispatch(deleteAttorneyRequest(item?.contactId))}>
                                             <img src={IMAGES.removeIcon} alt="icon" />
                                         </span>
-                                        {item.firstName} {item.lastName} ({item.contactType})
+                                        {item.firstName}
                                     </span>
-                                    <input
+                                    <span className="left-txt flex items-center">
+                                       {item.contactId}
+                                    </span>
+                                    {/* <input
                                         className="text-right border-none focus:ring-transparent"
                                         placeholder="Update details"
-                                        value={`${item.email} | ${item.cellNumber}`}
+                                        value={`${item.contactId}`}
                                         readOnly
-                                    />
+                                    /> */}
                                 </li>
                             ))}
                             <li className="flex justify-between add-attorney">
