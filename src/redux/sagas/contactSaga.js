@@ -1,10 +1,10 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { API_ENDPOINTS, ROUTES } from "../../constants/api";
-import { CREATE_ATTORNEY_REQUEST, CREATE_CONTACT_REQUEST, DELETE_ATTORNEY_REQUEST, GET_CONTACT_BY_KEYWORD_REQUEST, GET_CONTACT_BY_TYPE_REQUEST, GET_CONTACT_REQUEST, UPDATE_CONTACT_REQUEST } from "../type";
+import { CREATE_ATTORNEY_REQUEST, CREATE_CONTACT_REQUEST, DELETE_ATTORNEY_REQUEST, FETCH_ATTORNEY_BY_ID_REQUEST, GET_CONTACT_BY_KEYWORD_REQUEST, GET_CONTACT_BY_TYPE_REQUEST, GET_CONTACT_REQUEST, UPDATE_CONTACT_REQUEST } from "../type";
 import { getRequest, postRequest } from "../../axios/interceptor";
 import { toast } from "react-toastify";
 import { handleError } from "../../utils/eventHandler";
-import { createAttorneySuccess, deleteAttorneySuccess, getContactFailure, getContactSuccess, setSelectedContact, updateContactFailure, updateContactSuccess } from "../actions/contactActions";
+import { createAttorneySuccess, deleteAttorneySuccess, fetchAttorneyByIdsFailure, fetchAttorneyByIdsSuccess, getContactFailure, getContactSuccess, setSelectedContact, updateContactFailure, updateContactSuccess } from "../actions/contactActions";
 import { all } from "redux-saga/effects";
 import { updateCaseContactRequest } from "../actions/caseAction";
 
@@ -18,6 +18,22 @@ function* getContactByType(action) {
   } catch (error) {
     handleError(error)
     yield put(getContactFailure(error.response.data || error));
+  }
+}
+
+function* getAttorneyByIds(action) {
+  try {
+    const contacts = action.payload;
+    const attorneyListRes = yield all(
+      contacts.map(id =>
+        call(getRequest, `${API_ENDPOINTS.FETCH_CONTACT_BY_ID}/${id}`)
+      )
+    );
+    const attorneyData = attorneyListRes.map(res => res.data.data[0]);
+    yield put(fetchAttorneyByIdsSuccess(attorneyData));
+  } catch (error) {
+    handleError(error)
+    yield put(fetchAttorneyByIdsFailure(error.response.data || error));
   }
 }
 
@@ -111,6 +127,7 @@ function* deleteAttorney(action) {
 
 export function* contactSaga() {
   yield takeLatest(GET_CONTACT_BY_TYPE_REQUEST, getContactByType);
+  yield takeLatest(FETCH_ATTORNEY_BY_ID_REQUEST, getAttorneyByIds);
   yield takeLatest(UPDATE_CONTACT_REQUEST, updateContact);
   yield takeLatest(CREATE_CONTACT_REQUEST,createContact);
   yield takeLatest(GET_CONTACT_BY_KEYWORD_REQUEST, getContactByKeyword);
