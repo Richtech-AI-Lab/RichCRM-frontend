@@ -14,7 +14,7 @@ import states from "../../../constants/states.json"
 import DateInput from "../../../components/datePicker";
 
 
-const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue }) => {
+const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, form }) => {
 
   return (
     <>
@@ -532,6 +532,9 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue }
             <li>
               <div className="flex justify-between items-center w-full">
                 <span className="left-txt w-full">Is Two Family</span>
+                {form?.errors['isTwoFamily'] && form?.touched['isTwoFamily'] && (
+                <span className="text-sm text-red-500">{form.errors['isTwoFamily']}</span>
+              )}
                 <div className="flex justify-end items-center w-full gap-7">
                   <div className="grid grid-cols-2 gap-x-12">
                     {[
@@ -561,6 +564,9 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue }
             </li>
             <li>
               <span className="left-txt flex items-center" >{values.isTwoFamily == 1 && "1F"} First Name</span>
+              {form?.errors['fname1f'] && form?.touched['fname1f'] && (
+                <span className="text-sm text-red-500">{form.errors['fname1f']}</span>
+              )}
               <input
                 className="text-right p-0 border-none focus:ring-transparent"
                 name="fname1f"
@@ -573,6 +579,9 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue }
             </li>
             <li>
               <span className="left-txt flex items-center" >{values.isTwoFamily == 1 && "1F"} Last Name</span>
+              {form?.errors['lname1f'] && form?.touched['lname1f'] && (
+                <span className="text-sm text-red-500">{form.errors['lname1f']}</span>
+              )}
               <input
                 className="text-right p-0 border-none focus:ring-transparent"
                 name="lname1f"
@@ -624,6 +633,9 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue }
               <>
                 <li>
                   <span className="left-txt flex items-center">2F Tenant First Name</span>
+                  {form?.errors['fname2f'] && form?.touched['fname2f'] && (
+                <span className="text-sm text-red-500">{form.errors['fname2f']}</span>
+              )}
                   <input
                     className="text-right p-0 border-none focus:ring-transparent"
                     name="fname2f"
@@ -635,6 +647,9 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue }
                 </li>
                 <li>
                   <span className="left-txt flex items-center">2F Tenant Last Name</span>
+                  {form?.errors['lname2f'] && form?.touched['lname2f'] && (
+                <span className="text-sm text-red-500">{form.errors['lname2f']}</span>
+              )}
                   <input
                     className="text-right p-0 border-none focus:ring-transparent"
                     name="lname2f"

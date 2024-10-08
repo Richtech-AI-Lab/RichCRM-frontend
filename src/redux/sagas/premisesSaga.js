@@ -84,10 +84,20 @@ function* fetchPremisesByQueryId(action) {
 
       const { isTwoFamily, twoFamilyFirstFloorTenantId, twoFamilySecondFloorTenantId } = preResponse.data.data[0];
       if (isTwoFamily != undefined && (twoFamilyFirstFloorTenantId || twoFamilySecondFloorTenantId)) {
-        const tenantIds = isTwoFamily == 1
-          ? [twoFamilyFirstFloorTenantId, twoFamilySecondFloorTenantId]
-          : [twoFamilyFirstFloorTenantId];
-
+        // const tenantIds = isTwoFamily == 1
+        // ? [twoFamilyFirstFloorTenantId, twoFamilySecondFloorTenantId]
+        // : [twoFamilyFirstFloorTenantId];
+          let tenantIds = [];
+          
+          if (twoFamilyFirstFloorTenantId) {
+            tenantIds.push(twoFamilyFirstFloorTenantId);
+          }
+          
+          if (twoFamilySecondFloorTenantId && isTwoFamily == 1) {
+            tenantIds.push(twoFamilySecondFloorTenantId);
+          }
+        
+        
         const tenantResponses = yield all(
           tenantIds.map(tenantId =>
             call(getRequest, `${API_ENDPOINTS.FETCH_CLIENT_BY_ID}/${tenantId}`)

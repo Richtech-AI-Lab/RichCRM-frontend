@@ -26,6 +26,7 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
     setIsEdit(prevState => !prevState);
   };
   let handleSubmit = (values, { setSubmitting }) => {
+    // console.log(values)
     const addressPayload = {
       addressLine1: values.addressLine1,
       addressLine2: values.addressLine2,
@@ -215,7 +216,32 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
     }
 
 
-  // const validationSchema = Yup.object().shape({
+  const validationSchema = Yup.object().shape({
+    fname1f: Yup.string().when('$isTwoFamily', {
+      is: (value) => value == 1 || value == 0,
+      then: () => Yup.string().required("First Name is required"),
+      otherwise: () => Yup.string().notRequired()
+    }),
+    lname1f: Yup.string().when('$isTwoFamily', {
+      is: (value) => value == 1 || value == 0,
+      then: () => Yup.string().required("Last Name is required"),
+      otherwise: () => Yup.string().notRequired()
+    }),
+    fname2f: Yup.string().when('$isTwoFamily', {
+      is: (value) => value == 1,
+      then: () => Yup.string().required("If Two family, Second tenant is required"),
+      otherwise: () => Yup.string().notRequired()
+    }),
+    lname2f: Yup.string().when('$isTwoFamily', {
+      is: (value) => value == 1,
+      then: () => Yup.string().required("If Two family, Second tenant is required"),
+      otherwise: () => Yup.string().notRequired()
+    }),
+    isTwoFamily: Yup.string().when('$fname1f', {
+      is: (value) => value != undefined || value != null,
+      then: () => Yup.string().required("Tenant Family Type is required"),
+      otherwise: () => Yup.string().notRequired()
+    }),
   //   scheduleDate: Yup.date().required('Schedule date is required'),
   //   receivedDate: Yup.date().required('Received date is required'),
   //   premisesType: Yup.string().required('Premises type is required'),
@@ -252,13 +278,14 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
   //   premisesScheduleDate: Yup.date().required('Premises schedule date is required'),
   //   premisesRecievedDate: Yup.date().required('Premises received date is required'),
   //   premisesTermites: Yup.boolean().required('Termites inspection status is required'),
-  // });
+  });
 
   return (
     <>
       {isEdit ?
         (
-          <Formik initialValues={initialPremisesValues} onSubmit={handleSubmit} >
+          <Formik initialValues={initialPremisesValues} 
+          validationSchema={validationSchema} onSubmit={handleSubmit} >
             {({
               handleChange,
               handleSubmit,
