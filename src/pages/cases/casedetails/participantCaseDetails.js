@@ -11,6 +11,7 @@ import { updateClientByIdRequest } from "../../../redux/actions/clientActions";
 import { createAddressRequest } from "../../../redux/actions/utilsActions";
 import ParticipantBothDetail from "../showdetail/participantbothdetail";
 import { createAttorneyRequest } from "../../../redux/actions/contactActions";
+import AttorneyDetails from "../showdetail/attorneydetail";
 
 
 const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType }) => {
@@ -168,7 +169,9 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType }) => {
         </Formik>)
         :
         (<div className="grid grid-cols-12 gap-6">
-          <div className="col-span-6"><ParticipantBothDetail client={clientDetails}  title={ caseType  ? "Seller" : "Purchaser"}  /></div></div>)}
+          <div className="col-span-6"><ParticipantBothDetail client={clientDetails} attorneyDetails={attorneyDetails}  title={ caseType  ? "Seller" : "Purchaser"}  /></div>
+         {attorneyDetails?.length > 0  && <div className="col-span-6"><AttorneyDetails  attorneyDetails={attorneyDetails}  title={"Attorney"}  /></div>}
+         </div>)}
     </>
   );
 };
