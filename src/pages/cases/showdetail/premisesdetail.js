@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import states from "../../../constants/states.json";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { CASETYPE, PREMISES_TYPE } from "../../../constants/constants";
 import { format } from "date-fns";
@@ -7,7 +7,10 @@ import { format } from "date-fns";
 
 const PremisesDetail = ({ premises, address }) => {
 
-
+  const findLabelByValue = (value) => {
+    const result = states?.find(item => item.value === value);
+    return result ? result.label : 'NA';
+  };
   return (
     <>
       <div className="col-span-6">
@@ -42,7 +45,7 @@ const PremisesDetail = ({ premises, address }) => {
               </li>
               <li>
                 <span className="left-txt flex items-center" > State</span>
-                <span className="left-txt flex items-center" > {address[0]?.state} </span>
+                <span className="left-txt flex items-center" > {findLabelByValue(address[0]?.state)} </span>
               </li>
               <li>
                 <span className="left-txt flex items-center" > Zipcode</span>
