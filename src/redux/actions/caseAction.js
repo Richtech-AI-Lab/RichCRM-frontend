@@ -21,10 +21,10 @@ import {
     SET_STAGE,
     SET_SEARCH_CASES,
     UPDATE_CASE_DATE_REQUEST,
-    CLEAR_DATA,
     UPDATE_CASE_DATE_SUCCESS,
     UPDATE_CASE_CONTACT_REQUEST,
-    UPDATE_CASE_CONTACT_SUCCESS
+    UPDATE_CASE_CONTACT_SUCCESS,
+    CLEAR_CASES_DATA
 } from "../type";
 
 
@@ -164,5 +164,5 @@ export const updateCaseContactSuccess = (payload) => ({
 });
 
 export const clearCasesData = () => ({
-    type: CLEAR_DATA
+    type: CLEAR_CASES_DATA
 });

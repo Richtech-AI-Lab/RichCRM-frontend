@@ -1,5 +1,5 @@
 import {
-  CLEAR_DATA,
+  CLEAR_UTIL_DATA,
   FETCH_ADDRESS_BY_ID_FAILURE,
   FETCH_ADDRESS_BY_ID_REQUEST,
   FETCH_ADDRESS_BY_ID_SUCCESS,
@@ -42,7 +42,7 @@ const utilsReducer = (state = initialState, action) => {
       return { ...state, loading: false, address: action.payload, error: null };
     case FETCH_ADDRESS_BY_ID_FAILURE:
       return { ...state, address:[], loading: false, error: action.payload };
-    case CLEAR_DATA:
+    case CLEAR_UTIL_DATA:
       return initialState;
     case SEND_MAIL_REQUEST:
       return { ...state, loading: true, error: null };

@@ -1,5 +1,6 @@
 import {
   CLEAN_ADDITIONAL_CLIENT,
+  CLEAR_CLIENT_DATA,
   FETCH_ADDITIONAL_CLIENTS_BY_IDS_FAILURE,
   FETCH_ADDITIONAL_CLIENTS_BY_IDS_REQUEST,
   FETCH_ADDITIONAL_CLIENTS_BY_IDS_SUCCESS,
@@ -95,4 +96,8 @@ export const createTenantFailure = (error) => ({
 
 export const cleanupAdditionalClientRequest = () => ({
   type: CLEAN_ADDITIONAL_CLIENT
+});
+
+export const clearClientData = () => ({
+  type: CLEAR_CLIENT_DATA
 });

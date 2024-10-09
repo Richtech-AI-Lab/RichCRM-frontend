@@ -12,7 +12,6 @@ import {
   DELETE_CASE_REQUEST,
   DELETE_CASE_SUCCESS,
   DELETE_CASE_FAILURE,
-  CLEAR_DATA,
   FETCH_ALL_CASES_REQUEST,
   FETCH_ALL_CASES_SUCCESS,
   FETCH_ALL_CASES_FAILURE,
@@ -21,6 +20,7 @@ import {
   UPDATE_CASE_DATE_SUCCESS,
   READ_CASE_BY_CONTACT,
   UPDATE_CASE_CONTACT_SUCCESS,
+  CLEAR_CASES_DATA,
 } from "../type";
 
 const initialCasesState = {
@@ -132,7 +132,7 @@ const casesReducer = (state = initialCasesState, action) => {
         loading: false,
         error: null,
       };
-    case CLEAR_DATA:
+    case CLEAR_CASES_DATA:
       return initialCasesState;
 
     case SET_SEARCH_CASES:

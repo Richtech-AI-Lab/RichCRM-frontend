@@ -11,9 +11,12 @@ import { API_ENDPOINTS, ROUTES } from "../../constants/api";
 import { postRequest } from "../../axios/interceptor";
 import { debounce } from "lodash";
 import { contactTypeLabels } from "../../constants/constants";
-import { setSelectedContact } from "../../redux/actions/contactActions";
+import { clearAttorney, setSelectedContact } from "../../redux/actions/contactActions";
 import Search from "../search";
 import { persistor } from "../../redux/store";
+import { clearStageData } from "../../redux/actions/stagesActions";
+import { clearTaskData } from "../../redux/actions/taskActions";
+import { clearClientData } from "../../redux/actions/clientActions";
 
 const Header = ({ toggleDrawer, title }) => {
   const navigate = useNavigate();
@@ -41,7 +44,7 @@ const Header = ({ toggleDrawer, title }) => {
       } else {
         setSearchResults([]);
       }
-    }, 1000),
+    }, 100),
     []
   );
   const handleInputChange = (e) => {
@@ -55,12 +58,37 @@ const Header = ({ toggleDrawer, title }) => {
     setSearchResults([]);
   };
 
-  const handleItemClick = (item) => {
-    dispatch(setSelectedContact(item));
-    navigate(ROUTES.CONTACT_PARTNER);
-    setSearchResults([]);
-    setSearchValue("");
+  const handleClearAndLoader = async (casedetails) => {
+    localStorage.setItem("c_id", casedetails?.caseId);
+    await Promise.all([
+      dispatch(clearClientData()),
+      dispatch(clearStageData()),
+      dispatch(clearTaskData()),
+      dispatch(clearAttorney())
+    ]);
+  
+    console.log("State cleared and loader started");
   };
+  const debouncedNavigation = useCallback(
+    debounce(async (casedetails) => {
+      if (casedetails != "" || casedetails.length > 0) {
+        navigate(ROUTES.CASES_DATA, { state: { casedetails } });
+      
+        // Reset search state
+        setSearchResults([]);
+        setSearchValue("");
+      
+      } else {
+        setSearchResults([]);
+      }
+    }, 1000),
+    []
+  );
+  const handleItemClick = async (casedetails) => {  
+    await handleClearAndLoader(casedetails);
+    debouncedNavigation(casedetails)
+  };
+  
   const handleLogout = () => {
     persistor.purge().then(() => {
       console.log('Logged out and persisted state cleared');}
@@ -96,7 +124,7 @@ const Header = ({ toggleDrawer, title }) => {
               alt="icon"
               className="absolute right-5 top-[10px]"
             />}
-          {searchResults?.contact?.length > 0 || searchResults?.case?.length > 0 ? <Search searchResults={searchResults} /> : ""}
+          {searchResults?.contact?.length > 0 || searchResults?.case?.length > 0 ? <Search onNavigation={handleItemClick} searchResults={searchResults} /> : ""}
 
         </div>
         <Dropdown

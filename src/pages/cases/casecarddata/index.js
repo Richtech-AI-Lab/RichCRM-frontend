@@ -36,7 +36,7 @@ const CaseCardData = () => {
   const clientDetails = client?.data?.length > 0 ? client?.data : null;
   const organizationDetails = organization?.data?.length > 0 ? organization?.data : null;
   const premisesDetails = premises?.data?.length > 0 ? premises?.data[0] : null;
-  const premisesTypeLabel = premisesTypes.find(option => option.value === premisesDetails?.propertyType)?.label || "Unknown";
+  const premisesTypeLabel = premisesTypes?.find(option => option.value == premisesDetails?.propertyType)?.label || "Unknown";
 
   const handleCaseDetails = () => {
     navigate(ROUTES.CASES_DETAILS)
@@ -114,7 +114,7 @@ const CaseCardData = () => {
       let id = casedetails?.organizationId
       fetchOrganizationByQueryId(id);
     }
-  }, [casedetails?.clientType]);
+  }, [casedetails]);
 
   const headerItems = [
     { text: "Cases", className: "mr-8" },
