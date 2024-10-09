@@ -242,6 +242,11 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
       then: () => Yup.string().required("Tenant Family Type is required"),
       otherwise: () => Yup.string().notRequired()
     }),
+    addressLine1: Yup.string().required("Address is required"),
+    // addressLine2: Yup.string('Address Line 2 is required'),
+    city: Yup.string().required("City is required"),
+    state: Yup.string().required("State is required"),
+    zipCode: Yup.string().required("Zip code is required"),
   //   scheduleDate: Yup.date().required('Schedule date is required'),
   //   receivedDate: Yup.date().required('Received date is required'),
   //   premisesType: Yup.string().required('Premises type is required'),

@@ -84,16 +84,24 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit , caseType}) => {
     zipCode: '',
   };
 
-  // const validationSchema = Yup.object({
-  
-  // });
+  const validationSchema = Yup.object({
+    organizationName: Yup.string().required("Name is required"),
+    email: Yup.string().email('Invalid email format').required("Email is required"),
+    cellNumber: Yup.string().matches(/^[0-9]+$/, 'Cell number must be a number').required("Cell Phone is required"),
+    website: Yup.string().url('Website must be a valid URL').required("Website is required"),
+    addressLine1: Yup.string().required("Address is required"),
+    // addressLine2: Yup.string('Address Line 2 is required'),
+    city: Yup.string().required("City is required"),
+    state: Yup.string().required("State is required"),
+    zipCode: Yup.string().required("Zip code is required"),
+  });
   return (
     <>
       {isEdit ?
         (<Formik
           initialValues={initialOrganizationValues}
           onSubmit={handleSubmit}
-        // validationSchema={validationSchema}
+        validationSchema={validationSchema}
         >
           {({
             handleChange,

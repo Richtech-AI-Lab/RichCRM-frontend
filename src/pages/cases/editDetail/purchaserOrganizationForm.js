@@ -13,7 +13,7 @@ import { IMAGES } from "../../../constants/imagePath";
 import states from "../../../constants/states.json"
 
 
-const PurchaserOrganizationForm = ({ title, values, handleChange, handleBlur }) => {
+const PurchaserOrganizationForm = ({ title, values, handleChange, handleBlur, form }) => {
 
   return (
     <>
@@ -27,6 +27,9 @@ const PurchaserOrganizationForm = ({ title, values, handleChange, handleBlur }) 
         <ul className="card-details">
           <li>
             <span className={`left-txt flex items-center`}>Organization Name</span>
+            {form?.errors["organizationName"] && form?.touched["organizationName"] && (
+              <span className="text-sm text-red-500">{form.errors["organizationName"]}</span>
+            )}
             <input
               className="text-right p-0 border-none focus:ring-transparent"
               name="organizationName"
@@ -37,6 +40,9 @@ const PurchaserOrganizationForm = ({ title, values, handleChange, handleBlur }) 
             /></li>
           <li>
             <span className={`left-txt flex items-center`}>Email</span>
+            {form?.errors["email"] && form?.touched["email"] && (
+              <span className="text-sm text-red-500">{form.errors["email"]}</span>
+            )}
             <input
               className="text-right p-0 border-none focus:ring-transparent"
               name="email"
@@ -47,6 +53,9 @@ const PurchaserOrganizationForm = ({ title, values, handleChange, handleBlur }) 
             /></li>
           <li>
             <span className={`left-txt flex items-center`}>Cell Phone</span>
+            {form?.errors["cellNumber"] && form?.touched["cellNumber"] && (
+              <span className="text-sm text-red-500">{form.errors["cellNumber"]}</span>
+            )}
             <input
               className="text-right p-0 border-none focus:ring-transparent"
               name="cellNumber"
@@ -57,6 +66,9 @@ const PurchaserOrganizationForm = ({ title, values, handleChange, handleBlur }) 
             /></li>
           <li>
             <span className={`left-txt flex items-center`}>Website</span>
+            {form?.errors["website"] && form?.touched["website"] && (
+              <span className="text-sm text-red-500">{form.errors["website"]}</span>
+            )}
             <input
               className="text-right p-0 border-none focus:ring-transparent"
               name="website"
@@ -67,6 +79,9 @@ const PurchaserOrganizationForm = ({ title, values, handleChange, handleBlur }) 
             /></li>
           <li>
             <span className={`left-txt flex items-center`}>Street Name</span>
+            {form?.errors["addressLine1"] && form?.touched["addressLine1"] && (
+              <span className="text-sm text-red-500">{form.errors["addressLine1"]}</span>
+            )}
             <input
               className="text-right p-0 border-none focus:ring-transparent"
               name="addressLine1"
@@ -87,6 +102,9 @@ const PurchaserOrganizationForm = ({ title, values, handleChange, handleBlur }) 
             /></li>
           <li>
             <span className={`left-txt flex items-center`}>City</span>
+            {form?.errors["city"] && form?.touched["city"] && (
+              <span className="text-sm text-red-500">{form.errors["city"]}</span>
+            )}
             <input
               className="text-right p-0 border-none focus:ring-transparent"
               name="city"
@@ -98,6 +116,9 @@ const PurchaserOrganizationForm = ({ title, values, handleChange, handleBlur }) 
           <li>
             <div className="flex justify-between items-center w-full">
               <span className="left-txt w-full">State</span>
+              {form?.errors["state"] && form?.touched["state"] && (
+              <span className="text-sm text-red-500 w-full">{form.errors["state"]}</span>
+            )}
               <div className="flex justify-end items-center w-full gap-7">
                 <div className="grid gap-3">
                   <Field
@@ -118,6 +139,9 @@ const PurchaserOrganizationForm = ({ title, values, handleChange, handleBlur }) 
           </li>
           <li>
             <span className={`left-txt flex items-center`}>Zip Code</span>
+            {form?.errors["zipCode"] && form?.touched["zipCode"] && (
+              <span className="text-sm text-red-500">{form.errors["zipCode"]}</span>
+            )}
             <input
               className="text-right p-0 border-none focus:ring-transparent"
               name="zipCode"
