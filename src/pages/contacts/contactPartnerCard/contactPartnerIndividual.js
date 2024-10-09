@@ -97,8 +97,13 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
     { value: CASETYPE.SELLING, label: "Broker" },
   ];
   const validationSchema = Yup.object({
-    email: Yup.string().required('Email is required'),
-    cellNumber: Yup.string().required('Cell number is required'),
+    email: Yup.string().email('Invalid email format').required('Email is required'),
+    cellNumber: Yup.string().matches(/^[0-9]+$/, 'Cell number must be a number').required('Cell number is required'),
+    addressLine1: Yup.string().required("Address is required"),
+    // addressLine2: Yup.string('Address Line 2 is required'),
+    city: Yup.string().required("City is required"),
+    state: Yup.string().required("State is required"),
+    zipCode: Yup.string().required("Zip code is required"),
   });
   const initialValues = {
     contactId: contactdetails?.contactId || '',
