@@ -9,6 +9,7 @@ import { createAttorneyRequest, deleteAttorneyRequest } from "../../../redux/act
 import { postRequest } from "../../../axios/interceptor";
 import { API_ENDPOINTS } from "../../../constants/api";
 import { debounce } from "lodash";
+import NewCaseDropdown from "../../../components/newcasedropdown";
 
 const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, errors, touched }) => {
     const dispatch = useDispatch();
@@ -16,13 +17,21 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [searchResults, setSearchResults] = useState([]);
     const [newAttorney, setNewAttorney] = useState({
-        contactType: '',
+        contactType: 1,
+        note: '',
         firstName: '',
         lastName: '',
         email: '',
         cellNumber: ''
     });
 
+    // const AttorneyTypeOption= [
+    //     // { value: "allStatus", label: "All Status" },
+    //     { value: "broker ", label: "Todo" },
+    //     { value: "warning", label: "Warning" },
+    //     { value: "waiting", label: "Waiting" },
+    //     { value: "finished", label: "Finished" },
+    //   ],
     useEffect(() => {
         if (attorneyDetails && attorneyDetails.length > 0) {
             setFieldValue("attorneys", attorneyDetails);
@@ -32,17 +41,17 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
     const closeModal = () => setIsModalOpen(false);
 
     const addAttorneyItem = (push) => {
-        if (newAttorney.contactType && newAttorney.firstName && newAttorney.lastName && newAttorney.email && newAttorney.cellNumber) {
+        if (newAttorney.note && newAttorney.firstName && newAttorney.lastName) {
             dispatch(createAttorneyRequest(newAttorney))
             // push({
             //     contactId: `new${Date.now()}`, // Changed key to contactId
-            //     contactType: newAttorney.contactType, // Changed key to contactType
+            //     note: newAttorney.note, // Changed key to note
             //     firstName: newAttorney.firstName,
             //     lastName: newAttorney.lastName,
             //     email: newAttorney.email,
             //     cellNumber: newAttorney.cellNumber // Changed key to cellNumber
             // });
-            setNewAttorney({ contactType: '', firstName: '', lastName: '', email: '', cellNumber: '' });
+            setNewAttorney({ note: '', firstName: '', lastName: '', email: '', cellNumber: '' });
             closeModal();
         }
     };
@@ -86,10 +95,10 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
                                         <span className="icon mr-2 cursor-pointer" /* onClick={() => remove(index)} */ onClick={() => dispatch(deleteAttorneyRequest(item?.contactId))}>
                                             <img src={IMAGES.removeIcon} alt="icon" />
                                         </span>
-                                        {item.firstName}
+                                        {item?.note ? item?.note : item?.firstName}
                                     </span>
                                     <span className="left-txt flex items-center">
-                                        {item.contactId}
+                                        {item?.contactId}
                                     </span>
                                     {/* <input
                                         className="text-right border-none focus:ring-transparent"
@@ -110,7 +119,7 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
                         </ul>
 
                         <Modal show={isModalOpen} size="md" onClose={() => {
-                            setNewAttorney({ contactType: '', firstName: '', lastName: '', email: '', cellNumber: '' });
+                            setNewAttorney({ note: '', firstName: '', lastName: '', email: '', cellNumber: '' });
                             closeModal()
                         }
                         }
@@ -126,80 +135,80 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
                                         <Label value="Attorney Type" className="block mb-2" />
                                         <TextInput
                                             type="text"
-                                            value={newAttorney.contactType}
-                                            onChange={(e) => setNewAttorney({ ...newAttorney, contactType: e.target.value })}
+                                            value={newAttorney.note}
+                                            onChange={(e) => setNewAttorney({ ...newAttorney, note: e.target.value })}
                                             placeholder="Attorney Type"
                                         />
                                     </div>
-                                <div className="grid grid-cols-2 gap-x-3">
-                                    <div>
-                                        <Label value="First Name" className="block mb-2 mt-4" />
-                                        <TextInput
-                                            type="text"
-                                            value={newAttorney.firstName}
-                                            onChange={(e) => {
-                                                setNewAttorney({ ...newAttorney, firstName: e.target.value });
-                                                debouncedFunction(e.target.value);
-                                            }
-                                            }
-                                            placeholder="First Name"
-                                        />
-                                        <ul className={'search-list-dropdown overflow-hidden rounded-2xl shadow-shadow-light-2'}>
-                                            {searchResults?.map((item, index) => (
-                                                <li
-                                                    key={index} // Adding a key for each list item for better performance
-                                                    className={'px-4 py-2 hover:bg-input-surface'}
-                                                    onClick={() => {
-                                                        setNewAttorney({ contactType: '', firstName: item?.firstName, lastName: item?.lastName, email: item?.email, cellNumber: item?.cellNumber });
-                                                        setSearchResults([]);
-                                                    }}
-                                                >
-                                                    <div className="flex items-center">
-                                                        {/* <img src={avatar} className="w-8 mr-3" /> */}
-                                                        {/* {console.log(item)} */}
-                                                        <div>
-                                                            <p className="text-base text-secondary-800">{item?.firstName}</p>
-                                                            <span className="text-text-gray-100 text-sm">{item.email}</span>
+                                    <div className="grid grid-cols-2 gap-x-3">
+                                        <div>
+                                            <Label value="First Name" className="block mb-2 mt-4" />
+                                            <TextInput
+                                                type="text"
+                                                value={newAttorney.firstName}
+                                                onChange={(e) => {
+                                                    setNewAttorney({ ...newAttorney, firstName: e.target.value });
+                                                    debouncedFunction(e.target.value);
+                                                }
+                                                }
+                                                placeholder="First Name"
+                                            />
+                                            <ul className={'search-list-dropdown overflow-hidden rounded-2xl shadow-shadow-light-2'}>
+                                                {searchResults?.map((item, index) => (
+                                                    <li
+                                                        key={index} // Adding a key for each list item for better performance
+                                                        className={'px-4 py-2 hover:bg-input-surface'}
+                                                        onClick={() => {
+                                                            setNewAttorney({ ...newAttorney, firstName: item?.firstName, lastName: item?.lastName, email: item?.email, cellNumber: item?.cellNumber });
+                                                            setSearchResults([]);
+                                                        }}
+                                                    >
+                                                        <div className="flex items-center">
+                                                            {/* <img src={avatar} className="w-8 mr-3" /> */}
+                                                            {/* {console.log(item)} */}
+                                                            <div>
+                                                                <p className="text-base text-secondary-800">{item?.firstName}</p>
+                                                                <span className="text-text-gray-100 text-sm">{item.email}</span>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </li>
-                                            ))}
-                                        </ul>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <Label value="Last Name" className="block mb-2 mt-4" />
+                                            <TextInput
+                                                type="text"
+                                                value={newAttorney.lastName}
+                                                onChange={(e) => setNewAttorney({ ...newAttorney, lastName: e.target.value })}
+                                                placeholder="Last Name"
+                                            />
+                                        </div>
+                                        <div>
+                                            <Label value="Email" className="block mb-2 mt-4" />
+                                            <TextInput
+                                                type="email"
+                                                value={newAttorney.email}
+                                                onChange={(e) => setNewAttorney({ ...newAttorney, email: e.target.value })}
+                                                placeholder="Email"
+                                            />
+                                        </div>
+                                        <div>
+                                            <Label value="Cell Phone" className="block mb-2 mt-4" />
+                                            <TextInput
+                                                type="tel"
+                                                value={newAttorney.cellNumber}
+                                                onChange={(e) => setNewAttorney({ ...newAttorney, cellNumber: e.target.value })}
+                                                placeholder="Cell Phone"
+                                            />
+                                        </div>
                                     </div>
-                                    <div>
-                                        <Label value="Last Name" className="block mb-2 mt-4" />
-                                        <TextInput
-                                            type="text"
-                                            value={newAttorney.lastName}
-                                            onChange={(e) => setNewAttorney({ ...newAttorney, lastName: e.target.value })}
-                                            placeholder="Last Name"
-                                        />
-                                    </div>
-                                    <div>
-                                        <Label value="Email" className="block mb-2 mt-4" />
-                                        <TextInput
-                                            type="email"
-                                            value={newAttorney.email}
-                                            onChange={(e) => setNewAttorney({ ...newAttorney, email: e.target.value })}
-                                            placeholder="Email"
-                                        />
-                                    </div>
-                                    <div>
-                                        <Label value="Cell Phone" className="block mb-2 mt-4" />
-                                        <TextInput
-                                            type="tel"
-                                            value={newAttorney.cellNumber}
-                                            onChange={(e) => setNewAttorney({ ...newAttorney, cellNumber: e.target.value })}
-                                            placeholder="Cell Phone"
-                                        />
-                                    </div>
-                                </div>
                                     <div className="text-end mt-8">
                                         <XButton
                                             text={"Cancel"}
                                             className="bg-card-300 text-sm text-secondary-800 py-[10px] px-6 rounded-[100px]"
                                             onClick={() => {
-                                                setNewAttorney({ contactType: '', firstName: '', lastName: '', email: '', cellNumber: '' });
+                                                setNewAttorney({ note: '', firstName: '', lastName: '', email: '', cellNumber: '' });
                                                 closeModal()
                                             }
                                             }

@@ -9,6 +9,7 @@ import { stageTypes } from "../../utils/formItem";
 import { clearStageData } from "../../redux/actions/stagesActions";
 import { clearTaskData } from "../../redux/actions/taskActions";
 import { clearAttorney } from "../../redux/actions/contactActions";
+import { clearClientData } from "../../redux/actions/clientActions";
 
 const Cases = () => {
   const dispatch = useDispatch();
@@ -41,6 +42,7 @@ const Cases = () => {
   }, [filter, dispatch]);
 
   useEffect(()=>{
+    dispatch(clearClientData())
     dispatch(clearStageData())
     dispatch(clearTaskData())
     dispatch(clearAttorney())

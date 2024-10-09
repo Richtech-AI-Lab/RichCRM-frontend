@@ -17,6 +17,7 @@ const CaseDetails = () => {
   const { cases } = useSelector((state) => state.case.casesData);
   const caseId= localStorage.getItem('c_id')
   function getCaseValue() {
+    console.log(cases,"_____")
     const caseObject = cases.find(caseItem => caseItem.caseId === caseId);
     if (!caseObject) {
         return undefined;
