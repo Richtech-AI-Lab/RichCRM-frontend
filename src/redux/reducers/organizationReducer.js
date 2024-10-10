@@ -19,6 +19,7 @@ import {
   REGISTER_CLIENT_FAILURE,
   REGISTER_CLIENT_REQUEST,
   REGISTER_CLIENT_SUCCESS,
+  SET_SELECTED_ORG,
   UPDATE_CLIENT_BY_ID_FAILURE,
   UPDATE_CLIENT_BY_ID_REQUEST,
   UPDATE_CLIENT_BY_ID_SUCCESS,
@@ -68,6 +69,13 @@ const organizationReducer = (state = initialState, action) => {
       return { ...state, loading: false, error: action.payload };
     // case CLEAN_ADDITIONAL_CLIENT:
     //   return { ...state, loading: false, additionalClient: null, error: null };
+    case SET_SELECTED_ORG:
+      // console.log(action.payload, "action.payload")
+      return {
+        ...state,
+        loading: false,
+        selectedItem: action.payload,
+      };
     case CLEAR_ORGANIZATION_DATA:
       return initialState;
     default:
