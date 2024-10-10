@@ -669,3 +669,12 @@ export const ORGANIZATION_TYPE = {
   1: "Company",
   2: "Trust",
 };
+
+export const CONTACT_TYPE = {
+  0: "Broker",
+  1: "Attorney",
+  2: "Title",
+  3: 'Lender',
+  4: 'Client',
+  5: 'Other'
+};
