@@ -667,5 +667,5 @@ export const settingTabLabel = [
 export const ORGANIZATION_TYPE = {
   0: "Other",
   1: "Company",
-  2: "Trust"
+  2: "Trust",
 };
