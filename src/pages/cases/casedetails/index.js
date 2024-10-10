@@ -49,7 +49,7 @@ const CaseDetails = () => {
       case caseDetailTab.OTHERS:
         return <OthersCaseDetails isEdit={isEdit} setIsEdit={setIsEdit}  />;
       default:
-        return <ParticipantCaseDetails isEdit={isEdit} setIsEdit={setIsEdit}  />;
+        return <PremisesCaseDetails isEdit={isEdit} setIsEdit={setIsEdit}  />;
     }
   };
   return (
