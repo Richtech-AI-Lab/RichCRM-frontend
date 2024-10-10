@@ -419,7 +419,7 @@ const StagesChecklist = () => {
                 <div className="flex items-center gap-2">
 
                   <MenuPopup dropdownItems={menuOption1} icon={<FiPlus className="text-lg opacity-40" />} />
-                  <MenuPopup dropdownItems={menuOption2} icon={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />} />
+                  {/* <MenuPopup dropdownItems={menuOption2} icon={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />} /> */}
                 </div>
               </div>
               {/* <ul className="mb-6 overflow-y-auto">
