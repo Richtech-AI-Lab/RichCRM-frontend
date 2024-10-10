@@ -25,7 +25,8 @@ const ContactPartnerOrganization = ({ isEdit, toggleEdit }) => {
   // console.log(cases[0], "-")
   // const location = useLocation();
   // const contactdetails = location?.state?.contact ;
-  const contactdetails = useSelector((state) => state?.contact?.selectedItem);
+  // const contactdetails = useSelector((state) => state?.contact?.selectedItem);
+  const organizationdetails = useSelector((state) => state?.organization?.selectedItem);
 
   const addressData = useSelector((state) => state?.utils?.address);
   const addressDetails = addressData?.data?.length > 0 ? addressData?.data[0] : null;
@@ -33,9 +34,9 @@ const ContactPartnerOrganization = ({ isEdit, toggleEdit }) => {
 
 
   useEffect(() => {
-    if (contactdetails?.mailingAddress) {
+    if (organizationdetails?.mailingAddress) {
       let data = {
-        addressId: contactdetails?.mailingAddress
+        addressId: organizationdetails?.mailingAddress
       }
       dispatch(fetchAddressByIdRequest(data))
     }else{
@@ -43,51 +44,50 @@ const ContactPartnerOrganization = ({ isEdit, toggleEdit }) => {
     }
   }, [])
 
-  useEffect(() => {
-    if (contactdetails?.contactId) {
-      let data = {
-        contactId: contactdetails?.contactId
-      }
-      dispatch(getCaseByContactRequest(data))
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (contactdetails?.contactId) {
+  //     let data = {
+  //       contactId: contactdetails?.contactId
+  //     }
+  //     dispatch(getCaseByContactRequest(data))
+  //   }
+  // }, [])
 
 
   const handleSubmit = useCallback((values) => {
 
-    const firstApiPayload = {
-      contactId: contactdetails?.contactId,
-      firstName: values?.firstName,
-      lastName: values?.lastName,
-      contactType: contactdetails?.contactType,
-      position: values?.position,
-      company: values?.company,
-      email: values?.email,
-      cellNumber: values?.cellNumber,
-      workNumber: values.workNumber,
-      wechatAccount: values.wechatAccount,
-      // whatsApp: values.whatsApp,
-      // line: values.line,
-      note: values?.note,
-      mailingAddress: values?.mailingAddress,
-      ssn: values?.ssn,
-      driverLicense: values?.driverLicense,
-    };
+    // const firstApiPayload = {
+    //   organizationId: contactdetails?.organizationId,
+    //   organizationName : contactdetails?.organizationName,
+    //   organizationType: contactdetails?.organizationType,
+    //   position: values?.position,
+    //   company: values?.company,
+    //   email: values?.email,
+    //   cellNumber: values?.cellNumber,
+    //   workNumber: values.workNumber,
+    //   wechatAccount: values.wechatAccount,
+    //   // whatsApp: values.whatsApp,
+    //   // line: values.line,
+    //   note: values?.note,
+    //   mailingAddress: values?.mailingAddress,
+    //   ssn: values?.ssn,
+    //   driverLicense: values?.driverLicense,
+    // };
 
-    const secondApiPayload = {
-      addressLine1: values?.addressLine1,
-      addressLine2: values?.addressLine2,
-      city: values?.city,
-      state: values?.state,
-      zipCode: values?.zipCode,
-    }
+    // const secondApiPayload = {
+    //   addressLine1: values?.addressLine1,
+    //   addressLine2: values?.addressLine2,
+    //   city: values?.city,
+    //   state: values?.state,
+    //   zipCode: values?.zipCode,
+    // }
 
-    let data = {
-      contact: firstApiPayload,
-      util: secondApiPayload
-    }
+    // let data = {
+    //   contact: firstApiPayload,
+    //   util: secondApiPayload
+    // }
 
-    dispatch(createAddressRequest(data))
+    // dispatch(createAddressRequest(data))
     toggleEdit()
   }, []);
 
@@ -100,25 +100,19 @@ const ContactPartnerOrganization = ({ isEdit, toggleEdit }) => {
     cellNumber: Yup.string().required('Cell number is required'),
   });
   const initialValues = {
-    contactId: contactdetails?.contactId || '',
-    contactType: contactdetails?.contactType || '',
-    firstName: contactdetails?.firstName || '',
-    lastName: contactdetails?.lastName || '',
-    company: contactdetails?.company || '',
-    position: contactdetails?.position || '',
-    cellNumber: contactdetails?.cellNumber || '',
-    email: contactdetails?.email || '',
-    mailingAddress: contactdetails?.mailingAddress || '',
-    wechatAccount: contactdetails?.wechatAccount || '',
-    note: contactdetails?.note || '',
+    contactId: organizationdetails?.organizationId || '',
+    contactType: organizationdetails?.organizationType || '',
+    organizationName: organizationdetails?.organizationName || '',
+    website : organizationdetails?.website || '',
+    cellNumber: organizationdetails?.cellNumber || '',
+    email: organizationdetails?.email || '',
+    addressId: organizationdetails?.addressId || '',
+
     addressLine1: addressDetails?.addressLine1 || '',
     addressLine2: addressDetails?.addressLine2 || '',
     city: addressDetails?.city || '',
     state: addressDetails?.state || '',
     zipCode: addressDetails?.zipCode || '',
-    ssn: contactdetails?.ssn || '',
-    driverLicense: contactdetails?.driverLicense || '',
-
   };
 
   const closedCases = [
@@ -159,7 +153,7 @@ const ContactPartnerOrganization = ({ isEdit, toggleEdit }) => {
                         />
                         <div className="ml-6">
                           <div className="mb-16">
-                            <p className="text-[22px] font-medium text-secondary-800">{initialValues?.firstName} {initialValues?.lastName}</p>
+                            <p className="text-[22px] font-medium text-secondary-800">{initialValues?.organizationName}</p>
                             {/* <p className="font-medium text-secondary-800 text-sm mb-10">Brokers</p> */}
                             <Field
                               as={SelectInput}
@@ -248,7 +242,7 @@ const ContactPartnerOrganization = ({ isEdit, toggleEdit }) => {
           :
           <>
             <div className="col-span-6 pp">
-              <ContactOrganizationDetail address={addressDetails} contact={contactdetails} />
+              <ContactOrganizationDetail address={addressDetails} organization={organizationdetails} />
             </div>
             <div className="col-span-3">
               <div className="card bg-card-300 px-2 py-3">
