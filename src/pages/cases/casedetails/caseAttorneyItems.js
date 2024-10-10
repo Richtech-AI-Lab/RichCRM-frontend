@@ -95,7 +95,7 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
                                         <span className="icon mr-2 cursor-pointer" /* onClick={() => remove(index)} */ onClick={() => dispatch(deleteAttorneyRequest(item?.contactId))}>
                                             <img src={IMAGES.removeIcon} alt="icon" />
                                         </span>
-                                        {item?.company ? item?.company : item?.firstName}
+                                        {item?.company} - {item?.lastName}, {item?.firstName}
                                     </span>
                                     <span className="left-txt flex items-center">
                                         {item?.contactId}
