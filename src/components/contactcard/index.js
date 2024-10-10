@@ -66,11 +66,11 @@ const ContactCard = ({
     <div className="bg-white pt-4 rounded-2xl mb-5">
       <div className="flex justify-between items-center mb-4 px-4">
         <span className="text-xl text-title font-medium">Participants</span>
-        <Dropdown arrowIcon={false} label={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />} placement="left-start" inline={true} dismissOnClick={false} >
+        {/* <Dropdown arrowIcon={false} label={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />} placement="left-start" inline={true} dismissOnClick={false} >
           <Dropdown.Item onClick={toggleAddFromContactsModal}>Add from Contacts</Dropdown.Item>
           <Dropdown.Item>Create a New Contact</Dropdown.Item>
           <Dropdown.Item>Edit</Dropdown.Item>
-        </Dropdown>
+        </Dropdown> */}
       </div>
       <Accordion className="border-0">
         {clientDetails?.map((data, index) => (
@@ -99,7 +99,8 @@ const ContactCard = ({
               <ul className="card-details">
                 <ContactDetailItem
                   label="Role"
-                  isInput={true} />
+                  content="Purchaser(Client)"
+                  isInput={false} />
                 {/* <ContactDetailItem
                   label="Referred by"
                   content="Add a referral"

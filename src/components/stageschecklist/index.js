@@ -32,7 +32,7 @@ const StagesChecklist = () => {
   const [isComplete, setIsComplete] = useState(true);
   const [activeTab, setActiveTab] = useState('mortgage');
   const menuOption1 = ['Create a Task', 'Add a Task']
-  const menuOption2 = ['Finish all', 'Edit task']
+  const menuOption2 = ['Finish all']
   const { loading, data, error } = useSelector((state) => state.stages);
   const taskData = useSelector((state) => state.task);
   const { casesData } = useSelector((state) => state.case);
