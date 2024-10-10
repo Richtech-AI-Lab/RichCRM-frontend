@@ -39,6 +39,9 @@
   .sidebar-items ul li a svg {
     @apply text-secondary-800;
   }
+  .sidebar-items ul li a span img {
+    @apply text-secondary-800;
+  }
   .active-item {
     @apply bg-active-blue rounded-[100px] !important;
   }
