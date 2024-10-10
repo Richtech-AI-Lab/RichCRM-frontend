@@ -17,7 +17,7 @@ const AttorneyDetails = ({ attorneyDetails, title }) => {
                         <React.Fragment key={index}> 
                             <li>
                                 {/* <span className="left-txt flex items-center">{`${attorney?.firstName} ${attorney?.lastName}`}</span> */}
-                                <span className="left-txt flex items-center">{`${attorney?.note ? attorney.note : `${attorney?.firstName} ${attorney?.lastName}`}`}</span>
+                                <span className="left-txt flex items-center">{`${attorney?.company} - ${attorney?.lastName}, ${attorney?.firstName}`}</span>
                                 <span className="left-txt flex items-center">{`${attorney?.contactId}`}</span>
                             </li>
                         </React.Fragment>
