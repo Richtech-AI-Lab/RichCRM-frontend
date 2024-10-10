@@ -13,7 +13,7 @@ import NewIndividualContactModalV1 from "../../../components/contactModal/newInd
 import NewOrganizationContactModalV1 from "../../../components/contactModal/newOrganizationContactModalV1";
 import { fetchOrganizationByTypeRequest, setSelectedOrganization } from "../../../redux/actions/organizationActions";
 
-const ContactListingV1 = ({ active, parent }) => {
+const ContactListingV1 = ({ active, parent, activeFilter }) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate()
@@ -45,7 +45,7 @@ const ContactListingV1 = ({ active, parent }) => {
     const fetchContactByType = async () => {
       try {
         const payload = {
-          contactType: 0
+          contactType: activeFilter
         };
         dispatch(getContactRequest(payload));
       } catch (error) {
@@ -55,7 +55,7 @@ const ContactListingV1 = ({ active, parent }) => {
     const fetchOrganizationByType = async () => {
       try {
         const payload = {
-          organizationType: 1
+          organizationType: activeFilter
         };
         dispatch(fetchOrganizationByTypeRequest(payload));
       } catch (error) {
@@ -69,7 +69,7 @@ const ContactListingV1 = ({ active, parent }) => {
       fetchOrganizationByType();
     }
 
-  }, [active]);
+  }, [active, activeFilter]);
 
   function getTaskLabelAndColor(status, name) {
     let label = '';
