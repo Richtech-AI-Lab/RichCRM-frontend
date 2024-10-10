@@ -11,8 +11,8 @@ import {
   REGISTER_PREMISES_FAILURE,
   REGISTER_PREMISES_REQUEST,
   REGISTER_PREMISES_SUCCESS,
-  START_LOADING,
-  STOP_LOADING,
+  START_PREMISES_LOADING,
+  STOP_PREMISES_LOADING,
   UPDATE_PREMISES_REQUEST,
 } from "../type";
 
@@ -87,9 +87,9 @@ export const fetchPremisesByQueryIdFailure = (error) => ({
 });
 
 export const startPremisesLoading = () => ({
-  type: START_LOADING
+  type: START_PREMISES_LOADING
 });
 
 export const stopPremisesLoading = () => ({
-  type: STOP_LOADING
+  type: STOP_PREMISES_LOADING
 });

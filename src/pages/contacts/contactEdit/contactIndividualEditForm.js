@@ -76,6 +76,9 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
                 <ul className="card-details">
                     <li>
                         <span className={`left-txt flex items-center`}>Email</span>
+                        {form?.errors["email"] && form?.touched["email"] && (
+                        <span className="text-sm text-red-500">{form.errors["email"]}</span>
+                    )}
                         <input
                             className="text-right p-0 border-none focus:ring-transparent"
                             name="email"
@@ -84,11 +87,12 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
                             onBlur={handleBlur}
                             value={values?.email}
                         /></li>
-                    {form?.errors["email"] && form?.touched["email"] && (
-                        <span className="text-sm text-red-500">{form.errors["email"]}</span>
-                    )}
+                   
                     <li>
                         <span className={`left-txt flex items-center`}>Cell Phone</span>
+                        {form?.errors["cellNumber"] && form?.touched["cellNumber"] && (
+                        <span className="text-sm text-red-500">{form.errors["cellNumber"]}</span>
+                    )}
                         <input
                             className="text-right p-0 border-none focus:ring-transparent"
                             name="cellNumber"
@@ -98,9 +102,7 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
                             onBlur={handleBlur}
                             value={values?.cellNumber}
                         /></li>
-                    {form?.errors["cellNumber"] && form?.touched["cellNumber"] && (
-                        <span className="text-sm text-red-500">{form.errors["cellNumber"]}</span>
-                    )}
+
 
                     <li>
                         {optionalFields.workNumber && (
@@ -222,6 +224,9 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
                     </li>
                     <li>
                         <span className={`left-txt flex items-center`}>Street Name</span>
+                        {form?.errors["addressLine1"] && form?.touched["addressLine1"] && (
+                        <span className="text-sm text-red-500">{form.errors["addressLine1"]}</span>
+                    )}
                         <input
                             className="text-right p-0 border-none focus:ring-transparent"
                             name="addressLine1"
@@ -242,6 +247,9 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
                         /></li>
                     <li>
                         <span className={`left-txt flex items-center`}>City</span>
+                        {form?.errors["city"] && form?.touched["city"] && (
+                        <span className="text-sm text-red-500">{form.errors["city"]}</span>
+                    )}
                         <input
                             className="text-right p-0 border-none focus:ring-transparent"
                             name="city"
@@ -253,6 +261,9 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
                     <li>
                         <div className="flex justify-between items-center w-full">
                             <span className="left-txt w-full">State</span>
+                            {form?.errors["state"] && form?.touched["state"] && (
+                        <span className="text-sm text-red-500 w-full">{form.errors["state"]}</span>
+                    )}
                             <div className="flex justify-end items-center w-full gap-7">
                                 <div className="grid gap-3">
                                     <Field
@@ -273,6 +284,9 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
                     </li>
                     <li>
                         <span className={`left-txt flex items-center`}>Zip Code</span>
+                        {form?.errors["zipCode"] && form?.touched["zipCode"] && (
+                        <span className="text-sm text-red-500">{form.errors["zipCode"]}</span>
+                    )}
                         <input
                             className="text-right p-0 border-none focus:ring-transparent"
                             name="zipCode"

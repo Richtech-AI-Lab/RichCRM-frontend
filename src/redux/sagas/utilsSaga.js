@@ -13,7 +13,7 @@ import { CREATE_ADDRESS_CONTACT_REQUEST, CREATE_ADDRESS_REQUEST, FETCH_ADDRESS_B
 import { registerPremisesRequest, updatePremisesRequest } from "../actions/premisesActions";
 import { toast } from "react-toastify";
 import { handleError } from "../../utils/eventHandler";
-import { updateClientByIdRequest } from "../actions/clientActions";
+import { createTenantRequest, updateClientByIdRequest } from "../actions/clientActions";
 import { createContactRequest, updateContactRequest } from "../actions/contactActions";
 import { updateOrganizationByIdRequest } from "../actions/organizationActions";
 
@@ -51,10 +51,11 @@ function* createAddress(action) {
     const response = yield call(() =>
       postRequest(API_ENDPOINTS.REGISTER_ADDRESS, payload?.util)
     );
-    yield put(registerAddressSuccess(response.data));
+    // yield put(registerAddressSuccess(response.data));
+    // console.log(payload)
     if (response.status === 200) {
       let updatedPayload;
-
+      // console.log(payload,"_________")
       if (payload.client) {
         updatedPayload = {
           client: {
@@ -69,8 +70,27 @@ function* createAddress(action) {
 
         yield put(updateClientByIdRequest(updatedPayload));
         toast.success("Address updated!");
-      } else if (payload.premises) {
+      }
+      // else if (payload.tenant && payload.premises) {
+      //   updatedPayload = {
+      //     ...payload,
+      //     premises: {
+      //       ...payload.premises,
+      //       addressId: response.data?.data[0]?.addressId,
+      //       name: `${response.data?.data[0]?.addressLine1}_${response.data?.data[0]?.addressId}`,
+      //     },
+      //     util: {
+      //       ...payload.util,
+      //       addressId: response.data?.data[0]?.addressId,
+      //     },
+      //   };
+      //   yield put(createTenantRequest(updatedPayload));
+      //   toast.success("Address updated!");
+      // }
+      else if (payload.premises) {
+        yield put(registerAddressSuccess(response.data));
         updatedPayload = {
+          ...payload,
           premises: {
             ...payload.premises,
             addressId: response.data?.data[0]?.addressId,
@@ -81,10 +101,10 @@ function* createAddress(action) {
             addressId: response.data?.data[0]?.addressId,
           },
         };
-  
         yield put(updatePremisesRequest(updatedPayload));
-        toast.success("address updated!");
+        toast.success("Address updated!");
       }else if (payload.contact) {
+        yield put(registerAddressSuccess(response.data));
         updatedPayload = {
           contact: {
             ...payload.contact,
@@ -97,7 +117,7 @@ function* createAddress(action) {
         };
   
         yield put(updateContactRequest(updatedPayload.contact));
-        toast.success("address updated!");
+        toast.success("Address updated!");
       }else if (payload.organization) {
         updatedPayload = {
           organization: {
@@ -114,7 +134,6 @@ function* createAddress(action) {
         toast.success("Address updated!");
       }
     } 
-
   } catch (error) {
     handleError(error)
     yield put(registerAddressFailure(error.response?.data || error));
@@ -156,7 +175,7 @@ function* createAddressThenContact(action) {
         };
   
         yield put(createContactRequest(updatedPayload.contact));
-        toast.success("address updated!");
+        toast.success("Address updated!");
       }
     } 
 

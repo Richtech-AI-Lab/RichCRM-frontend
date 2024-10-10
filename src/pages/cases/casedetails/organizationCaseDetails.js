@@ -9,22 +9,26 @@ import { useDispatch, useSelector } from "react-redux";
 import { createAddressRequest } from "../../../redux/actions/utilsActions";
 import ParticipantBothDetail from "../showdetail/participantbothdetail";
 import PurchaserOrganizationForm from "../editDetail/purchaserOrganizationForm";
+import AttorneyDetails from "../showdetail/attorneydetail";
+import { updateCaseContactRequest } from "../../../redux/actions/caseAction";
 
 
 const OrganizationCaseDetails = ({ isEdit, setIsEdit , caseType}) => {
   const dispatch = useDispatch();
   const { cases } = useSelector((state) => state.case.casesData);
+  const caseObj = cases?.find(item => item.caseId === localStorage.getItem('c_id'));
   const { organization } = useSelector((state) => state.organization);
   const organizationDetails = organization?.data?.length > 0 ? organization?.data : null;
-  const { data } = useSelector((state) => state?.utils?.address);
-  const addressDetails = data?.length > 0 ? data : null;
+  const attorneyDetails = useSelector((state) => state.contact.attorney);
+  // const { data } = useSelector((state) => state?.utils?.address);
+  // const addressDetails = data?.length > 0 ? data : null;
 
   const toggleEdit = () => {
     setIsEdit(prevState => !prevState);
   };
 
   const handleSubmit = (values, { setSubmitting }) => {
-
+    const attorneyIds = attorneyDetails?.map(attorney => attorney.contactId);
     // Create the payload for the first API call
     const firstApiPayload = {
       organizationName: values.organizationName,
@@ -46,22 +50,28 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit , caseType}) => {
       organization: firstApiPayload,
       util: secondApiPayload
     }
+    const casePayload = {
+      ...caseObj,
+      contacts: attorneyIds
+    }
     dispatch(createAddressRequest(data))
+    dispatch(updateCaseContactRequest(casePayload))
     toggleEdit()
   }
-  // const handleAttorneysChange = (attorneys, handleChange) => {
-  //   handleChange({ target: { name: 'attorneys', value: attorneys } });
-  // };
+  
+  const handleAttorneysChange = (attorneys, handleChange) => {
+    handleChange({ target: { name: 'attorneys', value: attorneys } });
+  };
   const initialOrganizationValues = organizationDetails && organizationDetails.length > 0 ? {
     organizationName: organizationDetails[0]?.organizationName || '',
     website: organizationDetails[0]?.website || '',
     email: organizationDetails[0]?.email || '',
     cellNumber: organizationDetails[0]?.cellNumber || '',
-    addressLine1: addressDetails[0]?.addressLine1 || '',
-    addressLine2: addressDetails[0]?.addressLine2 || '',
-    city: addressDetails[0]?.city || '',
-    state: addressDetails[0]?.state || '',
-    zipCode: addressDetails[0]?.zipCode || '',
+    addressLine1: organizationDetails[0]?.addressLine1 || '',
+    addressLine2: organizationDetails[0]?.addressLine2 || '',
+    city: organizationDetails[0]?.city || '',
+    state: organizationDetails[0]?.state || '',
+    zipCode: organizationDetails[0]?.zipCode || '',
   } : {
     organizationName: '',
     website: '',
@@ -74,16 +84,24 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit , caseType}) => {
     zipCode: '',
   };
 
-  // const validationSchema = Yup.object({
-  
-  // });
+  const validationSchema = Yup.object({
+    organizationName: Yup.string().required("Name is required"),
+    email: Yup.string().email('Invalid email format').required("Email is required"),
+    cellNumber: Yup.string().matches(/^[0-9]+$/, 'Cell number must be a number').required("Cell Phone is required"),
+    website: Yup.string().url('Website must be a valid URL').required("Website is required"),
+    addressLine1: Yup.string().required("Address is required"),
+    // addressLine2: Yup.string('Address Line 2 is required'),
+    city: Yup.string().required("City is required"),
+    state: Yup.string().required("State is required"),
+    zipCode: Yup.string().required("Zip code is required"),
+  });
   return (
     <>
       {isEdit ?
         (<Formik
           initialValues={initialOrganizationValues}
           onSubmit={handleSubmit}
-        // validationSchema={validationSchema}
+        validationSchema={validationSchema}
         >
           {({
             handleChange,
@@ -99,6 +117,8 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit , caseType}) => {
                   <PurchaserOrganizationForm title={ caseType ? "Seller" : "Purchaser"} handleChange={handleChange} setFieldValue={setFieldValue} values={values} form={{ errors, touched }} initialValues={initialOrganizationValues} />
                 </div>
                 <div className="col-span-6">
+                <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} attorneyDetails={attorneyDetails} errors={errors.attorneys || []}
+                    touched={touched.attorneys || []} setAttorneys={(attorneys) => handleAttorneysChange(attorneys, handleChange)} />
                   {/* <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} errors={errors.attorneys || []}
                     touched={touched.attorneys || []} setAttorneys={(attorneys) => handleAttorneysChange(attorneys, handleChange)} />
                   <CaseCardDetails items={titleMortgageItems} title="Title & Mortgage" handle={handleChange} /> */}
@@ -110,7 +130,10 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit , caseType}) => {
         </Formik>)
         :
         (<div className="grid grid-cols-12 gap-6">
-          <div className="col-span-6"><ParticipantBothDetail organization={organizationDetails}  title={ caseType  ? "Seller" : "Purchaser"} address={addressDetails} /></div></div>)}
+          <div className="col-span-6"><ParticipantBothDetail organization={organizationDetails} title={ caseType  ? "Seller" : "Purchaser"} /></div>
+          {attorneyDetails?.length > 0  && <div className="col-span-6"><AttorneyDetails  attorneyDetails={attorneyDetails}  title={"Attorney"}  /></div>}
+          </div>)}
+    
     </>
   );
 };

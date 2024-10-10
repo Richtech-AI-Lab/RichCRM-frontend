@@ -13,7 +13,7 @@ import { IMAGES } from "../../../constants/imagePath";
 import states from "../../../constants/states.json"
 
 
-const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, formerror, setFieldValue, handleChange, handleBlur }) => {
+const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, form, setFieldValue, handleChange, handleBlur }) => {
   const [optionalFields, setOptionalFields] = useState({
     workNumber: false,
     wechatAccount: false,
@@ -56,6 +56,9 @@ const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, form
         <ul className="card-details">
           <li>
             <span className={`left-txt flex items-center`}>Name</span>
+            {form?.errors["name"] && form?.touched["name"] && (
+              <span className="text-sm text-red-500">{form.errors["name"]}</span>
+            )}
             <input
               className="text-right p-0 border-none focus:ring-transparent"
               name="name"
@@ -76,6 +79,9 @@ const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, form
             /></li>
           <li>
             <span className={`left-txt flex items-center`}>Email</span>
+            {form?.errors["email"] && form?.touched["email"] && (
+              <span className="text-sm text-red-500">{form.errors["email"]}</span>
+            )}
             <input
               className="text-right p-0 border-none focus:ring-transparent"
               name="email"
@@ -86,6 +92,9 @@ const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, form
             /></li>
           <li>
             <span className={`left-txt flex items-center`}>Cell Phone</span>
+            {form?.errors["cellNumber"] && form?.touched["cellNumber"] && (
+              <span className="text-sm text-red-500">{form.errors["cellNumber"]}</span>
+            )}
             <input
               className="text-right p-0 border-none focus:ring-transparent"
               name="cellNumber"
@@ -215,6 +224,9 @@ const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, form
           </li>
           <li>
             <span className={`left-txt flex items-center`}>Street Name</span>
+            {form?.errors["addressLine1"] && form?.touched["addressLine1"] && (
+              <span className="text-sm text-red-500">{form.errors["addressLine1"]}</span>
+            )}
             <input
               className="text-right p-0 border-none focus:ring-transparent"
               name="addressLine1"
@@ -235,6 +247,9 @@ const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, form
             /></li>
           <li>
             <span className={`left-txt flex items-center`}>City</span>
+            {form?.errors["city"] && form?.touched["city"] && (
+              <span className="text-sm text-red-500">{form.errors["city"]}</span>
+            )}
             <input
               className="text-right p-0 border-none focus:ring-transparent"
               name="city"
@@ -246,6 +261,9 @@ const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, form
           <li>
             <div className="flex justify-between items-center w-full">
               <span className="left-txt w-full">State</span>
+              {form?.errors["state"] && form?.touched["state"] && (
+              <span className="text-sm text-red-500 w-full">{form.errors["state"]}</span>
+            )}
               <div className="flex justify-end items-center w-full gap-7">
                 <div className="grid gap-3">
                   <Field
@@ -266,6 +284,9 @@ const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, form
           </li>
           <li>
             <span className={`left-txt flex items-center`}>Zip Code</span>
+            {form?.errors["zipCode"] && form?.touched["zipCode"] && (
+              <span className="text-sm text-red-500">{form.errors["zipCode"]}</span>
+            )}
             <input
               className="text-right p-0 border-none focus:ring-transparent"
               name="zipCode"

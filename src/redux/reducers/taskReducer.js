@@ -1,5 +1,5 @@
 import { STAGESNAMES } from "../../constants/constants";
-import { CLEAR_DATA, CREATE_TASK_FAILURE, CREATE_TASK_REQUEST, CREATE_TASK_SUCCESS, UPDATE_STATUS_TASK_SUCCESS } from "../type";
+import { CLEAR_TASK_DATA, CREATE_TASK_FAILURE, CREATE_TASK_REQUEST, CREATE_TASK_SUCCESS, UPDATE_STATUS_TASK_SUCCESS } from "../type";
 
 const initialState = {
   loading: false,
@@ -30,7 +30,7 @@ const taskReducer = (state = initialState, action) => {
             : task 
         ),
       } };
-    case CLEAR_DATA:
+    case CLEAR_TASK_DATA:
       return initialState;
     default:
       return state;

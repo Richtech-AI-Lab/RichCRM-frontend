@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchClientByIdRequest } from "../../../redux/actions/clientActions";
 import { fetchAddressByIdRequest } from "../../../redux/actions/utilsActions";
 import { fetchOrganizationByIdRequest } from "../../../redux/actions/organizationActions";
+import { fetchAttorneyByIdsRequest } from "../../../redux/actions/contactActions";
 
 const CaseCardData = () => {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const CaseCardData = () => {
   const clientDetails = client?.data?.length > 0 ? client?.data : null;
   const organizationDetails = organization?.data?.length > 0 ? organization?.data : null;
   const premisesDetails = premises?.data?.length > 0 ? premises?.data[0] : null;
-  const premisesTypeLabel = premisesTypes.find(option => option.value === premisesDetails?.propertyType)?.label || "Unknown";
+  const premisesTypeLabel = premisesTypes?.find(option => option.value == premisesDetails?.propertyType)?.label || "Unknown";
 
   const handleCaseDetails = () => {
     navigate(ROUTES.CASES_DETAILS)
@@ -55,6 +56,21 @@ const CaseCardData = () => {
 
     fetchPremisesByQueryId();
   }, [casedetails.premisesId]);
+
+  useEffect(() => {
+    const fetchAttorneyById = async () => {
+      try {
+        const payload = {
+          contacts: casedetails && casedetails.contacts
+        };
+        dispatch(fetchAttorneyByIdsRequest(payload));
+      } catch (error) {
+        console.error("failed to fetch attorney", error);
+      }
+    };
+    fetchAttorneyById()
+  }, [casedetails.contacts]);
+
 
   useEffect(() => {
     if (premisesDetails && premisesDetails?.addressId) {
@@ -98,7 +114,7 @@ const CaseCardData = () => {
       let id = casedetails?.organizationId
       fetchOrganizationByQueryId(id);
     }
-  }, [casedetails?.clientType]);
+  }, [casedetails]);
 
   const headerItems = [
     { text: "Cases", className: "mr-8" },

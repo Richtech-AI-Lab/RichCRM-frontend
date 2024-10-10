@@ -50,13 +50,13 @@ const StagesChecklist = () => {
 
   }, [data, currentStep])
 
+  const foundCase = casesData?.cases?.find(item => item.caseId === localStorage.getItem('c_id'));
   useEffect(() => {
     // if cases have stage then set stage
-    const foundCase = casesData?.cases?.find(item => item.caseId === localStorage.getItem('c_id'));
     if (foundCase) {
       setCurrentStep(foundCase?.stage);
     }
-  }, [casesData.cases[0]?.stage])
+  }, [casesData.cases[0]?.stage, foundCase])
 
   //   const foundCase = caseDataGet.find(item => item.caseId === caseId);
 

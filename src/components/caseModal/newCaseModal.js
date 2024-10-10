@@ -267,7 +267,7 @@ const NewCaseModal = ({ onClose }) => {
       } else {
         dispatch(registerOrganizationRequest(combinedPayload, navigate));
       }
-      dispatch(clearData());
+      // dispatch(clearData());
     } catch (error) {
       console.error("Error while handling new case information", error);
       // toast.error("An error occurred while creating the case.");

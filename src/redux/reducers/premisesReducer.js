@@ -1,5 +1,5 @@
 import {
-  CLEAR_DATA,
+  CLEAR_PREMISES_DATA,
   FETCH_PREMISES_BY_ID_FAILURE,
   FETCH_PREMISES_BY_ID_REQUEST,
   FETCH_PREMISES_BY_ID_SUCCESS,
@@ -12,8 +12,8 @@ import {
   REGISTER_PREMISES_FAILURE,
   REGISTER_PREMISES_REQUEST,
   REGISTER_PREMISES_SUCCESS,
-  START_LOADING,
-  STOP_LOADING,
+  START_PREMISES_LOADING,
+  STOP_PREMISES_LOADING,
 } from "../type";
 
 const initialState = {
@@ -87,11 +87,11 @@ const premisesReducer = (state = initialState, action) => {
         loading: false,
         error: action.payload,
       };
-    case CLEAR_DATA:
+    case CLEAR_PREMISES_DATA:
       return initialState;
-    case START_LOADING:
+    case START_PREMISES_LOADING:
       return { ...state, loading: true };
-    case STOP_LOADING:
+    case STOP_PREMISES_LOADING:
       return { ...state, loading: false };
     default:
       return state;
