@@ -51,7 +51,8 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
             //     email: newAttorney.email,
             //     cellNumber: newAttorney.cellNumber // Changed key to cellNumber
             // });
-            setNewAttorney({ company: '', firstName: '', lastName: '', email: '', cellNumber: '' });
+            setNewAttorney({ ...newAttorney, company: '', firstName: '', lastName: '', email: '', cellNumber: '' });
+            setSearchResults([])
             closeModal();
         }
     };
