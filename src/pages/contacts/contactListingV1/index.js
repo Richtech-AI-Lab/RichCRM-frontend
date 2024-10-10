@@ -11,7 +11,7 @@ import XSpinnerLoader from "../../../components/spinnerLoader/XSpinnerLoader";
 import ContactButtonWithModal from "../../../components/newContactButton";
 import NewIndividualContactModalV1 from "../../../components/contactModal/newIndividualContactModalV1";
 import NewOrganizationContactModalV1 from "../../../components/contactModal/newOrganizationContactModalV1";
-import { fetchOrganizationByTypeRequest } from "../../../redux/actions/organizationActions";
+import { fetchOrganizationByTypeRequest, setSelectedOrganization } from "../../../redux/actions/organizationActions";
 
 const ContactListingV1 = ({ active, parent }) => {
 
@@ -29,9 +29,15 @@ const ContactListingV1 = ({ active, parent }) => {
   };
 
   const handleNavigation = (item) => {
-    dispatch(setSelectedContact(item));
-    localStorage.setItem("contact_id", item)
-    navigate(ROUTES.CONTACT_PARTNER, { state: { active } });
+    if(active == 0){
+      dispatch(setSelectedContact(item));
+      localStorage.setItem("contact_id", item)
+      navigate(ROUTES.CONTACT_PARTNER, { state: { active } });
+    }else{
+      dispatch(setSelectedOrganization(item));
+      localStorage.setItem("organization_id", item)
+      navigate(ROUTES.CONTACT_PARTNER, { state: { active } });
+    }
   }
   const header = headers[active] ?? ["Name", "Position", "Company", "Email", "Cell Phone"];
 
