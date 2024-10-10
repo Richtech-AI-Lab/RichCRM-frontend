@@ -4,7 +4,7 @@ import dummyData from "../../../utils/dummyData.json";
 import { ROUTES } from "../../../constants/api";
 import { useNavigate } from "react-router-dom";
 import { IMAGES } from "../../../constants/imagePath";
-import { addFromContactTab, addFromContactV1Tab, ORGANIZATION_TYPE } from "../../../constants/constants";
+import { addFromContactTab, addFromContactV1Tab, CONTACT_TYPE, ORGANIZATION_TYPE } from "../../../constants/constants";
 import { getContactRequest, setSelectedContact } from "../../../redux/actions/contactActions";
 import { useDispatch, useSelector } from "react-redux";
 import XSpinnerLoader from "../../../components/spinnerLoader/XSpinnerLoader";
@@ -193,7 +193,7 @@ const ContactListingV1 = ({ active, parent, activeFilter }) => {
         ) : (
           <div className="flex flex-col items-center justify-center h-[60vh] w-full">
             <p className="text-center text-gray-500">
-              No {active === 0 ? "individual" : "organization"} contact available
+              No {active === 0 ? CONTACT_TYPE[activeFilter] : ORGANIZATION_TYPE[activeFilter]} Contact Available
             </p>
             <ContactButtonWithModal
               buttonClass="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium mt-4"
