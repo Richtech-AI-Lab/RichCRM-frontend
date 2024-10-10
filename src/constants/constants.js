@@ -663,3 +663,9 @@ export const settingTabLabel = [
   { id: settingTab.GENERAL, label: "General" },
   { id: settingTab.LINK_PREFRENCES, label: "Link Preferences" }
 ];
+
+export const ORGANIZATION_TYPE = {
+  0: "Other",
+  1: "Company",
+  2: "Trust"
+};
