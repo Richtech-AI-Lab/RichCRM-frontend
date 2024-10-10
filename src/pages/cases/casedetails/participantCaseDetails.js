@@ -110,7 +110,7 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType }) => {
   };
 
   const validationSchema = Yup.object({
-    organizationName:  Yup.string().required("Name is required"),
+    name:  Yup.string().required("Name is required"),
     email: Yup.string().email('Invalid email format'),
     cellNumber: Yup.string().matches(/^[0-9]+$/, 'Cell number must be a number'),
     addressLine1: Yup.string().required("Address is required"),
