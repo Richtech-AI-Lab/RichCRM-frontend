@@ -5,8 +5,9 @@ import { SelectInput } from "../../../components";
 import { Field } from "formik";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import MenuPopup from "../../../components/menupopup";
+import { ORGANIZATION_TYPE } from "../../../constants/constants";
 
-const ContactOrganizationDetail = ({ contact, address }) => {
+const ContactOrganizationDetail = ({ organization, address }) => {
     const menuOption = [
         'option1', 'option2', 'option3'
     ];
@@ -69,15 +70,18 @@ const ContactOrganizationDetail = ({ contact, address }) => {
                     />
                     <div className="ml-6">
                         <div className="mb-16">
-                            <p className="text-[22px] font-medium text-secondary-800">{contact?.firstName} {contact?.lastName}</p>
+                            <p className="text-[22px] font-medium text-secondary-800">{organization?.organizationName}</p>
                             <p className="">
-                                        <span className={`bg-badge-${getTaskLabelAndColor(contact.contactType, "color")} text-secondary-100 text-sm font-semibold py-1 px-3 rounded-full inline-block`}>
+                                        {/* <span className={`bg-badge-${getTaskLabelAndColor(contact.contactType, "color")} text-secondary-100 text-sm font-semibold py-1 px-3 rounded-full inline-block`}>
                                             {getTaskLabelAndColor(contact.contactType, "label")}
+                                        </span> */}
+                                         <span className={`bg-badge-yellow} text-secondary-100 text-sm font-semibold py-1 px-3 rounded-full inline-block`}>
+                                            {ORGANIZATION_TYPE[organization.organizationType]}
                                         </span>
                                     </p>
 
                         </div>
-                        <p className="text-secondary-300 text-sm">{contact?.contactId}</p>
+                        <p className="text-secondary-300 text-sm">{organization?.organizationId}</p>
                     </div>
                 </div>
             </div>
@@ -102,12 +106,15 @@ const ContactOrganizationDetail = ({ contact, address }) => {
                             />
                             <div className="ml-6">
                                 <div className="">
-                                    <p className="text-[18px] font-medium text-secondary-800">{contact?.firstName} {contact?.lastName}</p>
+                                    <p className="text-[18px] font-medium text-secondary-800">{organization?.organizationName}</p>
                                     {/* <p className="font-medium text-secondary-800 text-sm ">{getTaskLabelAndColor(contact?.contactType, "label")}</p> */}
                                     <p className="">
-                                        <span className={`bg-badge-${getTaskLabelAndColor(contact.contactType, "color")} text-secondary-100 text-sm font-semibold py-1 px-3 rounded-full inline-block`}>
-                                            {getTaskLabelAndColor(contact.contactType, "label")}
+                                    <span className={`bg-badge-yellow text-secondary-100 text-sm font-semibold py-1 px-3 rounded-full inline-block`}>
+                                        {ORGANIZATION_TYPE[organization?.organizationType]}
                                         </span>
+                                        {/* <span className={`bg-badge-${getTaskLabelAndColor(contact.contactType, "color")} text-secondary-100 text-sm font-semibold py-1 px-3 rounded-full inline-block`}>
+                                            {getTaskLabelAndColor(contact.contactType, "label")}
+                                        </span> */}
                                     </p>
                                 </div>
                             </div>
@@ -157,7 +164,7 @@ const ContactOrganizationDetail = ({ contact, address }) => {
                 <ul className="card-details">
                     <li>
                         <span className="left-txt flex items-center" > Note</span>
-                        <span className="left-txt flex items-center" > {contact?.note} </span>
+                        <span className="left-txt flex items-center" > {organization?.note} </span>
                     </li>
                 </ul>
             </div>

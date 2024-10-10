@@ -1,4 +1,4 @@
-import { FETCH_ADDITIONAL_ORG_BY_IDS_FAILURE, FETCH_ADDITIONAL_ORG_BY_IDS_REQUEST, FETCH_ADDITIONAL_ORG_BY_IDS_SUCCESS, FETCH_ORG_BY_ID_FAILURE, FETCH_ORG_BY_ID_REQUEST, FETCH_ORG_BY_ID_SUCCESS, REGISTER_ORG_FAILURE, REGISTER_ORG_REQUEST, REGISTER_ORG_SUCCESS, UPDATE_ORG_BY_ID_FAILURE, UPDATE_ORG_BY_ID_REQUEST, UPDATE_ORG_BY_ID_SUCCESS } from "../type";
+import { FETCH_ADDITIONAL_ORG_BY_IDS_FAILURE, FETCH_ADDITIONAL_ORG_BY_IDS_REQUEST, FETCH_ADDITIONAL_ORG_BY_IDS_SUCCESS, FETCH_ORG_BY_ID_FAILURE, FETCH_ORG_BY_ID_REQUEST, FETCH_ORG_BY_ID_SUCCESS, FETCH_ORG_BY_TYPE_FAILURE, FETCH_ORG_BY_TYPE_REQUEST, FETCH_ORG_BY_TYPE_SUCCESS, REGISTER_ORG_FAILURE, REGISTER_ORG_REQUEST, REGISTER_ORG_SUCCESS, SET_SELECTED_ORG, UPDATE_ORG_BY_ID_FAILURE, UPDATE_ORG_BY_ID_REQUEST, UPDATE_ORG_BY_ID_SUCCESS } from "../type";
 
   export const registerOrganizationRequest = (organizationData,navigate) => ({
     type: REGISTER_ORG_REQUEST,
@@ -44,6 +44,21 @@ import { FETCH_ADDITIONAL_ORG_BY_IDS_FAILURE, FETCH_ADDITIONAL_ORG_BY_IDS_REQUES
     payload: error
   });
 
+  export const fetchOrganizationByTypeRequest = (data) => ({
+    type: FETCH_ORG_BY_TYPE_REQUEST,
+    payload: data
+  });
+  
+  export const fetchOrganizationByTypeSuccess = (data) => ({
+    type: FETCH_ORG_BY_TYPE_SUCCESS,
+    payload: data
+  });
+  
+  export const fetchOrganizationByTypeFailure = (error) => ({
+    type: FETCH_ORG_BY_TYPE_FAILURE,
+    payload: error
+  });
+
   export const updateOrganizationByIdRequest = (organizationData) => ({
     type: UPDATE_ORG_BY_ID_REQUEST,
     payload: organizationData
@@ -58,3 +73,8 @@ import { FETCH_ADDITIONAL_ORG_BY_IDS_FAILURE, FETCH_ADDITIONAL_ORG_BY_IDS_REQUES
     type: UPDATE_ORG_BY_ID_FAILURE,
     payload: error
   });
+
+  export const setSelectedOrganization = (organization) => ({
+    type: SET_SELECTED_ORG,
+    payload: organization,
+});

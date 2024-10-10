@@ -88,7 +88,7 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit , caseType}) => {
     organizationName: Yup.string().required("Name is required"),
     email: Yup.string().email('Invalid email format').required("Email is required"),
     cellNumber: Yup.string().matches(/^[0-9]+$/, 'Cell number must be a number').required("Cell Phone is required"),
-    website: Yup.string().url('Website must be a valid URL').required("Website is required"),
+    website: Yup.string().url('Website must be a valid URL with http://').required("Website is required"),
     addressLine1: Yup.string().required("Address is required"),
     // addressLine2: Yup.string('Address Line 2 is required'),
     city: Yup.string().required("City is required"),

@@ -24,9 +24,9 @@ const DateInput = ({ name, value, onSelectedDateChanged }) => {
       {/* {value} */}
       <Datepicker
         showClearButton={false}
-        showTodayButton={false}
+        showTodayButton={true}
         theme={customtheme}
-        defaultDate={new Date(startDate)}
+        defaultDate={value ? new Date(startDate) : undefined}
         name={name}
         onSelectedDateChanged={handleDateChange}
         dateFormat="MMMM dd, yyyy"

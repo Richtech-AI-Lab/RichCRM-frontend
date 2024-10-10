@@ -1,0 +1,353 @@
+import React, { useEffect, useState } from "react";
+import { CaseCardDetails, Label, SelectInput, XButton } from "../../../components";
+// import CaseAttorneyItems from "./caseAttorneyItems";
+import { Field, Formik } from "formik";
+import { sellerItems, buyerItems, titleMortgageItems, caseTypeOptions } from "../../../utils/formItem";
+import FormButton from "../../../components/formButton";
+import * as Yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAddressByIdRequest } from "../../../redux/actions/utilsActions";
+import { fetchPremisesRequest } from "../../../redux/actions/premisesActions";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { IMAGES } from "../../../constants/imagePath";
+import states from "../../../constants/states.json"
+import DateInput from "../../../components/datePicker";
+
+
+const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, setFieldValue, form }) => {
+  const [optionalFields, setOptionalFields] = useState({
+    referred: false,
+    bank: false,
+    personalNotes: false,
+    excludedNotes: false,
+  });
+
+  useEffect(() => {
+    // console.log(initialValues,"____")
+    if (initialValues?.referred) setOptionalFields(prev => ({ ...prev, referred: true }));
+    if (initialValues?.bank) setOptionalFields(prev => ({ ...prev, bank: true }));
+    if (initialValues?.personalNotes) setOptionalFields(prev => ({ ...prev, personalNotes: true }));
+    if (initialValues?.excludedNotes) setOptionalFields(prev => ({ ...prev, excludedNotes: true }));
+  }, [initialValues]);
+
+  const handleAddField = (field) => {
+    setOptionalFields((prevState) => ({
+      ...prevState,
+      [field]: true,
+    }));
+  };
+
+  const handleRemoveField = (field, setFieldValue) => {
+    setOptionalFields((prevState) => ({
+      ...prevState,
+      [field]: false,
+    }));
+    setFieldValue(field, '');
+  };
+
+  return (
+    <>
+      <div className="col-span-6">
+        <div className="bg-white p-4 rounded-2xl mb-5">
+          {title && <div className="flex justify-between items-center mb-5">
+            <span className="text-base text-2Fary-800 font-medium">{title}</span>
+            <div className="flex items-center gap-2">
+              {/* <BsThreeDotsVertical className="text-lg opacity-40" /> */}
+            </div>
+          </div>}
+          <ul className="card-details">
+            <li>
+              <div className="flex justify-between items-center w-full">
+                <span className="left-txt w-full">Case Type</span>
+                <div className="flex justify-end items-center w-full gap-7">
+                  <div className="grid gap-3">
+                    <Field
+                      as={SelectInput}
+                      defaultLabel={`Select house`}
+                      inputClassName="bg-input-surface py-[6px] px-4 rounded-full border-0 text-sm leading-5 font-semibold text-label"
+                      labelClassName="ext-label mr-3"
+                      name="caseType"
+                      value={values.caseType}
+                      options={caseTypeOptions}
+                    />
+                  </div>
+                </div>
+              </div>
+            </li>
+            </ul>
+        </div>
+        <div className="bg-white p-4 rounded-2xl mb-5">
+        {title && <div className="flex justify-between items-center mb-5">
+            <span className="text-base text-2Fary-800 font-medium">{"Prices"}</span>
+            <div className="flex items-center gap-2">
+              {/* <BsThreeDotsVertical className="text-lg opacity-40" /> */}
+            </div>
+          </div>}
+          <ul className="card-details">
+          <li>
+              <span className="left-txt flex items-center" >Purchaser Price</span>
+              {form?.errors['purchasePrice'] && form?.touched['purchasePrice'] && (
+                <span className="text-sm text-red-500">{form.errors['purchasePrice']}</span>
+              )}
+              <input
+                className="text-right p-0 border-none focus:ring-transparent"
+                name="purchasePrice"
+                value={values.purchasePrice}
+                type="text"
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+            </li>
+            <li>
+              <span className="left-txt flex items-center" >Down Payment</span>
+              <input
+                className="text-right p-0 border-none focus:ring-transparent"
+                name="downPayment"
+                value={values.downPayment}
+                type="text"
+                onChange={handleChange}
+                onBlur={handleBlur}
+              // value={values.}
+              />
+            </li>
+            <li>
+              <span className="left-txt flex items-center" >Mortgage Amount</span>
+              <input
+                className="text-right p-0 border-none focus:ring-transparent"
+                name="mortgageAmount"
+                value={values.mortgageAmount}
+                type="text"
+                onChange={handleChange}
+                onBlur={handleBlur}
+              // value={values.}
+              />
+            </li>
+            <li>
+              <span className="left-txt flex items-center" >Annual Property Tax</span>
+              <input
+                className="text-right p-0 border-none focus:ring-transparent"
+                name="annualPropertyTax"
+                value={values.annualPropertyTax}
+                type="text"
+                onChange={handleChange}
+                onBlur={handleBlur}
+              // value={values.}
+              />
+            </li>
+            <li>
+              <span className="left-txt flex items-center" >Seller's Concession</span>
+              <input
+                className="text-right p-0 border-none focus:ring-transparent"
+                name="sellerConcession"
+                value={values.sellerConcession}
+                type="text"
+                onChange={handleChange}
+                onBlur={handleBlur}
+              // value={values.}
+              />
+            </li>
+            </ul>
+        </div>
+        <div className="bg-white p-4 rounded-2xl mb-5">
+        {title && <div className="flex justify-between items-center mb-5">
+            <span className="text-base text-2Fary-800 font-medium">{"Realtors"}</span>
+            <div className="flex items-center gap-2">
+              {/* <BsThreeDotsVertical className="text-lg opacity-40" /> */}
+            </div>
+          </div>}
+          <ul className="card-details">
+          <li>
+              <span className="left-txt flex items-center" >Realtors Sale</span>
+              <input
+                className="text-right p-0 border-none focus:ring-transparent"
+                name="brokerSale"
+                value={values.brokerSale}
+                type="text"
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+            </li>
+            <li>
+              <span className="left-txt flex items-center" >Realtors Listing</span>
+              <input
+                className="text-right p-0 border-none focus:ring-transparent"
+                name="brokerListing"
+                value={values.brokerListing}
+                type="text"
+                onChange={handleChange}
+                onBlur={handleBlur}
+              // value={values.}
+              />
+            </li>
+            </ul>
+        </div>
+      </div>
+      <div className="col-span-6">
+        <div className="bg-white p-4 rounded-2xl mb-5">
+          {<div className="flex justify-between items-center mb-5">
+            <span className="text-base text-2Fary-800 font-medium">Closing</span>
+            {/* <div className="flex items-center gap-2">
+          // <BsThreeDotsVertical className="text-lg opacity-40" />
+        </div> */}
+          </div>}
+
+          <ul className="card-details">
+            <li>
+              <>
+                <span className={` left-txt flex items-center`}>
+                  Schedule Date
+                </span>
+                <DateInput
+                  name="scheduleDate"
+                  value={values.scheduleDate}
+                  onSelectedDateChanged={(date) => setFieldValue("scheduleDate", date)}
+
+                />
+              </>
+            </li>
+            <li>
+              <span className="left-txt flex items-center">Received Date</span>
+              <DateInput
+                name="closingDate"
+                value={values.closingDate}
+                onSelectedDateChanged={(date) => setFieldValue("closingDate", date)}
+
+              />
+            </li>
+
+
+          </ul>
+        </div>
+        <div className="bg-white p-4 rounded-2xl mb-5">
+          {<div className="flex justify-between items-center mb-5">
+            <span className="text-base text-2Fary-800 font-medium">Others</span>
+          </div>}
+
+          <ul className="card-details">
+          <li>
+            {optionalFields.referred && (
+
+              <>
+                <span className={"cursor-pointer left-txt flex items-center"} onClick={() => handleRemoveField('referred', setFieldValue)} >
+                  <span className="icon mr-2"> <img src={IMAGES.removeIcon} alt="icon" /> </span>
+                  Referred
+                </span>
+                <input
+                  className="text-right p-0 border-none focus:ring-transparent"
+                  name="referred"
+                  type="text"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values?.referred}
+                />
+              </>
+            )}
+            {!optionalFields.referred && (<span className="left-txt flex items-center" onClick={() => handleAddField('referred')} >
+              <span className="icon mr-2 cursor-pointer">
+                <img
+                  src={IMAGES.addIcon}
+                  alt="icon"
+                />
+              </span>
+              Add A Referral
+            </span>)}
+          </li>
+
+          <li>
+            {optionalFields.bank && (
+
+              <>
+                <span className={"cursor-pointer left-txt flex items-center"} onClick={() => handleRemoveField('bank', setFieldValue)} >
+                  <span className="icon mr-2"> <img src={IMAGES.removeIcon} alt="icon" /> </span>
+                  Bank
+                </span>
+                <input
+                  className="text-right p-0 border-none focus:ring-transparent"
+                  name="bank"
+                  type="text"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.bank}
+                />
+              </>
+            )}
+            {!optionalFields.bank && (<span className="left-txt flex items-center" onClick={() => handleAddField('bank')} >
+              <span className="icon mr-2 cursor-pointer">
+                <img
+                  src={IMAGES.addIcon}
+                  alt="icon"
+                />
+              </span>
+              Add A Bank (L/O)
+            </span>)}
+          </li>
+
+
+          <li>
+            {optionalFields.personalNotes && (
+
+              <>
+                <span className={"cursor-pointer left-txt flex items-center"} onClick={() => handleRemoveField('personalNotes', setFieldValue)} >
+                  <span className="icon mr-2"> <img src={IMAGES.removeIcon} alt="icon" /> </span>
+                  Personal Note
+                </span>
+                <input
+                  className="text-right p-0 border-none focus:ring-transparent"
+                  name="personalNotes"
+                  type="text"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.personalNotes}
+                />
+              </>
+            )}
+            {!optionalFields.personalNotes && (<span className="left-txt flex items-center" onClick={() => handleAddField('personalNotes')} >
+              <span className="icon mr-2 cursor-pointer">
+                <img
+                  src={IMAGES.addIcon}
+                  alt="icon"
+                />
+              </span>
+              Add Notes as Personal Property
+            </span>)}
+          </li>
+
+
+
+          <li>
+            {optionalFields.excludedNotes && (
+              <>
+                <span className={"cursor-pointer left-txt flex items-center"} onClick={() => handleRemoveField('excludedNotes', setFieldValue)} >
+                  <span className="icon mr-2"> <img src={IMAGES.removeIcon} alt="icon" /> </span>
+                  Excluded Note
+                </span>
+                <input
+                  className="text-right p-0 border-none focus:ring-transparent"
+                  name="excludedNotes"
+                  type="text"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.excludedNotes}
+                />
+              </>
+            )}
+            {!optionalFields.excludedNotes && (<span className="left-txt flex items-center" onClick={() => handleAddField('excludedNotes')} >
+              <span className="icon mr-2 cursor-pointer">
+                <img
+                  src={IMAGES.addIcon}
+                  alt="icon"
+                />
+              </span>
+              Add Notes as Excluded Property
+            </span>)}
+          </li>
+          </ul>
+        </div>
+      </div>
+
+    </>
+  );
+};
+
+export default OtherForm;
+
