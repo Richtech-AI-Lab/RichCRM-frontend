@@ -18,7 +18,7 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
     const [searchResults, setSearchResults] = useState([]);
     const [newAttorney, setNewAttorney] = useState({
         contactType: 1,
-        note: '',
+        company: '',
         firstName: '',
         lastName: '',
         email: '',
@@ -41,7 +41,7 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
     const closeModal = () => setIsModalOpen(false);
 
     const addAttorneyItem = (push) => {
-        if (newAttorney.note && newAttorney.firstName && newAttorney.lastName) {
+        if (newAttorney.company && newAttorney.firstName && newAttorney.lastName) {
             dispatch(createAttorneyRequest(newAttorney))
             // push({
             //     contactId: `new${Date.now()}`, // Changed key to contactId
@@ -51,7 +51,7 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
             //     email: newAttorney.email,
             //     cellNumber: newAttorney.cellNumber // Changed key to cellNumber
             // });
-            setNewAttorney({ note: '', firstName: '', lastName: '', email: '', cellNumber: '' });
+            setNewAttorney({ company: '', firstName: '', lastName: '', email: '', cellNumber: '' });
             closeModal();
         }
     };
@@ -95,7 +95,7 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
                                         <span className="icon mr-2 cursor-pointer" /* onClick={() => remove(index)} */ onClick={() => dispatch(deleteAttorneyRequest(item?.contactId))}>
                                             <img src={IMAGES.removeIcon} alt="icon" />
                                         </span>
-                                        {item?.note ? item?.note : item?.firstName}
+                                        {item?.company ? item?.company : item?.firstName}
                                     </span>
                                     <span className="left-txt flex items-center">
                                         {item?.contactId}
@@ -119,7 +119,7 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
                         </ul>
 
                         <Modal show={isModalOpen} size="md" onClose={() => {
-                            setNewAttorney({ note: '', firstName: '', lastName: '', email: '', cellNumber: '' });
+                            setNewAttorney({ company: '', firstName: '', lastName: '', email: '', cellNumber: '' });
                             closeModal()
                         }
                         }
@@ -135,8 +135,8 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
                                         <Label value="Attorney Type" className="block mb-2" />
                                         <TextInput
                                             type="text"
-                                            value={newAttorney.note}
-                                            onChange={(e) => setNewAttorney({ ...newAttorney, note: e.target.value })}
+                                            value={newAttorney.company}
+                                            onChange={(e) => setNewAttorney({ ...newAttorney, company: e.target.value })}
                                             placeholder="Attorney Type"
                                         />
                                     </div>
@@ -208,7 +208,7 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
                                             text={"Cancel"}
                                             className="bg-card-300 text-sm text-secondary-800 py-[10px] px-6 rounded-[100px]"
                                             onClick={() => {
-                                                setNewAttorney({ note: '', firstName: '', lastName: '', email: '', cellNumber: '' });
+                                                setNewAttorney({ company: '', firstName: '', lastName: '', email: '', cellNumber: '' });
                                                 closeModal()
                                             }
                                             }
