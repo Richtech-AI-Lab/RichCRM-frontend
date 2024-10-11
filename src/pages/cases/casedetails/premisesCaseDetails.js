@@ -77,14 +77,6 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
         },
       ]
     : [
-        {
-          clientType: 0,
-          firstName: values?.fname1f,
-          lastName: values?.lname1f,
-          rent: values?.rent1f,
-          sec: values?.sec1f,
-          lease: values?.lease1f,
-        }
       ];
 
     let data = {
@@ -99,44 +91,7 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
     }
     toggleEdit()
   }
-  const initialValues = {
-    scheduleDate: "",
-    receivedDate: "",
-    premisesType: "",
-    premisesAddress: "",
-    premisesAddress2: "",
-    premisesCity: "",
-    premisesState: "",
-    premisesZipcode: "",
-    premisesBlock: "",
-    premisesLot: "",
-    premisesSection: "",
-    premisesType2: "",
-    premisesVacant: "",
-    premisesSubject: "",
-    premisesHOA: "",
-    premisesParking: "",
-    premisesMaintenace: {
-      amount: '',
-      period: '',
-    },
-    premisesAssessment: "",
-    premisesPaidby: "",
-    premisesManaging: "",
-    premisesComposition: "",
-    premisesonetenant: "",
-    premisesonerent: "",
-    premisesonesec: "",
-    premisesonelease: "",
-    premisestwotenant: "",
-    premisestworent: "",
-    premisestwosec: "",
-    premisestwolease: "",
-    premisesinspection: "",
-    premisesScheduleDate: "",
-    premisesRecievedDate: "",
-    premisesTermites: "",
-  };
+
   const initialPremisesValues = premisesDetails && premisesDetails.length > 0 ?
     {
       // premisesId: premisesDetails[0],
@@ -218,23 +173,23 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
 
   const validationSchema = Yup.object().shape({
     fname1f: Yup.string().when('$isTwoFamily', {
-      is: (value) => value == 1 || value == 0,
+      is: (value) => value == 1,
       then: () => Yup.string().required("First Name is required"),
       otherwise: () => Yup.string().notRequired()
     }),
     lname1f: Yup.string().when('$isTwoFamily', {
-      is: (value) => value == 1 || value == 0,
+      is: (value) => value == 1,
       then: () => Yup.string().required("Last Name is required"),
       otherwise: () => Yup.string().notRequired()
     }),
     fname2f: Yup.string().when('$isTwoFamily', {
       is: (value) => value == 1,
-      then: () => Yup.string().required("If Two family, Second tenant is required"),
+      then: () => Yup.string().required("First Name is required"),
       otherwise: () => Yup.string().notRequired()
     }),
     lname2f: Yup.string().when('$isTwoFamily', {
       is: (value) => value == 1,
-      then: () => Yup.string().required("If Two family, Second tenant is required"),
+      then: () => Yup.string().required("Last Name is required"),
       otherwise: () => Yup.string().notRequired()
     }),
     isTwoFamily: Yup.string().when('$fname1f', {
