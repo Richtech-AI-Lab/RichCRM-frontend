@@ -32,7 +32,7 @@ const NewIndividualContactModalV1 = ({ onSubmit, onClose }) => {
         firstName: Yup.string().required("First Name is required"),
         lastName: Yup.string().required("Last Name is required"),
         email: Yup.string().email('Invalid email format'),
-        cellphone: Yup.string().required('Cell phone is required'),
+        cellNumber: Yup.string().matches(/^[0-9]+$/, 'Cell number must be a number'),
     });
     const handleNewContact = async (values) => {
 
@@ -181,13 +181,13 @@ const NewIndividualContactModalV1 = ({ onSubmit, onClose }) => {
                                         form={{ errors, touched }}
                                     />
                                     <TextInput
-                                        name="cellphone"
+                                        name="cellNumber"
                                         type="text"
                                         placeholder="Cell Phone*"
-                                        value={values.cellphone}
+                                        value={values.cellNumber}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        field={{ name: "cellphone" }}
+                                        field={{ name: "cellNumber" }}
                                         form={{ errors, touched }}
                                     />
                                     <TextInput
