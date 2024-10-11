@@ -41,7 +41,6 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
     const closeModal = () => setIsModalOpen(false);
 
     const addAttorneyItem = (push) => {
-        alert(newAttorney)
         if (newAttorney.company && newAttorney.firstName && newAttorney.lastName) {
             let payload={
                 contactType: 1,
