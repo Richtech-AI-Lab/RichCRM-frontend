@@ -16,8 +16,8 @@ import { Dropdown, Spinner } from "flowbite-react";
 import MenuDropdown from "../menupopup";
 import MenuPopup from "../menupopup";
 import { useDispatch, useSelector } from "react-redux";
-import { createStageRequest, getStageRequest } from "../../redux/actions/stagesActions";
-import { getTaskRequest } from "../../redux/actions/taskActions";
+import { clearStageData, createStageRequest, getStageRequest } from "../../redux/actions/stagesActions";
+import { clearTaskData, getTaskRequest } from "../../redux/actions/taskActions";
 import { STAGESNAMES } from "../../constants/constants";
 import { isEmpty } from "lodash";
 import XSpinnerLoader from "../spinnerLoader/XSpinnerLoader";
@@ -40,7 +40,8 @@ const StagesChecklist = () => {
 
   useEffect(() => {
     // if stage is not exist then create stage.
-    if (isEmpty(data)) {
+    const localcaseId = localStorage.getItem('c_id');
+    if (isEmpty(data) && localcaseId) {
       let sagaPayload = {
         stageType: currentStep || 0,
         caseId: localStorage.getItem('c_id'),
@@ -275,7 +276,7 @@ const StagesChecklist = () => {
       } catch (error) {
         console.error("Error creating stage:", error.message);
       }
-    } else if (currentStep === progressItems.length - 1) {
+    } else if (currentStep === progressItems.length - 1) { // closes case
       try {
         const closeCasePayload = {
           caseId: localStorage.getItem('c_id'),

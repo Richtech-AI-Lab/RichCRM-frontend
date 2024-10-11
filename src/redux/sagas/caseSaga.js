@@ -210,6 +210,7 @@ function* closeCaseByCaseId(action) {
         const { payload, navigate } = action;
         const response = yield call(() => postRequest(API_ENDPOINTS.CLOSE_CASE, payload));
         if (response.status == 200) {
+            localStorage.removeItem('c_id');
             yield put(clearTaskData());
             yield put(clearStageData());
             yield put(clearCasesData());
