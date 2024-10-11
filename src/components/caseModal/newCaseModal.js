@@ -61,7 +61,7 @@ const NewCaseModal = ({ onClose }) => {
       }
       setActiveSearchIndex(index)
     }, 1000),
-    []
+     [setSearchResults, setActiveSearchIndex]
   );
 
   const debouncedCompanyFunction = useCallback(
@@ -79,7 +79,7 @@ const NewCaseModal = ({ onClose }) => {
       setActiveSearchIndex(index)
       // You can call any API or perform any other actions here
     }, 1000),
-    []
+    [setSearchResults, setActiveSearchIndex]
   );
 
   const handleAddClientClick = () => {
@@ -320,6 +320,7 @@ const NewCaseModal = ({ onClose }) => {
                           onChange={handleChange}
                           onBlur={handleBlur}
                           options={caseTypeOptions}
+                          data-lpignore="true" 
                         // inputClassName={values.caseType ? "text-secondary-600 bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3":"bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"  }
                         />
                         {touched.caseType && errors.caseType ? (
@@ -415,6 +416,7 @@ const NewCaseModal = ({ onClose }) => {
                             onBlur={handleBlur}
                             options={clientTypeOptions}
                             inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
+                            data-lpignore="true" 
                           />
                           {touched.clientType && errors.clientType ? (
                             <div className="text-red-500 text-sm">
@@ -504,6 +506,7 @@ const NewCaseModal = ({ onClose }) => {
                                             name: `clients.${index}.clientfirstName`,
                                           }}
                                           form={{ errors, touched }}
+                                          data-lpignore="true"
                                         />
                                         {activeSearchIndex == index && (
                                           <ul className={'search-list-dropdown overflow-hidden rounded-2xl shadow-shadow-light-2'}>
@@ -554,6 +557,7 @@ const NewCaseModal = ({ onClose }) => {
                                             name: `clients.${index}.clientLastName`,
                                           }}
                                           form={{ errors, touched }}
+                                          data-lpignore="true"
                                         />
                                         <ErrorMessage
                                           name={`clients.${index}.clientLastName`}
@@ -573,6 +577,7 @@ const NewCaseModal = ({ onClose }) => {
                                             name: `clients.${index}.clientcellNumber`,
                                           }}
                                           form={{ errors, touched }}
+                                          data-lpignore="true"
                                         />
                                         <ErrorMessage
                                           name={`clients.${index}.clientcellNumber`}
@@ -591,6 +596,7 @@ const NewCaseModal = ({ onClose }) => {
                                           placeholder="Email"
                                           field={{ name: `clients.${index}.clientemail` }}
                                           form={{ errors, touched }}
+                                          data-lpignore="true"
                                         />
                                         <ErrorMessage
                                           name={`clients.${index}.clientemail`}
@@ -673,6 +679,7 @@ const NewCaseModal = ({ onClose }) => {
                                             name: `companyInfo.${index}.companyName`,
                                           }}
                                           form={{ errors, touched }}
+                                          data-lpignore="true"
                                         />
                                         {activeSearchIndex == index && (
                                           <ul className={'search-list-dropdown overflow-hidden rounded-2xl shadow-shadow-light-2'}>
@@ -722,6 +729,7 @@ const NewCaseModal = ({ onClose }) => {
                                             name: `companyInfo.${index}.companyCellNumber`,
                                           }}
                                           form={{ errors, touched }}
+                                          data-lpignore="true"
                                         />
                                         <ErrorMessage
                                           name={`companyInfo.${index}.companyCellNumber`}
@@ -740,6 +748,7 @@ const NewCaseModal = ({ onClose }) => {
                                           placeholder="Email"
                                           field={{ name: `companyInfo.${index}.companyEmail` }}
                                           form={{ errors, touched }}
+                                          data-lpignore="true"
                                         />
                                         <ErrorMessage
                                           name={`companyInfo.${index}.companyEmail`}
@@ -822,6 +831,7 @@ const NewCaseModal = ({ onClose }) => {
                                             name: `trustInfo.${index}.trustName`,
                                           }}
                                           form={{ errors, touched }}
+                                          data-lpignore="true"
                                         />
                                         {activeSearchIndex == index && (
                                           <ul className={'search-list-dropdown overflow-hidden rounded-2xl shadow-shadow-light-2'}>
@@ -871,6 +881,7 @@ const NewCaseModal = ({ onClose }) => {
                                             name: `trustInfo.${index}.trustCellNumber`,
                                           }}
                                           form={{ errors, touched }}
+                                          data-lpignore="true"
                                         />
                                         <ErrorMessage
                                           name={`trustInfo.${index}.trustCellNumber`}
@@ -889,6 +900,7 @@ const NewCaseModal = ({ onClose }) => {
                                           placeholder="Email"
                                           field={{ name: `trustInfo.${index}.trustEmail` }}
                                           form={{ errors, touched }}
+                                          data-lpignore="true"
                                         />
                                         <ErrorMessage
                                           name={`trustInfo.${index}.trustEmail`}
@@ -984,6 +996,7 @@ const NewCaseModal = ({ onClose }) => {
                       onBlur={handleBlur}
                       field={{ name: "address" }}
                       form={{ errors, touched }}
+                      data-lpignore="true"
                     />
                     <TextInput
                       name="addressLine2"
@@ -994,6 +1007,7 @@ const NewCaseModal = ({ onClose }) => {
                       onBlur={handleBlur}
                       field={{ name: "addressLine2" }}
                       form={{ errors, touched }}
+                      data-lpignore="true"
                     />
                     <div className="grid grid-cols-3 gap-4">
                       <TextInput
@@ -1005,6 +1019,7 @@ const NewCaseModal = ({ onClose }) => {
                         onBlur={handleBlur}
                         field={{ name: "city" }}
                         form={{ errors, touched }}
+                        data-lpignore="true"
                       />
                       <div className={`items-dropdown ${values.state == null || values.state == undefined || values.state == "" ? "default" : ""} single-select mt-3`}  >                      <Field
                         as={NewCaseDropdown}
@@ -1042,6 +1057,7 @@ const NewCaseModal = ({ onClose }) => {
                         onBlur={handleBlur}
                         field={{ name: "zipCode" }}
                         form={{ errors, touched }}
+                        data-lpignore="true"
                       />
                     </div>
                   </div>
