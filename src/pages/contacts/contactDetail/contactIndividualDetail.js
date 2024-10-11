@@ -35,7 +35,7 @@ const ContactIndividualDetail = ({ contact, address }) => {
                         <span className="left-txt flex items-center" > {contact?.position} </span>
                     </li>
                     <li>
-                        <span className="left-txt flex items-center" >Companye</span>
+                        <span className="left-txt flex items-center" >Company</span>
                         <span className="left-txt flex items-center" >{contact?.company}</span>
                     </li>
                 </ul>
