@@ -1,6 +1,5 @@
 import { Table } from "flowbite-react";
 import React, { useEffect, useState } from "react";
-import dummyData from "../../../utils/dummyData.json";
 import { ROUTES } from "../../../constants/api";
 import { useNavigate } from "react-router-dom";
 import { IMAGES } from "../../../constants/imagePath";

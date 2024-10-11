@@ -38,17 +38,15 @@ const NewIndividualContactModalV1 = ({ onSubmit, onClose }) => {
 
         try {
             const payload = {
-
                 firstName: values?.firstName,
                 lastName: values?.lastName,
                 contactType: values?.contactType,
                 position: values?.position,
                 company: values?.company,
-                email: values?.email,
                 cellNumber: values?.cellNumber,
                 workNumber: values?.workNumber,
+                ...(values?.email && values?.email?.trim() !== "" && { email: values.email }), // Add email only if it's not empty
             };
-
 
             dispatch(createContactRequest(payload, navigate))
 

@@ -42,7 +42,15 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
 
     const addAttorneyItem = (push) => {
         if (newAttorney.company && newAttorney.firstName && newAttorney.lastName) {
-            dispatch(createAttorneyRequest(newAttorney))
+            let payload={
+                contactType: 1,
+                company: newAttorney.company,
+                firstName: newAttorney.firstName,
+                lastName: newAttorney.lastName,
+                ...(newAttorney.email && newAttorney.email.trim() !== "" && { email: newAttorney.email }), 
+                cellNumber: newAttorney.cellNumber
+            }
+            dispatch(createAttorneyRequest(payload))
             // push({
             //     contactId: `new${Date.now()}`, // Changed key to contactId
             //     note: newAttorney.note, // Changed key to note
