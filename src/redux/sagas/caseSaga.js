@@ -227,9 +227,9 @@ function* updateCasedate(action) {
     try {
         const { payload } = action;
         const response = yield call(() => postRequest(API_ENDPOINTS.UPDATE_CASE, payload));
-        yield put(caseDateSuccess(payload)); 
         if (response.status == 200) {
-            toast.success("Close Date Added!");
+            yield put(caseDateSuccess(response.data.data[0])); 
+            toast.success("Case Details Updated!");
         }
     } catch (error) {
         handleError(error)
