@@ -417,11 +417,11 @@ const StagesChecklist = () => {
                 ) : (
                   <span className="text-base text-secondary-800 font-medium text-lg">{`${getHeadLabel(currentStep)} (${getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]])}/${taskData.data[STAGESNAMES[currentStep]]?.length || 0})`}</span>
                 )}
-                <div className="flex items-center gap-2">
+                {/* <div className="flex items-center gap-2">
 
                   <MenuPopup dropdownItems={menuOption1} icon={<FiPlus className="text-lg opacity-40" />} />
                   <MenuPopup dropdownItems={menuOption2} icon={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />} />
-                </div>
+                </div> */}
               </div>
               {/* <ul className="mb-6 overflow-y-auto">
         <XSpinnerLoader loading={loading} size="lg" />
