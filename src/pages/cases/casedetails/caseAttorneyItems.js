@@ -42,7 +42,15 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
 
     const addAttorneyItem = (push) => {
         if (newAttorney.company && newAttorney.firstName && newAttorney.lastName) {
-            dispatch(createAttorneyRequest(newAttorney))
+            let payload={
+                contactType: 1,
+                company: newAttorney.company,
+                firstName: newAttorney.firstName,
+                lastName: newAttorney.lastName,
+                ...(newAttorney.email && newAttorney.email.trim() !== "" && { email: newAttorney.email }), 
+                cellNumber: newAttorney.cellNumber
+            }
+            dispatch(createAttorneyRequest(payload))
             // push({
             //     contactId: `new${Date.now()}`, // Changed key to contactId
             //     note: newAttorney.note, // Changed key to note
@@ -55,6 +63,11 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
             setSearchResults([])
             closeModal();
         }
+    };
+    const deleteAttorneyItem = (contactId, index) => {
+        const updatedAttorneys = attorneys.filter((_, i) => i !== index); 
+        setAttorneys(updatedAttorneys); // Update the local state
+        dispatch(deleteAttorneyRequest(contactId)); // Dispatch delete action
     };
 
 
@@ -93,7 +106,8 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
                             {attorneys?.map((item, index) => (
                                 <li key={item.contactId} className="flex justify-between">
                                     <span className="left-txt flex items-center">
-                                        <span className="icon mr-2 cursor-pointer" /* onClick={() => remove(index)} */ onClick={() => dispatch(deleteAttorneyRequest(item?.contactId))}>
+                                        <span className="icon mr-2 cursor-pointer" /* onClick={() => remove(index)} */
+                                        onClick={() => deleteAttorneyItem(item.contactId, index)}>
                                             <img src={IMAGES.removeIcon} alt="icon" />
                                         </span>
                                         {item?.company} - {item?.lastName}, {item?.firstName}

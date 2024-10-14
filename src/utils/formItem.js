@@ -1,6 +1,6 @@
 // participant.js
 
-import { CASETYPE, CONTACTTAG } from "../constants/constants";
+import { CASETYPE, CONTACTTAG, ORGANIZATION_TYPE_VALUE } from "../constants/constants";
 import { IMAGES } from "../constants/imagePath";
 import states from "../constants/states.json"
 
@@ -110,9 +110,9 @@ export const buyerItems = [
 ];
 
 export const titleMortgageItems = [
-    { label: "Title Company", name: "titleCompany", placeholder: "Enter a title company" },
-    { label: "Title Number", name: "titleNumber", placeholder: "Enter a title number" },
-    { label: "Mortgage", name: "titleMortgage", placeholder: "Enter a mortgage" },
+    { label: "Other", name: "titleCompany", placeholder: "Enter a title company" },
+    { label: "Company", name: "titleNumber", placeholder: "Enter a title number" },
+    { label: "Trust", name: "titleMortgage", placeholder: "Enter a mortgage" },
 ];
 
 // premises
@@ -342,9 +342,9 @@ export const contactTagIndividualOption = [
 ];
 
 export const contactTagOrganizationOption = [
-    { value: CONTACTTAG.REALTORS, label: "Real Estate" },
-    { value: CONTACTTAG.ATTORNEY, label: "Trust" },
-    { value: CONTACTTAG.TITLE, label: "Title Company" }
+    { value: ORGANIZATION_TYPE_VALUE.OTHER, label: "Real Estate" },
+    { value: ORGANIZATION_TYPE_VALUE.COMPANY, label: "Company" },
+    { value: ORGANIZATION_TYPE_VALUE.TRUST, label: "Trust" }
 ];
 
 // utils/stageUtils.js

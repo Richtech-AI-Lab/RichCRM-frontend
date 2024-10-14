@@ -224,21 +224,22 @@ const NewCaseModal = ({ onClose }) => {
       ...(isClient && mainEntity.clientfirstName && { firstName: mainEntity.clientfirstName }),
       ...(isClient && mainEntity.clientLastName && { lastName: mainEntity.clientLastName }),
       ...(isClient && mainEntity.clientcellNumber && { cellNumber: mainEntity.clientcellNumber }),
-      ...(isClient && mainEntity.clientemail && { email: mainEntity.clientemail }),
+      ...(isClient && mainEntity.clientemail && mainEntity.clientemail.trim() !== "" && { email: mainEntity.clientemail }), // Only add if not empty
       ...(isClient && mainEntity.clientId && { clientId: mainEntity.clientId }),
-
+    
       ...(isCompany && { organizationType: values.clientType }),
       ...(isCompany && mainEntity.companyName && { organizationName: mainEntity.companyName }),
       ...(isCompany && mainEntity.companyCellNumber && { cellNumber: mainEntity.companyCellNumber }),
-      ...(isCompany && mainEntity.companyEmail && { email: mainEntity.companyEmail }),
+      ...(isCompany && mainEntity.companyEmail && mainEntity.companyEmail.trim() !== "" && { email: mainEntity.companyEmail }), // Only add if not empty
       ...(isCompany && mainEntity.companyOrganizationId && { organizationId: mainEntity.companyOrganizationId }),
-
+    
       ...(isTrust && { organizationType: values.clientType }),
       ...(isTrust && mainEntity.trustName && { organizationName: mainEntity.trustName }),
       ...(isTrust && mainEntity.trustCellNumber && { cellNumber: mainEntity.trustCellNumber }),
-      ...(isTrust && mainEntity.trustEmail && { email: mainEntity.trustEmail }),
+      ...(isTrust && mainEntity.trustEmail && mainEntity.trustEmail.trim() !== "" && { email: mainEntity.trustEmail }), // Only add if not empty
       ...(isTrust && mainEntity.trustOrganizationId && { organizationId: mainEntity.trustOrganizationId }),
     };
+    
 
     const combinedPayload = {
       addressDetails: {
