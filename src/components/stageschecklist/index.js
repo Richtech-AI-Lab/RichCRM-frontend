@@ -17,7 +17,7 @@ import MenuDropdown from "../menupopup";
 import MenuPopup from "../menupopup";
 import { useDispatch, useSelector } from "react-redux";
 import { clearStageData, createStageRequest, getStageRequest } from "../../redux/actions/stagesActions";
-import { clearTaskData, getTaskRequest } from "../../redux/actions/taskActions";
+import { clearTaskData, finishAllTaskRequest, getTaskRequest } from "../../redux/actions/taskActions";
 import { STAGESNAMES } from "../../constants/constants";
 import { isEmpty } from "lodash";
 import XSpinnerLoader from "../spinnerLoader/XSpinnerLoader";
@@ -33,10 +33,12 @@ const StagesChecklist = () => {
   const [activeTab, setActiveTab] = useState('mortgage');
   const menuOption1 = ['Create a Task', 'Add a Task']
   const menuOption2 = ['Finish all']
-  const { loading, data, error } = useSelector((state) => state.stages);
+  const { loading:stagesLoading, data, error } = useSelector((state) => state.stages);
+  const { loading:taskLoading } = useSelector((state) => state.task);
   const taskData = useSelector((state) => state.task);
   const { casesData } = useSelector((state) => state.case);
 
+  const isLoading = stagesLoading || taskLoading;
 
   useEffect(() => {
     // if stage is not exist then create stage.
@@ -312,6 +314,21 @@ const StagesChecklist = () => {
     return data.hasOwnProperty(STAGESNAMES[stagekey])
   };
 
+  const handleOptionSubmit = (id, label) => {
+    if(label === "Finish all"){
+      let data = taskData?.data[STAGESNAMES[currentStep? currentStep : 0]];
+      let updatedTasks = data.map(task => ({
+        taskId: task?.taskId,
+        stageId: task?.stageId,
+        status: 2  // Set status to 2 for all tasks
+      }));
+      let payload={
+        currentStep: currentStep? currentStep : 0,
+        taskData: updatedTasks
+      }
+      dispatch(finishAllTaskRequest(payload))
+    }
+  };
 
   function getMortgageDueAlertInfo(casesData, currentStep) {
     if (!casesData || !casesData.cases) {
@@ -417,11 +434,10 @@ const StagesChecklist = () => {
                 ) : (
                   <span className="text-base text-secondary-800 font-medium text-lg">{`${getHeadLabel(currentStep)} (${getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]])}/${taskData.data[STAGESNAMES[currentStep]]?.length || 0})`}</span>
                 )}
-                {/* <div className="flex items-center gap-2">
-
-                  <MenuPopup dropdownItems={menuOption1} icon={<FiPlus className="text-lg opacity-40" />} />
-                  <MenuPopup dropdownItems={menuOption2} icon={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />} />
-                </div> */}
+                <div className="flex items-center gap-2">
+                  {/* <MenuPopup dropdownItems={menuOption1} icon={<FiPlus className="text-lg opacity-40" />} /> */}
+                  <MenuPopup dropdownItems={menuOption2} handleOptionSubmit={handleOptionSubmit} icon={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />} />
+                </div>
               </div>
               {/* <ul className="mb-6 overflow-y-auto">
         <XSpinnerLoader loading={loading} size="lg" />
@@ -438,7 +454,7 @@ const StagesChecklist = () => {
             })}
         </ul> */}
               <ul className="mb-6 overflow-y-auto min-h-[calc(100vh-440px)] flex justify-center items-center">
-                {loading && <Spinner
+                {isLoading && <Spinner
                   size="xl"
                   animation="border"
                   role="status"
@@ -448,7 +464,7 @@ const StagesChecklist = () => {
                   <span className="visually-hidden">Loading...</span>
                 </Spinner>}
 
-                {!loading && (
+                {!isLoading && (
                   <div className="w-full">
                     {taskData.data[STAGESNAMES[currentStep? currentStep : 0]]
                       ?.slice(

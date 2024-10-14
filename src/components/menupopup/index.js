@@ -2,17 +2,17 @@ import React from "react";
 import { Dropdown } from "flowbite-react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
-const MenuPopup = ({ dropdownItems , icon}) => {
+const MenuPopup = ({ dropdownItems , icon, handleOptionSubmit}) => {
   return (
     <Dropdown
       arrowIcon={false}
       label={icon}
       placement="left-start"
       inline={true}
-      dismissOnClick={false}
+      dismissOnClick={true}
     >
       {dropdownItems.map((item, index) => (
-        <Dropdown.Item key={index}>
+        <Dropdown.Item key={index} onClick={() => handleOptionSubmit(index, item)}>
           {item}
         </Dropdown.Item>
       ))}
