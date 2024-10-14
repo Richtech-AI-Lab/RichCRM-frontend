@@ -60,9 +60,9 @@
   .sidebar-toggle ul li a span{
     @apply hidden;
   }
-  .sidebar-toggle .sidebar-logo{
+  /* .sidebar-toggle .sidebar-logo{
     @apply mx-1;
-  }
+  } */
   .listing-border {
     @apply border-b border-b-border;
   }
