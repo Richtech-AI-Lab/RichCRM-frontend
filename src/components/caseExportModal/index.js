@@ -10,7 +10,7 @@ const validationSchema = Yup.object({
   format: Yup.number().required("Format is required"),
 });
 
-const CaseExportModal = ({ onClose }) => {
+const CaseExportModal = ({ onClose, setPdfModal=()=>{} }) => {
   const dropdownOptions = [
     { value: 1, label: "Case Overview" },
     { value: 2, label: "Case Details" },
@@ -94,7 +94,8 @@ const CaseExportModal = ({ onClose }) => {
                 />
                 <XButton
                   text="Next"
-                  type="submit"
+                  // type="submit"
+                  onClick={()=>{setPdfModal(true)}}
                   className="bg-primary2 text-sm text-white py-[10px] px-6 rounded-[100px] font-medium"
                 />
               </div>

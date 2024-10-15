@@ -23,6 +23,7 @@ import CaseCardDetails from "./casecarddetails";
 import CardListItem from "./cardlistitem";
 import AuthFormContainer from "./authContainer";
 import DropdownMenu from "./dropdownmenu";
+import CaseExportPdf from "./caseExportPdf";
 
 export {
   Header,
@@ -49,5 +50,6 @@ export {
   CardListItem,
   CaseCardDetails,
   AuthFormContainer,
-  DropdownMenu
+  DropdownMenu,
+  CaseExportPdf
 };
