@@ -69,7 +69,7 @@ function* createContact(action) {
       contactId: payload?.contactId,
       contactType: payload?.contactType,
     };
-    let active=1;
+    let active=0;
     yield put(setSelectedContact(updatedResponse));
     if(response.status ==200){
       toast.success("contact created!");

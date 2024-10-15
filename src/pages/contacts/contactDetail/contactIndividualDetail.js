@@ -5,6 +5,14 @@ import { SelectInput } from "../../../components";
 import { Field } from "formik";
 
 const ContactIndividualDetail = ({ contact, address }) => {
+    const contactTypeLabels = {
+        0: 'Broker',
+        1: "Attorney",
+        2: "Title",
+        3: "Lender",
+        4: "Client",
+        5: "Other"
+    };
     return (
         <>
             <div className="bg-white rounded-2xl mb-5 p-4">
@@ -19,7 +27,7 @@ const ContactIndividualDetail = ({ contact, address }) => {
                     <div className="ml-6">
                         <div className="mb-16">
                             <p className="text-[22px] font-medium text-secondary-800">{contact?.firstName} {contact?.lastName}</p>
-                            <p className="font-medium text-secondary-800 text-sm mb-10">Brokers</p>
+                            <p className="font-medium text-secondary-800 text-sm mb-10">{contactTypeLabels[contact?.contactType] || ''}</p>
 
                         </div>
                         <p className="text-secondary-300 text-sm">{contact?.contactId}</p>

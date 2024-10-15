@@ -540,8 +540,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
           </div>}
 
           <ul className="card-details">
-
-            <li>
+          <li>
               <div className="flex justify-between items-center w-full">
                 <span className="left-txt w-full">Is Two Family</span>
                 {form?.errors['isTwoFamily'] && form?.touched['isTwoFamily'] && (
@@ -574,6 +573,11 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
                 </div>
               </div>
             </li>
+
+
+            {values.isTwoFamily == 1 && (
+              <>
+ 
             <li>
               <span className="left-txt flex items-center" >{values.isTwoFamily == 1 && "1F"} First Name</span>
               {form?.errors['fname1f'] && form?.touched['fname1f'] && (
@@ -640,9 +644,6 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
               // value={values.addressLine1}
               />
             </li>
-
-            {values.isTwoFamily == 1 && (
-              <>
                 <li>
                   <span className="left-txt flex items-center">2F Tenant First Name</span>
                   {form?.errors['fname2f'] && form?.touched['fname2f'] && (

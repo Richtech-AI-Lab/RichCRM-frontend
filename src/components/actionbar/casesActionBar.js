@@ -7,15 +7,20 @@ import CaseExportModal from "../caseExportModal";
 import { ROUTES } from "../../constants/api";
 import { useLocation } from "react-router-dom";
 import ContactTabs from "./contactTabs";
+import CaseExportPdf from "../caseExportPdf";
 
 
 const CasesActionbar = ({ active="", setActive="", setIsEdit="" , isEdit }) => {
 
     const location = useLocation();
+    const [pdfModal, setPdfModal] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen);
+      };
+      const togglePdf = () => {
+        setPdfModal(!pdfModal);
       };
       const toggleEdit = () => {
         setIsEdit(prevState => !prevState);
@@ -64,7 +69,8 @@ const CasesActionbar = ({ active="", setActive="", setIsEdit="" , isEdit }) => {
             )}
           </div>
         </div>
-        {isModalOpen && <CaseExportModal onClose={toggleModal} />}
+        {isModalOpen && <CaseExportModal onClose={toggleModal} setPdfModal={togglePdf} />}
+        {pdfModal && <CaseExportPdf onClose={togglePdf}/>}
       </>
     );
 };

@@ -16,7 +16,7 @@ import DateInput from "../../../components/datePicker";
 
 const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, setFieldValue, form }) => {
   const [optionalFields, setOptionalFields] = useState({
-    referred: false,
+    referral: false,
     bank: false,
     personalNotes: false,
     excludedNotes: false,
@@ -24,7 +24,7 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
 
   useEffect(() => {
     // console.log(initialValues,"____")
-    if (initialValues?.referred) setOptionalFields(prev => ({ ...prev, referred: true }));
+    if (initialValues?.referral) setOptionalFields(prev => ({ ...prev, referral: true }));
     if (initialValues?.bank) setOptionalFields(prev => ({ ...prev, bank: true }));
     if (initialValues?.personalNotes) setOptionalFields(prev => ({ ...prev, personalNotes: true }));
     if (initialValues?.excludedNotes) setOptionalFields(prev => ({ ...prev, excludedNotes: true }));
@@ -63,6 +63,7 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
                   <div className="grid gap-3">
                     <Field
                       as={SelectInput}
+                      disabled={true}
                       defaultLabel={`Select house`}
                       inputClassName="bg-input-surface py-[6px] px-4 rounded-full border-0 text-sm leading-5 font-semibold text-label"
                       labelClassName="ext-label mr-3"
@@ -138,8 +139,8 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
               <span className="left-txt flex items-center" >Seller's Concession</span>
               <input
                 className="text-right p-0 border-none focus:ring-transparent"
-                name="sellerConcession"
-                value={values.sellerConcession}
+                name="sellersConcession"
+                value={values.sellersConcession}
                 type="text"
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -160,8 +161,8 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
               <span className="left-txt flex items-center" >Realtors Sale</span>
               <input
                 className="text-right p-0 border-none focus:ring-transparent"
-                name="brokerSale"
-                value={values.brokerSale}
+                name="realtorSale"
+                value={values.realtorSale}
                 type="text"
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -171,8 +172,8 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
               <span className="left-txt flex items-center" >Realtors Listing</span>
               <input
                 className="text-right p-0 border-none focus:ring-transparent"
-                name="brokerListing"
-                value={values.brokerListing}
+                name="realtorListing"
+                value={values.realtorListing}
                 type="text"
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -198,9 +199,9 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
                   Schedule Date
                 </span>
                 <DateInput
-                  name="scheduleDate"
-                  value={values.scheduleDate}
-                  onSelectedDateChanged={(date) => setFieldValue("scheduleDate", date)}
+                  name="closingDate"
+                  value={values.closingDate}
+                  onSelectedDateChanged={(date) => setFieldValue("closingDate", date)}
 
                 />
               </>
@@ -208,9 +209,9 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
             <li>
               <span className="left-txt flex items-center">Received Date</span>
               <DateInput
-                name="closingDate"
-                value={values.closingDate}
-                onSelectedDateChanged={(date) => setFieldValue("closingDate", date)}
+                name="closeAt"
+                value={values.closeAt}
+                onSelectedDateChanged={(date) => setFieldValue("closeAt", date)}
 
               />
             </li>
@@ -225,24 +226,24 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
 
           <ul className="card-details">
           <li>
-            {optionalFields.referred && (
+            {optionalFields.referral && (
 
               <>
-                <span className={"cursor-pointer left-txt flex items-center"} onClick={() => handleRemoveField('referred', setFieldValue)} >
+                <span className={"cursor-pointer left-txt flex items-center"} onClick={() => handleRemoveField('referral', setFieldValue)} >
                   <span className="icon mr-2"> <img src={IMAGES.removeIcon} alt="icon" /> </span>
-                  Referred
+                  Referral
                 </span>
                 <input
                   className="text-right p-0 border-none focus:ring-transparent"
-                  name="referred"
+                  name="referral"
                   type="text"
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  value={values?.referred}
+                  value={values?.referral}
                 />
               </>
             )}
-            {!optionalFields.referred && (<span className="left-txt flex items-center" onClick={() => handleAddField('referred')} >
+            {!optionalFields.referral && (<span className="left-txt flex items-center" onClick={() => handleAddField('referral')} >
               <span className="icon mr-2 cursor-pointer">
                 <img
                   src={IMAGES.addIcon}

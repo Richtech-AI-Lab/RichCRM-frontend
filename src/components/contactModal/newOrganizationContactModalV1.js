@@ -1,3 +1,4 @@
+import * as Yup from "yup";
 import React, { useState } from "react";
 import { Formik, Field } from "formik";
 import { SelectInput, TextInput, XButton } from "..";
@@ -10,11 +11,12 @@ import { createAddressContactRequest, createAddressRequest } from "../../redux/a
 import { contactTagOrganizationOption } from "../../utils/formItem";
 import { createContactRequest } from "../../redux/actions/contactActions";
 import { useNavigate } from "react-router-dom";
+import { createOrgContactRequest } from "../../redux/actions/organizationActions";
 
 // Initial form values for new contact
 const initialValues = {
-    company:'',
-    contactType:'',
+    organizationName: '',
+    organizationType: '',
     note: ''
 };
 
@@ -25,13 +27,12 @@ const NewOrganizationContactModalV1 = ({ onSubmit, onClose }) => {
     const handleNewContact = async (values) => {
         try {
             const payload = {
-                contactType: values.contactType,
-                firstName: values?.company,
-                lastName:"",
-                company: values?.company,
+                organizationType: values.organizationType,
+                organizationName: values?.organizationName,
+                // company: values?.company,
                 note: values?.note
             };
-            dispatch(createContactRequest(payload, navigate))
+            dispatch(createOrgContactRequest(payload, navigate))
             onClose();
         } catch (error) {
             console.error("Error while handling new contact information", error);
@@ -39,6 +40,10 @@ const NewOrganizationContactModalV1 = ({ onSubmit, onClose }) => {
         }
     };
 
+    const validationSchema = Yup.object({
+        organizationType: Yup.mixed().required("Type is required"),
+        organizationName: Yup.string().required("Name is required"),
+    });
 
     return (
         <Modal show={true} size="md" onClose={onClose} className="new-case-modal">
@@ -55,7 +60,7 @@ const NewOrganizationContactModalV1 = ({ onSubmit, onClose }) => {
             <Modal.Body>
                 <Formik
                     initialValues={initialValues}
-                    // validationSchema={validationSchema}
+                    validationSchema={validationSchema}
                     onSubmit={handleNewContact}
                 >
                     {({
@@ -70,31 +75,33 @@ const NewOrganizationContactModalV1 = ({ onSubmit, onClose }) => {
                     }) => (
 
                         <form onSubmit={handleSubmit} className="">
-                            
+
                             <div className="block">
                                 <div className="grid grid-cols-1">
                                     <TextInput
-                                        name="company"
+                                        name="organizationName"
                                         type="text"
                                         placeholder="Organization name*"
-                                        value={values.company}
+                                        value={values.organizationName}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        field={{ name: "company" }}
+                                        field={{ name: "organizationName" }}
                                         form={{ errors, touched }}
                                     />
-
-                                    <div className={`items-dropdown  ${values.contactType == null || values.contactType == undefined || values.contactType == "" ? "default" :""} single-select mt-3`}>
+                                    <div className={`items-dropdown  ${values.organizationType == null || values.organizationType == undefined || values.organizationType == "" ? "default" : ""} single-select mt-3`}>
                                         <Field
                                             as={NewCaseDropdown}
                                             defaultLabel="Select Tag"
-                                            name="contactType"
-                                            value={values.contactType}
+                                            name="organizationType"
+                                            value={values.organizationType}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             options={contactTagOrganizationOption}
                                         />
                                     </div>
+                                    {errors["organizationType"] && touched["organizationType"] && (
+                                        <span className="text-sm text-red-500">{errors["organizationType"]}</span>
+                                    )}
                                 </div>
 
                             </div>
