@@ -223,6 +223,11 @@
   .items-dropdown > button {
     @apply bg-white shadow-shadow-light py-[10px] px-5 rounded-full flex items-center text-base text-secondary-800 font-medium
   }
+  .items-dropdown > button:disabled {
+    @apply bg-gray-300 shadow-shadow-light py-[10px] px-5 rounded-full flex items-center text-base text-secondary-800 font-medium;
+    color: #000000;
+    background: var(--State-Layers-On-Surface-Opacity-08, rgba(26, 28, 31, 0.08));
+  }
   .items-dropdown ul li button {
     @apply hover:bg-bg-gray-200
   }
