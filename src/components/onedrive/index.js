@@ -51,8 +51,8 @@ const OneDriveManager = () => {
     };
 
     const handleBackClick = () => {
-        const parentPath = path.substring(0, path.lastIndexOf('/')); // Navigate to the parent folder
-        setPath(parentPath || "/me/drive/root");
+        // const parentPath = path.substring(0, path.lastIndexOf('/')); // Navigate to the parent folder
+        setPath("/me/drive/root");
     };
 
     const handleDownloadClick = async (fileId) => {

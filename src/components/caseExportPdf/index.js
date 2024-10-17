@@ -434,7 +434,7 @@ const CaseExportPdfDocument = ({ formData }) => (
           <View style={{ display: 'flex', flexDirection: 'row', width: '90%', marginBottom: '2px' }}>
 
             <View style={{ display: 'flex', flexDirection: 'row', width: '100%', marginBottom: '2px' }}>
-              <Text style={{ fontSize: 12, marginRight: '10px', }} >Seller Atty:</Text>
+              <Text style={{ fontSize: 12, marginRight: '10px', }} >Sale:</Text>
               {false ? <Text style={styles.label}>{formData?.sellerName}</Text> : <View style={styles.fullWidthLine} />}
             </View>
           </View>
@@ -450,7 +450,7 @@ const CaseExportPdfDocument = ({ formData }) => (
 
 
             <View style={{ display: 'flex', flexDirection: 'row', width: '100%', marginBottom: '2px' }}>
-              <Text style={{ fontSize: 12, marginRight: '10px', }} >Buyer Atty:</Text>
+              <Text style={{ fontSize: 12, marginRight: '10px', }} >Listing:</Text>
               {false ? <Text style={styles.label}>{formData?.sellerName}</Text> : <View style={styles.fullWidthLine} />}
             </View>
           </View>
