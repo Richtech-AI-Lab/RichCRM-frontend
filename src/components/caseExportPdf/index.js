@@ -190,23 +190,24 @@ const CaseExportPdfDocument = ({ formData }) => (
 
 
 const CaseExportPdf = ({ onClose }) => {
-  const client = useSelector((state) => state.client.client.data[0]);
-  const address = useSelector((state) => state.utils.address.data[0]);
+  const client = useSelector((state) => state.client?.client?.data[0]);
+  const address = useSelector((state) => state.utils?.address?.data[0]);
   const { casesData } = useSelector((state) => state.case);
   const caseObj = casesData?.cases?.find(item => item.caseId === localStorage.getItem('c_id'));
-  const { data: premisesData } = useSelector((state) => state.premises.premises);
+  const { data: premisesData } = useSelector((state) => state?.premises?.premises);
   const premisesDetails = premisesData?.length > 0 ? premisesData : null;
+
   const formData = {
-    sellerName: caseObj?.caseType == 0 ? client.firstName : "",
-    sellerSSN: caseObj?.caseType == 0 ? client.ssn : "",
-    sellerAddress: caseObj?.caseType == 0 ? client.addressId : "",
-    sellerCell: caseObj?.caseType == 0 ? client.cellNumber : "",
-    sellerWork: caseObj?.caseType == 0 ? client.workPhone : "",
-    buyerName: caseObj?.caseType == 1 ? client.firstName : "",
-    buyerSSN: caseObj?.caseType == 1 ? client.ssn : "",
-    buyerAddress: caseObj?.caseType == 1 ? client.addressId : "",
-    buyerCell: caseObj?.caseType == 1 ? client.cellNumber : "",
-    buyerWork: caseObj?.caseType == 1 ? client.firstName : "",
+    sellerName: caseObj?.caseType == 0 ? client?.firstName : "",
+    sellerSSN: caseObj?.caseType == 0 ? client?.ssn : "",
+    sellerAddress: caseObj?.caseType == 0 ? client?.addressId : "",
+    sellerCell: caseObj?.caseType == 0 ? client?.cellNumber : "",
+    sellerWork: caseObj?.caseType == 0 ? client?.workPhone : "",
+    buyerName: caseObj?.caseType == 1 ? client?.firstName : "",
+    buyerSSN: caseObj?.caseType == 1 ? client?.ssn : "",
+    buyerAddress: caseObj?.caseType == 1 ? client?.addressId : "",
+    buyerCell: caseObj?.caseType == 1 ? client?.cellNumber : "",
+    buyerWork: caseObj?.caseType == 1 ? client?.firstName : "",
     block: premisesDetails?.block,
     lot: premisesDetails?.lot,
     newConst: true,
