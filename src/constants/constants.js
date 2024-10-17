@@ -683,3 +683,5 @@ export const CONTACT_TYPE = {
   4: 'Client',
   5: 'Other'
 };
+
+export const maintenanceFeePer =["Month", "Quarter", "Year"]

@@ -20,6 +20,12 @@ const CaseExportModal = ({ onClose, setPdfModal=()=>{} }) => {
     { value: 2, label: "JPG" },
   ];
 
+  const handleSubmit = (values)=> {
+    setPdfModal(true)
+    if (values) {
+      onClose();
+    }
+  }
   return (
     <Modal show={true} size="md" onClose={onClose} className="new-case-modal">
       <Modal.Header className="border-b-0">
@@ -33,12 +39,7 @@ const CaseExportModal = ({ onClose, setPdfModal=()=>{} }) => {
         <Formik
           initialValues={{ template: "", format: "" }}
           validationSchema={validationSchema}
-          onSubmit={(values) => {
-            console.log(values);
-            if (values) {
-              onClose();
-            }
-          }}
+          onSubmit={handleSubmit}
         >
           {({ errors, touched }) => (
             <Form className="space-y-6">
@@ -94,8 +95,8 @@ const CaseExportModal = ({ onClose, setPdfModal=()=>{} }) => {
                 />
                 <XButton
                   text="Next"
-                  // type="submit"
-                  onClick={()=>{setPdfModal(true)}}
+                  type="submit"
+                  // onClick={()=>{}}
                   className="bg-primary2 text-sm text-white py-[10px] px-6 rounded-[100px] font-medium"
                 />
               </div>
