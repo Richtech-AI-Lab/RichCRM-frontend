@@ -152,13 +152,13 @@
     @apply ring-transparent
   }
   .task-checklist {
-    @apply border-b border-b-border pl-6 pr-4
+    @apply border-b border-b-border pl-6 pr-4;
   }
   .task-checklist:last-child {
     @apply border-b-0
   }
   .task-checklist input[type="checkbox"] {
-    @apply bg-white border-black w-6 h-6
+    @apply bg-white border-black w-[18px] h-[18px] outline outline-2 outline-transparent;
   }
   .task-checklist input[type="checkbox"]:checked {
     @apply bg-primary2 border-primary2
@@ -232,10 +232,12 @@
     @apply hover:bg-bg-gray-200
   }
   .items-dropdown ul li input[type='checkbox'] {
-    @apply bg-transparent border-secondary-800 rounded-sm focus:ring-transparent
+    @apply bg-transparent border-secondary-800 rounded-sm focus:ring-transparent;
+    height: 1.5rem;
+    width: 1.5rem;
   }
   .items-dropdown ul li input[type='checkbox']:checked {
-    @apply bg-primary2 border-primary2
+    @apply bg-primary2 border-primary
   }
   .items-dropdown.single-select ul {
     @apply p-0
