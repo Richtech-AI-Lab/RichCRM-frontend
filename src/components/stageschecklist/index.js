@@ -120,7 +120,7 @@ const StagesChecklist = () => {
   //       }
   //     } catch (error) {
   //       console.error("Error parsing case data from localStorage", error);
-  //       caseDataGet = [];
+  //       Get = [];
   //     }
   //   } else {
   //     caseDataGet = []; 

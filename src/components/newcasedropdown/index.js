@@ -15,7 +15,6 @@ const NewCaseDropdown = ({
     inputClassName,
     labelClassName,
     defaultLabel,
-    className
 }) => {
     const selectedLabel = options.find((option) => option.value === value)?.label;
     return (
@@ -26,7 +25,7 @@ const NewCaseDropdown = ({
             value={value}
             onBlur={onBlur}
             inline
-            className="rounded-2xl shadow-shadow-light-2 max-h-[400px] overflow-y-auto"
+            className="rounded-2xl shadow-shadow-light-2 max-h-[400px] overflow-y-auto disabled"
         >
             {options?.map((option) => (
                 <Dropdown.Item className="py-3" key={option.value} onClick={() => onChange({ target: { name, value: option.value } })
