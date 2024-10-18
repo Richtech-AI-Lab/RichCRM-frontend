@@ -126,6 +126,9 @@ const CaseCardData = () => {
     setIsUploadFileModalOpen(!isUploadFileModalOpen);
   };
 
+  const handleNav = () => {
+    navigate(ROUTES.DOCUMENTS)
+  };
   return (
     <div>
       <XSpinnerLoader loading={loading} size="lg" />
@@ -134,6 +137,7 @@ const CaseCardData = () => {
         <div className="grid gap-4 grid-cols-2 ">
           <XButton
             text="One Drive"
+            onClick={()=>handleNav()}
             icon={<CgFolder className="text-base mr-2 inline-block font-medium" />}
             className="bg-white shadow-shadow-light text-secondary-800 py-3 px-6 rounded-full font-medium"
           />
