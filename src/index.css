@@ -289,4 +289,7 @@
   .avatar-hover:hover .edit-btn {
     @apply visible
   }
+  .export-pdf-modal > div {
+    @apply max-w-[1200px]
+  }
 }
