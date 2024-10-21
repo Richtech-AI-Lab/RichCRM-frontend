@@ -593,6 +593,11 @@ export const CONTACTTAG = {
   TITLECOMPANY:6
 };
 
+export const ORGANIZATION_TYPE_VALUE = {
+  OTHER : 0,
+  COMPANY: 1,
+  TRUST: 2
+};
 export const userRole = {
   ADMIN: 0,
   ATTORNEY: 1,
@@ -678,3 +683,5 @@ export const CONTACT_TYPE = {
   4: 'Client',
   5: 'Other'
 };
+
+export const maintenanceFeePer =["Month", "Quarter", "Year"]

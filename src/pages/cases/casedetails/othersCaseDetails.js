@@ -7,34 +7,57 @@ import { brokersItems, closingDateItems, financialItems, otherItems } from "../.
 import FormButton from "../../../components/formButton";
 import OtherForm from "../editDetail/otherForm";
 import OtherDetail from "../showdetail/otherdetails";
+import { useDispatch, useSelector } from "react-redux";
+import { updateCaseDateRequest } from "../../../redux/actions/caseAction";
 
 
 const OthersCaseDetails = ({ isEdit, setIsEdit }) => {
+  const dispatch = useDispatch();
   const [dummy, setDummy] = useState({})
+  const { cases } = useSelector((state) => state?.case?.casesData);
+  const caseObj = cases?.find(item => item?.caseId == localStorage?.getItem('c_id'));
   const toggleEdit = () => {
     setIsEdit(prevState => !prevState);
   };
-  let handleSubmit = (x) => {
-    setDummy(x)
-    console.log(x)
-    toggleEdit()
+  let handleSubmit = (value) => {
+      const payload = {
+        caseId: localStorage.getItem('c_id'),
+        caseType: parseInt(value?.caseType),
+        purchasePrice: value?.purchasePrice,
+        downPayment: value?.downPayment,
+        mortgageAmount: value?.mortgageAmount,
+        annualPropertyTax: value?.annualPropertyTax,
+        sellersConcession: value?.sellersConcession,
+        realtorSale: value?.realtorSale,
+        realtorListing: value?.realtorListing,
+        closingDate: value?.closingDate,
+        closeAt: value?.closeAt,
+        referral: value?.referral,
+        bank: value?.bank,
+        personalNotes: value?.personalNotes,
+        excludedNotes: value?.excludedNotes,
+      };
+      dispatch(updateCaseDateRequest(payload))
+      setDummy(value)
+      toggleEdit()
   }
   const initialOtherValues = {
-    caseType: dummy?.caseType,
-    purchasePrice: dummy?.purchasePrice,
-    downPayment: dummy?.downPayment,
-    mortgageAmount: dummy?.mortgageAmount,
-    annualPropertyTax: dummy?.annualPropertyTax,
-    sellerConcession: dummy?.sellerConcession,
-    brokerSale: dummy?.brokerSale,
-    brokerListing: dummy?.brokerListing,
-    scheduleDate: dummy?.scheduleDate,
-    closingDate: dummy?.closingDate,
-    referred: dummy?.referred,
-    bank: dummy?.bank,
-    personalNotes: dummy?.personalNotes,
-    excludedNotes: dummy?.excludedNotes,
+    // caseType: caseObj?.caseType ? caseObj?.caseType : dummy?.caseType,
+    purchasePrice: caseObj?.purchasePrice ? caseObj?.purchasePrice : dummy?.purchasePrice,
+    downPayment: caseObj?.downPayment ? caseObj?.downPayment : dummy?.downPayment,
+    mortgageAmount: caseObj?.mortgageAmount ? caseObj?.mortgageAmount : dummy?.mortgageAmount,
+    annualPropertyTax: caseObj?.annualPropertyTax ? caseObj?.annualPropertyTax : dummy?.annualPropertyTax,
+    sellersConcession: caseObj?.sellersConcession ? caseObj?.sellersConcession : dummy?.sellersConcession,
+    realtorSale: caseObj?.realtorSale ? caseObj?.realtorSale : dummy?.realtorSale,
+    realtorListing: caseObj?.realtorListing ? caseObj?.realtorListing : dummy?.realtorListing,
+    closingDate: caseObj?.closingDate ? caseObj?.closingDate : dummy?.closingDate,
+    closeAt: caseObj?.closeAt ? caseObj?.closeAt : dummy?.closeAt,
+    referral: caseObj?.referral ? caseObj?.referral : dummy?.referral,
+    bank: caseObj?.bank ? caseObj?.bank : dummy?.bank,
+    personalNotes: caseObj?.personalNotes ? caseObj?.personalNotes : dummy?.personalNotes,
+    excludedNotes: caseObj?.excludedNotes ? caseObj?.excludedNotes : dummy?.excludedNotes,
   };
+  
   return (
     <>
       {isEdit ?
@@ -60,7 +83,7 @@ const OthersCaseDetails = ({ isEdit, setIsEdit }) => {
           </Formik>) :
         (<div className="grid grid-cols-12 gap-6">
          
-            <OtherDetail dummy={dummy} />
+            <OtherDetail dummy={dummy} caseObj={caseObj} />
          </div>)}
     </>
   );

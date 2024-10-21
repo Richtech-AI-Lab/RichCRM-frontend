@@ -54,8 +54,8 @@ const contactReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        selectedItem: action.payload,
-      };
+        selectedItem: action.payload || null,
+      }; 
     default:
       return state;
   }

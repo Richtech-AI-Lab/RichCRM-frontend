@@ -5,8 +5,8 @@ import { CASETYPE, PREMISES_TYPE } from "../../../constants/constants";
 import { format } from "date-fns";
 
 
-const OtherDetail = ({ dummy }) => {
-
+const OtherDetail = ({ dummy, caseObj }) => {
+  // let caseType: caseObj?.caseType ? caseObj?.caseType : dummy?.caseType,
   return (
     <>
       <div className="col-span-6">
@@ -21,7 +21,7 @@ const OtherDetail = ({ dummy }) => {
             <ul className="card-details">
               <li>
                 <span className="left-txt flex items-center" >Case Type</span>
-                <span className="left-txt flex items-center" >{dummy?.caseType == 0 && "Selling"} {dummy?.caseType == 0 && "Purchasing"}</span>
+                <span className="left-txt flex items-center" >{caseObj?.caseType == 1 && "Selling"} {caseObj?.caseType == 0 && "Purchasing"}</span>
               </li>
               <li>
                 <span className="left-txt flex items-center" >Purchaser Price</span>
@@ -41,7 +41,7 @@ const OtherDetail = ({ dummy }) => {
               </li>
               <li>
                 <span className="left-txt flex items-center" >Seller's Concession</span>
-                <span className="left-txt flex items-center" > {dummy?.sellerConcession} </span>
+                <span className="left-txt flex items-center" > {dummy?.sellersConcession} </span>
               </li>
 
             </ul> : ""}
@@ -57,11 +57,11 @@ const OtherDetail = ({ dummy }) => {
             <ul className="card-details">
               <li>
                 <span className="left-txt flex items-center" >Realtor Sale</span>
-                <span className="left-txt flex items-center" >{dummy?.brokerSale}</span>
+                <span className="left-txt flex items-center" >{dummy?.realtorSale}</span>
               </li>
               <li>
                 <span className="left-txt flex items-center" >Realtor Listing</span>
-                <span className="left-txt flex items-center" >{dummy?.brokerListing}</span>
+                <span className="left-txt flex items-center" >{dummy?.realtorListing}</span>
               </li>              
             </ul> : ""}
         </div>
@@ -78,11 +78,11 @@ const OtherDetail = ({ dummy }) => {
             <ul className="card-details">
             <li>
                 <span className="left-txt flex items-center" > Schedule Date</span>
-                <span className="left-txt flex items-center" > {dummy?.scheduleDate && format(dummy?.scheduleDate, 'MMMM dd, yyyy')}  </span>
+                <span className="left-txt flex items-center" >  {caseObj?.closingDate && format(caseObj?.closingDate, 'MMMM dd, yyyy')} </span>
               </li>
               <li>
                 <span className="left-txt flex items-center" > Closing Date</span>
-                <span className="left-txt flex items-center" >  {dummy?.closingDate && format(dummy?.closingDate, 'MMMM dd, yyyy')} </span>
+                <span className="left-txt flex items-center" > {caseObj?.closeAt && format(caseObj?.closeAt, 'MMMM dd, yyyy')}  </span>
               </li>
             </ul>
         </div>
@@ -97,7 +97,7 @@ const OtherDetail = ({ dummy }) => {
           <ul className="card-details">
           <li>
                 <span className="left-txt flex items-center" > Referral</span>
-                <span className="left-txt flex items-center" > {dummy?.referred}  </span>
+                <span className="left-txt flex items-center" > {dummy?.referral}  </span>
               </li>
               <li>
                 <span className="left-txt flex items-center" > Bank</span>

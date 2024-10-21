@@ -5,6 +5,14 @@ import { SelectInput } from "../../../components";
 import { Field } from "formik";
 
 const ContactIndividualDetail = ({ contact, address }) => {
+    const contactTypeLabels = {
+        0: 'Broker',
+        1: "Attorney",
+        2: "Title",
+        3: "Lender",
+        4: "Client",
+        5: "Other"
+    };
     return (
         <>
             <div className="bg-white rounded-2xl mb-5 p-4">
@@ -19,7 +27,7 @@ const ContactIndividualDetail = ({ contact, address }) => {
                     <div className="ml-6">
                         <div className="mb-16">
                             <p className="text-[22px] font-medium text-secondary-800">{contact?.firstName} {contact?.lastName}</p>
-                            <p className="font-medium text-secondary-800 text-sm mb-10">Brokers</p>
+                            <p className="font-medium text-secondary-800 text-sm mb-10">{contactTypeLabels[contact?.contactType] || ''}</p>
 
                         </div>
                         <p className="text-secondary-300 text-sm">{contact?.contactId}</p>
@@ -31,8 +39,8 @@ const ContactIndividualDetail = ({ contact, address }) => {
 
                 <ul className="card-details">
                     <li>
-                        <span className="left-txt flex items-center" > Position</span>
-                        <span className="left-txt flex items-center" > {contact?.position} </span>
+                        <span className="left-txt flex items-center" >Position</span>
+                        <span className="left-txt flex items-center" >{contact?.position}</span>
                     </li>
                     <li>
                         <span className="left-txt flex items-center" >Company</span>
@@ -44,28 +52,28 @@ const ContactIndividualDetail = ({ contact, address }) => {
 
                 <ul className="card-details">
                     <li>
-                        <span className="left-txt flex items-center" > Email</span>
-                        <span className="left-txt flex items-center" > {contact?.email} </span>
+                        <span className="left-txt flex items-center" >Email</span>
+                        <span className="left-txt flex items-center" >{contact?.email} </span>
                     </li>
                     <li>
-                        <span className="left-txt flex items-center" > Cell Phone</span>
+                        <span className="left-txt flex items-center" >Cell Phone</span>
                         <span className="left-txt flex items-center" >{contact?.cellNumber}</span>
                     </li>
                     <li>
-                        <span className="left-txt flex items-center" > Work Phone</span>
-                        <span className="left-txt flex items-center" > {contact?.workNumber} </span>
+                        <span className="left-txt flex items-center" >Work Phone</span>
+                        <span className="left-txt flex items-center" >{contact?.workNumber} </span>
                     </li>
                     <li>
                         <span className="left-txt flex items-center" >WeChat</span>
-                        <span className="left-txt flex items-center" > {contact?.wechatAccount} </span>
+                        <span className="left-txt flex items-center" >{contact?.wechatAccount} </span>
                     </li>
                     <li>
                         <span className="left-txt flex items-center" >WhatsApp</span>
-                        <span className="left-txt flex items-center" > {contact?.whatsApp}</span>
+                        <span className="left-txt flex items-center" >{contact?.whatsApp}</span>
                     </li>
                     <li>
                         <span className="left-txt flex items-center" >Line</span>
-                        <span className="left-txt flex items-center" > {contact?.line}</span>
+                        <span className="left-txt flex items-center" >{contact?.line}</span>
                     </li>
                     <li>
                         <span className="left-txt flex items-center">Mailing address</span>
@@ -78,8 +86,8 @@ const ContactIndividualDetail = ({ contact, address }) => {
 
                 <ul className="card-details">
                     <li>
-                        <span className="left-txt flex items-center" > SSN</span>
-                        <span className="left-txt flex items-center" > {contact?.ssn} </span>
+                        <span className="left-txt flex items-center" >SSN</span>
+                        <span className="left-txt flex items-center" >{contact?.ssn} </span>
                     </li>
                     <li>
                         <span className="left-txt flex items-center" >Driving License</span>
@@ -91,8 +99,8 @@ const ContactIndividualDetail = ({ contact, address }) => {
 
                 <ul className="card-details">
                     <li>
-                        <span className="left-txt flex items-center" > Note</span>
-                        <span className="left-txt flex items-center" > {contact?.note} </span>
+                        <span className="left-txt flex items-center" >Note</span>
+                        <span className="left-txt flex items-center" >{contact?.note} </span>
                     </li>
                 </ul>
             </div>

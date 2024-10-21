@@ -33,6 +33,7 @@ export const API_ENDPOINTS = {
   CREATE_CONTACT:"/contact/register",
   SEND_MAIL:"/utils/email/send",
   GET_CASES_BY_KEYWORD:"/case/query/keyword",
+  GET_ORGANIZATION_BY_KEYWORD:"/organization/query",
   READ_TEMPLATE_BY_NAME:"/template/read",
   UPDATE_TEMPLATE_BY_NAME:"/template/fill",
   UPDATE_TASK: "/task/update",
