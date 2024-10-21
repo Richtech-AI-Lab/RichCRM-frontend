@@ -4,6 +4,7 @@ import Label from "../label";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { HiOutlineCube } from "react-icons/hi";
 import { LuUpload } from "react-icons/lu";
+import UploadFileModal from "../caseModal/uploadFileModal";
 import { ACTIONTYPE, ACTIONTYPELABEL, STAGESNAMES } from "../../constants/constants";
 import NewCaseDropdown from "../newcasedropdown";
 import ComposeEmail from "../composeEmail/index"
@@ -146,9 +147,17 @@ const ChecklistItem = ({ item, stageName, icon, label, status, action, actionInf
 
     return { label, badgeClass: displayColor };
   }
+
+  const [isUploadFileModalOpen, setIsUploadFileModalOpen] = useState(false);
+  const toggleUploadFileModal = () => {
+    setIsUploadFileModalOpen(!isUploadFileModalOpen);
+  };
+
   const handleOption = (option) => {
     if (option == "compose message") {
       setIsCompose(true)
+    } else if (option == "upload") {
+      toggleUploadFileModal();
     }
   }
   useEffect(() => {
@@ -302,6 +311,7 @@ const ChecklistItem = ({ item, stageName, icon, label, status, action, actionInf
         </li>
       </div>
       {isCompose ? <ComposeEmail templates={templates} onClose={toggleComposeModal} onSendEmail={(value) => handleChangeTaskStatus(value)} /> : ""}
+      {isUploadFileModalOpen && <UploadFileModal onClose={toggleUploadFileModal} />}
     </>
   );
 };
