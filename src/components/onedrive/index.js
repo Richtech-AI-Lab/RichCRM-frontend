@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useMsal } from "@azure/msal-react";
-import { Spinner } from "flowbite-react";
+import { Button, Modal, Spinner } from "flowbite-react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import ContactTabs from "../actionbar/contactTabs";
 // import { FiPlus } from "react-icons/fi";
@@ -11,6 +11,11 @@ import XButton from "../button/XButton";
 import { addFromContactV1Tab } from "../../constants/constants";
 import { SlArrowRight } from "react-icons/sl";
 import { IoCloudDownload } from "react-icons/io5";
+import { toast } from "react-toastify";
+import TextInput from "../TextInput";
+import MenuPopup from "../menupopup";
+import DeleteModal from "../deleteModal";
+
 
 const OneDriveManager = () => {
     const { instance, accounts, inProgress } = useMsal();
@@ -19,6 +24,39 @@ const OneDriveManager = () => {
     const [path, setPath] = useState("/me/drive/root"); // Start at the root of OneDrive
     const [pathHistory, setPathHistory] = useState(["/me/drive/root"]); // Keep track of path history
     const [loader, setLoader] = useState(false); // Keep track of path history
+    const [showCreateFolderModal, setShowCreateFolderModal] = useState(false);
+    const [showDeletePopup, setShowDeletePopup] = useState(false);
+    const [currentField, setCurrentFileId] = useState(false);
+    const [newFolderName, setNewFolderName] = useState("");
+    const menuOption = [
+        { id: 0, label: "Download" },
+        { id: 1, label: "Delete" },
+    ];
+
+    const handleCloseCreateModal = () => {
+        setShowCreateFolderModal(false);
+        setNewFolderName("");
+    };
+
+    const handleDelete = async (fileId) => {
+        if (fileId) {
+            await handleDeleteClick(fileId); 
+            setShowDeletePopup(false); 
+        }
+    };
+
+    const handleOptionSubmit = (fileId, label, item) => {
+        console.log(fileId, label)
+        if (label == 0) {
+            handleDownloadClick(fileId);
+        } else if (label == 1) {
+            // just set id and open modal
+            setCurrentFileId(fileId);
+            setShowDeletePopup(true)
+        } else {
+
+        }
+    };
 
     useEffect(() => {
         if (accounts.length > 0) {
@@ -54,6 +92,17 @@ const OneDriveManager = () => {
         setFiles(data.value || []);
         setLoader(false)
     }
+    const handleDeleteClick = async (itemId) => {
+        const authToken = await getToken();
+        await fetch(`https://graph.microsoft.com/v1.0/me/drive/items/${itemId}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${authToken}`,
+            },
+        });
+        // Refresh the list after deletion
+        fetchFiles(path);
+    };
 
     useEffect(() => {
         if (account) {
@@ -92,6 +141,48 @@ const OneDriveManager = () => {
         const downloadUrl = data["@microsoft.graph.downloadUrl"];
         window.open(downloadUrl, "_blank"); // Open the file in a new tab
     };
+
+    const handleCreateFolder = async () => {
+        if (!newFolderName) return;
+
+        const token = await getToken();
+
+        try {
+            const createFolderUrl = `https://graph.microsoft.com/v1.0${path}/children`;
+
+            const response = await fetch(createFolderUrl, {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    name: newFolderName,
+                    folder: {},
+                    "@microsoft.graph.conflictBehavior": "fail" // Set conflict behavior to 'fail' to catch conflict errors
+                }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                if (response.status === 409) {
+                    // Show error if the folder name conflicts
+                    toast.error("A folder with the same name already exists!");
+                    // alert("A folder with the same name already exists!");
+                } else {
+                    toast.error(`Error creating folder: ${errorData.error.message}`)
+                    // alert(`Error creating folder: ${errorData.error.message}`);
+                }
+                return;
+            }
+
+            handleCloseCreateModal()
+            fetchFiles(path); // Refresh the file list
+        } catch (error) {
+            alert(`Failed to create folder: ${error.message}`);
+        }
+    };
+
 
     async function login(e) {
         e.preventDefault();
@@ -161,6 +252,12 @@ const OneDriveManager = () => {
                         </div>
                         <div className="flex justify-between items-center">
                             <XButton
+                                text="Create Folder"
+                                icon={<IoMdLogIn className="text-base mr-2 inline-block" />}
+                                className="bg-blue-500 hover:bg-blue-700 shadow-shadow-light text-sm text-white py-[10px] px-6 rounded-[100px] font-medium ml-4"
+                                onClick={() => setShowCreateFolderModal(true)}
+                            />
+                            <XButton
                                 text="Logout"
                                 icon={<IoMdLogOut className="text-base mr-2 inline-block" />}
                                 className="bg-red-500 hover:bg-red-700 shadow-shadow-light text-sm text-white py-[10px] px-6 rounded-[100px] font-medium ml-4"
@@ -174,43 +271,57 @@ const OneDriveManager = () => {
                     {!loader ? <>
                         <div style={{ display: "flex", flexWrap: "wrap" }}>
                             {files.map((file) => (
-                            <div
-                            className="m-5 flex flex-col justify-between h-full hover:bg-badge-gray cursor-pointer min-h-[calc(10vh)]"
-                            key={file.id}
-                          >
-                            {file.folder ? (
-                              // Folder Icon and Clickable
-                              <div
-                                onClick={() => handleFolderClick(file.id, file.name)}
-                                style={{ cursor: "pointer" }}
-                                className="flex flex-col items-center"
-                              >
-                                <img
-                                  src="https://img.icons8.com/color/96/000000/folder-invoices.png"
-                                  alt="folder"
-                                  style={{ width: "64px", height: "64px" }}
-                                />
-                                <p className="mt-2 text-center">{file.name}</p>
-                              </div>
-                            ) : (
-                              <>
-                                <div className="w-full h-full relative flex flex-col items-center justify-center">
-                                  <img
-                                    src={file.thumbnail ? file.thumbnail : "https://img.icons8.com/color/96/000000/file.png"}
-                                    alt="file"
-                                    style={{ width: "64px", height: "64px" }}
-                                  />
-                                  <p className="mt-2 text-center">{file.name}</p>
-                                  <IoCloudDownload
-                                    onClick={() => handleDownloadClick(file.id)}
-                                    className="absolute top-0 right-0 m-2"
-                                    style={{ color: "green", fontSize: "24px" }} // Color and size adjustments
-                                  />
+                                <div
+                                    className="m-5 flex flex-col justify-between h-full hover:bg-badge-gray cursor-pointer min-h-[calc(10vh)] w-[100px]"
+                                    key={file.id}
+                                >
+                                    {file.folder ? (
+                                        // Folder Icon and Clickable
+                                        <div className={'relative'}>
+                                            <div
+                                                onClick={() => handleFolderClick(file.id, file.name)}
+                                                style={{ cursor: "pointer" }}
+                                                className="flex flex-col  items-center"
+                                            >
+                                                <img
+                                                    src="https://img.icons8.com/color/96/000000/folder-invoices.png"
+                                                    alt="folder"
+                                                    style={{ width: "64px", height: "64px" }}
+                                                />
+                                                <p className="mt-2 text-center">{file.name}</p>
+
+                                            </div>
+                                            <div className="absolute top-0 right-0">
+                                            <MenuPopup handleOptionSubmit={(label) => handleOptionSubmit(file.id, label)}
+                                                dropdownItems={menuOption.map(option => option.label)}
+                                                icon={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />} />
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <div className="relative">
+                                                <div className="w-full h-full relative flex flex-col items-center justify-center">
+                                                    <img
+                                                        src={file.thumbnail ? file.thumbnail : "https://img.icons8.com/color/96/000000/file.png"}
+                                                        alt="file"
+                                                        style={{ width: "64px", height: "64px" }}
+                                                    />
+                                                    <p className="mt-2 text-center">{file.name}</p>
+                                                    {/* <BsThreeDotsVertical className="text-lg opacity-40 absolute top-0 right-0 m-2"/> */}
+                                                    {/* <IoCloudDownload
+                                                    onClick={() => handleDownloadClick(file.id)}
+                                                    className="absolute top-0 right-0 m-2"
+                                                    style={{ color: "green", fontSize: "24px" }} // Color and size adjustments
+                                                    /> */}
+                                                </div>
+                                                <MenuPopup handleOptionSubmit={(label) => handleOptionSubmit(file.id, label)}
+                                                    dropdownItems={menuOption?.map(option => option.label)}
+                                                    icon={<BsThreeDotsVertical className="text-secondary-800 opacity-40 absolute top-0 right-0 m-2" />} />
+                                            </div>
+                                        </>
+                                    )}
                                 </div>
-                              </>
-                            )}
-                          </div>
-                          
+
                             ))}
                         </div>
                         {
@@ -236,6 +347,61 @@ const OneDriveManager = () => {
                                 className={`spinner-5`}
                             />
                         </div>}
+
+                    <Modal show={showCreateFolderModal} onClose={() => handleCloseCreateModal()} className="new-case-modal">
+                        <Modal.Header className="border-b-0">
+                            <div>
+                                <h2 className="mb-2 text-[28px] leading-9 font-medium text-secondary-800">
+                                    Create Folder
+                                </h2>
+                                {/* <p className="text-sm leading-5 text-secondary-700">
+                                    Enter folder name
+                                </p> */}
+                            </div>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <div className="block">
+                                <div className="grid grid-col">
+                                    <div className="block">
+                                        <TextInput
+                                            name="folderName"
+                                            type="text"
+                                            placeholder="Enter folder name"
+                                            value={newFolderName}
+                                            onChange={(e) => setNewFolderName(e.target.value)}
+                                        />
+                                        {/* <ErrorMessage
+                                            name={`caseName`}
+                                            component="div"
+                                            className="text-red-500 text-sm"
+                                        /> */}
+                                    </div>
+                                </div>
+                                <div className="text-end mt-8">
+                                    <XButton
+                                        text={"Cancel"}
+                                        onClick={() => handleCloseCreateModal()}
+                                        className="bg-card-300 text-sm text-primary2 py-[10px] px-6 rounded-[100px]"
+                                    />
+                                    <XButton
+                                        text={"Create"}
+                                        onClick={() => handleCreateFolder()}
+                                        className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px] ml-4"
+                                    />
+                                </div>
+                            </div>
+                        </Modal.Body>
+                    </Modal>
+
+                    <DeleteModal
+                        isOpen={showDeletePopup}
+                        onConfirm={()=>handleDelete(currentField)}
+                        onCancel={() => setShowDeletePopup(false)}
+                        title="Confirm Deletion"
+                        message="Are you sure you want to delete this item? This action cannot be undone."
+                        confirmText="Delete"
+                        cancelText="Cancel"
+                    />
                 </div>
             </div>
         );
