@@ -12,6 +12,7 @@ import OthersCaseDetails from "./othersCaseDetails";
 import { fetchAddressByIdRequest } from "../../../redux/actions/utilsActions";
 import { useDispatch, useSelector } from "react-redux";
 import OrganizationCaseDetails from "./organizationCaseDetails";
+import { ROUTES } from "../../../constants/api";
 
 const CaseDetails = () => {
   const { cases } = useSelector((state) => state.case.casesData);
@@ -28,7 +29,7 @@ const CaseDetails = () => {
   const [activeTab, setActiveTab] = useState(caseDetailTab.PARTICIPANTS);
   const [isEdit, setIsEdit] = useState(false)
   const headerItems = [
-    { text: "Cases", className: "mr-8" },
+    { text: "Cases", link:ROUTES.CASES,className: "mr-8" },
     {
       text: `${getCaseValue()?.clientName} - ${getCaseValue()?.premisesName}`,
       separator: <SlArrowRight className="inline mr-10" />,

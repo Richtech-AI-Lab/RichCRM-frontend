@@ -10,7 +10,7 @@ const CasesCategory = () => {
   const location = useLocation();
   const { card, filteredCases,stageCount } = location.state || {};
   const headerItems = [
-    { text: "Cases", className: "mr-4" },
+    { text: "Cases", link:ROUTES.CASES, className: "mr-4" },
     { text: `${card?.label}`, separator: <SlArrowRight className="inline mr-4" />},
   ];
   const handleCaseCardClick = (casedetails) => {
