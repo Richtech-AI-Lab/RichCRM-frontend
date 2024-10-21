@@ -117,7 +117,7 @@ const CaseCardData = () => {
   }, [casedetails]);
 
   const headerItems = [
-    { text: "Cases", className: "mr-8" },
+    { text: "Cases", link:ROUTES.CASES, className: "mr-8" },
     { text: `${casedetails?.clientName} - ${premisesDetails?.name}`, separator: <SlArrowRight className="inline mr-10" /> },
   ];
 
