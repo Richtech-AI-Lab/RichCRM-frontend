@@ -14,8 +14,8 @@ const DeleteModal = ({ isOpen, onConfirm, onCancel, title, message, confirmText,
                     <div className="flex justify-end mt-6">
                         <XButton 
                             text={confirmText} 
-                            onClick={onConfirm} 
-                            className="bg-red-500 text-base text-white py-[10px] px-6 rounded-[100px] w-1/2" 
+                            onClick={onConfirm}
+                            className="bg-primary2 text-white text-base py-[10px] px-6 rounded-[100px] ml-4 w-1/2" 
                         />
                         <XButton
                             text={cancelText} 

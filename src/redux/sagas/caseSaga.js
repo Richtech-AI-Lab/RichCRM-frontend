@@ -134,9 +134,17 @@ function* updateCaseStage(action) {
 
 function* deleteCase(action) {
     try {
-        const { payload } = action;
+        const { payload, navigate} = action;
         const response = yield call(() => postRequest(API_ENDPOINTS.DELETE_CASE, payload));
-        yield put(deleteCaseSuccess(response.data));
+        if (response.status == 200) {
+            localStorage.removeItem('c_id');
+            yield put(clearTaskData());
+            yield put(clearStageData());
+            yield put(clearCasesData());
+            toast.success("Case Deleted Success!");
+            navigate(ROUTES.CASES);
+        }
+        // yield put(deleteCaseSuccess(response.data));
     } catch (error) {
         handleError(error)
         yield put(deleteCaseFailure(error.response.data || error));
