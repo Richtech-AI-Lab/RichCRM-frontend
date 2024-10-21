@@ -10,13 +10,17 @@ import ComposeEmail from "../composeEmail/index"
 import { useDispatch, useSelector } from "react-redux";
 import { updateTaskStatusRequest } from "../../redux/actions/taskActions";
 import { updateStageStatusRequest } from "../../redux/actions/stagesActions";
+import UploadFileModal from "../caseModal/uploadFileModal";
 
-const ChecklistItem = ({ item, stageName, icon, label, status, action, actionInfo, optionsValue, checkboxId, currentStep, templates, stageId }) => {
+const ChecklistItem = ({ item, stageName, key, icon, label, status, action, actionInfo, optionsValue, checkboxId, currentStep, templates, stageId }) => {
   const dispatch = useDispatch();
   const [isCompose, setIsCompose] = useState(false);
   const [taskStatus, setTaskStatus] = useState(status);
   const taskData = useSelector((state) => state.task);
-
+  const [isUploadFileModalOpen, setIsUploadFileModalOpen] = useState(false);
+  const toggleUploadFileModal = () => {
+    setIsUploadFileModalOpen(!isUploadFileModalOpen);
+  };
   const toggleComposeModal = () => {
     setIsCompose(!isCompose);
   };
@@ -147,8 +151,15 @@ const ChecklistItem = ({ item, stageName, icon, label, status, action, actionInf
     return { label, badgeClass: displayColor };
   }
   const handleOption = (option) => {
+    console.log(item?.name)
+    console.log(item?.status)
+    console.log(localStorage.getItem("c_id"))
+    let fileName=`${clientName} - ${premisesName}`
     if (option == "compose message") {
       setIsCompose(true)
+    }
+    if (option == "upload") {
+      setIsUploadFileModalOpen(true)
     }
   }
   useEffect(() => {
@@ -301,6 +312,7 @@ const ChecklistItem = ({ item, stageName, icon, label, status, action, actionInf
           </div>
         </li>
       </div>
+      {isUploadFileModalOpen && <UploadFileModal fileName={fileName} onClose={toggleUploadFileModal} />}
       {isCompose ? <ComposeEmail templates={templates} onClose={toggleComposeModal} onSendEmail={(value) => handleChangeTaskStatus(value)} /> : ""}
     </>
   );

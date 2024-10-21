@@ -13,8 +13,9 @@ const fileTypeOptions = [
   // Add more options as needed
 ];
 
-const UploadFileModal = ({ onClose }) => {
+const UploadFileModal = ({ onClose, fileName=""}) => {
   const fileInputRef = useRef(null);
+
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
   const initialValues = {};
@@ -34,6 +35,7 @@ const UploadFileModal = ({ onClose }) => {
           openInNewWindow: true,
           advanced: {
             redirectUri: "http://localhost:3000",
+            fileName: fileName ? fileName : undefined,
           },
           success: (files) => {
             onClose()
