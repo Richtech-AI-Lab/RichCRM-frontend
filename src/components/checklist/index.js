@@ -91,9 +91,9 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
       case ACTIONTYPE.ACTION:
         return <HiOutlineCube />
       case ACTIONTYPE.CONTACT:
-        return <LuUpload />
-      case ACTIONTYPE.UPLOAD:
         return <IoChatbubbleEllipsesOutline />
+      case ACTIONTYPE.UPLOAD:
+        return <LuUpload />
       default: <></>
     }
   }
