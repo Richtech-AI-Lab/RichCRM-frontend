@@ -4,7 +4,6 @@ import Label from "../label";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { HiOutlineCube } from "react-icons/hi";
 import { LuUpload } from "react-icons/lu";
-import UploadFileModal from "../caseModal/uploadFileModal";
 import { ACTIONTYPE, ACTIONTYPELABEL, STAGESNAMES } from "../../constants/constants";
 import NewCaseDropdown from "../newcasedropdown";
 import ComposeEmail from "../composeEmail/index"
@@ -155,16 +154,12 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
     return { label, badgeClass: displayColor };
   }
 
-  const [isUploadFileModalOpen, setIsUploadFileModalOpen] = useState(false);
-  const toggleUploadFileModal = () => {
-    setIsUploadFileModalOpen(!isUploadFileModalOpen);
-  };
-
   const handleOption = (option) => {
     // console.log(item?.name)
     // console.log(item?.status)
     // console.log(localStorage.getItem("c_id"))
     let fname=`${caseObj?.clientName}-${caseObj?.premisesName}-${item?.name}`
+    console.log(fname)
     setFileName(fname)
     if (option == "compose message") {
       setIsCompose(true)
@@ -327,7 +322,6 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
       </div>
       {isUploadFileModalOpen && <UploadFileModal fileName={fileName} onClose={toggleUploadFileModal} />}
       {isCompose ? <ComposeEmail templates={templates} onClose={toggleComposeModal} onSendEmail={(value) => handleChangeTaskStatus(value)} /> : ""}
-      {isUploadFileModalOpen && <UploadFileModal onClose={toggleUploadFileModal} />}
     </>
   );
 };

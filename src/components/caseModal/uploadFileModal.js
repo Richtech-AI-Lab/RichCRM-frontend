@@ -54,7 +54,7 @@ const UploadFileModal = ({ onClose, fileName="" }) => {
         sourceInputElementId: "fileUploadControl",
         openInNewWindow: true,
         advanced: {
-          redirectUri: "http://localhost:3000" || "https://wapp.richcrm.org",
+          redirectUri: process.env.NODE_ENV === "development" ? "http://localhost:3000" : process.env.REACT_APP_ONEDRIVE_REDIRECT_URL,
           fileName: customFileName,
         },
         success: (files) => {
