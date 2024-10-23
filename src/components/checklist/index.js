@@ -16,6 +16,9 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
   const dispatch = useDispatch();
   const [isCompose, setIsCompose] = useState(false);
   const [taskStatus, setTaskStatus] = useState(status);
+  const [fileName, setFileName] = useState(null);
+  const { casesData } = useSelector((state) => state.case);
+  const caseObj = casesData?.cases?.find(item => item.caseId === localStorage.getItem('c_id'));
   const taskData = useSelector((state) => state.task);
   const [isUploadFileModalOpen, setIsUploadFileModalOpen] = useState(false);
   const toggleUploadFileModal = () => {
@@ -151,10 +154,11 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
     return { label, badgeClass: displayColor };
   }
   const handleOption = (option) => {
-    console.log(item?.name)
-    console.log(item?.status)
-    console.log(localStorage.getItem("c_id"))
-    let fileName=`${clientName} - ${premisesName}`
+    // console.log(item?.name)
+    // console.log(item?.status)
+    // console.log(localStorage.getItem("c_id"))
+    let fname=`${caseObj?.clientName}-${caseObj?.premisesName}-${item?.name}`
+    setFileName(fname)
     if (option == "compose message") {
       setIsCompose(true)
     }
