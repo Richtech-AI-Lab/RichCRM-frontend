@@ -13,12 +13,19 @@ const fileTypeOptions = [
   // Add more options as needed
 ];
  
-const UploadFileModal = ({ onClose }) => {
+const UploadFileModal = ({ onClose, fileName="" }) => {
   const fileInputRef = useRef(null);
 
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
   const initialValues = {};
+  function getWordAfterSlash(inputString) {
+    let parts = inputString.split('/');
+    if (parts.length > 1) {
+        return parts[1]; // return the word after '/'
+    }
+    return inputString; // return an empty string if no '/' is found
+}
 
   const handleUploadFile = async (values) => {
     if (!window.FileReader) {
@@ -34,9 +41,11 @@ const UploadFileModal = ({ onClose }) => {
       toast.error("Please upload a file before submitting.");
       return;
     }
-
     try {
       const file = uploadedFiles[0].file;
+      const filetype=getWordAfterSlash(file?.type);
+      const customFileName = `${fileName}.${filetype}`;
+      const renamedFile = new File([file], customFileName);
       const odOptions = {
         clientId: process.env.REACT_APP_ONEDRIVE_CLIENT_ID,
         action: "save",
@@ -44,6 +53,7 @@ const UploadFileModal = ({ onClose }) => {
         openInNewWindow: true,
         advanced: {
           redirectUri: "http://localhost:3000" || "https://wapp.richcrm.org",
+          fileName: customFileName,
         },
         success: (files) => {
           onClose();
@@ -51,19 +61,23 @@ const UploadFileModal = ({ onClose }) => {
           console.log('File uploaded successfully:', files);
         },
         progress: (percent) => {
-          console.log(`Upload progress for ${file.name}: ${percent}%`);
+          console.log(`Upload progress for ${renamedFile.name}: ${percent}%`);
         },
         cancel: () => {
-          console.log(`Upload canceled for ${file.name}`);
+          console.log(`Upload canceled for ${renamedFile.name}`);
         },
         error: (error) => {
-          console.error(`Error during upload of ${file.name}:`, error);
+          console.error(`Error during upload of ${renamedFile.name}:`, error);
+          toast.error(`Error during upload of ${error.message}:`, );
         },
       };
 
       console.log("Invoking OneDrive save...");
       console.log("Client ID:", process.env.REACT_APP_ONEDRIVE_CLIENT_ID);
-
+      const inputElement = document.getElementById("fileUploadControl");
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(renamedFile);
+      inputElement.files = dataTransfer.files;
       // Invoke OneDrive save
       await OneDrive.save(odOptions);
     } catch (error) {
