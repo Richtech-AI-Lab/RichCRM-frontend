@@ -11,13 +11,20 @@ import ComposeEmail from "../composeEmail/index"
 import { useDispatch, useSelector } from "react-redux";
 import { updateTaskStatusRequest } from "../../redux/actions/taskActions";
 import { updateStageStatusRequest } from "../../redux/actions/stagesActions";
+import UploadFileModal from "../caseModal/uploadFileModal";
 
-const ChecklistItem = ({ item, stageName, icon, label, status, action, actionInfo, optionsValue, checkboxId, currentStep, templates, stageId }) => {
+const ChecklistItem = ({ item, stageName, key, icon, label, status, action, actionInfo, optionsValue, checkboxId, currentStep, templates, stageId }) => {
   const dispatch = useDispatch();
   const [isCompose, setIsCompose] = useState(false);
   const [taskStatus, setTaskStatus] = useState(status);
+  const [fileName, setFileName] = useState(null);
+  const { casesData } = useSelector((state) => state.case);
+  const caseObj = casesData?.cases?.find(item => item.caseId === localStorage.getItem('c_id'));
   const taskData = useSelector((state) => state.task);
-
+  const [isUploadFileModalOpen, setIsUploadFileModalOpen] = useState(false);
+  const toggleUploadFileModal = () => {
+    setIsUploadFileModalOpen(!isUploadFileModalOpen);
+  };
   const toggleComposeModal = () => {
     setIsCompose(!isCompose);
   };
@@ -154,10 +161,18 @@ const ChecklistItem = ({ item, stageName, icon, label, status, action, actionInf
   };
 
   const handleOption = (option) => {
+    // console.log(item?.name)
+    // console.log(item?.status)
+    // console.log(localStorage.getItem("c_id"))
+    let fname=`${caseObj?.clientName}-${caseObj?.premisesName}-${item?.name}`
+    setFileName(fname)
     if (option == "compose message") {
       setIsCompose(true)
     } else if (option == "upload") {
       toggleUploadFileModal();
+    }
+    if (option == "upload") {
+      setIsUploadFileModalOpen(true)
     }
   }
   useEffect(() => {
@@ -310,6 +325,7 @@ const ChecklistItem = ({ item, stageName, icon, label, status, action, actionInf
           </div>
         </li>
       </div>
+      {isUploadFileModalOpen && <UploadFileModal fileName={fileName} onClose={toggleUploadFileModal} />}
       {isCompose ? <ComposeEmail templates={templates} onClose={toggleComposeModal} onSendEmail={(value) => handleChangeTaskStatus(value)} /> : ""}
       {isUploadFileModalOpen && <UploadFileModal onClose={toggleUploadFileModal} />}
     </>

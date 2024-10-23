@@ -12,51 +12,80 @@ const fileTypeOptions = [
   { value: "Inspection report", label: "Inspection report" },
   // Add more options as needed
 ];
-
-const UploadFileModal = ({ onClose }) => {
+ 
+const UploadFileModal = ({ onClose, fileName="" }) => {
   const fileInputRef = useRef(null);
+
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
   const initialValues = {};
+  function getWordAfterSlash(inputString) {
+    let parts = inputString.split('/');
+    if (parts.length > 1) {
+        return parts[1]; // return the word after '/'
+    }
+    return inputString; // return an empty string if no '/' is found
+}
 
   const handleUploadFile = async (values) => {
     if (!window.FileReader) {
       alert("Your browser does not support file uploads. Please update your browser.");
       return;
     }
-    // try {
-      // for (const fileItem of uploadedFiles) {
-        const file = uploadedFiles[0].file;
-        const odOptions = {
-          clientId: process.env.REACT_APP_ONEDRIVE_CLIENT_ID,
-          action: "save",
-          sourceInputElementId: "fileUploadControl",
-          openInNewWindow: true,
-          advanced: {
-            redirectUri: "http://localhost:3000",
-          },
-          success: (files) => {
-            onClose()
-            toast.success("File Uploaded!")
-            console.log('File uploaded successfully:', files);
-          },
-          progress: (percent) => {
-            console.log(`Upload progress for ${file.name}: ${percent}%`);
-          },
-          cancel: () => {
-            console.log(`Upload canceled for ${file.name}`);
-          },
-          error: (error) => {
-            console.error(`Error during upload of ${file.name}:`, error);
-          },
-        };
+    
+    console.log("handleUploadFile called with values:", values);
+    console.log("Uploaded Files:", uploadedFiles);
 
-        // Invoke OneDrive save
-        await OneDrive.save(odOptions);
-      // }
-    // } catch (error) {
-    //   console.error('Error during file upload process:', error);
-    // }
+    if (uploadedFiles.length === 0) {
+      console.error("No files uploaded");
+      toast.error("Please upload a file before submitting.");
+      return;
+    }
+    try {
+      const file = uploadedFiles[0].file;
+      const filetype = getWordAfterSlash(file?.type);
+      const originalFileName = file?.name?.split('.')[0]; 
+      const finalFileName = fileName || originalFileName; 
+      const customFileName = `${finalFileName}.${filetype}`; 
+      const renamedFile = new File([file], customFileName);
+      const odOptions = {
+        clientId: process.env.REACT_APP_ONEDRIVE_CLIENT_ID,
+        action: "save",
+        sourceInputElementId: "fileUploadControl",
+        openInNewWindow: true,
+        advanced: {
+          redirectUri: "http://localhost:3000" || "https://wapp.richcrm.org",
+          fileName: customFileName,
+        },
+        success: (files) => {
+          onClose();
+          toast.success("File Uploaded!");
+          console.log('File uploaded successfully:', files);
+        },
+        progress: (percent) => {
+          console.log(`Upload progress for ${renamedFile.name}: ${percent}%`);
+        },
+        cancel: () => {
+          console.log(`Upload canceled for ${renamedFile.name}`);
+        },
+        error: (error) => {
+          console.error(`Error during upload of ${renamedFile.name}:`, error);
+          toast.error(`Error during upload of ${error.message}:`, );
+        },
+      };
+
+      console.log("Invoking OneDrive save...");
+      console.log("Client ID:", process.env.REACT_APP_ONEDRIVE_CLIENT_ID);
+      const inputElement = document.getElementById("fileUploadControl");
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(renamedFile);
+      inputElement.files = dataTransfer.files;
+      // Invoke OneDrive save
+      await OneDrive.save(odOptions);
+    } catch (error) {
+      console.error('Error during file upload process:', error);
+      toast.error("An error occurred during the file upload.");
+    }
   };
 
   const handleBrowseFiles = () => {
@@ -113,86 +142,89 @@ const UploadFileModal = ({ onClose }) => {
             handleSubmit,
             isSubmitting,
           }) => (
-            <form onSubmit={handleSubmit} className="">
-              <div>
-                <div className="text-center mt-4 border-dashed border-2 border-border-line-100 p-6 rounded-md">
-                  <FiUpload className="text-base mr-2 inline-block" />
-                  <div className="text-primary text-6xl">
-                    <i className="fas fa-cloud-upload-alt"></i>
+            <>
+              {console.log("isSubmitting:", isSubmitting)}
+              <form onSubmit={handleSubmit} className="">
+                <div>
+                  <div className="text-center mt-4 border-dashed border-2 border-border-line-100 p-6 rounded-md">
+                    <FiUpload className="text-base mr-2 inline-block" />
+                    <div className="text-primary text-6xl">
+                      <i className="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <p className="mt-3 text-base text-secondary-800">
+                      Drag your file to upload
+                    </p>
+                    <p className="my-3 text-sm text-text-gray-100">OR</p>
+                    <XButton
+                      type="button"
+                      text={"Browse Files"}
+                      onClick={handleBrowseFiles}
+                      className="bg-active-blue text-sm text-active-blue-text py-[10px] px-6 rounded-[100px]"
+                    />
+                    <input
+                      id="fileUploadControl"
+                      type="file"
+                      ref={fileInputRef}
+                      multiple
+                      style={{ display: "none" }}
+                      onChange={handleFileChange}
+                    />
                   </div>
-                  <p className="mt-3 text-base text-secondary-800">
-                    Drag your file to upload
-                  </p>
-                  <p className="my-3 text-sm text-text-gray-100">OR</p>
-                  <XButton
-                    type="button"
-                    text={"Browse Files"}
-                    onClick={handleBrowseFiles}
-                    className="bg-active-blue text-sm text-active-blue-text py-[10px] px-6 rounded-[100px]"
-                  />
-                  <input
-                    id="fileUploadControl"
-                    type="file"
-                    ref={fileInputRef}
-                    multiple // Allow multiple files
-                    style={{ display: "none" }}
-                    onChange={handleFileChange}
-                  />
-                </div>
-                {uploadedFiles.length > 0 ? (
-                  uploadedFiles.map((fileItem, index) => (
-                    <div key={index} className="mt-4 p-4 border border-badge-gray rounded-md">
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <p className="text-base font-medium text-secondary-800">
-                            {fileItem.file.name}
-                          </p>
-                          <p className="text-sm text-text-gray-100">
-                            {(fileItem.file.size / (1024 * 1024)).toFixed(2)} MB
-                          </p>
-                        </div>
-                        <IoIosCloseCircleOutline
-                          className="text-xl text-text-gray-100 cursor-pointer"
-                          onClick={() => handleRemoveFile(index)}
-                        />
-                      </div>
-                      <div className="block">
-                        <div className="items-dropdown single-select mt-3">
-                          <Field
-                            as={NewCaseDropdown}
-                            defaultLabel="Select File Type"
-                            name={`fileType-${index}`} // Give unique name for each file
-                            options={fileTypeOptions}
-                            inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
-                            onChange={(e) =>
-                              handleDropdownChange(index, e.target.value)
-                            }
+                  {uploadedFiles.length > 0 ? (
+                    uploadedFiles.map((fileItem, index) => (
+                      <div key={index} className="mt-4 p-4 border border-badge-gray rounded-md">
+                        <div className="flex justify-between items-center">
+                          <div>
+                            <p className="text-base font-medium text-secondary-800">
+                              {fileItem.file.name}
+                            </p>
+                            <p className="text-sm text-text-gray-100">
+                              {(fileItem.file.size / (1024 * 1024)).toFixed(2)} MB
+                            </p>
+                          </div>
+                          <IoIosCloseCircleOutline
+                            className="text-xl text-text-gray-100 cursor-pointer"
+                            onClick={() => handleRemoveFile(index)}
                           />
                         </div>
+                        <div className="block">
+                          <div className="items-dropdown single-select mt-3">
+                            <Field
+                              as={NewCaseDropdown}
+                              defaultLabel="Select File Type"
+                              name={`fileType-${index}`}
+                              options={fileTypeOptions}
+                              inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
+                              onChange={(e) =>
+                                handleDropdownChange(index, e.target.value)
+                              }
+                            />
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-center mt-4 text-sm text-text-gray-100">
-                    No files uploaded
-                  </p>
-                )}
-              </div>
-              <div className="text-end mt-8">
-                <XButton
-                  text={"Cancel"}
-                  onClick={onClose}
-                  disabled={isSubmitting}
-                  className="bg-card-300 text-sm text-primary2 py-[10px] px-6 rounded-[100px]"
-                />
-                <XButton
-                  type="submit"
-                  text={"Upload"}
-                  disabled={isSubmitting}
-                  className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px] ml-4"
-                />
-              </div>
-            </form>
+                    ))
+                  ) : (
+                    <p className="text-center mt-4 text-sm text-text-gray-100">
+                      No files uploaded
+                    </p>
+                  )}
+                </div>
+                <div className="text-end mt-8">
+                  <XButton
+                    text={"Cancel"}
+                    onClick={onClose}
+                    disabled={isSubmitting}
+                    className="bg-card-300 text-sm text-primary2 py-[10px] px-6 rounded-[100px]"
+                  />
+                  <XButton
+                    type="submit"
+                    text={"Upload"}
+                    disabled={isSubmitting}
+                    className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px] ml-4"
+                  />
+                </div>
+              </form>
+            </>
           )}
         </Formik>
       </Modal.Body>

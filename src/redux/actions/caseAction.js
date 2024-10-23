@@ -78,9 +78,10 @@ export const updateCaseFailure = (error) => ({
 });
 
 //Delete Case
-export const deleteCaseRequest = (payload) => ({
+export const deleteCaseRequest = (payload, navigate) => ({
     type: DELETE_CASE_REQUEST,
     payload,
+    navigate
 });
 
 export const deleteCaseSuccess = (user) => ({

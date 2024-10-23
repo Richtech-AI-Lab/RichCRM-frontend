@@ -47,6 +47,11 @@ const NewCaseModal = ({ onClose }) => {
   const { premises } = useSelector((state) => state.premises);
   const [showClientFields, setShowClientFields] = useState(false);
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();  // Prevent form submission or default action
+    }
+  };
   const debouncedClientFunction = useCallback(
     debounce(async (value, index) => {
       if (value != "" || value.length > 0) {
@@ -278,7 +283,7 @@ const NewCaseModal = ({ onClose }) => {
   return (
     <>
       <XSpinnerLoader loading={loading} size="lg" />
-      <Modal show={true} size="md" onClose={onClose} className="new-case-modal">
+      <Modal show={true} size="md" onClose={onClose} className="new-case-modal" onKeyDown={handleKeyDown} >
         <Modal.Header className="border-b-0">
           <div>
             <h2 className="mb-2 text-[28px] leading-9 font-medium text-secondary-800">

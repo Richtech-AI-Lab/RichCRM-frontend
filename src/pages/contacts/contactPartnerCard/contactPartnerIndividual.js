@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCaseByContactRequest } from "../../../redux/actions/caseAction";
 import ContactIndividualDetail from "../contactDetail/contactIndividualDetail";
 import ContactIndividualEditForm from "../contactEdit/contactIndividualEditForm";
+import { updateContactRequest } from "../../../redux/actions/contactActions";
 
 const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
   const dispatch = useDispatch();
@@ -39,7 +40,7 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
         addressId: contactdetails?.mailingAddress
       }
       dispatch(fetchAddressByIdRequest(data))
-    }else{
+    } else {
       dispatch(fetchAddressByIdFailure())
     }
   }, [])
@@ -87,8 +88,11 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
       contact: firstApiPayload,
       util: secondApiPayload
     }
-
-    dispatch(createAddressRequest(data))
+    if (values?.addressLine1) {
+      dispatch(createAddressRequest(data))
+    } else {
+      dispatch(updateContactRequest(data?.contact))
+    }
     toggleEdit()
   }, []);
 
@@ -99,11 +103,11 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
   const validationSchema = Yup.object({
     email: Yup.string().email('Invalid email format'),
     cellNumber: Yup.string().matches(/^[0-9]+$/, 'Cell number must be a number'),
-    addressLine1: Yup.string().required("Address is required"),
-    // addressLine2: Yup.string('Address Line 2 is required'),
-    city: Yup.string().required("City is required"),
-    state: Yup.string().required("State is required"),
-    zipCode: Yup.string().required("Zip code is required"),
+    // addressLine1: Yup.string().required("Address is required"),
+    // // addressLine2: Yup.string('Address Line 2 is required'),
+    // city: Yup.string().required("City is required"),
+    // state: Yup.string().required("State is required"),
+    // zipCode: Yup.string().required("Zip code is required"),
   });
   const initialValues = {
     contactId: contactdetails?.contactId || '',
@@ -116,6 +120,7 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
     email: contactdetails?.email || '',
     mailingAddress: contactdetails?.mailingAddress || '',
     wechatAccount: contactdetails?.wechatAccount || '',
+    workNumber: contactdetails?.workNumber || '',
     note: contactdetails?.note || '',
     addressLine1: addressDetails?.addressLine1 || '',
     addressLine2: addressDetails?.addressLine2 || '',
@@ -237,68 +242,68 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
               <div className="card bg-card-300 px-2 py-3">
                 <h1 className="px-5">Involved Open Cases</h1>
                 {loading ?
-                <div className="flex justify-center items-center">
-                  <Spinner
-                  size="xl"
-                  animation="border"
-                  role="status"
-                  variant="primary"
-                // className={`spinner-${size}`}
-                >
-                  <span className="visually-hidden">Loading...</span>
-                </Spinner></div>:
-                <div className="grid">
-                  {cases[0][1]?.map((item, index) => (
-                    <CardItem
-                      key={index}
-                      caseDetails={item?.premisesName}
-                      caseTitle={item?.clientName}
-                      caseCount={item.caseCount}
-                      caseType={item?.caseType}
-                      caseStatus={item?.caseStatus}
-                      innerCardClass="m-2"
-                    />
-                  ))}
-                </div>}
+                  <div className="flex justify-center items-center">
+                    <Spinner
+                      size="xl"
+                      animation="border"
+                      role="status"
+                      variant="primary"
+                    // className={`spinner-${size}`}
+                    >
+                      <span className="visually-hidden">Loading...</span>
+                    </Spinner></div> :
+                  <div className="grid">
+                    {cases[0][1]?.map((item, index) => (
+                      <CardItem
+                        key={index}
+                        caseDetails={item?.premisesName}
+                        caseTitle={item?.clientName}
+                        caseCount={item.caseCount}
+                        caseType={item?.caseType}
+                        caseStatus={item?.caseStatus}
+                        innerCardClass="m-2"
+                      />
+                    ))}
+                  </div>}
               </div>
             </div>
             <div className="col-span-3">
               <div className="card bg-card-300 px-2 py-3">
                 <h1 className="px-5">Involved Closed Cases</h1>
                 <div className="grid">
-                {loading ?
-                <div className="flex justify-center items-center">
-                  <Spinner
-                  size="xl"
-                  animation="border"
-                  role="status"
-                  variant="primary"
-                // className={`spinner-${size}`}
-                >
-                  <span className="visually-hidden">Loading...</span>
-                </Spinner></div>:
-                  cases[0][0]?.map((item, index) => (
-                    <CardItem
-                      // onClick={()=>{handleCaseCardClick(item)}}
-                      // key={index}
-                      // badgeColor={item.badgeColor}
-                      // badgeText={item.badgeText}
-                      // caseDetails={item?.premisesName}
-                      // caseTitle={item?.clientName}
-                      // caseCount={item.caseCount}
-                      // caseType={item?.caseType}
-                      // caseStatus={item?.caseStatus}
-                      // innerCardClass={includeClasses ? "bg-input-surface" : "bg-white shadow-shadow-light"}
-                      key={index}
-                      caseDetails={item?.premisesName}
-                      caseTitle={item?.clientName}
-                      caseCount={item.caseCount}
-                      caseType={item?.caseType}
-                      caseStatus={item?.caseStatus}
-                      // closedCases={closedCases}
-                      innerCardClass="m-2"
-                    />
-                  ))}
+                  {loading ?
+                    <div className="flex justify-center items-center">
+                      <Spinner
+                        size="xl"
+                        animation="border"
+                        role="status"
+                        variant="primary"
+                      // className={`spinner-${size}`}
+                      >
+                        <span className="visually-hidden">Loading...</span>
+                      </Spinner></div> :
+                    cases[0][0]?.map((item, index) => (
+                      <CardItem
+                        // onClick={()=>{handleCaseCardClick(item)}}
+                        // key={index}
+                        // badgeColor={item.badgeColor}
+                        // badgeText={item.badgeText}
+                        // caseDetails={item?.premisesName}
+                        // caseTitle={item?.clientName}
+                        // caseCount={item.caseCount}
+                        // caseType={item?.caseType}
+                        // caseStatus={item?.caseStatus}
+                        // innerCardClass={includeClasses ? "bg-input-surface" : "bg-white shadow-shadow-light"}
+                        key={index}
+                        caseDetails={item?.premisesName}
+                        caseTitle={item?.clientName}
+                        caseCount={item.caseCount}
+                        caseType={item?.caseType}
+                        caseStatus={item?.caseStatus}
+                        // closedCases={closedCases}
+                        innerCardClass="m-2"
+                      />
+                    ))}
                 </div>
               </div>
             </div>
