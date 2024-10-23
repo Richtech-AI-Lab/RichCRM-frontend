@@ -43,8 +43,10 @@ const UploadFileModal = ({ onClose, fileName="" }) => {
     }
     try {
       const file = uploadedFiles[0].file;
-      const filetype=getWordAfterSlash(file?.type);
-      const customFileName = `${fileName}.${filetype}`;
+      const filetype = getWordAfterSlash(file?.type);
+      const originalFileName = file?.name?.split('.')[0]; 
+      const finalFileName = fileName || originalFileName; 
+      const customFileName = `${finalFileName}.${filetype}`; 
       const renamedFile = new File([file], customFileName);
       const odOptions = {
         clientId: process.env.REACT_APP_ONEDRIVE_CLIENT_ID,
