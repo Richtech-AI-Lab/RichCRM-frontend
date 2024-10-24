@@ -4,28 +4,36 @@ import { ChatAnthropic } from "@langchain/anthropic";
 import { ChatOpenAI } from '@langchain/openai'
 import { ChatPromptTemplate, MessagesPlaceholder } from "@langchain/core/prompts";
 import { AgentExecutor, createToolCallingAgent } from "langchain/agents";
+import { JsonOutputParser } from "@langchain/core/output_parsers";
 import { HumanMessage, AIMessage } from "@langchain/core/messages";
 import { set } from "lodash";
 
+import { responseSchema, updateCasesTool, getCasesByKeywordTool } from "./tools";
+
 const LangChainAgent = () => {
     const prompt = [
-        ['system', 'You are an assistant helping housing lawyers with their cases, please use RichCRM API tools with the informations from the chat to help them creating new cases, updating case details, and managing their contacts.'],
+        ['system', 'You are an assistant helping housing lawyers with their cases, please use RichCRM API tools with the informations from the chat to help them query case infomations, creating new cases, updating case details, and managing their contacts.'],
         ['placeholder', '{chat_history}'],
         ['human', '{input}'],
         ['placeholder', '{agent_scratchpad}']
     ]; // prompt ["system", "..."], ["human", "..."]
     const [agentExecutor, setAgentExecutor] = useState(null);
-    const tools = [];
+    const tools = [updateCasesTool, getCasesByKeywordTool];
     const [chatHistory, setChatHistory] = useState([]);
     const [messages, setMessages] = useState([]);
 
     useEffect(() => {
         const llm = new ChatOpenAI({
-            openAIApiKey: "sk-proj-",
-            model: "gpt-3.5-turbo",
+            // openAIApiKey: "",
+            model: "gpt-4o",
             temperature: 0,
         })
-        const agent = createToolCallingAgent({ llm, tools, prompt: ChatPromptTemplate.fromMessages(prompt) });
+        const agent = createToolCallingAgent({
+            llm,
+            tools,
+            prompt: ChatPromptTemplate.fromMessages(prompt),
+            outputParser: new JsonOutputParser(responseSchema),
+        });
         const executor = new AgentExecutor({
             agent,
             tools,
