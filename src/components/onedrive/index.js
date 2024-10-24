@@ -40,8 +40,8 @@ const OneDriveManager = () => {
 
     const handleDelete = async (fileId) => {
         if (fileId) {
-            await handleDeleteClick(fileId); 
-            setShowDeletePopup(false); 
+            await handleDeleteClick(fileId);
+            setShowDeletePopup(false);
         }
     };
 
@@ -111,6 +111,7 @@ const OneDriveManager = () => {
     }, [account, path]);
 
     const handleFolderClick = (folderId, folderName) => {
+        // alert(folderId, folderName)
         const newPath = `/me/drive/items/${folderId}`;
         setPath(newPath);
         setPathHistory([...pathHistory, { name: folderName, path: newPath }]); // Update history with the new path
@@ -217,7 +218,7 @@ const OneDriveManager = () => {
     if (accounts.length > 0) {
         return (
             <div>
-                <div className="bg-white p-4 rounded-2xl mb-2 min-h-[calc(100vh-180px)]">
+                <div className="bg-white p-4 rounded-2xl mb-2 h-[calc(100vh-140px)]">
                     <div className="flex justify-between items-center mb-2">
                         <div className="flex justify-between items-center">
 
@@ -268,85 +269,80 @@ const OneDriveManager = () => {
                     </div>
 
 
-                    {!loader ? <>
-                        <div style={{ display: "flex", flexWrap: "wrap" }}>
-                            {files.map((file) => (
-                                <div
-                                    className="m-5 flex flex-col justify-between h-full hover:bg-badge-gray cursor-pointer min-h-[calc(10vh)] w-[100px]"
-                                    key={file.id}
-                                >
-                                    {file.folder ? (
-                                        // Folder Icon and Clickable
-                                        <div className={'relative'}>
-                                            <div
+                    {!loader ? (
+                        <>
+                            <div style={{ display: "flex", flexDirection: "column"}} className="overflow-x-auto h-[68vh] ">
+                                {files.map((file) => (
+                                    <div
+                                        className="m-2 flex justify-between items-center hover:bg-badge-gray cursor-pointer min-h-[50px] w-full"
+                                        key={file.id}
+                                        style={{
+                                            padding: "10px",
+                                            borderBottom: "1px solid #eaeaea",
+                                        }}
+                                        >
+                                        {file.folder ? (
+                                            <>
+                                            <div className="flex items-center w-full"
                                                 onClick={() => handleFolderClick(file.id, file.name)}
-                                                style={{ cursor: "pointer" }}
-                                                className="flex flex-col  items-center"
                                             >
                                                 <img
                                                     src="https://img.icons8.com/color/96/000000/folder-invoices.png"
                                                     alt="folder"
-                                                    style={{ width: "64px", height: "64px" }}
+                                                    style={{ width: "40px", height: "40px" }}
                                                 />
-                                                <p className="mt-2 text-center">{file.name}</p>
-
+                                                <p className="ml-4 text-left">{file.name}</p>
+                                                
                                             </div>
-                                            <div className="absolute top-0 right-0">
-                                            <MenuPopup handleOptionSubmit={(label) => handleOptionSubmit(file.id, label)}
-                                                dropdownItems={menuOption.map(option => option.label)}
-                                                icon={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />} />
-                                            </div>
+                                            <div className="ml-auto">
+                                            <MenuPopup
+                                                handleOptionSubmit={(label) => handleOptionSubmit(file.id, label)}
+                                                dropdownItems={menuOption.map((option) => option.label)}
+                                                icon={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />}
+                                            />
                                         </div>
-                                    ) : (
-                                        <>
-                                            <div className="relative">
-                                                <div className="w-full h-full relative flex flex-col items-center justify-center">
-                                                    <img
-                                                        src={file.thumbnail ? file.thumbnail : "https://img.icons8.com/color/96/000000/file.png"}
-                                                        alt="file"
-                                                        style={{ width: "64px", height: "64px" }}
-                                                    />
-                                                    <p className="mt-2 text-center">{file.name}</p>
-                                                    {/* <BsThreeDotsVertical className="text-lg opacity-40 absolute top-0 right-0 m-2"/> */}
-                                                    {/* <IoCloudDownload
-                                                    onClick={() => handleDownloadClick(file.id)}
-                                                    className="absolute top-0 right-0 m-2"
-                                                    style={{ color: "green", fontSize: "24px" }} // Color and size adjustments
-                                                    /> */}
-                                                </div>
-                                                <MenuPopup handleOptionSubmit={(label) => handleOptionSubmit(file.id, label)}
-                                                    dropdownItems={menuOption?.map(option => option.label)}
-                                                    icon={<BsThreeDotsVertical className="text-secondary-800 opacity-40 absolute top-0 right-0 m-2" />} />
-                                            </div>
                                         </>
-                                    )}
-                                </div>
-
-                            ))}
-                        </div>
-                        {
-                            files?.length == 0 ?
-                                <>
-                                    <div className="bg-white p-4 rounded-2xl mb-5">
-                                        <div className="flex flex-col items-center justify-center h-[60vh] w-full">
-                                            <p className="text-center text-gray-500">
-                                                No files exist!
-                                            </p>
-                                        </div>
+                                        ) : (
+                                            // File Icon and Clickable
+                                            <div className="flex items-center w-full">
+                                                <img
+                                                    src={file.thumbnail ? file.thumbnail : "https://img.icons8.com/color/96/000000/file.png"}
+                                                    alt="file"
+                                                    style={{ width: "40px", height: "40px" }}
+                                                />
+                                                <p className="ml-4 text-left">{file.name}</p>
+                                                <div className="ml-auto">
+                                                    <MenuPopup
+                                                        handleOptionSubmit={(label) => handleOptionSubmit(file.id, label)}
+                                                        dropdownItems={menuOption?.map((option) => option.label)}
+                                                        icon={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />}
+                                                    />
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
-                                </>
-                                : ""
-                        }
-                    </> :
+                                ))}
+                            </div>
+                            {files?.length === 0 && (
+                                <div className="bg-white p-4 rounded-2xl mb-5">
+                                    <div className="flex flex-col items-center justify-center h-[60vh] w-full">
+                                        <p className="text-center text-gray-500">No files exist!</p>
+                                    </div>
+                                </div>
+                            )}
+                        </>
+                    ) : (
                         <div className="flex justify-center items-center">
                             <Spinner
                                 size="xl"
                                 animation="border"
                                 role="status"
                                 variant="primary"
-                                className={`spinner-5`}
+                                className="spinner-5"
                             />
-                        </div>}
+                        </div>
+                    )}
+
 
                     <Modal show={showCreateFolderModal} onClose={() => handleCloseCreateModal()} className="new-case-modal">
                         <Modal.Header className="border-b-0">
@@ -395,7 +391,7 @@ const OneDriveManager = () => {
 
                     <DeleteModal
                         isOpen={showDeletePopup}
-                        onConfirm={()=>handleDelete(currentField)}
+                        onConfirm={() => handleDelete(currentField)}
                         onCancel={() => setShowDeletePopup(false)}
                         title="Confirm Deletion"
                         message="Are you sure you want to delete this item? This action cannot be undone."
