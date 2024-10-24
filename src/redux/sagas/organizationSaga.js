@@ -106,7 +106,7 @@ function* updateOrganizationById(action) {
           // const addResponse = yield call(() => postRequest(API_ENDPOINTS.FETCH_ADDRESS_BY_QUERY_ID, payload));
           response.data.data[0] = { ...response?.data?.data[0], ...payload.util};
         }
-        yield put(updateClientByIdSuccess(response.data));
+        yield put(updateOrganizationByIdSuccess(response.data));
         toast.success("Organization Updated!");
     }
   } catch (error) {
