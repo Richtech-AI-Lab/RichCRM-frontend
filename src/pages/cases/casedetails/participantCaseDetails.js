@@ -72,7 +72,11 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType }) => {
       ...caseObj,
       contacts: attorneyIds
     }
-    dispatch(createAddressRequest(data))
+    if (values?.addressLine1) {
+      dispatch(createAddressRequest(data))
+    } else {
+      dispatch(updateClientByIdRequest(data));
+    }
     dispatch(updateCaseContactRequest(casePayload))
     toggleEdit()
   }
@@ -113,11 +117,11 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType }) => {
     name:  Yup.string().required("Name is required"),
     email: Yup.string().email('Invalid email format'),
     cellNumber: Yup.string().matches(/^[0-9]+$/, 'Cell number must be a number'),
-    addressLine1: Yup.string().required("Address is required"),
+    // addressLine1: Yup.string().required("Address is required"),
     // addressLine2: Yup.string('Address Line 2 is required'),
-    city: Yup.string().required("City is required"),
-    state: Yup.string().required("State is required"),
-    zipCode: Yup.string().required("Zip code is required"),
+    // city: Yup.string().required("City is required"),
+    // state: Yup.string().required("State is required"),
+    // zipCode: Yup.string().required("Zip code is required"),
   });
 
   return (
