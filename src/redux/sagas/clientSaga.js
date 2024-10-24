@@ -79,23 +79,27 @@ function* updateClientById(action) {
     const response = yield call(() =>
       postRequest(API_ENDPOINTS.UPDATE_CLIENT, payload?.client)
     );
-    if (response.status == 200 && response?.data?.data[0]?.addressId && payload.util) {
-      // let payload = {
-      //   addressId: response?.data?.data[0]?.addressId,
-      //   // addressId: 'Virginia Beach VA 23462-3012',
-      // }
-      // const addResponse = yield call(() => postRequest(API_ENDPOINTS.FETCH_ADDRESS_BY_QUERY_ID, payload));
-      response.data.data[0] = { ...response?.data?.data[0], ...payload.util};
+    if(response.status == 200){
+      if(response?.data?.data[0]?.addressId && payload.util) {
+          // let payload = {
+          //   addressId: response?.data?.data[0]?.addressId,
+          //   // addressId: 'Virginia Beach VA 23462-3012',
+          // }
+          // const addResponse = yield call(() => postRequest(API_ENDPOINTS.FETCH_ADDRESS_BY_QUERY_ID, payload));
+          response.data.data[0] = { ...response?.data?.data[0], ...payload.util};
+        }
+        yield put(updateClientByIdSuccess(response.data));
+        toast.success("Client Updated!");
     }
-    yield put(updateClientByIdSuccess(response.data));
-    if (response.status == 200) {
-      // const updatedPayload = {
-      //   ...payload.util,
-      //   addressId: response.data.data[0].addressId
-      // };
-      // yield put(registerAddressRequest(updatedPayload))
-      toast.success("Client Updated!");
-    }
+     
+    // if (response.status == 200) {
+    //   // const updatedPayload = {
+    //   //   ...payload.util,
+    //   //   addressId: response.data.data[0].addressId
+    //   // };
+    //   // yield put(registerAddressRequest(updatedPayload))
+    //   toast.success("Client Updated!");
+    // }
   } catch (error) {
     handleError(error)
     yield put(updateClientByIdFailure(error.response?.data || error));

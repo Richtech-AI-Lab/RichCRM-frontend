@@ -11,6 +11,7 @@ import ParticipantBothDetail from "../showdetail/participantbothdetail";
 import PurchaserOrganizationForm from "../editDetail/purchaserOrganizationForm";
 import AttorneyDetails from "../showdetail/attorneydetail";
 import { updateCaseContactRequest } from "../../../redux/actions/caseAction";
+import { updateOrganizationByIdRequest } from "../../../redux/actions/organizationActions";
 
 
 const OrganizationCaseDetails = ({ isEdit, setIsEdit , caseType}) => {
@@ -54,7 +55,11 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit , caseType}) => {
       ...caseObj,
       contacts: attorneyIds
     }
-    dispatch(createAddressRequest(data))
+    if (values?.addressLine1) {
+      dispatch(createAddressRequest(data))
+    } else {
+      dispatch(updateOrganizationByIdRequest(data));
+    }
     dispatch(updateCaseContactRequest(casePayload))
     toggleEdit()
   }
@@ -89,11 +94,11 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit , caseType}) => {
     email: Yup.string().email('Invalid email format').required("Email is required"),
     cellNumber: Yup.string().matches(/^[0-9]+$/, 'Cell number must be a number').required("Cell Phone is required"),
     website: Yup.string().url('Website must be a valid URL with http://').required("Website is required"),
-    addressLine1: Yup.string().required("Address is required"),
-    // addressLine2: Yup.string('Address Line 2 is required'),
-    city: Yup.string().required("City is required"),
-    state: Yup.string().required("State is required"),
-    zipCode: Yup.string().required("Zip code is required"),
+    // addressLine1: Yup.string().required("Address is required"),
+    // // addressLine2: Yup.string('Address Line 2 is required'),
+    // city: Yup.string().required("City is required"),
+    // state: Yup.string().required("State is required"),
+    // zipCode: Yup.string().required("Zip code is required"),
   });
   return (
     <>
