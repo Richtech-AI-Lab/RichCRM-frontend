@@ -119,7 +119,7 @@ const ContactListingV1 = ({ active, parent, activeFilter }) => {
   return (
     <div className={`overflow-x-auto h-[68vh] ${parent === 'dashboard' ? '' : 'contacts-table db-contacts'}`}>
       <XSpinnerLoader loading={loadingContact || loadingOrg} size="lg" />
-      <Table>
+      <Table className="border-separate  border-spacing-0">
         {active === 0 && contact?.length > 0 ? (
           <>
             <Table.Head>
@@ -127,12 +127,12 @@ const ContactListingV1 = ({ active, parent, activeFilter }) => {
                 <Table.HeadCell key={index}>{key}</Table.HeadCell>
               ))}
             </Table.Head>
-            <Table.Body className="divide-y">
+            <Table.Body className="divide-y  ">
               {contact?.map((user, index) => (
-                <Table.Row key={index} className="bg-white dark:border-gray-700 dark:bg-gray-800 cursor-pointer"
+                <Table.Row key={index} className="bg-white dark:border-gray-700 dark:bg-gray-800 cursor-pointer contact-tr"
                   onClick={() => handleNavigation(user)}
                 >
-                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white  contact-tdleft">
                     <div className="flex items-center">
                       <img src={IMAGES.contact_avtar} alt="Profile" className="mr-3 rounded-full" />
                       <span className="left-txt font-medium text-secondary-800">
@@ -141,16 +141,16 @@ const ContactListingV1 = ({ active, parent, activeFilter }) => {
                     </div>
                   </Table.Cell>
                   {header.includes("Tag") && (
-                    <Table.Cell>
+                    <Table.Cell className="contact-td">
                       <span className={`bg-badge-${getTaskLabelAndColor(user.contactType, "color")} text-secondary-100 text-sm font-semibold py-1 px-3 rounded-full inline-block`}>
                         {getTaskLabelAndColor(user.contactType, "label")}
                       </span>
                     </Table.Cell>
                   )}
-                  {header.includes("Organization") && <Table.Cell>{user.company}</Table.Cell>}
-                  {header.includes("Position") && <Table.Cell>{user.position}</Table.Cell>}
-                  {header.includes("Email") && <Table.Cell>{user.email}</Table.Cell>}
-                  {header.includes("Cell Phone") && <Table.Cell>{user.cellNumber}</Table.Cell>}
+                  {header.includes("Organization") && <Table.Cell className="contact-td">{user.company}</Table.Cell>}
+                  {header.includes("Position") && <Table.Cell className="contact-td">{user.position}</Table.Cell>}
+                  {header.includes("Email") && <Table.Cell className="contact-td">{user.email}</Table.Cell>}
+                  {header.includes("Cell Phone") && <Table.Cell className="contact-tdright ">{user.cellNumber}</Table.Cell>}
                 </Table.Row>
               ))}
             </Table.Body>
@@ -167,7 +167,7 @@ const ContactListingV1 = ({ active, parent, activeFilter }) => {
                 <Table.Row key={index} className="bg-white dark:border-gray-700 dark:bg-gray-800 cursor-pointer"
                   onClick={() => handleNavigation(org)}
                 >
-                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                  <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white contact-td">
                     <div className="flex items-center">
                       <img src={IMAGES.contact_avtar} alt="Profile" className="mr-3 rounded-full" />
                       <span className="left-txt font-medium text-secondary-800">
@@ -176,7 +176,7 @@ const ContactListingV1 = ({ active, parent, activeFilter }) => {
                     </div>
                   </Table.Cell>
                   {header.includes("Tag") && (
-                    <Table.Cell>
+                    <Table.Cell className="contact-td">
                       <span className="bg-badge-yellow text-secondary-100 text-sm font-semibold py-1 px-3 rounded-full inline-block">
                         {ORGANIZATION_TYPE[org?.organizationType]}
                       </span>

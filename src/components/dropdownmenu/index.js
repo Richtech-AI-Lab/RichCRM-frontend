@@ -1,6 +1,7 @@
 import React from "react";
 import { Dropdown, Checkbox, Label } from "flowbite-react";
 import XButton from "../button/XButton";
+import { useEffect } from "react";
 
 const DropdownMenu = ({
   filterSections,
@@ -9,6 +10,11 @@ const DropdownMenu = ({
   searchArr,
   setSearchArr
 }) => {
+   useEffect(() => {
+    const initialValues = filterSections.flatMap(section => section.options.map(option => option.value));
+    setSearchArr(initialValues);
+  }, []); 
+
   const handleCheckboxChange = (value) => {
     setSearchArr(prevArr => {
       // Check if value already exists in the array
