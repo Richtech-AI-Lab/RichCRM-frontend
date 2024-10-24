@@ -75,7 +75,7 @@ const ContactCard = ({
       <Accordion className="border-0">
         {clientDetails?.map((data, index) => (
           <AccordionPanel key={index}>
-         <AccordionTitle className="py-3 px-4 border-t border-badge-gray rounded-none first:rounded-t-none bg-white hover:bg-white focus:ring-transparent contact-accordian-title">
+          <AccordionTitle className="py-3 px-4 border-t border-badge-gray rounded-none first:rounded-t-none bg-white hover:bg-white focus:ring-transparent contact-accordian-title">
               <div className="flex items-center">
                 <img
                   src={data?.profileImage || IMAGES.profile}
@@ -95,7 +95,7 @@ const ContactCard = ({
                 }
               </div>
             </AccordionTitle>
-            <AccordionContent className="bg-light-purple py-3 px-4 contact-accordian-body ">
+            <AccordionContent className="bg-light-purple py-3 px-4 contact-accordian-body">
               <ul className="card-details">
                 <ContactDetailItem
                   label="Role"
@@ -139,7 +139,7 @@ const ContactCard = ({
       <Accordion className="border-0" collapseAll>
         {addtionalInfo?.map((data, index) => (
           <AccordionPanel key={index} >
-             <AccordionTitle className="py-3 px-4 border-t border-badge-gray rounded-none first:rounded-t-none bg-white hover:bg-white focus:ring-transparent contact-accordian-title">
+            <AccordionTitle className="py-3 px-4 border-t border-badge-gray rounded-none first:rounded-t-none bg-white hover:bg-white focus:ring-transparent contact-accordian-title">
               <div className="flex items-center">
                 <img
                   src={data?.profileImage || IMAGES.profile}

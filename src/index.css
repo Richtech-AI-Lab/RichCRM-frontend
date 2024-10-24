@@ -152,7 +152,7 @@
     @apply ring-transparent
   }
   .task-checklist {
-    @apply border-b border-b-border pl-6 pr-4;
+    @apply border-b border-b-border pl-6 pr-4
   }
   .task-checklist:last-child {
     @apply border-b-0
@@ -240,7 +240,7 @@
     width: 1.5rem;
   }
   .items-dropdown ul li input[type='checkbox']:checked {
-    @apply bg-primary2 border-primary
+    @apply bg-primary2 border-primary2
   }
   .items-dropdown.single-select ul {
     @apply p-0
