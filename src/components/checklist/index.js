@@ -281,7 +281,7 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
   // console.log(taskStatusColor?.badgeClass,"displayOption");
   return (
     <>
-      <div className="border-t-2 border-black-10">
+      <div className="border-t-2 border-black-10 mx-4">
         <li className="flex justify-between items-center mb-5 pb-5 task-checklist mt-2">
           <div className="flex items-center gap-2 custom-radio">
             <Checkbox id={checkboxId} checked={taskStatus === 2} className="mr-6" onChange={() => handleChangeTaskStatus()} />
