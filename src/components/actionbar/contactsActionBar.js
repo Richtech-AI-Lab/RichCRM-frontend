@@ -37,7 +37,7 @@ const ContactsActionbar = ({ active = "", setActive = "", activeFilter = "", set
   };
 
   const IndividualOptions = [
-    { value: 0, label: "Broker" },
+    { value: 0, label: "Realtor" },
     { value: 1, label: "Attorney" },
     { value: 2, label: "Title" },
     { value: 3, label: "Lender" },

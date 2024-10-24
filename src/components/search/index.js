@@ -18,7 +18,7 @@ const Search = ({ searchResults, onNavigation }) => {
 
     // Mapping contact types
     const contactTypeLabels = {
-        0: 'Broker',
+        0: 'Realtor',
         1: "Attorney",
         2: "Title",
         3: "Lender",

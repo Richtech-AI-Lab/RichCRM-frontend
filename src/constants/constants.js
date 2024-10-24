@@ -676,7 +676,7 @@ export const ORGANIZATION_TYPE = {
 };
 
 export const CONTACT_TYPE = {
-  0: "Broker",
+  0: "Realtor",
   1: "Attorney",
   2: "Title",
   3: 'Lender',
