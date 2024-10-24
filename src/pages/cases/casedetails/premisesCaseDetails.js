@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { CaseCardDetails, XButton } from "../../../components";
 import { Formik } from "formik";
 import { inspectionItems, lowerSectionItems, premisesComposition, termitesInspectionItems } from "../../../utils/formItem";
@@ -10,8 +10,9 @@ import PremisesForm from "../editDetail/permisesParticipantForm";
 import { createAddressRequest } from "../../../redux/actions/utilsActions";
 import { createTenantRequest } from "../../../redux/actions/clientActions";
 
-const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
+const PremisesCaseDetails = ({ isEdit, setIsEdit, setDirtyFormnik }) => {
   const dispatch= useDispatch()
+  const formikRef = useRef();
   const { data: addressData } = useSelector((state) => state?.utils?.address);
   const addressDetails = addressData?.length > 0 ? addressData : null;
 
@@ -23,6 +24,7 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
     ...premisesDetails[0]
   }
   const toggleEdit = () => {
+    setDirtyFormnik(false)
     setIsEdit(prevState => !prevState);
   };
   let handleSubmit = (values, { setSubmitting }) => {
@@ -90,6 +92,7 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
       dispatch(createAddressRequest(data))
     }
     toggleEdit()
+    setDirtyFormnik(false)
   }
 
   const initialPremisesValues = premisesDetails && premisesDetails.length > 0 ?
@@ -245,15 +248,20 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
       {isEdit ?
         (
           <Formik initialValues={initialPremisesValues} 
-          validationSchema={validationSchema} onSubmit={handleSubmit} >
+          validationSchema={validationSchema} 
+          innerRef={formikRef}
+          onSubmit={handleSubmit} >
             {({
               handleChange,
               handleSubmit,
               values,
               errors,
               touched,
-              setFieldValue
-            }) => (
+              setFieldValue,
+              dirty
+            }) => {
+              setDirtyFormnik(dirty)
+              return(
               <form onSubmit={handleSubmit} className="premises-form">
                 <div className="grid grid-cols-12 gap-6">
 
@@ -270,7 +278,7 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit }) => {
 
                 <FormButton onSave={handleSubmit} onCancel={toggleEdit}/>
               </form>
-            )}
+            )}}
           </Formik>) :
         (<div className="grid grid-cols-12 gap-6">
          

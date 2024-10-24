@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { CaseCardDetails, XButton } from "../../../components";
 import CaseAttorneyItems from "./caseAttorneyItems";
 import { Formik } from "formik";
@@ -15,8 +15,9 @@ import AttorneyDetails from "../showdetail/attorneydetail";
 import { updateCaseContactRequest } from "../../../redux/actions/caseAction";
 
 
-const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType }) => {
+const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType ,setDirtyFormnik}) => {
   const dispatch = useDispatch();
+  const formikRef = useRef();
   const { client } = useSelector((state) => state.client);
   const { cases } = useSelector((state) => state.case.casesData);
   const caseObj = cases?.find(item => item.caseId === localStorage.getItem('c_id'));
@@ -26,6 +27,7 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType }) => {
   // const addressDetails = data?.length > 0 ? data : null;
 
   const toggleEdit = () => {
+    setDirtyFormnik(false)
     setIsEdit(prevState => !prevState);
   };
   // useEffect(() => {
@@ -79,6 +81,7 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType }) => {
     }
     dispatch(updateCaseContactRequest(casePayload))
     toggleEdit()
+    setDirtyFormnik(false)
   }
   const handleAttorneysChange = (attorneys, handleChange) => {
     handleChange({ target: { name: 'attorneys', value: attorneys } });
@@ -114,7 +117,7 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType }) => {
   };
 
   const validationSchema = Yup.object({
-    name:  Yup.string().required("Name is required"),
+    name: Yup.string().required("Name is required"),
     email: Yup.string().email('Invalid email format'),
     cellNumber: Yup.string().matches(/^[0-9]+$/, 'Cell number must be a number'),
     // addressLine1: Yup.string().required("Address is required"),
@@ -131,6 +134,7 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType }) => {
           initialValues={initialPurchaserValues}
           onSubmit={handleSubmit}
           validationSchema={validationSchema}
+          innerRef={formikRef}
         >
           {({
             handleChange,
@@ -138,24 +142,32 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType }) => {
             values,
             errors,
             touched,
-            setFieldValue
-          }) => (
-            <form onSubmit={handleSubmit} className="participant-form">
-              <div className="grid grid-cols-12 gap-6">
-                <div className="col-span-6">
-                  <PurchaserParticipantForm title={caseType ? "Seller" : "Purchaser"} handleChange={handleChange} setFieldValue={setFieldValue} values={values} form={{ errors, touched }} initialValues={initialPurchaserValues} />
-                </div>
-                <div className="col-span-6">
-                  <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} attorneyDetails={attorneyDetails} errors={errors.attorneys || []}
-                    touched={touched.attorneys || []} setAttorneys={(attorneys) => handleAttorneysChange(attorneys, handleChange)} />
-                  {/* <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} errors={errors.attorneys || []}
+            setFieldValue,
+            dirty
+          }) => {
+            setDirtyFormnik(dirty)
+            return (
+              <form
+                onSubmit={handleSubmit}
+                className="participant-form"
+              >
+
+                <div className="grid grid-cols-12 gap-6">
+                  <div className="col-span-6">
+                    <PurchaserParticipantForm title={caseType ? "Seller" : "Purchaser"} handleChange={handleChange} setFieldValue={setFieldValue} values={values} form={{ errors, touched }} initialValues={initialPurchaserValues} />
+                  </div>
+                  <div className="col-span-6">
+                    <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} attorneyDetails={attorneyDetails} errors={errors.attorneys || []}
+                      touched={touched.attorneys || []} setAttorneys={(attorneys) => handleAttorneysChange(attorneys, handleChange)} />
+                    {/* <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} errors={errors.attorneys || []}
                     touched={touched.attorneys || []} setAttorneys={(attorneys) => handleAttorneysChange(attorneys, handleChange)} />
                   <CaseCardDetails items={titleMortgageItems} title="Title & Mortgage" handle={handleChange} /> */}
-                </div>
-              </div >
-              <FormButton onSave={handleSubmit} onCancel={toggleEdit} />
-            </form>
-          )}
+                  </div>
+                </div >
+                <FormButton onSave={handleSubmit} onCancel={toggleEdit} />
+              </form>
+            )
+          }}
         </Formik>)
         :
         (<div className="grid grid-cols-12 gap-6">

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { CaseCardDetails, XButton } from "../../../components";
 import CaseAttorneyItems from "./caseAttorneyItems";
 import { Formik } from "formik";
@@ -14,8 +14,9 @@ import { updateCaseContactRequest } from "../../../redux/actions/caseAction";
 import { updateOrganizationByIdRequest } from "../../../redux/actions/organizationActions";
 
 
-const OrganizationCaseDetails = ({ isEdit, setIsEdit , caseType}) => {
+const OrganizationCaseDetails = ({ isEdit, setIsEdit , caseType,setDirtyFormnik}) => {
   const dispatch = useDispatch();
+  const formikRef = useRef();
   const { cases } = useSelector((state) => state.case.casesData);
   const caseObj = cases?.find(item => item.caseId === localStorage.getItem('c_id'));
   const { organization } = useSelector((state) => state.organization);
@@ -25,6 +26,7 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit , caseType}) => {
   // const addressDetails = data?.length > 0 ? data : null;
 
   const toggleEdit = () => {
+    setDirtyFormnik(false)
     setIsEdit(prevState => !prevState);
   };
 
@@ -62,6 +64,7 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit , caseType}) => {
     }
     dispatch(updateCaseContactRequest(casePayload))
     toggleEdit()
+    setDirtyFormnik(false)
   }
   
   const handleAttorneysChange = (attorneys, handleChange) => {
@@ -107,6 +110,7 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit , caseType}) => {
           initialValues={initialOrganizationValues}
           onSubmit={handleSubmit}
         validationSchema={validationSchema}
+        innerRef={formikRef}
         >
           {({
             handleChange,
@@ -114,8 +118,11 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit , caseType}) => {
             values,
             errors,
             touched,
-            setFieldValue
-          }) => (
+            setFieldValue,
+            dirty
+          }) => {
+            setDirtyFormnik(dirty)
+            return(
             <form onSubmit={handleSubmit} className="participant-form">
               <div className="grid grid-cols-12 gap-6">
                 <div className="col-span-6">
@@ -131,7 +138,7 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit , caseType}) => {
               </div >
               <FormButton onSave={handleSubmit} onCancel={toggleEdit} />
             </form>
-          )}
+          )}}
         </Formik>)
         :
         (<div className="grid grid-cols-12 gap-6">

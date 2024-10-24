@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef} from "react";
 import { CaseCardDetails, XButton } from "../../../components";
 import { FaCircleMinus } from "react-icons/fa6";
 import { Formik } from "formik";
@@ -11,12 +11,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateCaseDateRequest } from "../../../redux/actions/caseAction";
 
 
-const OthersCaseDetails = ({ isEdit, setIsEdit }) => {
+const OthersCaseDetails = ({ isEdit, setIsEdit, setDirtyFormnik }) => {
   const dispatch = useDispatch();
+  const formikRef = useRef();
   const [dummy, setDummy] = useState({})
   const { cases } = useSelector((state) => state?.case?.casesData);
   const caseObj = cases?.find(item => item?.caseId == localStorage?.getItem('c_id'));
   const toggleEdit = () => {
+    setDirtyFormnik(false)
     setIsEdit(prevState => !prevState);
   };
   let handleSubmit = (value) => {
@@ -40,6 +42,7 @@ const OthersCaseDetails = ({ isEdit, setIsEdit }) => {
       dispatch(updateCaseDateRequest(payload))
       setDummy(value)
       toggleEdit()
+      setDirtyFormnik(false)
   }
   const initialOtherValues = {
     // caseType: caseObj?.caseType ? caseObj?.caseType : dummy?.caseType,
@@ -64,6 +67,7 @@ const OthersCaseDetails = ({ isEdit, setIsEdit }) => {
         (
           <Formik initialValues={initialOtherValues} 
           // validationSchema={validationSchema} 
+          innerRef={formikRef}
           onSubmit={handleSubmit} >
             {({
               handleChange,
@@ -71,15 +75,18 @@ const OthersCaseDetails = ({ isEdit, setIsEdit }) => {
               values,
               errors,
               touched,
-              setFieldValue
-            }) => (
+              setFieldValue,
+              dirty
+            }) =>  {
+              setDirtyFormnik(dirty)
+              return(
               <form onSubmit={handleSubmit} className="premises-form">
                 <div className="grid grid-cols-12 gap-6">
                     <OtherForm title="Case" handleChange={handleChange} setFieldValue={setFieldValue} values={values} form={{ errors, touched }} initialValues={initialOtherValues} />
                 </div >
                 <FormButton onSave={handleSubmit} onCancel={toggleEdit}/>
               </form>
-            )}
+            )}}
           </Formik>) :
         (<div className="grid grid-cols-12 gap-6">
          
