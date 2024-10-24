@@ -98,7 +98,7 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
 
   const caseTypeOptions = [
     { value: CASETYPE.PURCHASING, label: "Purchaser" },
-    { value: CASETYPE.SELLING, label: "Broker" },
+    { value: CASETYPE.SELLING, label: "Realtor" },
   ];
   const validationSchema = Yup.object({
     email: Yup.string().email('Invalid email format'),
@@ -174,7 +174,7 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
                             {/* <p className="font-medium text-secondary-800 text-sm mb-10">Brokers</p> */}
                             <Field
                               as={SelectInput}
-                              defaultLabel={`Brokers`}
+                              defaultLabel={`Realtor`}
                               inputClassName="bg-input-surface py-[6px] px-4 rounded-full border-0 text-sm leading-5 font-semibold text-label"
                               labelClassName="ext-label mr-3"
                               name="type"
