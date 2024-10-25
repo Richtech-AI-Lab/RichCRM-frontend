@@ -390,7 +390,35 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
                   label: option.label,
                 }))}
               /></li>
-            <li>
+              <li>
+              <span className={`left-txt flex items-center`}>Assessments</span>
+              <input
+                className="text-right p-0 border-none focus:ring-transparent"
+                name="assessments"
+                placeholder="Assessment"
+                type="text"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.assessments}
+              /> 
+              <Field
+                as={SelectInput}
+                defaultLabel={`per`}
+                inputClassName="bg-input-surface py-[6px] px-4 rounded-full border-0 text-sm leading-5 font-semibold text-label"
+                labelClassName="ext-label mr-3"
+                name="assessmentsPer"
+                value={values.assessmentsPer}
+                options={[
+                  { id: 0, label: "Month" },
+                  { id: 1, label: "Quarter" },
+                  { id: 2, label: "Year" },
+
+                ].map((option) => ({
+                  value: option.id,
+                  label: option.label,
+                }))}
+              /></li>
+            {/* <li>
               <span className={`left-txt flex items-center`}>Assessments</span>
               <input
                 className="text-right p-0 border-none focus:ring-transparent"
@@ -399,8 +427,8 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.assessments}
-              /></li>
-            <li>
+              /></li> */}
+            {/* <li>
               <span className={`left-txt flex items-center`}>Paid by</span>
               <input
                 className="text-right p-0 border-none focus:ring-transparent"
@@ -409,7 +437,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.assessmentsPaidById}
-              /></li>
+              /></li> */}
             <li>
               <span className={`left-txt flex items-center`}>Managing Company</span>
               <input

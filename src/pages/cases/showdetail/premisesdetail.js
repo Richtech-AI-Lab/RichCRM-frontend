@@ -120,13 +120,23 @@ const PremisesDetail = ({ premises, address }) => {
                 </span>
               </li>
               <li>
-                <span className="left-txt flex items-center" >Assessments</span>
-                <span className="left-txt flex items-center" >{premises[0]?.assessments}</span>
+                <span className="left-txt flex items-center">Assessments</span>
+                <span className="left-txt flex items-center">
+                  {
+                    premises[0]?.assessments === undefined || premises[0]?.assessments === ""
+                      ? ""
+                      : `${premises[0]?.assessments} ${premises[0]?.assessmentsPer == 0
+                        ? 'per month'
+                        : premises[0]?.assessmentsPer == 1
+                          ? 'per quarter'
+                          : premises[0]?.assessmentsPer == 2
+                            ? 'per year'
+                            : ''
+                      }`
+                  }
+                </span>
               </li>
-              <li>
-                <span className="left-txt flex items-center" >Paid By</span>
-                <span className="left-txt flex items-center" >{premises[0]?.assessmentsPaidById}</span>
-              </li>
+
               <li>
                 <span className="left-txt flex items-center" >Managing Company</span>
                 <span className="left-txt flex items-center" >{premises[0]?.managingCompany}</span>

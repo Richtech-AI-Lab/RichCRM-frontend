@@ -45,6 +45,7 @@ export const API_ENDPOINTS = {
   UPDATE_ORGANIZATION:"/organization/update",
   DELETE_CONTACT:"/contact/delete",
   FETCH_CONTACT_BY_ID:"/contact",
+  QUERY_CONTACT_BY_CASE_ID:"/contact/query/caseandtype"
 };
 
 export const ROUTES = {

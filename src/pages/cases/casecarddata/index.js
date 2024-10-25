@@ -21,7 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchClientByIdRequest } from "../../../redux/actions/clientActions";
 import { fetchAddressByIdRequest } from "../../../redux/actions/utilsActions";
 import { fetchOrganizationByIdRequest } from "../../../redux/actions/organizationActions";
-import { fetchAttorneyByIdsRequest } from "../../../redux/actions/contactActions";
+import { fetchAttorneyByIdsRequest, fetchRealtorByIdsRequest } from "../../../redux/actions/contactActions";
 
 const CaseCardData = () => {
   const navigate = useNavigate();
@@ -57,20 +57,61 @@ const CaseCardData = () => {
     fetchPremisesByQueryId();
   }, [casedetails.premisesId]);
 
+  // useEffect(() => {
+  //   const fetchAttorneyById = async () => {
+  //     try {
+  //       const payload = {
+  //         contacts: casedetails && casedetails.contacts
+  //       };
+  //       dispatch(fetchAttorneyByIdsRequest(payload));
+  //     } catch (error) {
+  //       console.error("failed to fetch attorney", error);
+  //     }
+  //   };
+  //   fetchAttorneyById()
+  // }, [casedetails.contacts]);
+
   useEffect(() => {
     const fetchAttorneyById = async () => {
       try {
         const payload = {
-          contacts: casedetails && casedetails.contacts
+          caseId: localStorage.getItem('c_id'),
+          contactType: 1
         };
         dispatch(fetchAttorneyByIdsRequest(payload));
       } catch (error) {
         console.error("failed to fetch attorney", error);
       }
     };
+    const fetchRealtorById = async () => {
+      try {
+        const payload = {
+          caseId: localStorage.getItem('c_id'),
+          contactType: 0
+        };
+        dispatch(fetchRealtorByIdsRequest(payload));
+      } catch (error) {
+        console.error("failed to fetch attorney", error);
+      }
+    };
+    fetchRealtorById()
     fetchAttorneyById()
-  }, [casedetails.contacts]);
+  }, [casedetails]);
 
+  // useEffect(() => {
+  //   const fetchRealtorById = async () => {
+  //     try {
+  //       const payload = {
+  //         caseId: localStorage.getItem('c_id'),
+  //         contactType: 1
+  //       };
+  //       dispatch(fetchAttorneyByIdsRequest(payload));
+  //     } catch (error) {
+  //       console.error("failed to fetch attorney", error);
+  //     }
+  //   };
+  //   fetchRealtorById()
+  // }, [casedetails]);
 
   useEffect(() => {
     if (premisesDetails && premisesDetails?.addressId) {
@@ -117,7 +158,7 @@ const CaseCardData = () => {
   }, [casedetails]);
 
   const headerItems = [
-    { text: "Cases", link:ROUTES.CASES, className: "mr-8" },
+    { text: "Cases", link: ROUTES.CASES, className: "mr-8" },
     { text: `${casedetails?.clientName} - ${premisesDetails?.name}`, separator: <SlArrowRight className="inline mr-10" /> },
   ];
 
@@ -137,7 +178,7 @@ const CaseCardData = () => {
         <div className="grid gap-4 grid-cols-2 ">
           <XButton
             text="One Drive"
-            onClick={()=>handleNav()}
+            onClick={() => handleNav()}
             icon={<CgFolder className="text-base mr-2 inline-block font-medium" />}
             className="bg-white shadow-shadow-light text-secondary-800 py-3 px-6 rounded-full font-medium"
           />
@@ -177,11 +218,11 @@ const CaseCardData = () => {
             />
           }
           <ContactCard
-            clientDetails={casedetails?.clientType ==0 ? clientDetails : organizationDetails}
+            clientDetails={casedetails?.clientType == 0 ? clientDetails : organizationDetails}
             casedetails={casedetails}
 
           />
-           {/* {casedetails?.clientType == 0 && <ContactCard
+          {/* {casedetails?.clientType == 0 && <ContactCard
             clientDetails={clientDetails}
             casedetails={casedetails}
           />} */}

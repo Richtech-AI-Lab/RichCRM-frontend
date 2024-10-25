@@ -19,39 +19,36 @@ const OtherDetail = ({ dummy, caseObj }) => {
           </div>}
           {true ?
             <ul className="card-details">
-              <li>
+              {/* <li>
                 <span className="left-txt flex items-center" >Case Type</span>
                 <span className="left-txt flex items-center" >{caseObj?.caseType == 1 && "Selling"} {caseObj?.caseType == 0 && "Purchasing"}</span>
-              </li>
+              </li> */}
               <li>
                 <span className="left-txt flex items-center" >Purchaser Price</span>
-                <span className="left-txt flex items-center" >{dummy?.purchasePrice}</span>
+                <span className="left-txt flex items-center" >{caseObj?.purchaserPrice && "$"}{caseObj?.purchaserPrice}</span>
               </li>
               <li>
                 <span className="left-txt flex items-center" >Down Payment</span>
-                <span className="left-txt flex items-center" > {dummy?.downPayment} </span>
+                <span className="left-txt flex items-center" >{caseObj?.downPayment && "$"}{caseObj?.downPayment} </span>
               </li>
               <li>
                 <span className="left-txt flex items-center" >Mortgage Amount</span>
-                <span className="left-txt flex items-center" > {dummy?.mortgageAmount} </span>
+                <span className="left-txt flex items-center" >{caseObj?.mortgageAmount && "$"}{caseObj?.mortgageAmount} </span>
               </li>
               <li>
                 <span className="left-txt flex items-center" >Annual Property Tax</span>
-                <span className="left-txt flex items-center" > {dummy?.annualPropertyTax}  </span>
+                <span className="left-txt flex items-center" >{caseObj?.annualPropertyTax && "$"}{caseObj?.annualPropertyTax}  </span>
               </li>
               <li>
                 <span className="left-txt flex items-center" >Seller's Concession</span>
-                <span className="left-txt flex items-center" > {dummy?.sellersConcession} </span>
+                <span className="left-txt flex items-center" >{caseObj?.sellersConcession && "$"}{caseObj?.sellersConcession} </span>
               </li>
 
             </ul> : ""}
         </div>
-        <div className="bg-white p-4 rounded-2xl mb-5">
+        {/* <div className="bg-white p-4 rounded-2xl mb-5">
           {<div className="flex justify-between items-center mb-5">
             <span className="text-base text-secondary-800 font-medium">Realtors</span>
-            {/* <div className="flex items-center gap-2">
-          <BsThreeDotsVertical className="text-lg opacity-40" />
-        </div> */}
           </div>}
           {true ?
             <ul className="card-details">
@@ -64,7 +61,7 @@ const OtherDetail = ({ dummy, caseObj }) => {
                 <span className="left-txt flex items-center" >{dummy?.realtorListing}</span>
               </li>              
             </ul> : ""}
-        </div>
+        </div> */}
       </div>
       <div className="col-span-6">
         <div className="bg-white p-4 rounded-2xl mb-5">

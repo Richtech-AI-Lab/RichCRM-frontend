@@ -23,6 +23,7 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType ,setDirtyFormnik})
   const caseObj = cases?.find(item => item.caseId === localStorage.getItem('c_id'));
   const clientDetails = client?.data?.length > 0 ? client?.data : null;
   const attorneyDetails = useSelector((state) => state.contact.attorney);
+  const realtorDetails = useSelector((state) => state.contact.realtor);
   // const { data } = useSelector((state) => state?.utils?.address);
   // const addressDetails = data?.length > 0 ? data : null;
 
@@ -171,8 +172,13 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType ,setDirtyFormnik})
         </Formik>)
         :
         (<div className="grid grid-cols-12 gap-6">
-          <div className="col-span-6"><ParticipantBothDetail client={clientDetails} attorneyDetails={attorneyDetails} title={caseType ? "Seller" : "Purchaser"} /></div>
-          {attorneyDetails?.length > 0 && <div className="col-span-6"><AttorneyDetails attorneyDetails={attorneyDetails} title={"Attorney"} /></div>}
+          <div className="col-span-6">
+            <ParticipantBothDetail client={clientDetails} attorneyDetails={attorneyDetails} title={caseType ? "Seller" : "Purchaser"} />
+            </div>
+            <div className="col-span-6">
+          {attorneyDetails?.length > 0 && <AttorneyDetails attorneyDetails={attorneyDetails} title={"Attorney"} />}
+          {realtorDetails?.length > 0 && <AttorneyDetails attorneyDetails={realtorDetails} title={"Realtor"} />}
+          </div>
         </div>)}
     </>
   );
