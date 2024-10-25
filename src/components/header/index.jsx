@@ -13,6 +13,7 @@ import { debounce } from "lodash";
 import { contactTypeLabels } from "../../constants/constants";
 import {
   clearAttorney,
+  clearRealtor,
   setSelectedContact,
 } from "../../redux/actions/contactActions";
 import Search from "../search";
@@ -86,6 +87,7 @@ const Header = ({ toggleDrawer, title }) => {
       dispatch(clearStageData()),
       dispatch(clearTaskData()),
       dispatch(clearAttorney()),
+      dispatch(clearRealtor())
     ]);
     console.log("State cleared and loader started");
   };
