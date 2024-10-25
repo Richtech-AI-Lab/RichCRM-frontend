@@ -112,15 +112,15 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
             </li> */}
             <li>
               <span className="left-txt flex items-center" >Purchaser Price</span>
-              {form?.errors['purchasePrice'] && form?.touched['purchasePrice'] && (
-                <span className="text-sm text-red-500">{form.errors['purchasePrice']}</span>
+              {form?.errors['purchaserPrice'] && form?.touched['purchaserPrice'] && (
+                <span className="text-sm text-red-500">{form.errors['purchaserPrice']}</span>
               )}
               <input
                 className="text-right p-0 border-none focus:ring-transparent"
-                name="purchasePrice"
-                value={formatCurrency(values.purchasePrice)}
+                name="purchaserPrice"
+                value={formatCurrency(values.purchaserPrice)}
                 type="text"
-                onChange={(e) => handleCurrencyChange(e, 'purchasePrice')}
+                onChange={(e) => handleCurrencyChange(e, 'purchaserPrice')}
                 onBlur={handleBlur}
               />
             </li>

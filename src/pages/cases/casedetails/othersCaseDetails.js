@@ -25,7 +25,7 @@ const OthersCaseDetails = ({ isEdit, setIsEdit, setDirtyFormnik }) => {
       const payload = {
         caseId: localStorage.getItem('c_id'),
         // caseType: parseInt(value?.caseType),
-        purchasePrice: value?.purchasePrice,
+        purchaserPrice: value?.purchaserPrice,
         downPayment: value?.downPayment,
         mortgageAmount: value?.mortgageAmount,
         annualPropertyTax: value?.annualPropertyTax,
@@ -46,7 +46,7 @@ const OthersCaseDetails = ({ isEdit, setIsEdit, setDirtyFormnik }) => {
   }
   const initialOtherValues = {
     // caseType: caseObj?.caseType ? caseObj?.caseType : dummy?.caseType,
-    purchasePrice: caseObj?.purchasePrice ? caseObj?.purchasePrice : dummy?.purchasePrice,
+    purchaserPrice: caseObj?.purchaserPrice ? caseObj?.purchaserPrice : dummy?.purchaserPrice,
     downPayment: caseObj?.downPayment ? caseObj?.downPayment : dummy?.downPayment,
     mortgageAmount: caseObj?.mortgageAmount ? caseObj?.mortgageAmount : dummy?.mortgageAmount,
     annualPropertyTax: caseObj?.annualPropertyTax ? caseObj?.annualPropertyTax : dummy?.annualPropertyTax,

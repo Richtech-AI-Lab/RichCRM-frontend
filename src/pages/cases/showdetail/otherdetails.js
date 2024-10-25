@@ -25,23 +25,23 @@ const OtherDetail = ({ dummy, caseObj }) => {
               </li> */}
               <li>
                 <span className="left-txt flex items-center" >Purchaser Price</span>
-                <span className="left-txt flex items-center" >{dummy?.purchasePrice && "$"}{dummy?.purchasePrice}</span>
+                <span className="left-txt flex items-center" >{caseObj?.purchaserPrice && "$"}{caseObj?.purchaserPrice}</span>
               </li>
               <li>
                 <span className="left-txt flex items-center" >Down Payment</span>
-                <span className="left-txt flex items-center" >{dummy?.downPayment && "$"}{dummy?.downPayment} </span>
+                <span className="left-txt flex items-center" >{caseObj?.downPayment && "$"}{caseObj?.downPayment} </span>
               </li>
               <li>
                 <span className="left-txt flex items-center" >Mortgage Amount</span>
-                <span className="left-txt flex items-center" >{dummy?.mortgageAmount && "$"}{dummy?.mortgageAmount} </span>
+                <span className="left-txt flex items-center" >{caseObj?.mortgageAmount && "$"}{caseObj?.mortgageAmount} </span>
               </li>
               <li>
                 <span className="left-txt flex items-center" >Annual Property Tax</span>
-                <span className="left-txt flex items-center" >{dummy?.annualPropertyTax && "$"}{dummy?.annualPropertyTax}  </span>
+                <span className="left-txt flex items-center" >{caseObj?.annualPropertyTax && "$"}{caseObj?.annualPropertyTax}  </span>
               </li>
               <li>
                 <span className="left-txt flex items-center" >Seller's Concession</span>
-                <span className="left-txt flex items-center" >{dummy?.sellersConcession && "$"}{dummy?.sellersConcession} </span>
+                <span className="left-txt flex items-center" >{caseObj?.sellersConcession && "$"}{caseObj?.sellersConcession} </span>
               </li>
 
             </ul> : ""}
