@@ -45,14 +45,25 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
     setFieldValue(field, '');
   };
 
+  const formatCurrency = (value) => {
+    if (!value) return ''; // No dollar sign if the input is empty
+    return '$' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+
+  // Handle input changes to strip formatting for internal storage
+  const handleCurrencyChange = (event, fieldName) => {
+    const inputVal = event.target.value.replace(/[^0-9.]+/g, ''); // Remove non-numeric except '.'
+    setFieldValue(fieldName, inputVal); // Save as plain number in form state
+  };
+
   return (
     <>
       <div className="col-span-6">
-        <div className="bg-white p-4 rounded-2xl mb-5">
+        {/* <div className="bg-white p-4 rounded-2xl mb-5">
           {title && <div className="flex justify-between items-center mb-5">
             <span className="text-base text-2Fary-800 font-medium">{title}</span>
             <div className="flex items-center gap-2">
-              {/* <BsThreeDotsVertical className="text-lg opacity-40" /> */}
+             
             </div>
           </div>}
           <ul className="card-details">
@@ -75,17 +86,17 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
                 </div>
               </div>
             </li>
-            </ul>
-        </div>
+          </ul>
+        </div> */}
         <div className="bg-white p-4 rounded-2xl mb-5">
-        {title && <div className="flex justify-between items-center mb-5">
+          {title && <div className="flex justify-between items-center mb-5">
             <span className="text-base text-2Fary-800 font-medium">{"Prices"}</span>
             <div className="flex items-center gap-2">
               {/* <BsThreeDotsVertical className="text-lg opacity-40" /> */}
             </div>
           </div>}
           <ul className="card-details">
-          <li>
+            {/* <li>
               <span className="left-txt flex items-center" >Purchaser Price</span>
               {form?.errors['purchasePrice'] && form?.touched['purchasePrice'] && (
                 <span className="text-sm text-red-500">{form.errors['purchasePrice']}</span>
@@ -98,15 +109,30 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
+            </li> */}
+            <li>
+              <span className="left-txt flex items-center" >Purchaser Price</span>
+              {form?.errors['purchasePrice'] && form?.touched['purchasePrice'] && (
+                <span className="text-sm text-red-500">{form.errors['purchasePrice']}</span>
+              )}
+              <input
+                className="text-right p-0 border-none focus:ring-transparent"
+                name="purchasePrice"
+                value={formatCurrency(values.purchasePrice)}
+                type="text"
+                onChange={(e) => handleCurrencyChange(e, 'purchasePrice')}
+                onBlur={handleBlur}
+              />
             </li>
+
             <li>
               <span className="left-txt flex items-center" >Down Payment</span>
               <input
                 className="text-right p-0 border-none focus:ring-transparent"
                 name="downPayment"
-                value={values.downPayment}
+                value={formatCurrency(values.downPayment)}
                 type="text"
-                onChange={handleChange}
+                onChange={(e) => handleCurrencyChange(e, 'downPayment')}
                 onBlur={handleBlur}
               // value={values.}
               />
@@ -116,9 +142,9 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
               <input
                 className="text-right p-0 border-none focus:ring-transparent"
                 name="mortgageAmount"
-                value={values.mortgageAmount}
+                value={formatCurrency(values.mortgageAmount)}
                 type="text"
-                onChange={handleChange}
+                onChange={(e) => handleCurrencyChange(e, 'mortgageAmount')}
                 onBlur={handleBlur}
               // value={values.}
               />
@@ -128,9 +154,9 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
               <input
                 className="text-right p-0 border-none focus:ring-transparent"
                 name="annualPropertyTax"
-                value={values.annualPropertyTax}
+                value={formatCurrency(values.annualPropertyTax)}
                 type="text"
-                onChange={handleChange}
+                onChange={(e) => handleCurrencyChange(e, 'annualPropertyTax')}
                 onBlur={handleBlur}
               // value={values.}
               />
@@ -140,24 +166,23 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
               <input
                 className="text-right p-0 border-none focus:ring-transparent"
                 name="sellersConcession"
-                value={values.sellersConcession}
+                value={formatCurrency(values.sellersConcession)}
                 type="text"
-                onChange={handleChange}
+                onChange={(e) => handleCurrencyChange(e, 'sellersConcession')}
                 onBlur={handleBlur}
               // value={values.}
               />
             </li>
-            </ul>
+          </ul>
         </div>
-        <div className="bg-white p-4 rounded-2xl mb-5">
-        {title && <div className="flex justify-between items-center mb-5">
+        {/* <div className="bg-white p-4 rounded-2xl mb-5">
+          {title && <div className="flex justify-between items-center mb-5">
             <span className="text-base text-2Fary-800 font-medium">{"Realtors"}</span>
             <div className="flex items-center gap-2">
-              {/* <BsThreeDotsVertical className="text-lg opacity-40" /> */}
             </div>
           </div>}
           <ul className="card-details">
-          <li>
+            <li>
               <span className="left-txt flex items-center" >Realtors Sale</span>
               <input
                 className="text-right p-0 border-none focus:ring-transparent"
@@ -180,16 +205,13 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
               // value={values.}
               />
             </li>
-            </ul>
-        </div>
+          </ul>
+        </div> */}
       </div>
       <div className="col-span-6">
         <div className="bg-white p-4 rounded-2xl mb-5">
           {<div className="flex justify-between items-center mb-5">
             <span className="text-base text-2Fary-800 font-medium">Closing</span>
-            {/* <div className="flex items-center gap-2">
-          // <BsThreeDotsVertical className="text-lg opacity-40" />
-        </div> */}
           </div>}
 
           <ul className="card-details">
@@ -225,123 +247,123 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
           </div>}
 
           <ul className="card-details">
-          <li>
-            {optionalFields.referral && (
+            <li>
+              {optionalFields.referral && (
 
-              <>
-                <span className={"cursor-pointer left-txt flex items-center"} onClick={() => handleRemoveField('referral', setFieldValue)} >
-                  <span className="icon mr-2"> <img src={IMAGES.removeIcon} alt="icon" /> </span>
-                  Referral
+                <>
+                  <span className={"cursor-pointer left-txt flex items-center"} onClick={() => handleRemoveField('referral', setFieldValue)} >
+                    <span className="icon mr-2"> <img src={IMAGES.removeIcon} alt="icon" /> </span>
+                    Referral
+                  </span>
+                  <input
+                    className="text-right p-0 border-none focus:ring-transparent"
+                    name="referral"
+                    type="text"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values?.referral}
+                  />
+                </>
+              )}
+              {!optionalFields.referral && (<span className="left-txt flex items-center" onClick={() => handleAddField('referral')} >
+                <span className="icon mr-2 cursor-pointer">
+                  <img
+                    src={IMAGES.addIcon}
+                    alt="icon"
+                  />
                 </span>
-                <input
-                  className="text-right p-0 border-none focus:ring-transparent"
-                  name="referral"
-                  type="text"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values?.referral}
-                />
-              </>
-            )}
-            {!optionalFields.referral && (<span className="left-txt flex items-center" onClick={() => handleAddField('referral')} >
-              <span className="icon mr-2 cursor-pointer">
-                <img
-                  src={IMAGES.addIcon}
-                  alt="icon"
-                />
-              </span>
-              Add A Referral
-            </span>)}
-          </li>
+                Add A Referral
+              </span>)}
+            </li>
 
-          <li>
-            {optionalFields.bank && (
+            <li>
+              {optionalFields.bank && (
 
-              <>
-                <span className={"cursor-pointer left-txt flex items-center"} onClick={() => handleRemoveField('bank', setFieldValue)} >
-                  <span className="icon mr-2"> <img src={IMAGES.removeIcon} alt="icon" /> </span>
-                  Bank
+                <>
+                  <span className={"cursor-pointer left-txt flex items-center"} onClick={() => handleRemoveField('bank', setFieldValue)} >
+                    <span className="icon mr-2"> <img src={IMAGES.removeIcon} alt="icon" /> </span>
+                    Bank
+                  </span>
+                  <input
+                    className="text-right p-0 border-none focus:ring-transparent"
+                    name="bank"
+                    type="text"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.bank}
+                  />
+                </>
+              )}
+              {!optionalFields.bank && (<span className="left-txt flex items-center" onClick={() => handleAddField('bank')} >
+                <span className="icon mr-2 cursor-pointer">
+                  <img
+                    src={IMAGES.addIcon}
+                    alt="icon"
+                  />
                 </span>
-                <input
-                  className="text-right p-0 border-none focus:ring-transparent"
-                  name="bank"
-                  type="text"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.bank}
-                />
-              </>
-            )}
-            {!optionalFields.bank && (<span className="left-txt flex items-center" onClick={() => handleAddField('bank')} >
-              <span className="icon mr-2 cursor-pointer">
-                <img
-                  src={IMAGES.addIcon}
-                  alt="icon"
-                />
-              </span>
-              Add A Bank (L/O)
-            </span>)}
-          </li>
+                Add A Bank (L/O)
+              </span>)}
+            </li>
 
 
-          <li>
-            {optionalFields.personalNotes && (
+            <li>
+              {optionalFields.personalNotes && (
 
-              <>
-                <span className={"cursor-pointer left-txt flex items-center"} onClick={() => handleRemoveField('personalNotes', setFieldValue)} >
-                  <span className="icon mr-2"> <img src={IMAGES.removeIcon} alt="icon" /> </span>
-                  Personal Note
+                <>
+                  <span className={"cursor-pointer left-txt flex items-center"} onClick={() => handleRemoveField('personalNotes', setFieldValue)} >
+                    <span className="icon mr-2"> <img src={IMAGES.removeIcon} alt="icon" /> </span>
+                    Personal Note
+                  </span>
+                  <input
+                    className="text-right p-0 border-none focus:ring-transparent"
+                    name="personalNotes"
+                    type="text"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.personalNotes}
+                  />
+                </>
+              )}
+              {!optionalFields.personalNotes && (<span className="left-txt flex items-center" onClick={() => handleAddField('personalNotes')} >
+                <span className="icon mr-2 cursor-pointer">
+                  <img
+                    src={IMAGES.addIcon}
+                    alt="icon"
+                  />
                 </span>
-                <input
-                  className="text-right p-0 border-none focus:ring-transparent"
-                  name="personalNotes"
-                  type="text"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.personalNotes}
-                />
-              </>
-            )}
-            {!optionalFields.personalNotes && (<span className="left-txt flex items-center" onClick={() => handleAddField('personalNotes')} >
-              <span className="icon mr-2 cursor-pointer">
-                <img
-                  src={IMAGES.addIcon}
-                  alt="icon"
-                />
-              </span>
-              Add Notes as Personal Property
-            </span>)}
-          </li>
+                Add Notes as Personal Property
+              </span>)}
+            </li>
 
 
 
-          <li>
-            {optionalFields.excludedNotes && (
-              <>
-                <span className={"cursor-pointer left-txt flex items-center"} onClick={() => handleRemoveField('excludedNotes', setFieldValue)} >
-                  <span className="icon mr-2"> <img src={IMAGES.removeIcon} alt="icon" /> </span>
-                  Excluded Note
+            <li>
+              {optionalFields.excludedNotes && (
+                <>
+                  <span className={"cursor-pointer left-txt flex items-center"} onClick={() => handleRemoveField('excludedNotes', setFieldValue)} >
+                    <span className="icon mr-2"> <img src={IMAGES.removeIcon} alt="icon" /> </span>
+                    Excluded Note
+                  </span>
+                  <input
+                    className="text-right p-0 border-none focus:ring-transparent"
+                    name="excludedNotes"
+                    type="text"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.excludedNotes}
+                  />
+                </>
+              )}
+              {!optionalFields.excludedNotes && (<span className="left-txt flex items-center" onClick={() => handleAddField('excludedNotes')} >
+                <span className="icon mr-2 cursor-pointer">
+                  <img
+                    src={IMAGES.addIcon}
+                    alt="icon"
+                  />
                 </span>
-                <input
-                  className="text-right p-0 border-none focus:ring-transparent"
-                  name="excludedNotes"
-                  type="text"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.excludedNotes}
-                />
-              </>
-            )}
-            {!optionalFields.excludedNotes && (<span className="left-txt flex items-center" onClick={() => handleAddField('excludedNotes')} >
-              <span className="icon mr-2 cursor-pointer">
-                <img
-                  src={IMAGES.addIcon}
-                  alt="icon"
-                />
-              </span>
-              Add Notes as Excluded Property
-            </span>)}
-          </li>
+                Add Notes as Excluded Property
+              </span>)}
+            </li>
           </ul>
         </div>
       </div>
