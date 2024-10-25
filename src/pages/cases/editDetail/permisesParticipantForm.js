@@ -406,8 +406,8 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
                 defaultLabel={`per`}
                 inputClassName="bg-input-surface py-[6px] px-4 rounded-full border-0 text-sm leading-5 font-semibold text-label"
                 labelClassName="ext-label mr-3"
-                name="assessmentsPaidById"
-                value={values.assessmentsPaidById}
+                name="assessmentsPer"
+                value={values.assessmentsPer}
                 options={[
                   { id: 0, label: "Month" },
                   { id: 1, label: "Quarter" },

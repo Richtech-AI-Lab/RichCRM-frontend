@@ -125,11 +125,11 @@ const PremisesDetail = ({ premises, address }) => {
                   {
                     premises[0]?.assessments === undefined || premises[0]?.assessments === ""
                       ? ""
-                      : `${premises[0]?.assessments} ${premises[0]?.assessmentsPaidById == 0
+                      : `${premises[0]?.assessments} ${premises[0]?.assessmentsPer == 0
                         ? 'per month'
-                        : premises[0]?.assessmentsPaidById == 1
+                        : premises[0]?.assessmentsPer == 1
                           ? 'per quarter'
-                          : premises[0]?.assessmentsPaidById == 2
+                          : premises[0]?.assessmentsPer == 2
                             ? 'per year'
                             : ''
                       }`
