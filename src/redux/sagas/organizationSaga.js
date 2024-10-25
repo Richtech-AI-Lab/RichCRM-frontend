@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { takeLatest } from "redux-saga/effects";
 import { registerAddressRequest } from "../actions/utilsActions";
 import { fetchAdditionalOrganizationByIdsFailure, fetchAdditionalOrganizationByIdsSuccess, fetchOrganizationByIdFailure, fetchOrganizationByIdSuccess, fetchOrganizationByTypeFailure, fetchOrganizationByTypeSuccess, setSelectedOrganization, updateOrganizationByIdFailure, updateOrganizationByIdSuccess } from "../actions/organizationActions";
+import { updateClientByIdSuccess } from "../actions/clientActions";
 
 
 function* registerOrganization(action) {
@@ -95,22 +96,18 @@ function* updateOrganizationById(action) {
     const response = yield call(() =>
       postRequest(API_ENDPOINTS.UPDATE_ORGANIZATION, payload?.organization)
     );
-    if (response.status == 200 && response?.data?.data[0]?.addressId && payload.util) {
-      // let payload = {
-      //   addressId: response?.data?.data[0]?.addressId,
-      //   // addressId: 'Virginia Beach VA 23462-3012',
-      // }
-      // const addResponse = yield call(() => postRequest(API_ENDPOINTS.FETCH_ADDRESS_BY_QUERY_ID, payload));
-      response.data.data[0] = { ...response?.data?.data[0], ...payload.util};
-    }
-    yield put(updateOrganizationByIdSuccess(response.data));
-    if(response.status ==200){
-      // const updatedPayload = {
-      //   ...payload.util,
-      //   addressId: response.data.data[0].addressId
-      // };
-      // yield put(registerAddressRequest(updatedPayload))
-      toast.success("Organization Updated!");
+
+    if(response.status == 200){
+      if(response?.data?.data[0]?.addressId && payload.util) {
+          // let payload = {
+          //   addressId: response?.data?.data[0]?.addressId,
+          //   // addressId: 'Virginia Beach VA 23462-3012',
+          // }
+          // const addResponse = yield call(() => postRequest(API_ENDPOINTS.FETCH_ADDRESS_BY_QUERY_ID, payload));
+          response.data.data[0] = { ...response?.data?.data[0], ...payload.util};
+        }
+        yield put(updateOrganizationByIdSuccess(response.data));
+        toast.success("Organization Updated!");
     }
   } catch (error) {
     handleError(error)

@@ -6,7 +6,7 @@ import { Field } from "formik";
 
 const ContactIndividualDetail = ({ contact, address }) => {
     const contactTypeLabels = {
-        0: 'Broker',
+        0: 'Realtor',
         1: "Attorney",
         2: "Title",
         3: "Lender",

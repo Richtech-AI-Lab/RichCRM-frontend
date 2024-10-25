@@ -23,7 +23,7 @@ const DateInput = ({ name, value, onSelectedDateChanged }) => {
     <div className="custom-datepicker">
       {/* {value} */}
       <Datepicker
-        showClearButton={false}
+        showClearButton={true}
         showTodayButton={true}
         theme={customtheme}
         defaultDate={value ? new Date(startDate) : undefined}
