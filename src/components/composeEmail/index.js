@@ -217,6 +217,11 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
               </div>
 
               <div className="text-end px-4 py-3 shadow-full rounded-bl-2xl rounded-br-2xl">
+              <XButton
+                  text="Attach"
+                  type="text"
+                  className="bg-active-blue text-active-blue-text text-base py-[10px] px-6 rounded-[100px]"
+                />
                 <XButton
                   text="Send"
                   type="text"
