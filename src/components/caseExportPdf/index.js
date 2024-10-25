@@ -199,10 +199,10 @@ const CaseExportPdfDocument = ({ formData }) => (
                     stroke="black"
                     strokeWidth="5"
                   />
-                  <Path
+                 {formData?.newConst && <Path
                     d="M35 60 L45 75 L75 35"
                     style={styles.tickMark}
-                  />
+                  />}
                 </Svg>
               </View>
               <Text style={{ marginLeft: 2, fontSize: 12, marginRight: 2 }}>New Const</Text>
@@ -219,10 +219,10 @@ const CaseExportPdfDocument = ({ formData }) => (
                     stroke="black"
                     strokeWidth="5"
                   />
-                  <Path
+                     {formData?.isOneFamily && <Path
                     d="M35 60 L45 75 L75 35"
                     style={styles.tickMark}
-                  />
+                  />}
                 </Svg>
               </View>
               <Text style={{ marginLeft: 2, fontSize: 12, marginRight: 2 }}>1 Family</Text>
@@ -239,10 +239,10 @@ const CaseExportPdfDocument = ({ formData }) => (
                     stroke="black"
                     strokeWidth="5"
                   />
-                  <Path
+                   {formData?.isTwoFamily && <Path
                     d="M35 60 L45 75 L75 35"
                     style={styles.tickMark}
-                  />
+                  />}
                 </Svg>
               </View>
               <Text style={{ marginLeft: 2, fontSize: 12, marginRight: 2 }}>2 Family</Text>
@@ -272,10 +272,10 @@ const CaseExportPdfDocument = ({ formData }) => (
                     stroke="black"
                     strokeWidth="5"
                   />
-                  <Path
+                   {formData?.condo && <Path
                     d="M35 60 L45 75 L75 35"
                     style={styles.tickMark}
-                  />
+                  />}
                 </Svg>
               </View>
               <Text style={{ marginLeft: 2, fontSize: 12, marginRight: 2 }}>Condo</Text>
@@ -292,10 +292,10 @@ const CaseExportPdfDocument = ({ formData }) => (
                     stroke="black"
                     strokeWidth="5"
                   />
-                  <Path
+                    {formData?.coop && <Path
                     d="M35 60 L45 75 L75 35"
                     style={styles.tickMark}
-                  />
+                  />}
                 </Svg>
               </View>
               <Text style={{ marginLeft: 2, fontSize: 12, marginRight: 2 }}>Co-op</Text>
@@ -312,10 +312,10 @@ const CaseExportPdfDocument = ({ formData }) => (
                     stroke="black"
                     strokeWidth="5"
                   />
-                  <Path
+                     {formData?.townhouse && <Path
                     d="M35 60 L45 75 L75 35"
                     style={styles.tickMark}
-                  />
+                  />}
                 </Svg>
               </View>
               <Text style={{ marginLeft: 2, fontSize: 12, marginRight: 2 }}>Townhouse</Text>
@@ -331,10 +331,10 @@ const CaseExportPdfDocument = ({ formData }) => (
                     stroke="black"
                     strokeWidth="5"
                   />
-                  <Path
+                  {formData?.vacantLand && <Path
                     d="M35 60 L45 75 L75 35"
                     style={styles.tickMark}
-                  />
+                  />}
                 </Svg>
               </View>
               <Text style={{ marginLeft: 2, fontSize: 12, marginRight: 2 }}>Vacant Land</Text>
@@ -355,10 +355,10 @@ const CaseExportPdfDocument = ({ formData }) => (
                     stroke="black"
                     strokeWidth="5"
                   />
-                  <Path
+                 {formData?.vacantAtClosing && <Path
                     d="M35 60 L45 75 L75 35"
                     style={styles.tickMark}
-                  />
+                  />}
                 </Svg>
               </View>
               <Text style={{ marginLeft: 2, fontSize: 12, marginRight: 2 }}>Vacant at closing</Text>
@@ -375,10 +375,10 @@ const CaseExportPdfDocument = ({ formData }) => (
                     stroke="black"
                     strokeWidth="5"
                   />
-                  <Path
+                 {formData?.suvjectToTenancy && <Path
                     d="M35 60 L45 75 L75 35"
                     style={styles.tickMark}
-                  />
+                  />}
                 </Svg>
               </View>
               <Text style={{ marginLeft: 2, fontSize: 12, marginRight: 2 }}>Subject to tenancy</Text>
@@ -395,10 +395,10 @@ const CaseExportPdfDocument = ({ formData }) => (
                     stroke="black"
                     strokeWidth="5"
                   />
-                  <Path
+                  {formData?.hoa && <Path
                     d="M35 60 L45 75 L75 35"
                     style={styles.tickMark}
-                  />
+                  />}
                 </Svg>
               </View>
               <Text style={{ marginLeft: 2, fontSize: 12, marginRight: 2 }}>H.O.A</Text>
@@ -415,13 +415,13 @@ const CaseExportPdfDocument = ({ formData }) => (
                   stroke="black"
                   strokeWidth="5"
                 />
-                <Path
-                  d="M35 60 L45 75 L75 35"
-                  style={styles.tickMark}
-                />
+                 {formData?.parkingSpace && <Path
+                    d="M35 60 L45 75 L75 35"
+                    style={styles.tickMark}
+                  />}
               </Svg>
             </View>
-            <Text style={{ marginLeft: 2, fontSize: 12, marginRight: 2 }}>Parking Space</Text>
+            <Text style={{ marginLeft: 2, fontSize: 12, marginRight: 2 }}>Parking Space:</Text>
             {formData?.parkingSpace ? <Text style={styles.label}>{formData?.parkingSpace}</Text> : <View style={{ ...styles.fullWidthLine, width: 60 }} />}
             {/* </View> */}
           </View>
@@ -436,7 +436,7 @@ const CaseExportPdfDocument = ({ formData }) => (
               {formData?.maintanceFee ? <Text style={styles.label}>{formData?.maintanceFee}</Text> : <View style={styles.halfWidthLine} />}
             </View>
             <View style={{ display: 'flex', flexDirection: 'row', width: '40%', marginBottom: '2px' }}>
-              <Text style={{ fontSize: 12, marginRight: '10px' }} >per</Text>
+              <Text style={{ fontSize: 12, marginRight: '10px' }} >Per:</Text>
               {formData?.maintenanceFeePer ? <Text style={styles.label}>{formData?.maintenanceFeePer}</Text> : <View style={styles.halfWidthLine} />}
             </View>
           </View>
@@ -446,8 +446,8 @@ const CaseExportPdfDocument = ({ formData }) => (
               {formData?.assessment ? <Text style={styles.label}>{formData?.assessment}</Text> : <View style={styles.halfWidthLine} />}
             </View>
             <View style={{ display: 'flex', flexDirection: 'row', width: '40%', marginBottom: '2px' }}>
-              <Text style={{ fontSize: 12, marginRight: '10px' }} >Paid by:</Text>
-              {formData?.assessmentPaidBy ? <Text style={styles.label}>{formData?.assessmentPaidBy}</Text> : <View style={styles.halfWidthLine} />}
+              <Text style={{ fontSize: 12, marginRight: '10px' }} >Per:</Text>
+              {formData?.assessmentsPer ? <Text style={styles.label}>{formData?.assessmentsPer}</Text> : <View style={styles.halfWidthLine} />}
             </View>
           </View>
         </View>
@@ -488,10 +488,10 @@ const CaseExportPdfDocument = ({ formData }) => (
                     stroke="black"
                     strokeWidth="5"
                   />
-                  <Path
+                { formData?.onefLease && <Path
                     d="M35 60 L45 75 L75 35"
                     style={styles.tickMark}
-                  />
+                  />}
                 </Svg>
               </View>
               </View>
@@ -533,10 +533,10 @@ const CaseExportPdfDocument = ({ formData }) => (
                     stroke="black"
                     strokeWidth="5"
                   />
-                  <Path
+             { formData?.secfLease && <Path
                     d="M35 60 L45 75 L75 35"
                     style={styles.tickMark}
-                  />
+                  />}
                 </Svg>
               </View>
               </View>
@@ -553,27 +553,27 @@ const CaseExportPdfDocument = ({ formData }) => (
         <View style={{ display: 'flex', flexDirection: 'row', width: '100%', marginBottom: '8px' }}>
           <View style={{ display: 'flex', flexDirection: 'row', width: '50%', marginBottom: '2px' }}>
             <Text style={{ fontSize: 12, marginRight: '30px' }} >Purchase price:</Text>
-            {false ? <Text style={styles.label}>{formData?.sellerSSN}</Text> : <View style={styles.fullWidthLine} />}
+            {formData?.purchaserPrice ? <Text style={styles.label}>${formData?.purchaserPrice}</Text> : <View style={styles.fullWidthLine} />}
           </View>
           <View style={{ display: 'flex', flexDirection: 'row', width: '50%', marginBottom: '2px' }}>
             <Text style={{ fontSize: 12, marginRight: '30px' }} >MTG amount:</Text>
-            {false ? <Text style={styles.label}>{formData?.sellerSSN}</Text> : <View style={styles.fullWidthLine} />}
+            {formData?.mortgageAmount ? <Text style={styles.label}>${formData?.mortgageAmount}</Text> : <View style={styles.fullWidthLine} />}
           </View>
         </View>
         <View style={{ display: 'flex', flexDirection: 'row', width: '100%', marginBottom: '8px' }}>
           <View style={{ display: 'flex', flexDirection: 'row', width: '50%', marginBottom: '2px' }}>
             <Text style={{ fontSize: 12, marginRight: '30px' }} >Down Payment:</Text>
-            {false ? <Text style={styles.label}>{formData?.sellerSSN}</Text> : <View style={styles.fullWidthLine} />}
+            {formData?.downPayment ? <Text style={styles.label}>${formData?.downPayment}</Text> : <View style={styles.fullWidthLine} />}
           </View>
           <View style={{ display: 'flex', flexDirection: 'row', width: '50%', marginBottom: '2px' }}>
             <Text style={{ fontSize: 12, marginRight: '30px' }} >Annual property:</Text>
-            {false ? <Text style={styles.label}>{formData?.sellerSSN}</Text> : <View style={styles.fullWidthLine} />}
+            {formData?.annualPropertyTax ? <Text style={styles.label}>${formData?.annualPropertyTax}</Text> : <View style={styles.fullWidthLine} />}
           </View>
         </View>
         <View style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
           <View style={{ display: 'flex', flexDirection: 'row', width: '50%', marginBottom: '2px' }}>
-            <Text style={{ fontSize: 12, marginRight: '30px' }} >Seller concesion :</Text>
-            {false ? <Text style={styles.label}>{formData?.sellerSSN}</Text> : <View style={styles.fullWidthLine} />}
+            <Text style={{ fontSize: 12, marginRight: '30px' }} >Seller concesion:</Text>
+            {formData?.sellersConcession ? <Text style={styles.label}>${formData?.sellersConcession}</Text> : <View style={styles.fullWidthLine} />}
           </View>
         </View>
 
@@ -599,10 +599,10 @@ const CaseExportPdfDocument = ({ formData }) => (
                     stroke="black"
                     strokeWidth="5"
                   />
-                  <Path
+                  { formData?.secfLease && <Path
                     d="M35 60 L45 75 L75 35"
                     style={styles.tickMark}
-                  />
+                  />}
                 </Svg>
               </View>
               <Text style={{ marginLeft: 2, fontSize: 12, marginRight: 2 }}>on/or about</Text>
@@ -619,10 +619,10 @@ const CaseExportPdfDocument = ({ formData }) => (
                     stroke="black"
                     strokeWidth="5"
                   />
-                  <Path
+                  { formData?.secfLease && <Path
                     d="M35 60 L45 75 L75 35"
                     style={styles.tickMark}
-                  />
+                  />}
                 </Svg>
               </View>
               <Text style={{ marginLeft: 2, fontSize: 12, marginRight: 2 }}>before</Text>
@@ -639,10 +639,10 @@ const CaseExportPdfDocument = ({ formData }) => (
                     stroke="black"
                     strokeWidth="5"
                   />
-                  <Path
+                  { formData?.secfLease && <Path
                     d="M35 60 L45 75 L75 35"
                     style={styles.tickMark}
-                  />
+                  />}
                 </Svg>
               </View>
               <Text style={{ marginLeft: 2, fontSize: 12, marginRight: 2 }}>T.O.E</Text>
@@ -667,10 +667,10 @@ const CaseExportPdfDocument = ({ formData }) => (
                     stroke="black"
                     strokeWidth="5"
                   />
-                  <Path
+                  { formData?.engineerInspection == true && <Path
                     d="M35 60 L45 75 L75 35"
                     style={styles.tickMark}
-                  />
+                  />}
                 </Svg>
               </View> : <Text style={{ marginLeft: 2, fontSize: 12, marginRight: 2 }}>✓</Text>}
               <Text style={{ marginLeft: 2, fontSize: 12, marginRight: 2 }}>Yes</Text>
@@ -687,10 +687,10 @@ const CaseExportPdfDocument = ({ formData }) => (
                     stroke="black"
                     strokeWidth="5"
                   />
-                  <Path
+                  { formData?.engineerInspection == false && <Path
                     d="M35 60 L45 75 L75 35"
                     style={styles.tickMark}
-                  />
+                  />}
                 </Svg>
               </View>
               <Text style={{ marginLeft: 2, fontSize: 12, marginRight: 2 }}>No</Text>
@@ -815,21 +815,26 @@ const CaseExportPdf = ({ onClose }) => {
     maintanceFee: premisesData?.maintenanceFee ? premisesData?.maintenanceFee : false,
     maintenanceFeePer: premisesData?.maintenanceFeePer ? maintenanceFeePer[premisesData?.maintenanceFeePer] : false,
     assessment: premisesData?.assessments ? premisesData?.assessments : false,
-    assessmentPaidBy: premisesData?.assessmentsPaidById ? premisesData?.assessmentsPaidById : false,
+    assessmentsPer: premisesData?.assessmentsPer ? maintenanceFeePer[premisesData?.assessmentsPer] : false,
     managingCompany: premisesData?.managingCompany ? premisesData?.managingCompany : false,
     onefName: premisesData?.tenant?.length > 0 ? premisesData?.tenant[0]?.firstName : false,
     onefRent: premisesData?.tenant?.length > 0 ? premisesData?.tenant[0]?.firstName : false,
     onefSec: premisesData?.tenant?.length > 0 ? premisesData?.tenant[0]?.firstName : false,
-    onefLease: premisesData?.tenant?.length > 0 ? premisesData?.tenant[0]?.firstName : false,
+    onefLease: premisesData?.tenant?.length > 0 ? false : false,
     secfName: premisesData?.tenant?.length > 1 ? premisesData?.tenant[1]?.firstName : false,
     secfRent: premisesData?.tenant?.length > 1 ? premisesData?.tenant[1]?.firstName : false,
     secfSec: premisesData?.tenant?.length > 1 ? premisesData?.tenant[1]?.firstName : false,
-    secfLease: premisesData?.tenant?.length > 1 ? premisesData?.tenant[1]?.firstName : false,
+    secfLease: premisesData?.tenant?.length > 1 ? false : false,
     closingDate: caseObj?.closingDate ? format(caseObj?.closingDate, 'MMMM dd, yyyy') : false,
     engineerInspection: premisesData?.needInspection == 1 ? true : false,
     engineerInspectionDate: premisesData?.inspectionDate ? format(premisesData?.inspectionDate, 'MMMM dd, yyyy') : false,
     sellerAttorney: premisesData?.isTwoFamily == 1 ? true : false,
     buyerAttorney: premisesData?.isTwoFamily == 1 ? true : false,
+    purchaserPrice: caseObj?.purchaserPrice ? caseObj?.purchaserPrice : false,
+    downPayment: caseObj?.downPayment ? caseObj?.downPayment : false,
+    mortgageAmount: caseObj?.mortgageAmount ? caseObj?.mortgageAmount : false,
+    annualPropertyTax: caseObj?.annualPropertyTax ? caseObj?.annualPropertyTax : false,
+    sellersConcession: caseObj?.sellersConcession ? caseObj?.sellersConcession : false,
   };
 
 
