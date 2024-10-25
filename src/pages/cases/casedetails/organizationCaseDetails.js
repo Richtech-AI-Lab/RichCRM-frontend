@@ -14,7 +14,7 @@ import { updateCaseContactRequest } from "../../../redux/actions/caseAction";
 import { updateOrganizationByIdRequest } from "../../../redux/actions/organizationActions";
 
 
-const OrganizationCaseDetails = ({ isEdit, setIsEdit , caseType,setDirtyFormnik}) => {
+const OrganizationCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik }) => {
   const dispatch = useDispatch();
   const formikRef = useRef();
   const { cases } = useSelector((state) => state.case.casesData);
@@ -22,6 +22,7 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit , caseType,setDirtyFormnik}
   const { organization } = useSelector((state) => state.organization);
   const organizationDetails = organization?.data?.length > 0 ? organization?.data : null;
   const attorneyDetails = useSelector((state) => state.contact.attorney);
+  const realtorDetails = useSelector((state) => state.contact.realtor);
   // const { data } = useSelector((state) => state?.utils?.address);
   // const addressDetails = data?.length > 0 ? data : null;
 
@@ -66,7 +67,7 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit , caseType,setDirtyFormnik}
     toggleEdit()
     setDirtyFormnik(false)
   }
-  
+
   const handleAttorneysChange = (attorneys, handleChange) => {
     handleChange({ target: { name: 'attorneys', value: attorneys } });
   };
@@ -109,8 +110,8 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit , caseType,setDirtyFormnik}
         (<Formik
           initialValues={initialOrganizationValues}
           onSubmit={handleSubmit}
-        validationSchema={validationSchema}
-        innerRef={formikRef}
+          validationSchema={validationSchema}
+          innerRef={formikRef}
         >
           {({
             handleChange,
@@ -122,30 +123,36 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit , caseType,setDirtyFormnik}
             dirty
           }) => {
             setDirtyFormnik(dirty)
-            return(
-            <form onSubmit={handleSubmit} className="participant-form">
-              <div className="grid grid-cols-12 gap-6">
-                <div className="col-span-6">
-                  <PurchaserOrganizationForm title={ caseType ? "Seller" : "Purchaser"} handleChange={handleChange} setFieldValue={setFieldValue} values={values} form={{ errors, touched }} initialValues={initialOrganizationValues} />
-                </div>
-                <div className="col-span-6">
-                <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} attorneyDetails={attorneyDetails} errors={errors.attorneys || []}
-                    touched={touched.attorneys || []} setAttorneys={(attorneys) => handleAttorneysChange(attorneys, handleChange)} />
-                  {/* <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} errors={errors.attorneys || []}
+            return (
+              <form onSubmit={handleSubmit} className="participant-form">
+                <div className="grid grid-cols-12 gap-6">
+                  <div className="col-span-6">
+                    <PurchaserOrganizationForm title={caseType ? "Seller" : "Purchaser"} handleChange={handleChange} setFieldValue={setFieldValue} values={values} form={{ errors, touched }} initialValues={initialOrganizationValues} />
+                  </div>
+                  <div className="col-span-6">
+                    <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} attorneyDetails={attorneyDetails} errors={errors.attorneys || []}
+                      touched={touched.attorneys || []} setAttorneys={(attorneys) => handleAttorneysChange(attorneys, handleChange)} />
+                    {/* <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} errors={errors.attorneys || []}
                     touched={touched.attorneys || []} setAttorneys={(attorneys) => handleAttorneysChange(attorneys, handleChange)} />
                   <CaseCardDetails items={titleMortgageItems} title="Title & Mortgage" handle={handleChange} /> */}
-                </div>
-              </div >
-              <FormButton onSave={handleSubmit} onCancel={toggleEdit} />
-            </form>
-          )}}
+                  </div>
+                </div >
+                <FormButton onSave={handleSubmit} onCancel={toggleEdit} />
+              </form>
+            )
+          }}
         </Formik>)
         :
         (<div className="grid grid-cols-12 gap-6">
-          <div className="col-span-6"><ParticipantBothDetail organization={organizationDetails} title={ caseType  ? "Seller" : "Purchaser"} /></div>
-          {attorneyDetails?.length > 0  && <div className="col-span-6"><AttorneyDetails  attorneyDetails={attorneyDetails}  title={"Attorney"}  /></div>}
-          </div>)}
-    
+          <div className="col-span-6">
+            <ParticipantBothDetail organization={organizationDetails} title={caseType ? "Seller" : "Purchaser"} />
+          </div>
+          <div className="col-span-6">
+            {attorneyDetails?.length > 0 && <AttorneyDetails attorneyDetails={attorneyDetails} title={"Attorney"} />}
+            {realtorDetails?.length > 0 && <AttorneyDetails attorneyDetails={realtorDetails} title={"Realtor"} />}
+          </div>
+        </div>)}
+
     </>
   );
 };

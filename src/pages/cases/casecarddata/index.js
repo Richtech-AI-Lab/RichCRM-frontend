@@ -21,7 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchClientByIdRequest } from "../../../redux/actions/clientActions";
 import { fetchAddressByIdRequest } from "../../../redux/actions/utilsActions";
 import { fetchOrganizationByIdRequest } from "../../../redux/actions/organizationActions";
-import { fetchAttorneyByIdsRequest } from "../../../redux/actions/contactActions";
+import { fetchAttorneyByIdsRequest, fetchRealtorByIdsRequest } from "../../../redux/actions/contactActions";
 
 const CaseCardData = () => {
   const navigate = useNavigate();
@@ -89,7 +89,7 @@ const CaseCardData = () => {
           caseId: localStorage.getItem('c_id'),
           contactType: 0
         };
-        dispatch(fetchAttorneyByIdsRequest(payload));
+        dispatch(fetchRealtorByIdsRequest(payload));
       } catch (error) {
         console.error("failed to fetch attorney", error);
       }
