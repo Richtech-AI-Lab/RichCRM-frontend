@@ -57,11 +57,26 @@ const CaseCardData = () => {
     fetchPremisesByQueryId();
   }, [casedetails.premisesId]);
 
+  // useEffect(() => {
+  //   const fetchAttorneyById = async () => {
+  //     try {
+  //       const payload = {
+  //         contacts: casedetails && casedetails.contacts
+  //       };
+  //       dispatch(fetchAttorneyByIdsRequest(payload));
+  //     } catch (error) {
+  //       console.error("failed to fetch attorney", error);
+  //     }
+  //   };
+  //   fetchAttorneyById()
+  // }, [casedetails.contacts]);
+
   useEffect(() => {
     const fetchAttorneyById = async () => {
       try {
         const payload = {
-          contacts: casedetails && casedetails.contacts
+          caseId: localStorage.getItem('c_id'),
+          contactType: 1
         };
         dispatch(fetchAttorneyByIdsRequest(payload));
       } catch (error) {
@@ -69,8 +84,22 @@ const CaseCardData = () => {
       }
     };
     fetchAttorneyById()
-  }, [casedetails.contacts]);
+  }, [casedetails]);
 
+  // useEffect(() => {
+  //   const fetchRealtorById = async () => {
+  //     try {
+  //       const payload = {
+  //         caseId: localStorage.getItem('c_id'),
+  //         contactType: 1
+  //       };
+  //       dispatch(fetchAttorneyByIdsRequest(payload));
+  //     } catch (error) {
+  //       console.error("failed to fetch attorney", error);
+  //     }
+  //   };
+  //   fetchRealtorById()
+  // }, [casedetails]);
 
   useEffect(() => {
     if (premisesDetails && premisesDetails?.addressId) {

@@ -23,14 +23,17 @@ function* getContactByType(action) {
 
 function* getAttorneyByIds(action) {
   try {
-    const {contacts} = action.payload;
-    const attorneyListRes = yield all(
-      contacts.map(id =>
-        call(getRequest, `${API_ENDPOINTS.FETCH_CONTACT_BY_ID}/${id}`)
-      )
+    const payload= action.payload;
+        // const attorneyListRes = yield all(
+    //   contacts.map(id =>
+    //     call(getRequest, `${API_ENDPOINTS.QUERY_CONTACT_BY_CASE_ID}/${id}`)
+    //   )
+    // );
+    // const attorneyData = attorneyListRes.map(res => res.data.data[0]);
+    const response = yield call(() =>
+      postRequest(API_ENDPOINTS.QUERY_CONTACT_BY_CASE_ID, payload)
     );
-    const attorneyData = attorneyListRes.map(res => res.data.data[0]);
-    yield put(fetchAttorneyByIdsSuccess(attorneyData));
+    yield put(fetchAttorneyByIdsSuccess(response.data.data));
   } catch (error) {
     handleError(error)
     yield put(fetchAttorneyByIdsFailure(error.response.data || error));
