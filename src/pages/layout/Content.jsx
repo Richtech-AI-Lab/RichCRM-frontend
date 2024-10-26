@@ -25,7 +25,7 @@ const Content = () => {
       <Route path="/contacts" element={<Contacts />} />
       <Route path="/contactpartner" element={<ContactPartner />} />
       <Route path="/calendar" element={<CalendarPage />} />
-      <Route path="/documents" element={<OneDrive />} />
+      <Route path="/documents" element={<Documents />} />
       <Route path="/settings" element={<Setting />} />
     </Routes>
   );
