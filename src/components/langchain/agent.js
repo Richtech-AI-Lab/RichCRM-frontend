@@ -8,7 +8,7 @@ import { JsonOutputParser } from "@langchain/core/output_parsers";
 import { HumanMessage, AIMessage } from "@langchain/core/messages";
 import { set } from "lodash";
 
-import { responseSchema, updateCasesTool, getCasesByKeywordTool } from "./tools";
+import { responseSchema, updateCasesTool, fetchCasesByKeywordTool, updateClientTool } from "./tools";
 
 const LangChainAgent = () => {
     const prompt = [
@@ -18,16 +18,16 @@ const LangChainAgent = () => {
         ['placeholder', '{agent_scratchpad}']
     ]; // prompt ["system", "..."], ["human", "..."]
     const [agentExecutor, setAgentExecutor] = useState(null);
-    const tools = [updateCasesTool, getCasesByKeywordTool];
+    const tools = [updateCasesTool, fetchCasesByKeywordTool, updateClientTool];
     const [chatHistory, setChatHistory] = useState([]);
     const [messages, setMessages] = useState([]);
 
     useEffect(() => {
         const llm = new ChatOpenAI({
-            // openAIApiKey: "",
-            model: "gpt-4o",
+            openAIApiKey: "",
+            model: "gpt-4",
             temperature: 0,
-        })
+        });
         const agent = createToolCallingAgent({
             llm,
             tools,
