@@ -53,27 +53,62 @@ const SideNav = ({ isDrawerOpen, toggleDrawer, setTitle }) => {
                 />
       <Sidebar.Items className="mt-10 sidebar-items flex flex-col justify-between h-[calc(100vh-140px)]">
         <Sidebar.ItemGroup>
-          <Sidebar.Item as={Link} to={ROUTES.DASHBOARD} icon={PiLayout} className={isActive(ROUTES.DASHBOARD) ? "active-item" : ""} onClick={() => handleTitleChange('Dashboard')}>
-            Dashboard
+          <Sidebar.Item as={Link} to={ROUTES.DASHBOARD}  className={isActive(ROUTES.DASHBOARD) ? "sidebar-item active-item" : "sidebar-item"} onClick={() => handleTitleChange('Dashboard')}>
+          <span className="flex items-center">
+          <img
+                  src={IMAGES.dbIcon}
+                  alt="logo"
+                  className=""
+                />
+            <span className="item-title">Dashboard</span>
+          </span>
           </Sidebar.Item>
-          <Sidebar.Item as={Link} to={ROUTES.CASES} icon={FiFileText}  className={isActive(ROUTES.CASES) ? "active-item" : ""} onClick={() => handleTitleChange('Cases')}>
-            Cases
+          <Sidebar.Item as={Link} to={ROUTES.CASES} className={isActive(ROUTES.CASES) ? "sidebar-item active-item" : "sidebar-item"} onClick={() => handleTitleChange('Cases')}>
+          <span className="flex items-center">
+          <img
+                  src={IMAGES.dbIcon}
+                  alt="logo"
+                  className=""
+                />
+            <span className="item-title">Cases</span>
+          </span>
           </Sidebar.Item>
-          <Sidebar.Item as={Link} to={ROUTES.CALENDAR} icon={BiCalendar} className={isActive(ROUTES.CALENDAR) ? "active-item" : ""} onClick={() => handleTitleChange('Calendar')}>
-            Calender
+          <Sidebar.Item as={Link} to={ROUTES.CALENDAR} className={isActive(ROUTES.CALENDAR) ? "sidebar-item active-item" : "sidebar-item"} onClick={() => handleTitleChange('Calendar')}>
+          <span className="flex items-center">
+          <img
+                  src={IMAGES.dbIcon}
+                  alt="logo"
+                  className=""
+                />
+            <span className="item-title">Calendar</span>
+          </span>
           </Sidebar.Item>
-          <Sidebar.Item as={Link} to={ROUTES.CONTACTS} icon={PiUsersThree} className={isActive(ROUTES.CONTACTS) ? "active-item" : ""} onClick={() => handleTitleChange('Contacts')}>
-            Contacts
+          <Sidebar.Item as={Link} to={ROUTES.CONTACTS} className={isActive(ROUTES.CONTACTS) ? "sidebar-item active-item" : "sidebar-item"} onClick={() => handleTitleChange('Contacts')}>
+          <span className="flex items-center">
+          <img
+                  src={IMAGES.dbIcon}
+                  alt="logo"
+                  className=""
+                />
+            <span className="item-title">Contacts</span>
+          </span>
           </Sidebar.Item>
-          <Sidebar.Item as={Link} to={ROUTES.DOCUMENTS} icon={PiFolderSimple} className={isActive(ROUTES.DOCUMENTS) ? "active-item" : ""} onClick={() => handleTitleChange('Documents')}>
-            Documents
+          <Sidebar.Item as={Link} to={ROUTES.DOCUMENTS} className={isActive(ROUTES.DOCUMENTS) ? "sidebar-item active-item" : "sidebar-item"} onClick={() => handleTitleChange('Documents')}>
+          <span className="flex items-center">
+          <img
+                  src={IMAGES.dbIcon}
+                  alt="logo"
+                  className=""
+                />
+            <span className="item-title">Documents</span>
+          </span>
           </Sidebar.Item>
         </Sidebar.ItemGroup>
         <Sidebar.ItemGroup>
           {/* <Sidebar.Item as={Link} to="/rich-crm/links" icon={PiLinkSimpleHorizontal} className={isActive("/rich-crm/links") ? "active-item" : ""} onClick={() => handleTitleChange('External Links')}>
             External Links
           </Sidebar.Item> */}
-          <Sidebar.Item as={Link} to={ROUTES.SETTINGS} icon={IoSettingsOutline} className={isActive(ROUTES.SETTINGS) ? "active-item" : ""} onClick={() => handleTitleChange('Settings')}>
+          <Sidebar.Item as={Link} to={ROUTES.SETTINGS} icon={IoSettingsOutline} className={isActive(ROUTES.SETTINGS) ? "sidebar-item active-item" : "sidebar-item"} onClick={() => handleTitleChange('Settings')}>
             Settings
           </Sidebar.Item>
         </Sidebar.ItemGroup>
