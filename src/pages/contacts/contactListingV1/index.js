@@ -22,16 +22,18 @@ const ContactListingV1 = ({ active, parent, activeFilter }) => {
   const { loading: loadingContact } = useSelector((state) => state?.contact)
 
   const organization = useSelector((state) => state?.organization?.organization)
+
   const { loading: loadingOrg } = useSelector((state) => state?.organization)
   const itemsPerPage = 10;
-  const totalPages = Math.ceil((active === 0 ? contact?.length : organization?.length) / itemsPerPage);
+  const totalPages = Math?.ceil((active == 0 ? contact?.length : organization?.length) / itemsPerPage);
 
+  // console.log(organization,"organization")
   // Update displayed data based on pagination
-  const paginatedData = (active === 0 ? contact : organization)?.slice(
+  const paginatedData = (active == 0 ? contact : organization)?.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-  console.log(paginatedData, "paginatedData")
+  // console.log(paginatedData, "paginatedData", active, "contact", organization)
 
 
   const headers = {
