@@ -12,6 +12,7 @@ import calendar from "../assets/images/calendar.png"
 import contact from "../assets/images/contact.png"
 import cases from "../assets/images/cases.png"
 import document from "../assets/images/document.png"
+import setting from "../assets/images/setting.png"
 
 export const IMAGES = {
   profile: avatarImage,
@@ -19,6 +20,7 @@ export const IMAGES = {
   addIcon: plusIcon,
   removeIcon: subtractIcon,
   logo:logo,
+  setting: setting,
   contact_avtar:contact_avtar,
   avatarpic : avatarpic,
   searchcase : searchCase,

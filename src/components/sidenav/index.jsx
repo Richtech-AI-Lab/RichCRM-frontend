@@ -153,7 +153,7 @@ const SideNav = ({ isDrawerOpen, toggleDrawer, setTitle }) => {
             onClick={() => handleTitleChange("Settings")}
           >
              <span className="flex items-center">
-              <img src={IMAGES.document} alt="logo" className="" />
+              <img src={IMAGES.setting} alt="logo" className="" />
               <span className="item-title">Setting</span>
             </span>
           </Sidebar.Item>
