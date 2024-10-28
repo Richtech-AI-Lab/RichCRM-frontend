@@ -39,14 +39,20 @@
   .sidebar-items ul li a svg {
     @apply text-secondary-800;
   }
+  .sidebar-item .item-title {
+    @apply pl-3
+  }
+  .sidebar-item span {
+    @apply p-0
+  }
   .active-item {
-    @apply bg-active-blue rounded-[100px] !important;
+    @apply bg-badge-gray rounded-[100px] !important;
   }
   .active-item svg path {
-    @apply text-active-blue-text;
+    @apply text-secondary-800;
   }
   .active-item span {
-    @apply text-active-blue-text;
+    @apply text-secondary-800;
   }
   .card {
     @apply bg-white p-4 rounded-3xl;
@@ -57,7 +63,10 @@
   .sidebar-toggle ul li a{
   @apply justify-start;
   }
-  .sidebar-toggle ul li a span{
+  .sidebar-item img {
+    @apply max-w-5;
+  }
+  .sidebar-toggle .sidebar-item .item-title{
     @apply hidden;
   }
   /* .sidebar-toggle .sidebar-logo{
@@ -152,13 +161,13 @@
     @apply ring-transparent
   }
   .task-checklist {
-    @apply border-b border-b-border pl-6 pr-4
+    @apply border-b border-b-border pl-4 pr-2
   }
   .task-checklist:last-child {
     @apply border-b-0
   }
   .task-checklist input[type="checkbox"] {
-    @apply bg-white border-black w-6 h-6
+    @apply bg-white border-2 border-secondary-800 w-[18px] h-[18px] rounded-sm
   }
   .task-checklist input[type="checkbox"]:checked {
     @apply bg-primary2 border-primary2
@@ -221,12 +230,10 @@
     @apply  bg-input-surface
   }
   .items-dropdown > button {
-    @apply bg-white shadow-shadow-light py-[10px] px-5 rounded-full flex items-center text-base text-secondary-800 font-medium
+    @apply bg-bg-gray-400 py-[6px] px-[14px] rounded-full flex items-center text-base text-secondary-800 font-medium
   }
   .items-dropdown > button:disabled {
-    @apply bg-gray-300 shadow-shadow-light py-[10px] px-5 rounded-full flex items-center text-base text-secondary-800 font-medium;
-    color: #000000;
-    background: var(--State-Layers-On-Surface-Opacity-08, rgba(26, 28, 31, 0.08));
+    @apply opacity-40;
   }
   .items-dropdown ul li button {
     @apply hover:bg-bg-gray-200

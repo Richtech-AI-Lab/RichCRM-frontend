@@ -282,11 +282,11 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
   return (
     <>
       <div className="border-t-2 border-black-10">
-        <li className="flex justify-between items-center mb-5 pb-5 task-checklist mt-2">
+        <li className="flex justify-between items-center mb-3 task-checklist mt-3">
           <div className="flex items-center gap-2 custom-radio">
             <Checkbox id={checkboxId} checked={taskStatus === 2} className="mr-6" onChange={() => handleChangeTaskStatus()} />
-            <Label htmlFor={checkboxId} className="flex items-center lg:text-base xl:text-base text-title font-medium">
-              {displayIcon && <span className="mr-2 text-2xl">{displayIcon}</span>}
+            <Label htmlFor={checkboxId} className="flex items-center lg:text-base xl:text-base text-secondary-800 font-medium">
+              {displayIcon && <span className="mr-2 text-3xl">{displayIcon}</span>}
               {/* {stageId }: */}
               {actionInfo}
             </Label>
