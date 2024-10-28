@@ -8,6 +8,11 @@ import avatarpic from "../assets/images/avatarpic.png";
 import searchCase from "../assets/images/searchCase.svg";
 import searchUser from "../assets/images/searchUser.svg";
 import dbIcon from "../assets/images/db-icon.png"
+import calendar from "../assets/images/calendar.png"
+import contact from "../assets/images/contact.png"
+import cases from "../assets/images/cases.png"
+import document from "../assets/images/document.png"
+
 export const IMAGES = {
   profile: avatarImage,
   searchIcon: searchIcon,
@@ -18,5 +23,9 @@ export const IMAGES = {
   avatarpic : avatarpic,
   searchcase : searchCase,
   searchuser: searchUser,
-  dbIcon: dbIcon
+  dbIcon: dbIcon,
+  cases: cases,
+  contact: contact,
+  calendar: calendar,
+  document: document
 };
