@@ -148,7 +148,7 @@ const ContactListingV1 = ({ active, parent, activeFilter }) => {
           </Table.Head>
         </Table>
       </div>
-      <div className={`overflow-x-auto h-[68vh] ${parent === 'dashboard' ? '' : 'contacts-table'}`}>
+      <div className={`overflow-x-auto ${parent === 'dashboard' ? '' : 'contacts-table h-[calc(100vh-340px)]'}`}>
         <XSpinnerLoader loading={loadingContact || loadingOrg} size="lg" />
         <Table>
           {active === 0 && contact?.length > 0 ? (
@@ -223,15 +223,16 @@ const ContactListingV1 = ({ active, parent, activeFilter }) => {
           )}
         </Table>
       </div>
-      {paginatedData?.length > 0 && <div className="flex overflow-x-auto sm:justify-center">
+      {paginatedData?.length > 0 && <div className="flex overflow-x-auto">
         <Pagination
           layout="pagination"
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={onPageChange}
-          previousLabel="Go back"
-          nextLabel="Go forward"
+          // previousLabel="Go back"
+          // nextLabel="Go forward"
           showIcons
+          className="pagination-btm"
         />
       </div>}
     </>

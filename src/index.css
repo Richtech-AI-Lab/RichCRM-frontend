@@ -313,4 +313,10 @@
   .export-pdf-modal > div {
     @apply max-w-[1200px]
   }
+  .pagination-btm ul {
+    @apply shadow-shadow-light
+  }
+  .pagination-btm ul button {
+    @apply border-0 p-[14px] bg-white
+  }
 }
