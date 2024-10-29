@@ -75,7 +75,7 @@ const ContactCard = ({
       <Accordion className="border-0">
         {clientDetails?.map((data, index) => (
           <AccordionPanel key={index}>
-            <AccordionTitle className="py-3 px-4 border-t border-badge-gray rounded-none first:rounded-t-none bg-white hover:bg-white focus:ring-transparent contact-accordian-title">
+            <AccordionTitle className="py-3 px-4 rounded-bl-[10px] rounded-br-[10px] border-t border-badge-gray first:rounded-t-none bg-white hover:bg-white focus:ring-transparent contact-accordian-title">
               <div className="flex items-center">
                 <img
                   src={data?.profileImage || IMAGES.profile}
