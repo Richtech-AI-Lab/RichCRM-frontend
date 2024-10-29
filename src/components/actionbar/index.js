@@ -115,7 +115,7 @@ const Actionbar = ({ onFilterChange }) => {
   // };
 
   const handleFilterChange = (filter) => {
-    console.log(filter)
+    // console.log(filter)
     setActiveFilter(filter);
     if (onFilterChange) {
       onFilterChange(filter);
@@ -169,7 +169,7 @@ const Actionbar = ({ onFilterChange }) => {
   };
 
   const handleApply = () => {
-    console.log(searchArr)
+    // console.log(searchArr)
     // if(searchArr.length > 0){
       let mainCases=filterCases(cases, searchArr)
       dispatch(setSearchCases(mainCases, true))
