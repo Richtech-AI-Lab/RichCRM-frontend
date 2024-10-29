@@ -229,11 +229,20 @@
   .contacts-table.addFromContactModal td {
     @apply  bg-input-surface
   }
+  
+  .items-dropdown.option-dropdown > button {
+    @apply bg-bg-gray-400 py-[6px] px-[14px]
+  }
+  .items-dropdown.option-dropdown  > button:disabled {
+    @apply opacity-40;
+  }
   .items-dropdown > button {
-    @apply bg-bg-gray-400 py-[6px] px-[14px] rounded-full flex items-center text-base text-secondary-800 font-medium
+    @apply bg-white shadow-shadow-light py-[10px] px-5 rounded-full flex items-center text-base text-secondary-800 font-medium
   }
   .items-dropdown > button:disabled {
-    @apply opacity-40;
+    @apply bg-gray-300 shadow-shadow-light py-[10px] px-5 rounded-full flex items-center text-base text-secondary-800 font-medium;
+    color: #000000;
+    background: var(--State-Layers-On-Surface-Opacity-08, rgba(26, 28, 31, 0.08));
   }
   .items-dropdown ul li button {
     @apply hover:bg-bg-gray-200

@@ -297,7 +297,7 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
                 {taskStatusColor?.label}
               </span>
             </p>
-            <div className="items-dropdown single-select mt-3">
+            <div className="items-dropdown single-select option-dropdown mt-3">
               <NewCaseDropdown
                 disabled={disabled}
                 defaultLabel="Options"
