@@ -3,7 +3,7 @@ import CardItem from "../carditem";
 
 const ClosedCasesGrid = ({ closedCases }) => {
   return (
-    <div className="card bg-card-300 px-2 py-3">
+    <div className="card bg-card-300 px-2 py-3 min-h-[calc(100vh-230px)]">
       <div className="grid grid-cols-4 gap-2">
         {closedCases.map((item, index) => (
           <CardItem

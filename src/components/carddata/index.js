@@ -27,7 +27,7 @@ const CardData = ({ title, count, items, cardClass, onClick, includeClasses, car
     navigate(ROUTES.CASES_DATA, { state: { casedetails } });
   };
   return (
-    <div className={`card ${cardClass} p-0`} >
+    <div className={`card ${cardClass} p-0 min-h-[calc(100vh-230px)]`} >
       <div className="flex justify-between items-center mb-[10px] p-4 bg-white rounded-tl-3xl rounded-tr-3xl shadow-shadow-light" style={{ cursor: 'pointer' }} onClick={handleCardClick}>
         <div className="flex">
           <p className="text-secondary-800 text-base leading-[30px] font-semibold mr-2"  >
