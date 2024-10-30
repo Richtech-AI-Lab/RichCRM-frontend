@@ -319,4 +319,11 @@
   .pagination-btm ul button {
     @apply border-0 p-[14px] bg-white
   }
+  .custom-datepicker .react-datepicker__header {
+    background-color: #F3F3F8;
+  }
+  /* .custom-datepicker .react-datepicker__header {
+    background-color: #F3F3F8;
+  } */
+
 }
