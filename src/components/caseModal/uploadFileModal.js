@@ -16,7 +16,7 @@ const fileTypeOptions = [
   // Add more options as needed
 ];
 
-const UploadFileModal = ({ onClose, fileName = "" }) => {
+const UploadFileModal = ({ onClose, fileName = "", onUpload = () => {} }) => {
   const { instance, accounts, inProgress } = useMsal();
   const [account, setAccount] = useState(instance.getActiveAccount());
   const [loader, setLoader] = useState(false)
@@ -153,6 +153,7 @@ const UploadFileModal = ({ onClose, fileName = "" }) => {
     const uploadStatus = await checkAndUploadFileToRoot(folderName, file, customFileName);
     if(uploadStatus){
       onClose()
+      onUpload(2)
     }
     setLoader(false)
   };
