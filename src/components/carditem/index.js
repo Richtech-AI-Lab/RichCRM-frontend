@@ -33,7 +33,7 @@ const CardItem = ({
         break;
       case 3:
         badgeColor = 'red';
-        badgeText = 'No Response';
+        badgeText = 'Warning';
         break;
       case 4:
         badgeColor = 'green';

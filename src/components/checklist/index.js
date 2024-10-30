@@ -297,7 +297,7 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
                 {taskStatusColor?.label}
               </span>
             </p>
-            <div className="items-dropdown single-select mt-3">
+            <div className="items-dropdown single-select option-dropdown mt-3">
               <NewCaseDropdown
                 disabled={disabled}
                 defaultLabel="Options"
@@ -320,7 +320,7 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
           </div>
         </li>
       </div>
-      {isUploadFileModalOpen && <UploadFileModal fileName={fileName} onClose={toggleUploadFileModal} />}
+      {isUploadFileModalOpen && <UploadFileModal fileName={fileName} onUpload={(value) => handleChangeTaskStatus(value)} onClose={toggleUploadFileModal} />}
       {isCompose ? <ComposeEmail templates={templates} onClose={toggleComposeModal} onSendEmail={(value) => handleChangeTaskStatus(value)} /> : ""}
     </>
   );

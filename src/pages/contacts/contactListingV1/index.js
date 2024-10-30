@@ -24,7 +24,7 @@ const ContactListingV1 = ({ active, parent, activeFilter }) => {
   const organization = useSelector((state) => state?.organization?.organization)
 
   const { loading: loadingOrg } = useSelector((state) => state?.organization)
-  const itemsPerPage = 10;
+  const itemsPerPage = 20;
   const totalPages = Math?.ceil((active == 0 ? contact?.length : organization?.length) / itemsPerPage);
 
   // console.log(organization,"organization")
@@ -40,6 +40,11 @@ const ContactListingV1 = ({ active, parent, activeFilter }) => {
     [addFromContactV1Tab.individuals]: ["Name", "Tag", "Organization", "Position", "Email", "Cell Phone"],
     [addFromContactV1Tab.organizations]: ["Name", "Tag", "Website", "Email", "Cell Phone"]
   };
+
+  const widthTabs = {
+    [addFromContactV1Tab.individuals]: ["19.17%", "14.17%", "19.17%", "14.17%", "19.17%", "14.17%"],
+    [addFromContactV1Tab.organizations]: ["22%", "10%", "29%", "22%", "17%"]
+  };
   const onPageChange = (page) => setCurrentPage(page);
   const handleNavigation = (item) => {
     if (active == 0) {
@@ -53,6 +58,7 @@ const ContactListingV1 = ({ active, parent, activeFilter }) => {
     }
   }
   const header = headers[active] ?? ["Name", "Position", "Company", "Email", "Cell Phone"];
+  const width = widthTabs[active] ?? ["20%", "20%", "20%", "20%", "20%"];
 
   useEffect(() => {
     const fetchContactByType = async () => {
@@ -133,23 +139,26 @@ const ContactListingV1 = ({ active, parent, activeFilter }) => {
 
   return (
     <>
-
-    <div className={`overflow-x-auto h-[68vh] ${parent === 'dashboard' ? '' : 'contacts-table db-contacts'}`}>
+      <div className={`mb-2 ${parent === 'dashboard' ? '' : 'contacts-table'}`}>
+        <Table>
+          <Table.Head>
+            {header.map((key, index) => (
+              <Table.HeadCell  width={width[index]} key={index}>{key}</Table.HeadCell>
+            ))}
+          </Table.Head>
+        </Table>
+      </div>
+      <div className={`overflow-x-auto ${parent === 'dashboard' ? '' : 'contacts-table h-[calc(100vh-340px)]'}`}>
         <XSpinnerLoader loading={loadingContact || loadingOrg} size="lg" />
         <Table>
           {active === 0 && contact?.length > 0 ? (
             <>
-              <Table.Head>
-                {header.map((key, index) => (
-                  <Table.HeadCell key={index}>{key}</Table.HeadCell>
-                ))}
-              </Table.Head>
               <Table.Body className="divide-y">
                 {paginatedData?.map((user, index) => (
                   <Table.Row key={index} className="bg-white dark:border-gray-700 dark:bg-gray-800 cursor-pointer"
                     onClick={() => handleNavigation(user)}
                   >
-                    <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                    <Table.Cell width={width[0]} className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                       <div className="flex items-center">
                         <img src={IMAGES.contact_avtar} alt="Profile" className="mr-3 rounded-full" />
                         <span className="left-txt font-medium text-secondary-800">
@@ -158,33 +167,28 @@ const ContactListingV1 = ({ active, parent, activeFilter }) => {
                       </div>
                     </Table.Cell>
                     {header.includes("Tag") && (
-                      <Table.Cell>
+                      <Table.Cell width={width[1]}>
                         <span className={`bg-badge-${getTaskLabelAndColor(user.contactType, "color")} text-secondary-100 text-sm font-semibold py-1 px-3 rounded-full inline-block`}>
                           {getTaskLabelAndColor(user.contactType, "label")}
                         </span>
                       </Table.Cell>
                     )}
-                    {header.includes("Organization") && <Table.Cell>{user.company}</Table.Cell>}
-                    {header.includes("Position") && <Table.Cell>{user.position}</Table.Cell>}
-                    {header.includes("Email") && <Table.Cell>{user.email}</Table.Cell>}
-                    {header.includes("Cell Phone") && <Table.Cell>{user.cellNumber}</Table.Cell>}
+                    {header.includes("Organization") && <Table.Cell width={width[2]}>{user.company}</Table.Cell>}
+                    {header.includes("Position") && <Table.Cell width={width[3]}>{user.position}</Table.Cell>}
+                    {header.includes("Email") && <Table.Cell width={width[4]}>{user.email}</Table.Cell>}
+                    {header.includes("Cell Phone") && <Table.Cell width={width[5]}>{user.cellNumber}</Table.Cell>}
                   </Table.Row>
                 ))}
               </Table.Body>
             </>
           ) : active === 1 && organization?.length > 0 ? (
             <>
-              <Table.Head>
-                {header.map((key, index) => (
-                  <Table.HeadCell key={index}>{key}</Table.HeadCell>
-                ))}
-              </Table.Head>
               <Table.Body className="divide-y">
                 {organization?.map((org, index) => (
                   <Table.Row key={index} className="bg-white dark:border-gray-700 dark:bg-gray-800 cursor-pointer"
                     onClick={() => handleNavigation(org)}
                   >
-                    <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                    <Table.Cell width={width[0]} className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                       <div className="flex items-center">
                         <img src={IMAGES.contact_avtar} alt="Profile" className="mr-3 rounded-full" />
                         <span className="left-txt font-medium text-secondary-800">
@@ -193,15 +197,15 @@ const ContactListingV1 = ({ active, parent, activeFilter }) => {
                       </div>
                     </Table.Cell>
                     {header.includes("Tag") && (
-                      <Table.Cell>
+                      <Table.Cell width={width[1]}>
                         <span className="bg-badge-yellow text-secondary-100 text-sm font-semibold py-1 px-3 rounded-full inline-block">
                           {ORGANIZATION_TYPE[org?.organizationType]}
                         </span>
                       </Table.Cell>
                     )}
-                    {header.includes("Website") && <Table.Cell>{org?.website}</Table.Cell>}
-                    {header.includes("Email") && <Table.Cell>{org?.email}</Table.Cell>}
-                    {header.includes("Cell Phone") && <Table.Cell>{org?.cellNumber}</Table.Cell>}
+                    {header.includes("Website") && <Table.Cell width={width[2]}>{org?.website}</Table.Cell>}
+                    {header.includes("Email") && <Table.Cell width={width[3]}>{org?.email}</Table.Cell>}
+                    {header.includes("Cell Phone") && <Table.Cell width={width[4]}>{org?.cellNumber}</Table.Cell>}
                   </Table.Row>
                 ))}
               </Table.Body>
@@ -218,19 +222,20 @@ const ContactListingV1 = ({ active, parent, activeFilter }) => {
             </div>
           )}
         </Table>
-    </div>
-          {paginatedData?.length > 0 && <div className="flex overflow-x-auto sm:justify-center">
-            <Pagination
-              layout="pagination"
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={onPageChange}
-              previousLabel="Go back"
-              nextLabel="Go forward"
-              showIcons
-            />
-          </div>}
-          </>
+      </div>
+      {paginatedData?.length > 0 && <div className="flex overflow-x-auto">
+        <Pagination
+          layout="pagination"
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={onPageChange}
+          // previousLabel="Go back"
+          // nextLabel="Go forward"
+          showIcons
+          className="pagination-btm"
+        />
+      </div>}
+    </>
   );
 };
 

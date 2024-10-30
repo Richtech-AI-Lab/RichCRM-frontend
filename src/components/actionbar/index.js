@@ -19,9 +19,30 @@ const Actionbar = ({ onFilterChange }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState("Open");
   const [searchArr, setSearchArr] = useState([]);
+
   const { cases } = useSelector((state) => state.case.casesData);
   // const filteredCases = cases?.filter((caseItem) => caseItem.stage === card.value);
 
+  useEffect(() => {
+    // Set the searchArr based on the activeFilter value
+    if (activeFilter === "Open") {
+      setSearchArr([
+        "todo",
+        "warning",
+        "waiting",
+        "finished",
+        "selling",
+        "purchasing",
+      ]);
+    } else {
+      setSearchArr([
+        "last30Days",
+        "2024",
+        "selling",
+        "purchasing",
+      ]);
+    }
+  }, [activeFilter]); 
 
   useEffect(()=>{
     if(activeFilter==="Open"){
@@ -94,10 +115,27 @@ const Actionbar = ({ onFilterChange }) => {
   // };
 
   const handleFilterChange = (filter) => {
+    // console.log(filter)
     setActiveFilter(filter);
     if (onFilterChange) {
       onFilterChange(filter);
-      setSearchArr([])
+      if(activeFilter==="Open"){
+        setSearchArr([
+          "todo",
+          "warning",
+          "waiting",
+          "finished",
+          "selling",
+          "purchasing",
+        ]);
+      }else{
+        setSearchArr([
+          "last30Days",
+          "2024",
+          "selling",
+          "purchasing",
+        ]);
+      }
       dispatch(setSearchCases([]))
     }
   };
@@ -107,7 +145,9 @@ const Actionbar = ({ onFilterChange }) => {
   };
 
   const filterCases = (cases, searchArr) => {
-
+    if(searchArr?.length == 0 ){
+      return cases
+    }
     let data=cases?.filter(caseRecord => {
 
       const isTodo = searchArr?.includes("todo") && caseRecord.caseStatus=== 0 ;
@@ -124,20 +164,41 @@ const Actionbar = ({ onFilterChange }) => {
 
       return isSelling || isPurchasing ||  isWarning || isWaiting || isFinished || isTodo;
     });
-
+    // console.log(data,"dd")
     return data;
   };
 
   const handleApply = () => {
-    if(searchArr.length > 0){
+    // console.log(searchArr)
+    // if(searchArr.length > 0){
       let mainCases=filterCases(cases, searchArr)
       dispatch(setSearchCases(mainCases, true))
-    }
+    // }else{
+    //   let mainCases=filterCases(cases, searchArr)
+    //   dispatch(setSearchCases(mainCases, true))
+    // }
   };
 
   const handleReset = () => {
+    if(activeFilter==="Open"){
+      setSearchArr([
+        "todo",
+        "warning",
+        "waiting",
+        "finished",
+        "selling",
+        "purchasing",
+      ]);
+    }else{
+      setSearchArr([
+        "last30Days",
+        "2024",
+        "selling",
+        "purchasing",
+      ]);
+    }
     // if(searchArr.length > 0){
-      setSearchArr([])
+      // setSearchArr([])
       dispatch(setSearchCases([]))
     // }
   };
