@@ -8,6 +8,7 @@ import NewCaseDropdown from "../newcasedropdown";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useMsal } from "@azure/msal-react";
+import XSpinnerLoader from "../spinnerLoader/XSpinnerLoader";
 
 const ROOT_FOLDER_PATH = "https://graph.microsoft.com/v1.0/drive/root";
 const fileTypeOptions = [
@@ -18,6 +19,7 @@ const fileTypeOptions = [
 const UploadFileModal = ({ onClose, fileName = "" }) => {
   const { instance, accounts, inProgress } = useMsal();
   const [account, setAccount] = useState(instance.getActiveAccount());
+  const [loader, setLoader] = useState(false)
   const [path, setPath] = useState("/me/drive/root");
   const fileInputRef = useRef(null);
   const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -141,18 +143,31 @@ const UploadFileModal = ({ onClose, fileName = "" }) => {
     return parts.length > 1 ? parts[1] : ''; // Return the file type after '/' or an empty string
   }
   const handleUploadFile = async (event) => {
+    setLoader(true)
     const file = uploadedFiles[0].file;
     const folderName = localStorage.getItem("c_id");
     const filetype = getFileTypeFromMimeType(file?.type);
     const originalFileName = file?.name?.split('.')[0];
-    const finalFileName = originalFileName; // This can be customized if needed
+    const finalFileName = fileName || originalFileName; // This can be customized if needed
     const customFileName = `${finalFileName}.${filetype}`;
     const uploadStatus = await checkAndUploadFileToRoot(folderName, file, customFileName);
     if(uploadStatus){
       onClose()
     }
+    setLoader(false)
   };
 
+  const handleLoginAndUpload = async (event) => {
+    if (!account) {
+      await login();
+      setAccount(instance.getActiveAccount());
+    }
+    if (instance.getActiveAccount()) {
+      handleUploadFile(event);
+    } else {
+      toast.info("Please login and then try to upload.");
+    }
+  };
   const handleBrowseFiles = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
@@ -190,6 +205,8 @@ const UploadFileModal = ({ onClose, fileName = "" }) => {
   };
 
   return (
+    <>
+    <XSpinnerLoader loading={loader} size="lg" />
     <Modal show={true} onClose={onClose} className="new-case-modal">
       <Modal.Header className="border-b-0">
         <div>
@@ -201,7 +218,7 @@ const UploadFileModal = ({ onClose, fileName = "" }) => {
       <Modal.Body className="pt-2">
         <Formik
           initialValues={initialValues}
-          onSubmit={handleUploadFile}
+          onSubmit={handleLoginAndUpload}
         >
           {({
             handleSubmit,
@@ -294,6 +311,7 @@ const UploadFileModal = ({ onClose, fileName = "" }) => {
         </Formik>
       </Modal.Body>
     </Modal>
+    </>
   );
 };
 
