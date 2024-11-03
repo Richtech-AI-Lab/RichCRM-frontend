@@ -73,7 +73,7 @@ const UploadFileModal = ({ onClose, fileName = "", onUpload = () => {} }) => {
     return inputString; // return an empty string if no '/' is found
   }
   const checkAndUploadFileToRoot = async (folderName, file, customFileName) => {
-    console.log(customFileName,"===")
+    console.log(customFileName,"===", file, "====", folderName)
     if (!file || !folderName || !customFileName) return false; // Ensure file, folder name, and custom file name are provided
   
     const token = await getToken();
@@ -87,6 +87,8 @@ const UploadFileModal = ({ onClose, fileName = "", onUpload = () => {} }) => {
           Authorization: `Bearer ${token}`,
         },
       });
+
+      console.log(folderResponse)
   
       // Step 2: If the folder doesn't exist, create it
       if (!folderResponse.ok) {
@@ -145,7 +147,7 @@ const UploadFileModal = ({ onClose, fileName = "", onUpload = () => {} }) => {
   const handleUploadFile = async (event) => {
     setLoader(true)
     const file = uploadedFiles[0].file;
-    const folderName = localStorage.getItem("c_id");
+    const folderName = `${fileName.split('-').slice(0, 2).join('-')}-${localStorage.getItem("c_id").split('-')[0]}`;
     const filetype = getFileTypeFromMimeType(file?.type);
     const originalFileName = file?.name?.split('.')[0];
     const finalFileName = fileName || originalFileName; // This can be customized if needed
