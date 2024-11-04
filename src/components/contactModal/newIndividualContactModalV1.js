@@ -132,6 +132,7 @@ const NewIndividualContactModalV1 = ({ onSubmit, onClose }) => {
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                                 options={contactTagIndividualOption}
+                                                contactBadge="individual"
 
                                             />
 

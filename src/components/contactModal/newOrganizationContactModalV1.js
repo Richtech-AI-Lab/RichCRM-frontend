@@ -97,6 +97,7 @@ const NewOrganizationContactModalV1 = ({ onSubmit, onClose }) => {
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             options={contactTagOrganizationOption}
+                                            contactBadge="organization"
                                         />
                                     </div>
                                     {errors["organizationType"] && touched["organizationType"] && (

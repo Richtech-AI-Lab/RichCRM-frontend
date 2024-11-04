@@ -327,3 +327,40 @@
   } */
 
 }
+.msgr-name {
+  min-height: 200px;
+}
+.msgr-name {
+  align-items: center;
+}
+.type-msg textarea {
+  max-width: 100%;
+  min-width: 100%;
+  border: none;
+  background-color: transparent;
+  min-height: 78px;
+  max-height: 204px;
+}
+.type-msg textarea:focus{
+  box-shadow: none;
+}
+.remders {
+  background-color: #fff;
+  padding: 20px;
+}
+.remders .card {
+  margin-bottom: 20px;
+  background-color: #F3F3F8;
+  box-shadow: none;
+}
+.remders {
+	height: 100%;
+}
+.dis-none{
+  display: none;
+}
+.msg-box-cnt {
+	height: 472px;
+	padding: 12px;
+	overflow-y: scroll;
+}
