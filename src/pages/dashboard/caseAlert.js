@@ -19,9 +19,10 @@ const CaseAlert = () => {
   })
   .filter((caseItem) => caseItem.dueInDays <= 7);
   return (
-    <div className="grid grid-cols-12 gap-6 mb-6">
+    <div className="remders rounded-[32px]">
+       <p class="text-[18px] text-secondary-800 font-medium leading-[30px] mb-[18px]"><span>Reminders</span></p>
       <div className="col-span-12 md">
-        <div className="grid grid-cols-3 gap-6">
+        <div className="flex flex-col">
           {filteredCases?.map((data, index) => (
             <Card
               key={index}
