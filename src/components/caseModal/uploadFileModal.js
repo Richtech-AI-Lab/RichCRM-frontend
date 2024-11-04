@@ -16,7 +16,8 @@ const fileTypeOptions = [
   // Add more options as needed
 ];
 
-const UploadFileModal = ({ onClose, fileName = "", onUpload = () => {} }) => {
+const UploadFileModal = ({ onClose, fileName = "", generalUpload, onUpload = () => {} }) => {
+  // console.log(fileName, "+===", fileName.split('-').slice(0, 2).join('-'))
   const { instance, accounts, inProgress } = useMsal();
   const [account, setAccount] = useState(instance.getActiveAccount());
   const [loader, setLoader] = useState(false)
@@ -65,32 +66,29 @@ const UploadFileModal = ({ onClose, fileName = "", onUpload = () => {} }) => {
         return authResult.accessToken;
       }
     
-  function getWordAfterSlash(inputString) {
-    let parts = inputString.split('/');
-    if (parts.length > 1) {
-      return parts[1]; // return the word after '/'
-    }
-    return inputString; // return an empty string if no '/' is found
-  }
+  // function getWordAfterSlash(inputString) {
+  //   let parts = inputString.split('/');
+  //   if (parts.length > 1) {
+  //     return parts[1]; // return the word after '/'
+  //   }
+  //   return inputString; // return an empty string if no '/' is found
+  // }
   const checkAndUploadFileToRoot = async (folderName, file, customFileName) => {
-    console.log(customFileName,"===", file, "====", folderName)
-    if (!file || !folderName || !customFileName) return false; // Ensure file, folder name, and custom file name are provided
+    // console.log(customFileName,"===", file, "====", folderName)
+    if (!file || !folderName || !customFileName) return false; 
   
     const token = await getToken();
     const folderUrl = `${ROOT_FOLDER_PATH}:/${folderName}:`;
     const uploadUrl = `${ROOT_FOLDER_PATH}:/${folderName}/${customFileName}:/content`;
   
     try {
-      // Step 1: Check if the folder exists
       const folderResponse = await fetch(folderUrl, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      console.log(folderResponse)
-  
-      // Step 2: If the folder doesn't exist, create it
+      // console.log(folderResponse)
       if (!folderResponse.ok) {
         const createFolderUrl = `${ROOT_FOLDER_PATH}/children`;
         const createResponse = await fetch(createFolderUrl, {
@@ -105,16 +103,12 @@ const UploadFileModal = ({ onClose, fileName = "", onUpload = () => {} }) => {
             "@microsoft.graph.conflictBehavior": "fail",
           }),
         });
-  
-        // If folder creation fails, log and exit
         if (!createResponse.ok) {
           const errorData = await createResponse.json();
           toast.error(`Error creating folder: ${errorData.error.message}`);
           return false;
         }
       }
-  
-      // Step 3: Upload the file
       const uploadResponse = await fetch(uploadUrl, {
         method: "PUT",
         headers: {
@@ -150,7 +144,12 @@ const UploadFileModal = ({ onClose, fileName = "", onUpload = () => {} }) => {
     const folderName = `${fileName.split('-').slice(0, 2).join('-')}-${localStorage.getItem("c_id").split('-')[0]}`;
     const filetype = getFileTypeFromMimeType(file?.type);
     const originalFileName = file?.name?.split('.')[0];
-    const finalFileName = fileName || originalFileName; // This can be customized if needed
+    let finalFileName;
+    if(generalUpload){
+      finalFileName = originalFileName;
+    }else{
+      finalFileName = fileName;
+    }
     const customFileName = `${finalFileName}.${filetype}`;
     const uploadStatus = await checkAndUploadFileToRoot(folderName, file, customFileName);
     if(uploadStatus){
@@ -228,7 +227,7 @@ const UploadFileModal = ({ onClose, fileName = "", onUpload = () => {} }) => {
             isSubmitting,
           }) => (
             <>
-              {console.log("isSubmitting:", isSubmitting)}
+              {/* {console.log("isSubmitting:", isSubmitting)} */}
               <form onSubmit={handleSubmit} className="">
                 <div>
                   <div className="text-center mt-4 border-dashed border-2 border-border-line-100 p-6 rounded-md">
