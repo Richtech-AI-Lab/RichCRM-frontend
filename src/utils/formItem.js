@@ -342,7 +342,7 @@ export const contactTagIndividualOption = [
 ];
 
 export const contactTagOrganizationOption = [
-    { value: ORGANIZATION_TYPE_VALUE.OTHER, label: "Real Estate" },
+    // { value: ORGANIZATION_TYPE_VALUE.OTHER, label: "Real Estate" },
     { value: ORGANIZATION_TYPE_VALUE.COMPANY, label: "Company" },
     { value: ORGANIZATION_TYPE_VALUE.TRUST, label: "Trust" }
 ];
