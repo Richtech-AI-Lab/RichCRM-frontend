@@ -64,10 +64,10 @@ const Dashboard = () => {
         <div className="msgr-name flex justify-center content-center">
             <p className="text-sm text-secondary-300">Hello Gary</p>
           </div>
-        <div className="y-msg flex justify-end">
+        <div className="y-msg flex justify-end dis-none">
          <p className=" text-secondary-800 font-normal rounded-[50px] px-[25px] py-[10px] bg-gray-200 mb-[30px]">Help me find Tom’s case</p>
         </div>
-        <div className="agt-msg flex gap-3 pr-[10px] pb-[20px]">
+        <div className="agt-msg flex gap-3 pr-[10px] pb-[20px] dis-none">
           <div className="ag-img">
            <img src={IMAGES.contact_avtar} alt="Profile" className="mr-3 rounded-full" />
           </div>
