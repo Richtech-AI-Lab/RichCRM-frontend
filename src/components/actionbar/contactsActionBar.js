@@ -15,7 +15,7 @@ import NewOrganizationContactModalV1 from "../contactModal/newOrganizationContac
 import { Dropdown } from "flowbite-react";
 import { IoCheckmarkSharp } from "react-icons/io5";
 
-const ContactsActionbar = ({ active = "", setActive = "", activeFilter = "", setActiveFilter = ()=>{},isAddFromContactModal, isEdit, toggleEdit }) => {
+const ContactsActionbar = ({ active = "", setActive = "", activeFilter = "", setActiveFilter = () => { }, isAddFromContactModal, isEdit, toggleEdit }) => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -23,13 +23,13 @@ const ContactsActionbar = ({ active = "", setActive = "", activeFilter = "", set
     setIsModalOpen(!isModalOpen);
   };
 
-  useEffect(()=>{
-    if(active == 1){
+  useEffect(() => {
+    if (active == 1) {
       setActiveFilter(1)
-    }else{
+    } else {
       setActiveFilter(0)
     }
-  },[active]) 
+  }, [active])
 
   const shouldShow = (routePath) => {
     const pathsToShow = [routePath];
@@ -47,45 +47,103 @@ const ContactsActionbar = ({ active = "", setActive = "", activeFilter = "", set
 
   const OrganizationOptions = [
     // { value: 0, label: ORGANIZATION_TYPE[0] },
-    { value: 1, label:  ORGANIZATION_TYPE[1] },
+    { value: 1, label: ORGANIZATION_TYPE[1] },
     { value: 2, label: ORGANIZATION_TYPE[2] },
   ];
+  function getContactLabelAndColor(status, name) {
+    let label = '';
+    let displayColor = '';
+    if (active == "0") {
+      switch (status) {
+        case 0:
+          label = 'Realtor';
+          displayColor = 'blue';
+          break;
+        case 1:
+          label = 'Attorney';
+          displayColor = 'yellow';
+          break;
+        case 2:
+          label = 'Title';
+          displayColor = 'green';
+          break;
+        case 3:
+          label = 'Lender';
+          displayColor = 'yellow';
+          break;
+        case 4:
+          label = 'Client';
+          displayColor = 'yellow';
+          break;
+        case 5:
+          label = 'Other';
+          displayColor = 'yellow';
+          break;
+        default:
+          label = 'Unknown';
+          displayColor = 'black';
+      }
+    } else {
+      switch (status) {
+        case 1:
+          label = 'Company';
+          displayColor = 'green';
+          break;
+        case 2:
+          label = 'Trust';
+          displayColor = 'yellow';
+          break;
+        default:
+          label = 'Unknown';
+          displayColor = 'black';
+      }
+    }
+
+    if (name === "label") {
+      return label;
+    } else {
+      return displayColor
+    }
+
+  }
   const label =
-  active === 0
-    ? IndividualOptions.find((option) => option.value === activeFilter)?.label
-    : OrganizationOptions.find((option) => option.value === activeFilter)?.label;
+    active === 0
+      ? IndividualOptions.find((option) => option.value === activeFilter)?.label
+      : OrganizationOptions.find((option) => option.value === activeFilter)?.label;
   return (
     <>
       {shouldShow(ROUTES.CONTACTS) && (
         <div className="flex justify-between items-center mb-6">
-        <ContactTabs active={active} setActive={setActive} tabs={addFromContactV1Tabs} />
+          <ContactTabs active={active} setActive={setActive} tabs={addFromContactV1Tabs} />
 
           <div className="flex">
-          <div className={`items-dropdown single-select ${activeFilter == "0" ? 'sort-by-filter' : 'sort-by-filter'} mr-4`}>
-            <Dropdown
-              label={label}
-              // value={"0"}
-              inline
-              className="rounded-2xl w-64 shadow-shadow-light-2"
-              dismissOnClick={true}
-            >
-              {(active == "0" ? IndividualOptions : OrganizationOptions).map((option) => (
-                <Dropdown.Item
-                  key={option.value}
-                  className="py-3"
-                  onClick={() => setActiveFilter(option.value)}
-                >
-                  <div className="flex items-center gap-2">
-                    {/* {sortBy === option.value && ( */}
-                    <IoCheckmarkSharp size={20} className={`inline-block mr-1 ${activeFilter == option.value ? "" : "opacity-0"
-                      }`} /> 
+            <div className={`items-dropdown single-select ${activeFilter == "0" ? 'sort-by-filter' : 'sort-by-filter'} mr-4`}>
+              <Dropdown
+                label={label}
+                // value={"0"}
+                inline
+                className="rounded-2xl w-64 shadow-shadow-light-2"
+                dismissOnClick={true}
+              >
+                {(active == "0" ? IndividualOptions : OrganizationOptions).map((option) => (
+                  <Dropdown.Item
+                    key={option.value}
+                    className="py-3"
+                    onClick={() => setActiveFilter(option.value)}
+                  >
+                    <div className="flex items-center gap-2">
+                      {/* {sortBy === option.value && ( */}
+                      <IoCheckmarkSharp size={20} className={`inline-block mr-1 ${activeFilter == option.value ? "" : "opacity-0"
+                        }`} />
 
-                    <span className="text-secondary-800">{option.label}</span>
-                  </div>
-                </Dropdown.Item>
-              ))}
-            </Dropdown>
-          </div>
+                      <span className={`bg-badge-${getContactLabelAndColor(option.value, "color")} text-secondary-100 text-sm font-semibold py-1 px-3 rounded-full inline-block`}>
+                        {getContactLabelAndColor(option.value, "label")}
+                      </span>
+                    </div>
+                  </Dropdown.Item>
+                ))}
+              </Dropdown>
+            </div>
             <ContactButtonWithModal
               buttonClass="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[11px] px-7 rounded-[100px] font-medium"
               // modalClass=""  

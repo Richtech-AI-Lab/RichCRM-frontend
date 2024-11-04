@@ -12,11 +12,24 @@ import XSpinnerLoader from "../spinnerLoader/XSpinnerLoader";
 
 const ROOT_FOLDER_PATH = "https://graph.microsoft.com/v1.0/drive/root";
 const fileTypeOptions = [
-  { value: "Inspection report", label: "Inspection report" },
-  // Add more options as needed
+  { value: "Engineer Inspection", label: "Engineer Inspection" },
+  { value: "Termites Inspection", label: "Termites Inspection" },
+  { value: "Initial contract", label: "Initial Contract" },
+  { value: "Initial signed contract", label: "Initial Signed Contract" },
+  { value: "Deposit", label: "Deposit" },
+  { value: "Fully signed contract", label: "Fully Signed Contract" },
+  { value: "Commitment letter", label: "Commitment Letter" },
+  { value: "Bank CTC", label: "Bank CTC" },
+  { value: "Title report", label: "Title Report" },
+  { value: "All cleared title", label: "All Cleared Title" },
+  { value: "All closing files", label: "All closing files" },
+  { value: "Closing File 1", label: "Closing File 1" },
+  { value: "Closing File 2", label: "Closing File 2" },
+  { value: "Closing File 3", label: "Closing File 3" }
 ];
 
-const UploadFileModal = ({ onClose, fileName = "", onUpload = () => {} }) => {
+const UploadFileModal = ({ onClose, fileName = "", generalUpload, taskName ="", onUpload = () => { } }) => {
+  // console.log(fileName, "+===", fileName.split('-').slice(0, 2).join('-'))
   const { instance, accounts, inProgress } = useMsal();
   const [account, setAccount] = useState(instance.getActiveAccount());
   const [loader, setLoader] = useState(false)
@@ -30,67 +43,64 @@ const UploadFileModal = ({ onClose, fileName = "", onUpload = () => {} }) => {
     if (accounts.length > 0) {
       console.log("User is signed in!");
     } else {
-        console.log("User is not signed in!");
-      }
-    }, [accounts]);
-    
-      async function login(e) {
-        // e.preventDefault();
-        const loginRequest = {
-          scopes: ["User.ReadWrite"],
-        };
-    
-        instance
-          .loginPopup(loginRequest)
-          .then((loginResponse) => {
-            instance.setActiveAccount(loginResponse.account);
-            setAccount(loginResponse.account);
-            console.log("User signed in!");
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-      async function getToken() {
-        if (!accounts || accounts.length === 0) {
-          return null;
-        }
-    
-        const request = {
-          scopes: ["User.Read", "Files.ReadWrite"],
-          account: account,
-        };
-    
-        const authResult = await instance.acquireTokenSilent(request).catch(() => instance.acquireTokenPopup(request));
-        return authResult.accessToken;
-      }
-    
-  function getWordAfterSlash(inputString) {
-    let parts = inputString.split('/');
-    if (parts.length > 1) {
-      return parts[1]; // return the word after '/'
+      console.log("User is not signed in!");
     }
-    return inputString; // return an empty string if no '/' is found
+  }, [accounts]);
+
+  async function login(e) {
+    // e.preventDefault();
+    const loginRequest = {
+      scopes: ["User.ReadWrite"],
+    };
+
+    instance
+      .loginPopup(loginRequest)
+      .then((loginResponse) => {
+        instance.setActiveAccount(loginResponse.account);
+        setAccount(loginResponse.account);
+        console.log("User signed in!");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
+  async function getToken() {
+    if (!accounts || accounts.length === 0) {
+      return null;
+    }
+
+    const request = {
+      scopes: ["User.Read", "Files.ReadWrite"],
+      account: account,
+    };
+
+    const authResult = await instance.acquireTokenSilent(request).catch(() => instance.acquireTokenPopup(request));
+    return authResult.accessToken;
+  }
+
+  // function getWordAfterSlash(inputString) {
+  //   let parts = inputString.split('/');
+  //   if (parts.length > 1) {
+  //     return parts[1]; // return the word after '/'
+  //   }
+  //   return inputString; // return an empty string if no '/' is found
+  // }
   const checkAndUploadFileToRoot = async (folderName, file, customFileName) => {
-    console.log(customFileName,"===", file, "====", folderName)
-    if (!file || !folderName || !customFileName) return false; // Ensure file, folder name, and custom file name are provided
-  
+    // console.log(customFileName,"===", file, "====", folderName)
+    if (!file || !folderName || !customFileName) return false;
+
     const token = await getToken();
     const folderUrl = `${ROOT_FOLDER_PATH}:/${folderName}:`;
     const uploadUrl = `${ROOT_FOLDER_PATH}:/${folderName}/${customFileName}:/content`;
-  
+    // console.log(folderUrl)
     try {
-      // Step 1: Check if the folder exists
       const folderResponse = await fetch(folderUrl, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      console.log(folderResponse)
-  
-      // Step 2: If the folder doesn't exist, create it
+      // console.log(folderResponse)
       if (!folderResponse.ok) {
         const createFolderUrl = `${ROOT_FOLDER_PATH}/children`;
         const createResponse = await fetch(createFolderUrl, {
@@ -105,16 +115,12 @@ const UploadFileModal = ({ onClose, fileName = "", onUpload = () => {} }) => {
             "@microsoft.graph.conflictBehavior": "fail",
           }),
         });
-  
-        // If folder creation fails, log and exit
         if (!createResponse.ok) {
           const errorData = await createResponse.json();
           toast.error(`Error creating folder: ${errorData.error.message}`);
           return false;
         }
       }
-  
-      // Step 3: Upload the file
       const uploadResponse = await fetch(uploadUrl, {
         method: "PUT",
         headers: {
@@ -123,7 +129,7 @@ const UploadFileModal = ({ onClose, fileName = "", onUpload = () => {} }) => {
         },
         body: file,
       });
-  
+
       if (uploadResponse.ok) {
         toast.success("File uploaded successfully!");
         return true;
@@ -132,7 +138,7 @@ const UploadFileModal = ({ onClose, fileName = "", onUpload = () => {} }) => {
         toast.error(`Error uploading file: ${errorData.error.message}`);
         return false;
       }
-  
+
     } catch (error) {
       console.error("Error in folder check or file upload:", error);
       toast.error(`Failed to upload file: ${error.message}`);
@@ -150,10 +156,15 @@ const UploadFileModal = ({ onClose, fileName = "", onUpload = () => {} }) => {
     const folderName = `${fileName.split('-').slice(0, 2).join('-')}-${localStorage.getItem("c_id").split('-')[0]}`;
     const filetype = getFileTypeFromMimeType(file?.type);
     const originalFileName = file?.name?.split('.')[0];
-    const finalFileName = fileName || originalFileName; // This can be customized if needed
+    let finalFileName;
+    if (generalUpload) {
+      finalFileName = `${fileName}-${uploadedFiles[0].fileType}`;
+    } else {
+      finalFileName = fileName;
+    }
     const customFileName = `${finalFileName}.${filetype}`;
     const uploadStatus = await checkAndUploadFileToRoot(folderName, file, customFileName);
-    if(uploadStatus){
+    if (uploadStatus) {
       onClose()
       onUpload(2)
     }
@@ -206,114 +217,116 @@ const UploadFileModal = ({ onClose, fileName = "", onUpload = () => {} }) => {
       )
     );
   };
-
+  console.log(uploadedFiles,"_____")
   return (
     <>
-    <XSpinnerLoader loading={loader} size="lg" />
-    <Modal show={true} onClose={onClose} className="new-case-modal">
-      <Modal.Header className="border-b-0">
-        <div>
-          <h2 className="mb-2 text-[28px] leading-9 font-medium text-secondary-800">
-            Upload
-          </h2>
-        </div>
-      </Modal.Header>
-      <Modal.Body className="pt-2">
-        <Formik
-          initialValues={initialValues}
-          onSubmit={handleLoginAndUpload}
-        >
-          {({
-            handleSubmit,
-            isSubmitting,
-          }) => (
-            <>
-              {console.log("isSubmitting:", isSubmitting)}
-              <form onSubmit={handleSubmit} className="">
-                <div>
-                  <div className="text-center mt-4 border-dashed border-2 border-border-line-100 p-6 rounded-md">
-                    <FiUpload className="text-base mr-2 inline-block" />
-                    <div className="text-primary text-6xl">
-                      <i className="fas fa-cloud-upload-alt"></i>
+      <XSpinnerLoader loading={loader} size="lg" />
+      <Modal show={true} onClose={onClose} className="new-case-modal">
+        <Modal.Header className="border-b-0">
+          <div>
+            <h2 className="mb-2 text-[28px] leading-9 font-medium text-secondary-800">
+              Upload
+            </h2>
+          </div>
+        </Modal.Header>
+        <Modal.Body className="pt-2">
+          <Formik
+            initialValues={initialValues}
+            onSubmit={handleLoginAndUpload}
+          >
+            {({
+              handleSubmit,
+              isSubmitting,
+            }) => (
+              <>
+                {/* {console.log("isSubmitting:", isSubmitting)} */}
+                <form onSubmit={handleSubmit} className="">
+                  <div>
+                    <div className="text-center mt-4 border-dashed border-2 border-border-line-100 p-6 rounded-md">
+                      <FiUpload className="text-base mr-2 inline-block" />
+                      <div className="text-primary text-6xl">
+                        <i className="fas fa-cloud-upload-alt"></i>
+                      </div>
+                      <p className="mt-3 text-base text-secondary-800">
+                        Drag your file to upload
+                      </p>
+                      <p className="my-3 text-sm text-text-gray-100">OR</p>
+                      <XButton
+                        type="button"
+                        text={"Browse Files"}
+                        onClick={handleBrowseFiles}
+                        className="bg-active-blue text-sm text-active-blue-text py-[10px] px-6 rounded-[100px]"
+                      />
+                      <input
+                        id="fileUploadControl"
+                        type="file"
+                        ref={fileInputRef}
+                        multiple
+                        style={{ display: "none" }}
+                        onChange={handleFileChange}
+                      />
                     </div>
-                    <p className="mt-3 text-base text-secondary-800">
-                      Drag your file to upload
-                    </p>
-                    <p className="my-3 text-sm text-text-gray-100">OR</p>
-                    <XButton
-                      type="button"
-                      text={"Browse Files"}
-                      onClick={handleBrowseFiles}
-                      className="bg-active-blue text-sm text-active-blue-text py-[10px] px-6 rounded-[100px]"
-                    />
-                    <input
-                      id="fileUploadControl"
-                      type="file"
-                      ref={fileInputRef}
-                      multiple
-                      style={{ display: "none" }}
-                      onChange={handleFileChange}
-                    />
-                  </div>
-                  {uploadedFiles.length > 0 ? (
-                    uploadedFiles.map((fileItem, index) => (
-                      <div key={index} className="mt-4 p-4 border border-badge-gray rounded-md">
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <p className="text-base font-medium text-secondary-800">
-                              {fileItem.file.name}
-                            </p>
-                            <p className="text-sm text-text-gray-100">
-                              {(fileItem.file.size / (1024 * 1024)).toFixed(2)} MB
-                            </p>
-                          </div>
-                          <IoIosCloseCircleOutline
-                            className="text-xl text-text-gray-100 cursor-pointer"
-                            onClick={() => handleRemoveFile(index)}
-                          />
-                        </div>
-                        <div className="block">
-                          <div className="items-dropdown single-select mt-3">
-                            <Field
-                              as={NewCaseDropdown}
-                              defaultLabel="Select File Type"
-                              name={`fileType-${index}`}
-                              options={fileTypeOptions}
-                              inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
-                              onChange={(e) =>
-                                handleDropdownChange(index, e.target.value)
-                              }
+                    {uploadedFiles?.length > 0 ? (
+                      uploadedFiles?.map((fileItem, index) => (
+                        <div key={index} className="mt-4 p-4 border border-badge-gray rounded-md">
+                          <div className="flex justify-between items-center">
+                            <div>
+                              <p className="text-base font-medium text-secondary-800">
+                                {fileItem.file.name}
+                              </p>
+                              <p className="text-sm text-text-gray-100">
+                                {/* {(fileItem.file.size / (1024 * 1024)).toFixed(2)} MB */}
+                              </p>
+                            </div>
+                            <IoIosCloseCircleOutline
+                              className="text-xl text-text-gray-100 cursor-pointer"
+                              onClick={() => handleRemoveFile(index)}
                             />
                           </div>
+                          <div className="block">
+                            <div className="items-dropdown single-select mt-3">
+                              <Field
+                                as={NewCaseDropdown}
+                                defaultLabel="Select File Type"
+                                name={`fileType-${index}`}
+                                options={fileTypeOptions}
+                                value={taskName ||uploadedFiles[index]?.fileType}  // Ensure the value is set properly from Formik's state
+                                inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
+                                onChange={(e) => {
+                                  // formik.setFieldValue(`fileType-${index}`, e.target.value);  // Update the selected value in Formik's state
+                                  handleDropdownChange(index, e.target.value);  // Call your custom change handler
+                                }}
+                              />
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-center mt-4 text-sm text-text-gray-100">
-                      No files uploaded
-                    </p>
-                  )}
-                </div>
-                <div className="text-end mt-8">
-                  <XButton
-                    text={"Cancel"}
-                    onClick={onClose}
-                    disabled={isSubmitting}
-                    className="bg-card-300 text-sm text-primary2 py-[10px] px-6 rounded-[100px]"
-                  />
-                  <XButton
-                    type="submit"
-                    text={"Upload"}
-                    disabled={isSubmitting}
-                    className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px] ml-4"
-                  />
-                </div>
-              </form>
-            </>
-          )}
-        </Formik>
-      </Modal.Body>
-    </Modal>
+                      ))
+                    ) : (
+                      <p className="text-center mt-4 text-sm text-text-gray-100">
+                        No files uploaded
+                      </p>
+                    )}
+                  </div>
+                  <div className="text-end mt-8">
+                    <XButton
+                      text={"Cancel"}
+                      onClick={onClose}
+                      disabled={isSubmitting}
+                      className="bg-card-300 text-sm text-primary2 py-[10px] px-6 rounded-[100px]"
+                    />
+                    <XButton
+                      type="submit"
+                      text={"Upload"}
+                      disabled={isSubmitting}
+                      className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px] ml-4"
+                    />
+                  </div>
+                </form>
+              </>
+            )}
+          </Formik>
+        </Modal.Body>
+      </Modal>
     </>
   );
 };

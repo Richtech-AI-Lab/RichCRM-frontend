@@ -159,7 +159,7 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
     // console.log(item?.status)
     // console.log(localStorage.getItem("c_id"))
     let fname=`${caseObj?.clientName}-${caseObj?.premisesName}-${item?.name}`
-    console.log(fname)
+    // console.log(fname)
     setFileName(fname)
     if (option == "compose message") {
       setIsCompose(true)
@@ -320,7 +320,7 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
           </div>
         </li>
       </div>
-      {isUploadFileModalOpen && <UploadFileModal fileName={fileName} onUpload={(value) => handleChangeTaskStatus(value)} onClose={toggleUploadFileModal} />}
+      {isUploadFileModalOpen && <UploadFileModal fileName={fileName} taskName={item?.name} generalUpload={false} onUpload={(value) => handleChangeTaskStatus(value)} onClose={toggleUploadFileModal} />}
       {isCompose ? <ComposeEmail templates={templates} onClose={toggleComposeModal} onSendEmail={(value) => handleChangeTaskStatus(value)} /> : ""}
     </>
   );
