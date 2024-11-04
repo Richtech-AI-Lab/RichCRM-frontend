@@ -12,8 +12,19 @@ import XSpinnerLoader from "../spinnerLoader/XSpinnerLoader";
 
 const ROOT_FOLDER_PATH = "https://graph.microsoft.com/v1.0/drive/root";
 const fileTypeOptions = [
-  { value: "Inspection report", label: "Inspection report" },
-  // Add more options as needed
+  { value: "Engineer Inspection", label: "Engineer Inspection" },
+  { value: "Termites Inspection", label: "Termites Inspection" },
+  { value: "Initial Contract", label: "Initial Contract" },
+  { value: "Initial Signed Contract", label: "Initial Signed Contract" },
+  { value: "Deposit", label: "Deposit" },
+  { value: "Fully Signed Contract", label: "Fully Signed Contract" },
+  { value: "Commitment Letter", label: "Commitment Letter" },
+  { value: "Bank CTC", label: "Bank CTC" },
+  { value: "Title Report", label: "Title Report" },
+  { value: "All Cleared Title", label: "All Cleared Title" },
+  { value: "Closing File 1", label: "Closing File 1" },
+  { value: "Closing File 2", label: "Closing File 2" },
+  { value: "Closing File 3", label: "Closing File 3" }
 ];
 
 const UploadFileModal = ({ onClose, fileName = "", generalUpload, onUpload = () => {} }) => {
