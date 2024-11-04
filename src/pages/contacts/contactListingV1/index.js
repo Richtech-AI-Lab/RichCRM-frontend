@@ -91,44 +91,55 @@ const ContactListingV1 = ({ active, parent, activeFilter }) => {
 
   }, [active, activeFilter]);
 
-  function getTaskLabelAndColor(status, name) {
+  function getContactLabelAndColor(status, name) {
     let label = '';
     let displayColor = '';
-
-    switch (status) {
-      case 0:
-        label = 'Realtor';
-        displayColor = 'blue';
-        break;
-
-      case 1:
-        label = 'Attorney';
-        displayColor = 'yellow';
-        break;
-
-      case 2:
-        label = 'Title';
-        displayColor = 'green';
-        break;
-
-      case 3:
-        label = 'Lender';
-        displayColor = 'yellow';
-        break;
-      case 4:
-        label = 'Client';
-        displayColor = 'yellow';
-        break;
-      case 5:
-        label = 'Other';
-        displayColor = 'yellow';
-        break;
-
-
-      default:
-        label = 'Unknown';
-        displayColor = 'black';
+    if (active == "0") {
+      switch (status) {
+        case 0:
+          label = 'Realtor';
+          displayColor = 'blue';
+          break;
+        case 1:
+          label = 'Attorney';
+          displayColor = 'yellow';
+          break;
+        case 2:
+          label = 'Title';
+          displayColor = 'green';
+          break;
+        case 3:
+          label = 'Lender';
+          displayColor = 'yellow';
+          break;
+        case 4:
+          label = 'Client';
+          displayColor = 'yellow';
+          break;
+        case 5:
+          label = 'Other';
+          displayColor = 'yellow';
+          break;
+        default:
+          label = 'Unknown';
+          displayColor = 'black';
+      }
+    } else {
+      switch (status) {
+        case 1:
+          label = 'Company';
+          displayColor = 'green';
+          break;
+        case 2:
+          label = 'Trust';
+          displayColor = 'yellow';
+          break;
+        default:
+          label = 'Unknown';
+          displayColor = 'black';
+      }
     }
+
     if (name === "label") {
       return label;
     } else {
@@ -136,7 +147,6 @@ const ContactListingV1 = ({ active, parent, activeFilter }) => {
     }
 
   }
-
   return (
     <>
       <div className={`mb-2 ${parent === 'dashboard' ? '' : 'contacts-table'}`}>
@@ -168,8 +178,8 @@ const ContactListingV1 = ({ active, parent, activeFilter }) => {
                     </Table.Cell>
                     {header.includes("Tag") && (
                       <Table.Cell width={width[1]}>
-                        <span className={`bg-badge-${getTaskLabelAndColor(user.contactType, "color")} text-secondary-100 text-sm font-semibold py-1 px-3 rounded-full inline-block`}>
-                          {getTaskLabelAndColor(user.contactType, "label")}
+                        <span className={`bg-badge-${getContactLabelAndColor(user.contactType, "color")} text-secondary-100 text-sm font-semibold py-1 px-3 rounded-full inline-block`}>
+                          {getContactLabelAndColor(user.contactType, "label")}
                         </span>
                       </Table.Cell>
                     )}
@@ -198,8 +208,8 @@ const ContactListingV1 = ({ active, parent, activeFilter }) => {
                     </Table.Cell>
                     {header.includes("Tag") && (
                       <Table.Cell width={width[1]}>
-                        <span className="bg-badge-yellow text-secondary-100 text-sm font-semibold py-1 px-3 rounded-full inline-block">
-                          {ORGANIZATION_TYPE[org?.organizationType]}
+                        <span className={`bg-badge-${getContactLabelAndColor(org?.organizationType, "color")} text-secondary-100 text-sm font-semibold py-1 px-3 rounded-full inline-block`}>
+                          {getContactLabelAndColor(org?.organizationType, "label")}
                         </span>
                       </Table.Cell>
                     )}
