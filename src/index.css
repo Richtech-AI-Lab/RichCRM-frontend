@@ -354,7 +354,8 @@
   box-shadow: none;
 }
 .remders {
-	height: 100%;
+	height: 702px;
+	overflow-y: scroll;
 }
 .dis-none{
   display: none;
@@ -363,4 +364,21 @@
 	height: 472px;
 	padding: 12px;
 	overflow-y: scroll;
+}
+.chat-box {
+  background-color:#f3f3f8;
+}
+.atched {
+  background-color:#e8e8ec;
+}
+.participant-form .card-details input, .participant-form .card-details select, .premises-form input:not(input[type="radio"]), .premises-form .card-details select, .cnt-edt input:not(input[type="radio"]), .cnt-edt select {
+	background-color: #f3f3f8;
+	border-radius: 30px;
+	height: 35px;
+	padding: 4px 18px;
+	width:280px;
+	font-size: 14px;
+}
+.dub-input input, .dub-input select {
+	width: 133px !important;
 }
