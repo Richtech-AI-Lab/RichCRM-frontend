@@ -354,7 +354,8 @@
   box-shadow: none;
 }
 .remders {
-	height: 100%;
+	height: 702px;
+	overflow-y: scroll;
 }
 .dis-none{
   display: none;
@@ -363,4 +364,10 @@
 	height: 472px;
 	padding: 12px;
 	overflow-y: scroll;
+}
+.chat-box {
+  background-color:#f3f3f8;
+}
+.atched {
+  background-color:#e8e8ec;
 }
