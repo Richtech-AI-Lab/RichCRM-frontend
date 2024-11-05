@@ -86,7 +86,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
               <span className="text-sm text-red-500">{form.errors["addressLine1"]}</span>
             )}
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className=" p-0 border-none focus:ring-transparent"
                 name="addressLine1"
                 type="text"
                 onChange={handleChange}
@@ -97,7 +97,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
             <li>
               <span className={`left-txt flex items-center`}>Apt, suite, floor, or unit # (optional)</span>
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className=" p-0 border-none focus:ring-transparent"
                 name="addressLine2"
                 type="text"
                 onChange={handleChange}
@@ -111,7 +111,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
               <span className="text-sm text-red-500">{form.errors["city"]}</span>
             )}
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className=" p-0 border-none focus:ring-transparent"
                 name="city"
                 type="text"
                 onChange={handleChange}
@@ -149,7 +149,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
               <span className="text-sm text-red-500">{form.errors["zipCode"]}</span>
             )}
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className=" p-0 border-none focus:ring-transparent"
                 name="zipCode"
                 type="text"
                 onChange={handleChange}
@@ -160,7 +160,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
             <li>
               <span className={`left-txt flex items-center`}>Block</span>
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className=" p-0 border-none focus:ring-transparent"
                 onChange={handleChange}
                 onBlur={handleBlur}
                 name="block"
@@ -171,7 +171,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
             <li>
               <span className={`left-txt flex items-center`}>Lot</span>
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className=" p-0 border-none focus:ring-transparent"
                 name="lot"
                 type="text"
                 onChange={handleChange}
@@ -182,7 +182,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
             <li>
               <span className={`left-txt flex items-center`}>Section</span>
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className=" p-0 border-none focus:ring-transparent"
                 name="section"
                 type="text"
                 onChange={handleChange}
@@ -365,8 +365,9 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
           </li> */}
             <li>
               <span className={`left-txt flex items-center`}>Maintenance fee</span>
+              <div className="dub-input flex gap-4">
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className="text-left p-0 border-none focus:ring-transparent w-[150px]"
                 name="maintenanceFee"
                 placeholder="fee"
                 type="text"
@@ -389,11 +390,12 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
                   value: option.id,
                   label: option.label,
                 }))}
-              /></li>
+              /></div></li>
               <li>
               <span className={`left-txt flex items-center`}>Assessments</span>
+              <div className="dub-input flex gap-4">
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className="text-left p-0 border-none focus:ring-transparent"
                 name="assessments"
                 placeholder="Assessment"
                 type="text"
@@ -417,7 +419,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
                   value: option.id,
                   label: option.label,
                 }))}
-              /></li>
+              /></div></li>
             {/* <li>
               <span className={`left-txt flex items-center`}>Assessments</span>
               <input
@@ -441,7 +443,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
             <li>
               <span className={`left-txt flex items-center`}>Managing Company</span>
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className="text-left p-0 border-none focus:ring-transparent"
                 name="managingCompany"
                 type="text"
                 onChange={handleChange}

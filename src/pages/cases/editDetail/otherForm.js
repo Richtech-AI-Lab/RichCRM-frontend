@@ -116,7 +116,7 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
                 <span className="text-sm text-red-500">{form.errors['purchaserPrice']}</span>
               )}
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className=" p-0 border-none focus:ring-transparent"
                 name="purchaserPrice"
                 value={formatCurrency(values.purchaserPrice)}
                 type="text"
@@ -128,7 +128,7 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
             <li>
               <span className="left-txt flex items-center" >Down Payment</span>
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className=" p-0 border-none focus:ring-transparent"
                 name="downPayment"
                 value={formatCurrency(values.downPayment)}
                 type="text"
@@ -140,7 +140,7 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
             <li>
               <span className="left-txt flex items-center" >Mortgage Amount</span>
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className=" p-0 border-none focus:ring-transparent"
                 name="mortgageAmount"
                 value={formatCurrency(values.mortgageAmount)}
                 type="text"
@@ -152,7 +152,7 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
             <li>
               <span className="left-txt flex items-center" >Annual Property Tax</span>
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className=" p-0 border-none focus:ring-transparent"
                 name="annualPropertyTax"
                 value={formatCurrency(values.annualPropertyTax)}
                 type="text"
@@ -164,7 +164,7 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
             <li>
               <span className="left-txt flex items-center" >Seller's Concession</span>
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className=" p-0 border-none focus:ring-transparent"
                 name="sellersConcession"
                 value={formatCurrency(values.sellersConcession)}
                 type="text"
