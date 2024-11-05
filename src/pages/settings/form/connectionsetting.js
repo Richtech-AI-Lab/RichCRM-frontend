@@ -4,32 +4,14 @@ import { TextInput, XButton } from '../../../components'
 import language from "../../../constants/language.json";
 import timezone from "../../../constants/timezone.json";
 
-export const LinkSetting = ({ title }) => {
+export const ConnectionSetting = ({ title }) => {
     return (
         <>
-
             <div className="bg-white p-4 rounded-2xl mb-5 shadow-card">
                 {title && <div className="flex justify-between items-center mb-2">
-                    <span className="text-base text-secondary-800 font-medium">Documents Connection</span>
+                    <span className="text-base text-secondary-800 font-medium">ChatGPT Connection</span>
                 </div>}
                 <p className="mb-6">Mattis amet eu velit viverra aliquet porta at a. Auctor lectus tincidunt facilisis pellentesque maecenas enim sed dolor adipiscing.</p>
-
-
-                <div className="flex justify-between items-center border-b border-badge-gray pb-3 mb-3">
-                    <span className={`left-txt flex items-center`}>Connected Platform</span>
-                    <div className={`items-dropdown single-select gray-btn`}  >
-                        <NewCaseDropdown
-                            defaultLabel="Select Platform"
-                            name="platform"
-                            // value={values.state}
-                            // onChange={handleChange}
-                            // onBlur={handleBlur}
-                            options={timezone}
-                        // field={{ name: "state" }}
-                        // form={{ errors, touched }}
-                        />
-                    </div>
-                </div>
                 <div>
                         <span className={`left-txt flex items-center`}>API</span>
                         <div className="flex items-center">
