@@ -45,8 +45,8 @@ const updateCasesTool = tool(
       inputObj.closingDate = closingDate;
     }
     console.log("[langchain][updateCasesTool] inputObj: ", inputObj);
-    const response = await postRequest(API_ENDPOINTS.UPDATE_CASE, inputObj)
-    return response.json();
+    const response = await postRequest(API_ENDPOINTS.UPDATE_CASE, inputObj);
+    return JSON.stringify(response.data);
   },
   {
     name: "updateCases",
@@ -67,8 +67,8 @@ const fetchCasesByKeywordTool = tool(
       keyword: keyword || "",
       closed: closed || false,
     })
-    const data = response.json();
-    console.log(data);
+    console.log("[langchain][fetchCasesByKeywordTool] response: ", response.data);
+    const data = response.data;
     if (data.status === "success") {
       return JSON.stringify(data.data);
     } else {
@@ -104,7 +104,7 @@ const updateClientTool = tool(
       inputObj.email = email;
     }
     const response = await postRequest(API_ENDPOINTS.UPDATE_CLIENT, inputObj)
-    return response.json();
+    return JSON.stringify(response.data);
   },
   {
     name: "updateClient",

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { ChatOpenAI } from '@langchain/openai';
 import { ChatPromptTemplate, MessagesPlaceholder } from "@langchain/core/prompts";
 import { AgentExecutor, createToolCallingAgent } from "langchain/agents";
@@ -8,8 +8,10 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { IMAGES } from "../../constants/imagePath";
 import { responseSchema, updateCasesTool, fetchCasesByKeywordTool, updateClientTool } from "./tools";
 import { SlDislike, SlLike } from "react-icons/sl";
+import { LangchainContext } from "./langchainContext";
 
 const ChatBox = () => {
+  const { openaiAPIKey, setOpenaiAPIKey } = useContext(LangchainContext);
   const prompt = [
     ['system', 'You are an assistant helping housing lawyers with their cases, please use RichCRM API tools with the informations from the chat to help them query case infomations, creating new cases, updating case details, and managing their contacts.'],
     ['placeholder', '{chat_history}'],
@@ -24,7 +26,7 @@ const ChatBox = () => {
 
   useEffect(() => {
     const llm = new ChatOpenAI({
-      openAIApiKey: process.env.REACT_APP_CHATGPT_KEY,
+      openAIApiKey: openaiAPIKey,
       model: "gpt-4",
       temperature: 0,
     });
