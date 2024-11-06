@@ -86,11 +86,21 @@ const UploadFileModal = ({ onClose, fileName = "", generalUpload, taskName = "",
   //   return inputString; // return an empty string if no '/' is found
   // }
   const checkAndUploadFileToRoot = async (folderName, file, customFileName) => {
+    // console.log("==>>folder",folderName)
+    // console.log("==>>file",file)
+    // console.log("==>>custom",customFileName)
     if (!file || !folderName || !customFileName) return false;
 
     const token = await getToken();
-    const folderUrl = `${ROOT_FOLDER_PATH}:/${folderName}:`;
-    const uploadUrl = `${ROOT_FOLDER_PATH}:/${folderName}/${customFileName}:/content?@microsoft.graph.conflictBehavior=rename`;
+    const encodedFolderPath = encodeURIComponent(folderName);
+    const encodedFilePath = encodeURIComponent(customFileName);
+    const folderUrl = `${ROOT_FOLDER_PATH}:/${encodedFolderPath}:`;
+    const uploadUrl = `${ROOT_FOLDER_PATH}:/${encodedFolderPath}/${encodedFilePath}:/content?@microsoft.graph.conflictBehavior=rename`;
+
+    // console.log("==>>furl",folderUrl)
+    // console.log("==>>Uurl",uploadUrl)
+
+    // console.log(token)
 
     try {
       // Check if the folder exists
@@ -99,7 +109,7 @@ const UploadFileModal = ({ onClose, fileName = "", generalUpload, taskName = "",
           Authorization: `Bearer ${token}`,
         },
       });
-
+      // console.log("folderResponse",folderResponse)
       // If folder doesn't exist, create the folder
       if (!folderResponse.ok) {
         const createFolderUrl = `${ROOT_FOLDER_PATH}/children`;
@@ -220,7 +230,7 @@ const UploadFileModal = ({ onClose, fileName = "", generalUpload, taskName = "",
       )
     );
   };
-  console.log(uploadedFiles, "_____")
+  // console.log(uploadedFiles, "_____")
   return (
     <>
       <XSpinnerLoader loading={loader} size="lg" />
