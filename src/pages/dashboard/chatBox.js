@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { ChatOpenAI } from '@langchain/openai';
 import { ChatPromptTemplate, MessagesPlaceholder } from "@langchain/core/prompts";
 import { AgentExecutor, createToolCallingAgent } from "langchain/agents";
@@ -24,7 +24,14 @@ const ChatBox = () => {
   const [chatHistory, setChatHistory] = useState([]);
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState(""); // New state to track input value
+  const scrollRef = useRef(null);
 
+  useEffect(() => {
+    // Scroll to the bottom whenever messages are updated
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages]);
   useEffect(() => {
     const llm = new ChatOpenAI({
       openAIApiKey: openaiAPIKey,
@@ -81,7 +88,8 @@ const ChatBox = () => {
             <BsThreeDotsVertical className="text-lg opacity-40" />
           </div>
         </div>
-        <div className="msg-box-cnt">
+        <div  ref={scrollRef}
+        className="msg-box-cnt overflow-y-auto">
           {messages.map((msg, index) => {
             if (msg.role === "human") {
               return (
