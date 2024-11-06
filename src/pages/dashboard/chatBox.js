@@ -9,6 +9,7 @@ import { IMAGES } from "../../constants/imagePath";
 import { responseSchema, updateCasesTool, fetchCasesByKeywordTool, updateClientTool } from "./tools";
 import { SlDislike, SlLike } from "react-icons/sl";
 import { LangchainContext } from "./langchainContext";
+import BubbleLoader from "../../components/bubbleLoader";
 
 const ChatBox = () => {
   const { openaiAPIKey, setOpenaiAPIKey } = useContext(LangchainContext);
@@ -44,6 +45,10 @@ const ChatBox = () => {
   }, []);
 
   const handleSendMessage = async (message) => {
+    setMessages([...messages,
+      { text: message, role: "human" },
+      { text: "loader...", role: "agent", loader: "true" }
+      ]);
     const response = await agentExecutor.invoke({
       input: message,
       chat_history: chatHistory,
@@ -53,8 +58,9 @@ const ChatBox = () => {
     setChatHistory([...chatHistory, new HumanMessage(message), new AIMessage(response.output)]);
     setMessages([...messages,
     { text: message, role: "human" },
-    { text: response.output, role: "agent" }
+    { text: response.output, role: "agent", loader: "false" }
     ]);
+
   };
 
   const handleSendMessageFromInput = () => {
@@ -63,7 +69,7 @@ const ChatBox = () => {
       setInputValue(""); // Clear input after sending
     }
   };
-
+  console.log(messages,"message")
   return (
     <div className="card">
       <div className="msg_box">
@@ -91,6 +97,7 @@ const ChatBox = () => {
                   <div className="ag-img">
                     <img src={IMAGES.contact_avtar} alt="Profile" className="mr-3 rounded-full" />
                   </div>
+                  {msg.loader == "true" ? <BubbleLoader loading={true}/>:
                   <div className="ag-msg">
                     <p className="text-[16px] text-secondary-800 font-normal pb-[20px]">
                       {msg.text}
@@ -100,7 +107,7 @@ const ChatBox = () => {
                       <SlDislike className="text-lg opacity-40" />
                       <BsThreeDotsVertical className="text-lg opacity-40" />
                     </div>
-                  </div>
+                  </div>}
                 </div>
               );
             }
