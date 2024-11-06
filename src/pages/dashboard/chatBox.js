@@ -53,9 +53,9 @@ const ChatBox = () => {
 
   const handleSendMessage = async (message) => {
     setMessages([...messages,
-      { text: message, role: "human" },
-      { text: "loader...", role: "agent", loader: "true" }
-      ]);
+    { text: message, role: "human" },
+    { text: "loader...", role: "agent", loader: "true" }
+    ]);
     const response = await agentExecutor.invoke({
       input: message,
       chat_history: chatHistory,
@@ -76,7 +76,7 @@ const ChatBox = () => {
       setInputValue(""); // Clear input after sending
     }
   };
-  console.log(messages,"message")
+  console.log(messages, "message")
   return (
     <div className="card">
       <div className="msg_box">
@@ -88,8 +88,8 @@ const ChatBox = () => {
             <BsThreeDotsVertical className="text-lg opacity-40" />
           </div>
         </div>
-        <div  ref={scrollRef}
-        className="msg-box-cnt overflow-y-auto">
+        <div ref={scrollRef}
+          className="msg-box-cnt overflow-y-auto">
           {messages.map((msg, index) => {
             if (msg.role === "human") {
               return (
@@ -102,20 +102,20 @@ const ChatBox = () => {
             } else {
               return (
                 <div key={index} className="agt-msg flex gap-3 pr-[10px] pb-[20px]">
-                  <div className="ag-img">
+                  <div className="ag-img" style={{minWidth: '37px'}}>
                     <img src={IMAGES.contact_avtar} alt="Profile" className="mr-3 rounded-full" />
                   </div>
-                  {msg.loader == "true" ? <BubbleLoader loading={true}/>:
-                  <div className="ag-msg">
-                    <p className="text-[16px] text-secondary-800 font-normal pb-[20px]">
-                      {msg.text}
-                    </p>
-                    <div className="like-dislike flex gap-3 mt-[5px]">
-                      <SlLike className="text-lg opacity-40" />
-                      <SlDislike className="text-lg opacity-40" />
-                      <BsThreeDotsVertical className="text-lg opacity-40" />
-                    </div>
-                  </div>}
+                  {msg.loader == "true" ? <BubbleLoader loading={true} /> :
+                    <div className="ag-msg">
+                      <p className="text-[16px] text-secondary-800 font-normal pb-[20px]">
+                        {msg.text}
+                      </p>
+                      <div className="like-dislike flex gap-3 mt-[5px]">
+                        <SlLike className="text-lg opacity-40" />
+                        <SlDislike className="text-lg opacity-40" />
+                        <BsThreeDotsVertical className="text-lg opacity-40" />
+                      </div>
+                    </div>}
                 </div>
               );
             }
