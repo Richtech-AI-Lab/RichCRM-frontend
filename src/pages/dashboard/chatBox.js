@@ -10,9 +10,12 @@ import { responseSchema, updateCasesTool, fetchCasesByKeywordTool, updateClientT
 import { SlDislike, SlLike } from "react-icons/sl";
 import { LangchainContext } from "./langchainContext";
 import BubbleLoader from "../../components/bubbleLoader";
+import { useSelector } from "react-redux";
+import { ParseCases } from "../../utils/parseCases";
 
 const ChatBox = () => {
   const { openaiAPIKey, setOpenaiAPIKey } = useContext(LangchainContext);
+  const { user } = useSelector((state) => state.auth.login);
   const prompt = [
     ['system', 'You are an assistant helping housing lawyers with their cases, please use RichCRM API tools with the informations from the chat to help them query case infomations, creating new cases, updating case details, and managing their contacts.'],
     ['placeholder', '{chat_history}'],
@@ -23,6 +26,7 @@ const ChatBox = () => {
   const tools = [updateCasesTool, fetchCasesByKeywordTool, updateClientTool];
   const [chatHistory, setChatHistory] = useState([]);
   const [messages, setMessages] = useState([]);
+  const [resData, setResData] = useState({});
   const [inputValue, setInputValue] = useState(""); // New state to track input value
   const scrollRef = useRef(null);
 
@@ -61,6 +65,8 @@ const ChatBox = () => {
       chat_history: chatHistory,
     });
     console.log("Response from agent:", response);
+    let data = ParseCases(response?.output);
+    setResData(data)
 
     setChatHistory([...chatHistory, new HumanMessage(message), new AIMessage(response.output)]);
     setMessages([...messages,
@@ -76,7 +82,7 @@ const ChatBox = () => {
       setInputValue(""); // Clear input after sending
     }
   };
-  console.log(messages, "message")
+  console.log(resData, "message")
   return (
     <div className="card">
       <div className="msg_box">
@@ -90,6 +96,11 @@ const ChatBox = () => {
         </div>
         <div ref={scrollRef}
           className="msg-box-cnt overflow-y-auto">
+          {messages.length == 0 &&
+            <div className="msgr-name flex justify-center content-center">
+              <p className="text-lg text-secondary-300">Hello {user?.data[0]?.userName}</p>
+            </div>
+          }
           {messages.map((msg, index) => {
             if (msg.role === "human") {
               return (
@@ -102,14 +113,58 @@ const ChatBox = () => {
             } else {
               return (
                 <div key={index} className="agt-msg flex gap-3 pr-[10px] pb-[20px]">
-                  <div className="ag-img" style={{minWidth: '37px'}}>
+                  <div className="ag-img" style={{ minWidth: '37px' }}>
                     <img src={IMAGES.contact_avtar} alt="Profile" className="mr-3 rounded-full" />
                   </div>
                   {msg.loader == "true" ? <BubbleLoader loading={true} /> :
                     <div className="ag-msg">
-                      <p className="text-[16px] text-secondary-800 font-normal pb-[20px]">
-                        {msg.text}
-                      </p>
+                      {
+                        resData?.cases?.length == 0 && <p className="text-[16px] text-secondary-800 font-normal pb-[20px]">
+                          {msg.text}
+                        </p>
+                      }
+                      {
+                        resData?.cases?.length > 0 && (
+                          <div>
+                            <div key={index} className="ag-msg">
+                              {/* Intro text */}
+                              <p className="text-[16px] text-secondary-800 font-normal pb-[20px]">
+                                {resData?.introText}
+                              </p>
+                              <div className="grid gap-4 grid-cols-3">
+                              {/* Grid structure */}
+                              {resData.cases.map((caseItem, index) => (
+
+                               
+                                  <div className="basis-1/3">
+                                    <div className="card bg-gray-100 p-4">
+                                      <div className="flex justify-between">
+                                        <span className="bg-badge-yellow text-secondary-100 text-sm font-semibold px-4 py-1 rounded-full inline-block">
+                                          {caseItem?.caseId}
+                                        </span>
+                                        {/* <span className="text-[12px]">1/3</span> */}
+                                      </div>
+                                      <p className="text-[22px] text-secondary-800 font-medium leading-[30px] mb-[18px]">
+                                        {/* <span className="text-error ml-2">2 days</span> */}
+                                      </p>
+                                      <p className="text-base text-secondary-800 font-semibold mb-1">
+                                        {caseItem?.client}
+                                      </p>
+                                      <p className="text-sm text-secondary-800 font-medium mb-1">
+                                        {caseItem?.stage}
+                                      </p>
+                                      <span className="text-sm text-secondary-300">{caseItem?.closingDate}</span>
+                                    </div>
+                                  </div>
+                              
+                            ))}
+                            </div>
+                            </div>
+                          </div>
+                        )
+                      }
+
+
                       <div className="like-dislike flex gap-3 mt-[5px]">
                         <SlLike className="text-lg opacity-40" />
                         <SlDislike className="text-lg opacity-40" />
