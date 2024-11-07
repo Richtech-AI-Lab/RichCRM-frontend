@@ -661,12 +661,14 @@ export const PREMISES_TYPE = {
 export const settingTab = {
   PROFILE: 1,
   GENERAL: 2,
-  LINK_PREFRENCES: 3,
+  SECURITY: 3,
+  CONNECTION: 4,
 };
 export const settingTabLabel = [
   { id: settingTab.PROFILE, label: "Profile" },
   { id: settingTab.GENERAL, label: "General" },
-  { id: settingTab.LINK_PREFRENCES, label: "Link Preferences" }
+  { id: settingTab.SECURITY, label: "Security" },
+  { id: settingTab.CONNECTION, label: "Connections" }
 ];
 
 export const ORGANIZATION_TYPE = {

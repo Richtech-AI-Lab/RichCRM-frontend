@@ -4,10 +4,9 @@ import { TextInput, XButton } from '../../../components'
 import language from "../../../constants/language.json";
 import timezone from "../../../constants/timezone.json";
 
-export const LinkSetting = ({ title }) => {
+export const SecuritySetting = ({ title }) => {
     return (
         <>
-
             <div className="bg-white p-4 rounded-2xl mb-5 shadow-card">
                 {title && <div className="flex justify-between items-center mb-2">
                     <span className="text-base text-secondary-800 font-medium">Documents Connection</span>

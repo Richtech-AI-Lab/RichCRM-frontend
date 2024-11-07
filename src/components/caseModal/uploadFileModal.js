@@ -28,7 +28,7 @@ const fileTypeOptions = [
   { value: "Closing File 3", label: "Closing File 3" }
 ];
 
-const UploadFileModal = ({ onClose, fileName = "", generalUpload, taskName ="", onUpload = () => { } }) => {
+const UploadFileModal = ({ onClose, fileName = "", generalUpload, taskName = "", onUpload = () => { } }) => {
   // console.log(fileName, "+===", fileName.split('-').slice(0, 2).join('-'))
   const { instance, accounts, inProgress } = useMsal();
   const [account, setAccount] = useState(instance.getActiveAccount());
@@ -86,21 +86,31 @@ const UploadFileModal = ({ onClose, fileName = "", generalUpload, taskName ="", 
   //   return inputString; // return an empty string if no '/' is found
   // }
   const checkAndUploadFileToRoot = async (folderName, file, customFileName) => {
-    // console.log(customFileName,"===", file, "====", folderName)
+    // console.log("==>>folder",folderName)
+    // console.log("==>>file",file)
+    // console.log("==>>custom",customFileName)
     if (!file || !folderName || !customFileName) return false;
 
     const token = await getToken();
-    const folderUrl = `${ROOT_FOLDER_PATH}:/${folderName}:`;
-    const uploadUrl = `${ROOT_FOLDER_PATH}:/${folderName}/${customFileName}:/content`;
-    // console.log(folderUrl)
+    const encodedFolderPath = encodeURIComponent(folderName);
+    const encodedFilePath = encodeURIComponent(customFileName);
+    const folderUrl = `${ROOT_FOLDER_PATH}:/${encodedFolderPath}:`;
+    const uploadUrl = `${ROOT_FOLDER_PATH}:/${encodedFolderPath}/${encodedFilePath}:/content?@microsoft.graph.conflictBehavior=rename`;
+
+    // console.log("==>>furl",folderUrl)
+    // console.log("==>>Uurl",uploadUrl)
+
+    // console.log(token)
+
     try {
+      // Check if the folder exists
       const folderResponse = await fetch(folderUrl, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
-      // console.log(folderResponse)
+      // console.log("folderResponse",folderResponse)
+      // If folder doesn't exist, create the folder
       if (!folderResponse.ok) {
         const createFolderUrl = `${ROOT_FOLDER_PATH}/children`;
         const createResponse = await fetch(createFolderUrl, {
@@ -115,12 +125,15 @@ const UploadFileModal = ({ onClose, fileName = "", generalUpload, taskName ="", 
             "@microsoft.graph.conflictBehavior": "fail",
           }),
         });
+
         if (!createResponse.ok) {
           const errorData = await createResponse.json();
           toast.error(`Error creating folder: ${errorData.error.message}`);
           return false;
         }
       }
+
+      // Upload the file, with conflictBehavior set to "rename" to avoid overwriting
       const uploadResponse = await fetch(uploadUrl, {
         method: "PUT",
         headers: {
@@ -217,7 +230,7 @@ const UploadFileModal = ({ onClose, fileName = "", generalUpload, taskName ="", 
       )
     );
   };
-  console.log(uploadedFiles,"_____")
+  // console.log(uploadedFiles, "_____")
   return (
     <>
       <XSpinnerLoader loading={loader} size="lg" />
@@ -290,7 +303,7 @@ const UploadFileModal = ({ onClose, fileName = "", generalUpload, taskName ="", 
                                 defaultLabel="Select File Type"
                                 name={`fileType-${index}`}
                                 options={fileTypeOptions}
-                                value={taskName ||uploadedFiles[index]?.fileType}  // Ensure the value is set properly from Formik's state
+                                value={taskName || uploadedFiles[index]?.fileType}  // Ensure the value is set properly from Formik's state
                                 inputClassName="bg-input-surface w-full rounded-[40px] border-0 py-3 px-4 text-sm leading-6 mt-3"
                                 onChange={(e) => {
                                   // formik.setFieldValue(`fileType-${index}`, e.target.value);  // Update the selected value in Formik's state

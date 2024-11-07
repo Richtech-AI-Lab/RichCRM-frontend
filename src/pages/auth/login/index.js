@@ -45,7 +45,7 @@ const Login = () => {
       else if (error && error?.status === 'failed') {
           toast(error?.message)
         }
-        dispatch(clearData());
+        // dispatch(clearData());
 
   }, [user, error,navigate]);
 

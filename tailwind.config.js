@@ -13,7 +13,16 @@ module.exports = {
         'card': '0px 3px 8px rgba(0, 14, 73, 0.15);',
         'shadow-light': '0px 1px 4px 0px rgba(0, 14, 73, 0.15)',
         'shadow-light-2': '0px 2px 6px 0px rgba(0, 14, 73, 0.15), 0px 1px 2px 0px rgba(0, 14, 73, 0.20)'
-      }
+      },
+      animation: {
+        'wave-bounce': 'wave-bounce 1.2s ease-in-out infinite',
+      },
+      keyframes: {
+        'wave-bounce': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-5px)' },
+        },
+      },
     },
     colors: {
       'primary': '#375398',

@@ -4,11 +4,12 @@ import { settingTab, settingTabLabel } from "../../constants/constants";
 import SettingActionbar from "./actionbar";
 import { ProfileSetting } from "./form/profilesetting";
 import { GeneralSetting } from "./form/generalsetting";
-import { LinkSetting } from "./form/linksetting";
+import { SecuritySetting } from "./form/securitysetting";
+import { ConnectionSetting } from "./form/connectionsetting";
 
 const Setting = () => {
   const dispatch = useDispatch();
-  
+
   const [activeTab, setActiveTab] = useState(settingTab.PROFILE);
   const [isEdit, setIsEdit] = useState(false)
 
@@ -22,8 +23,10 @@ const Setting = () => {
         return <ProfileSetting title={getTitleByActiveTab(activeTab)} isEdit={isEdit} setIsEdit={setIsEdit} />;
       case settingTab.GENERAL:
         return <GeneralSetting title={getTitleByActiveTab(activeTab)} isEdit={isEdit} setIsEdit={setIsEdit} />;
-      case settingTab.LINK_PREFRENCES:
-        return <LinkSetting title={getTitleByActiveTab(activeTab)} isEdit={isEdit} setIsEdit={setIsEdit} />;
+      case settingTab.SECURITY:
+        return <SecuritySetting title={getTitleByActiveTab(activeTab)} isEdit={isEdit} setIsEdit={setIsEdit} />;
+      case settingTab.CONNECTION:
+        return <ConnectionSetting title={getTitleByActiveTab(activeTab)} isEdit={isEdit} setIsEdit={setIsEdit} />;
       default:
         return <ProfileSetting title={getTitleByActiveTab(activeTab)} isEdit={isEdit} setIsEdit={setIsEdit} />;
     }
@@ -33,11 +36,11 @@ const Setting = () => {
     <div>
       <SettingActionbar active={activeTab} setActive={setActiveTab} />
       <div className="grid grid-cols-12 gap-6">
-      <div className="col-span-6">
-      {renderActiveTab(activeTab)}
+        <div className="col-span-6">
+          {renderActiveTab(activeTab)}
+        </div>
       </div>
-      </div>
-      
+
     </div>
   );
 };
