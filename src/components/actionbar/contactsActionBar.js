@@ -147,7 +147,7 @@ const ContactsActionbar = ({ active = "", setActive = "", activeFilter = "", set
               </Dropdown>
             </div>
             <TagButtonWithModal
-              buttonClass="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[11px] px-7 rounded-[100px] font-medium"
+              buttonClass="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[11px] px-7 rounded-[100px] font-medium mr-4"
               // modalClass=""  
               modalContent={<TagModal />}
             />
