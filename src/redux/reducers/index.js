@@ -8,6 +8,7 @@ import taskReducer from "./taskReducer";
 import casesReducer from "./caseReducer"
 import contactReducer from "./contactReducer";
 import organizationReducer from "./organizationReducer";
+import tagReducer from "./tagReducer";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   task:taskReducer,
   contact:contactReducer,
   organization: organizationReducer,
+  tag: tagReducer,
 });
 
 export default rootReducer;
