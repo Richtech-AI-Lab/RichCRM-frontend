@@ -13,6 +13,7 @@ import contact from "../assets/images/contact.png"
 import cases from "../assets/images/cases.png"
 import document from "../assets/images/document.png"
 import setting from "../assets/images/setting.png"
+import cross from "../assets/images/cross.png"
 
 export const IMAGES = {
   profile: avatarImage,
@@ -29,5 +30,6 @@ export const IMAGES = {
   cases: cases,
   contact: contact,
   calendar: calendar,
-  document: document
+  document: document,
+  cross:cross
 };
