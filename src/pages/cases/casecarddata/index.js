@@ -230,7 +230,7 @@ const CaseCardData = () => {
         </div>
         <StagesChecklist />
       </div>
-      {isUploadFileModalOpen && <UploadFileModal fileName={`${casedetails?.clientName}-${premisesDetails?.name}`} generalUpload={true} onClose={toggleUploadFileModal} />}
+      {isUploadFileModalOpen && <UploadFileModal fileName={`${casedetails?.clientName}-${casedetails?.premisesName}`} generalUpload={true} onClose={toggleUploadFileModal} />}
     </div>
   );
 };
