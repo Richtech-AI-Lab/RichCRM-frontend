@@ -14,6 +14,8 @@ import NewIndividualContactModalV1 from "../contactModal/newIndividualContactMod
 import NewOrganizationContactModalV1 from "../contactModal/newOrganizationContactModalV1";
 import { Dropdown } from "flowbite-react";
 import { IoCheckmarkSharp } from "react-icons/io5";
+import TagButtonWithModal from "../tagModal/newTagButton";
+import TagModal from "../tagModal/tagModal";
 
 const ContactsActionbar = ({ active = "", setActive = "", activeFilter = "", setActiveFilter = () => { }, isAddFromContactModal, isEdit, toggleEdit }) => {
   const location = useLocation();
@@ -144,6 +146,11 @@ const ContactsActionbar = ({ active = "", setActive = "", activeFilter = "", set
                 ))}
               </Dropdown>
             </div>
+            <TagButtonWithModal
+              buttonClass="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[11px] px-7 rounded-[100px] font-medium"
+              // modalClass=""  
+              modalContent={<TagModal />}
+            />
             <ContactButtonWithModal
               buttonClass="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[11px] px-7 rounded-[100px] font-medium"
               // modalClass=""  

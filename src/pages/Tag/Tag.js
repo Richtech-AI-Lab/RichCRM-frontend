@@ -11,7 +11,7 @@ import { API_ENDPOINTS } from "../../../constants/api";
 import { debounce } from "lodash";
 import NewCaseDropdown from "../../../components/newcasedropdown";
 
-const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, errors, touched }) => {
+const Tag = ({ title, attorneys, setAttorneys, attorneyDetails, errors, touched }) => {
     const dispatch = useDispatch();
     const { values, setFieldValue } = useFormikContext();
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,17 +30,18 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
             setFieldValue("attorneys", attorneyDetails);
         }
     }, [attorneyDetails, setFieldValue]);
+
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
     const addAttorneyItem = (push) => {
         if (newAttorney.company && newAttorney.firstName && newAttorney.lastName) {
-            let payload={
+            let payload = {
                 contactType: 1,
                 company: newAttorney.company,
                 firstName: newAttorney.firstName,
                 lastName: newAttorney.lastName,
-                ...(newAttorney.email && newAttorney.email.trim() !== "" && { email: newAttorney.email }), 
+                ...(newAttorney.email && newAttorney.email.trim() !== "" && { email: newAttorney.email }),
                 cellNumber: newAttorney.cellNumber
             }
             dispatch(createAttorneyRequest(payload))
@@ -58,7 +59,7 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
         }
     };
     const deleteAttorneyItem = (contactId, index) => {
-        const updatedAttorneys = attorneys.filter((_, i) => i !== index); 
+        const updatedAttorneys = attorneys.filter((_, i) => i !== index);
         setAttorneys(updatedAttorneys); // Update the local state
         dispatch(deleteAttorneyRequest(contactId)); // Dispatch delete action
     };
@@ -100,7 +101,7 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
                                 <li key={item.contactId} className="flex justify-between">
                                     <span className="left-txt flex items-center">
                                         <span className="icon mr-2 cursor-pointer" /* onClick={() => remove(index)} */
-                                        onClick={() => deleteAttorneyItem(item.contactId, index)}>
+                                            onClick={() => deleteAttorneyItem(item.contactId, index)}>
                                             <img src={IMAGES.removeIcon} alt="icon" />
                                         </span>
                                         {item?.company} - {item?.lastName}, {item?.firstName}
@@ -238,4 +239,4 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
     );
 };
 
-export default CaseAttorneyItems;
+export default Tag;
