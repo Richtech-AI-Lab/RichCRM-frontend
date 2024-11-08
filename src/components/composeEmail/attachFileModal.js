@@ -51,7 +51,7 @@ const AttachFileModal = ({ onClose, uploadedFiles, setUploadedFiles}) => {
   return (
     <>
       <XSpinnerLoader loading={loader} size="lg" />
-      <Modal show={true} onClose={onClose} className="new-case-modal">
+      <Modal show={true} onClose={onClose} className="new-case-modal" style={{ zIndex: '9998' }}>
         <Modal.Header className="border-b-0">
           <div>
             <h2 className="mb-2 text-[28px] leading-9 font-medium text-secondary-800">
