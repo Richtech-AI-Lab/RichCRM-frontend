@@ -102,7 +102,7 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
                 <span className="text-sm text-red-500">{form.errors['purchasePrice']}</span>
               )}
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className=" p-0 border-none focus:ring-transparent"
                 name="purchasePrice"
                 value={values.purchasePrice}
                 type="text"
@@ -185,7 +185,7 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
             <li>
               <span className="left-txt flex items-center" >Realtors Sale</span>
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className=" p-0 border-none focus:ring-transparent"
                 name="realtorSale"
                 value={values.realtorSale}
                 type="text"
@@ -196,7 +196,7 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
             <li>
               <span className="left-txt flex items-center" >Realtors Listing</span>
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className=" p-0 border-none focus:ring-transparent"
                 name="realtorListing"
                 value={values.realtorListing}
                 type="text"
@@ -256,7 +256,7 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
                     Referral
                   </span>
                   <input
-                    className="text-right p-0 border-none focus:ring-transparent"
+                    className=" p-0 border-none focus:ring-transparent"
                     name="referral"
                     type="text"
                     onChange={handleChange}
@@ -285,7 +285,7 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
                     Bank
                   </span>
                   <input
-                    className="text-right p-0 border-none focus:ring-transparent"
+                    className=" p-0 border-none focus:ring-transparent"
                     name="bank"
                     type="text"
                     onChange={handleChange}
@@ -315,7 +315,7 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
                     Personal Note
                   </span>
                   <input
-                    className="text-right p-0 border-none focus:ring-transparent"
+                    className=" p-0 border-none focus:ring-transparent"
                     name="personalNotes"
                     type="text"
                     onChange={handleChange}
@@ -345,7 +345,7 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
                     Excluded Note
                   </span>
                   <input
-                    className="text-right p-0 border-none focus:ring-transparent"
+                    className=" p-0 border-none focus:ring-transparent"
                     name="excludedNotes"
                     type="text"
                     onChange={handleChange}
