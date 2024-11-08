@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import XButton from "../../components/button/XButton"
-import { IoIosClose } from 'react-icons/io';
+import { IoIosClose, IoIosCloseCircleOutline } from 'react-icons/io';
 import logo from '../../assets/images/logo-dark.png'
 import avatar from '../../assets/images/contact_avtar.png'
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +10,7 @@ import { API_ENDPOINTS } from '../../constants/api';
 import { postRequest } from '../../axios/interceptor';
 import { toast } from 'react-toastify';
 import { Spinner } from 'flowbite-react';
+import AttachFileModal from './attachFileModal';
 
 const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
   const dispatch = useDispatch();
@@ -20,9 +21,11 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
   const { casesData } = useSelector((state) => state.case);
   const caseObj = casesData?.cases?.find(item => item.caseId === localStorage.getItem('c_id'));
   const [inputValue, setInputValue] = useState('');
+  const [uploadedFiles, setUploadedFiles] = useState([]);
   const [toEmail, setToEmail] = useState([]);
   const [template, setTemplate] = useState('');
   const [loader, setLoader] = useState();
+  const [isModalOpen, setIsModalOpen] = useState();
 
   useEffect(() => {
     const isClientTypeIndividual = caseObj?.clientType === 0;
@@ -121,6 +124,12 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
     const updatedEmails = toEmail.filter((_, i) => i !== index);
     setToEmail(updatedEmails);
   }
+  
+  const handleRemoveFile = (index) => {
+    setUploadedFiles((prevFiles) =>
+      prevFiles.filter((_, fileIndex) => fileIndex !== index)
+    );
+  };
   // alert(initialValues.templateTitle)
   return (
     <>
@@ -216,12 +225,34 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
                 </div>
               </div>
 
-              <div className="text-end px-4 py-3 shadow-full rounded-bl-2xl rounded-br-2xl">
+             
+              {uploadedFiles?.length > 0 && (
+                      uploadedFiles?.map((fileItem, index) => (
+                        <div key={index} className="mt-4 p-4 border border-badge-gray rounded-md">
+                          <div className="flex justify-between items-center">
+                            <div>
+                              <p className="text-base font-medium text-secondary-800">
+                                {fileItem.file.name}
+                              </p>
+                              <p className="text-sm text-text-gray-100">
+                                {/* {(fileItem.file.size / (1024 * 1024)).toFixed(2)} MB */}
+                              </p>
+                            </div>
+                            <IoIosCloseCircleOutline
+                              className="text-xl text-text-gray-100 cursor-pointer"
+                              onClick={() => handleRemoveFile(index)}
+                            />
+                          </div>
+                        </div>
+                      ))
+                    )
+                  }
+                   <div className="text-end px-4 py-3 shadow-full rounded-bl-2xl rounded-br-2xl">
               <XButton
                   text="Attach"
-                  onClick={null}
+                  onClick={()=>{setIsModalOpen(true)}}
                   type="button"
-                  className="bg-active-blue text-active-blue-text text-base py-[10px] px-6 rounded-[100px]"
+                  className="bg-active-blue text-active-blue-text text-base py-[10px] px-6 rounded-[100px] m"
                 />
                 <XButton
                   text="Send"
@@ -233,6 +264,7 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
           )}
         </Formik>
       </div>
+      {isModalOpen && <AttachFileModal setUploadedFiles={setUploadedFiles} uploadedFiles={uploadedFiles} onClose={()=>setIsModalOpen(prevState => !prevState)} />}
     </>
   );
 };
