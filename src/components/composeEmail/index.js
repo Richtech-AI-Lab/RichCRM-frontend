@@ -133,7 +133,7 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
   // alert(initialValues.templateTitle)
   return (
     <>
-      <div className="bg-white rounded-2xl shadow-card fixed bottom-3 right-3 w-[552px]">
+      <div className="bg-white rounded-2xl shadow-card fixed bottom-3 right-3 w-[552px]" style={{ zIndex: '9999' }}>
         <div className="flex justify-between items-center p-4">
           <h3 className="text-base text-secondary-800 font-medium">Compose Message</h3>
           <IoIosClose size={28} onClick={onClose} className="text-text-gray-100 cursor-pointer" />
