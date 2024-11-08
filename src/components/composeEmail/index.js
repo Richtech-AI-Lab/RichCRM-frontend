@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import XButton from "../../components/button/XButton"
-import { IoIosClose, IoIosCloseCircleOutline } from 'react-icons/io';
+import { IoIosClose, IoMdAttach, IoIosCloseCircleOutline } from 'react-icons/io';
 import logo from '../../assets/images/logo-dark.png'
 import avatar from '../../assets/images/contact_avtar.png'
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,17 +30,17 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
   useEffect(() => {
     const isClientTypeIndividual = caseObj?.clientType === 0;
     const targetObj = isClientTypeIndividual ? clientObj : organizationObj;
-    
+
     if (targetObj?.length > 0) {
       const email = targetObj[0]?.email;
-      
+
       if (email) {
         setToEmail([email]);
       } else {
         toast.error("Please update client email, No email exists!");
       }
     }
-    
+
     const fetchData = async () => {
       setLoader(true)
       try {
@@ -124,7 +124,7 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
     const updatedEmails = toEmail.filter((_, i) => i !== index);
     setToEmail(updatedEmails);
   }
-  
+
   const handleRemoveFile = (index) => {
     setUploadedFiles((prevFiles) =>
       prevFiles.filter((_, fileIndex) => fileIndex !== index)
@@ -225,32 +225,44 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
                 </div>
               </div>
 
-             
-              {uploadedFiles?.length > 0 && (
-                      uploadedFiles?.map((fileItem, index) => (
-                        <div key={index} className="mt-4 p-4 border border-badge-gray rounded-md">
-                          <div className="flex justify-between items-center">
-                            <div>
-                              <p className="text-base font-medium text-secondary-800">
-                                {fileItem.file.name}
-                              </p>
-                              <p className="text-sm text-text-gray-100">
-                                {/* {(fileItem.file.size / (1024 * 1024)).toFixed(2)} MB */}
-                              </p>
-                            </div>
-                            <IoIosCloseCircleOutline
-                              className="text-xl text-text-gray-100 cursor-pointer"
-                              onClick={() => handleRemoveFile(index)}
-                            />
-                          </div>
-                        </div>
-                      ))
-                    )
-                  }
-                   <div className="text-end px-4 py-3 shadow-full rounded-bl-2xl rounded-br-2xl">
-              <XButton
+<div className="grid grid-cols-5 gap-4">
+  {uploadedFiles?.length > 0 &&
+    uploadedFiles.map((fileItem, index) => (
+      <div
+        key={index}
+        className="relative p-4 border border-gray-200 rounded-md shadow-sm hover:shadow-md transition-shadow duration-200"
+      >
+        {/* Close Icon in the top-right corner */}
+        <IoIosCloseCircleOutline
+          className="absolute top-2 right-2 text-xl text-gray-400 hover:text-gray-600 cursor-pointer"
+          onClick={() => handleRemoveFile(index)}
+        />
+
+        <div className="flex flex-col items-center">
+          {/* Attachment Icon */}
+          <IoMdAttach className="text-4xl text-blue-500 mb-2" />
+
+          {/* File Name */}
+          <p className="text-sm font-medium text-gray-800 text-center truncate w-24">
+            {fileItem.file.name}
+          </p>
+          
+          {/* File Size */}
+          <p className="text-xs text-gray-500">
+            {/* Uncomment to show file size */}
+            {/* {(fileItem.file.size / (1024 * 1024)).toFixed(2)} MB */}
+          </p>
+        </div>
+      </div>
+    ))}
+</div>
+
+
+
+              <div className="text-end px-4 py-3 shadow-full rounded-bl-2xl rounded-br-2xl">
+                <XButton
                   text="Attach"
-                  onClick={()=>{setIsModalOpen(true)}}
+                  onClick={() => { setIsModalOpen(true) }}
                   type="button"
                   className="bg-active-blue text-active-blue-text text-base py-[10px] px-6 rounded-[100px] m"
                 />
@@ -264,7 +276,7 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
           )}
         </Formik>
       </div>
-      {isModalOpen && <AttachFileModal setUploadedFiles={setUploadedFiles} uploadedFiles={uploadedFiles} onClose={()=>setIsModalOpen(prevState => !prevState)} />}
+      {isModalOpen && <AttachFileModal setUploadedFiles={setUploadedFiles} uploadedFiles={uploadedFiles} onClose={() => setIsModalOpen(prevState => !prevState)} />}
     </>
   );
 };
