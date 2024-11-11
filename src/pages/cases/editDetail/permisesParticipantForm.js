@@ -423,7 +423,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
             {/* <li>
               <span className={`left-txt flex items-center`}>Assessments</span>
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className="p-0 border-none focus:ring-transparent"
                 name="assessments"
                 type="text"
                 onChange={handleChange}
@@ -433,7 +433,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
             {/* <li>
               <span className={`left-txt flex items-center`}>Paid by</span>
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className="p-0 border-none focus:ring-transparent"
                 name="assessmentsPaidById"
                 type="text"
                 onChange={handleChange}
@@ -614,7 +614,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
                 <span className="text-sm text-red-500">{form.errors['fname1f']}</span>
               )}
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className="p-0 border-none focus:ring-transparent"
                 name="fname1f"
                 type="text"
                 value={values.fname1f}
@@ -629,7 +629,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
                 <span className="text-sm text-red-500">{form.errors['lname1f']}</span>
               )}
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className="p-0 border-none focus:ring-transparent"
                 name="lname1f"
                 value={values.lname1f}
                 type="text"
@@ -641,7 +641,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
             <li>
               <span className="left-txt flex items-center" >{values.isTwoFamily == 1 && "1F Tenant"} Rent</span>
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className="p-0 border-none focus:ring-transparent"
                 name="rent1f"
                 type="text"
                 value={values.rent1f}
@@ -653,7 +653,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
             <li>
               <span className="left-txt flex items-center" >{values.isTwoFamily == 1 && "1F Tenant"} Sec.</span>
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className="p-0 border-none focus:ring-transparent"
                 name="sec1f"
                 type="text"
                 value={values.sec1f}
@@ -665,7 +665,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
             <li>
               <span className="left-txt flex items-center" >{values.isTwoFamily == 1 && "1F Tenant"} Lease</span>
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className="p-0 border-none focus:ring-transparent"
                 name="lease1f"
                 type="text"
                 value={values.lease1f}
@@ -680,7 +680,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
                 <span className="text-sm text-red-500">{form.errors['fname2f']}</span>
               )}
                   <input
-                    className="text-right p-0 border-none focus:ring-transparent"
+                    className="p-0 border-none focus:ring-transparent"
                     name="fname2f"
                     type="text"
                     onChange={handleChange}
@@ -694,7 +694,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
                 <span className="text-sm text-red-500">{form.errors['lname2f']}</span>
               )}
                   <input
-                    className="text-right p-0 border-none focus:ring-transparent"
+                    className="p-0 border-none focus:ring-transparent"
                     name="lname2f"
                     type="text"
                     onChange={handleChange}
@@ -705,7 +705,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
                 <li>
                   <span className="left-txt flex items-center">2F Tenant Rent</span>
                   <input
-                    className="text-right p-0 border-none focus:ring-transparent"
+                    className="p-0 border-none focus:ring-transparent"
                     name="rent2f"
                     type="text"
                     onChange={handleChange}
@@ -716,7 +716,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
                 <li>
                   <span className="left-txt flex items-center">2F Tenant Sec.</span>
                   <input
-                    className="text-right p-0 border-none focus:ring-transparent"
+                    className="p-0 border-none focus:ring-transparent"
                     name="sec2f"
                     type="text"
                     onChange={handleChange}
@@ -727,7 +727,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
                 <li>
                   <span className="left-txt flex items-center">2F Tenant Lease</span>
                   <input
-                    className="text-right p-0 border-none focus:ring-transparent"
+                    className="p-0 border-none focus:ring-transparent"
                     name="lease2f"
                     type="text"
                     onChange={handleChange}

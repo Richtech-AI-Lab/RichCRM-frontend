@@ -96,6 +96,46 @@ module.exports = {
         100: '#CF9500',
         200: '#573E00',
       },
+       tagA: {
+          light: '#e2e2e6', // first color in the pair
+          dark: '#707684',  // second color in the pair
+        },
+        tagB: {
+          light: '#e0d3c7',
+          dark: '#463e36',
+        },
+        tagC: {
+          light: '#ff9f95',
+          dark: '#410002',
+        },
+        tagD: {
+          light: '#ffa96b',
+          dark: '#573300',
+        },
+        tagE: {
+          light: '#ffd187',
+          dark: '#573e00',
+        },
+        tagF: {
+          light: '#a4edbb',
+          dark: '#004d26',
+        },
+        tagG: {
+          light: '#a5e4ed',
+          dark: '#005e72',
+        },
+        tagH: {
+          light: '#c5dcff',
+          dark: '#033b6c',
+        },
+        tagI: {
+          light: '#d8c8f9',
+          dark: '#3d00ad',
+        },
+        tagJ: {
+          light: '#fad6ee',
+          dark: '#8f003e',
+        },
       ...colors,
     },
   },

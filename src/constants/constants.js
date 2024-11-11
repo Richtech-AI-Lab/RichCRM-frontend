@@ -687,3 +687,17 @@ export const CONTACT_TYPE = {
 };
 
 export const maintenanceFeePer =["Month", "Quarter", "Year"]
+
+
+export const colorOptions = [
+  { label: "tagA", color1: "#e2e2e6", color2: "#707684" },  // Gray colors (tagA)
+  { label: "tagB", color1: "#e0d3c7", color2: "#463e36" },  // Brown colors (tagB)
+  { label: "tagC", color1: "#ff9f95", color2: "#410002" },  // Pink colors (tagC)
+  { label: "tagD", color1: "#ffa96b", color2: "#573300" },  // Orange colors (tagD)
+  { label: "tagE", color1: "#ffd187", color2: "#573e00" },  // Gold colors (tagE)
+  { label: "tagF", color1: "#a4edbb", color2: "#004d26" },  // Green colors (tagF)
+  { label: "tagG", color1: "#a5e4ed", color2: "#005e72" },  // Teal colors (tagG)
+  { label: "tagH", color1: "#c5dcff", color2: "#033b6c" },  // Blue colors (tagH)
+  { label: "tagI", color1: "#d8c8f9", color2: "#3d00ad" },  // Purple colors (tagI)
+  { label: "tagJ", color1: "#fad6ee", color2: "#8f003e" }   // Burgundy colors (tagJ)
+];
