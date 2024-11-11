@@ -11,6 +11,7 @@ import ContactButtonWithModal from "../../../components/newContactButton";
 import NewIndividualContactModalV1 from "../../../components/contactModal/newIndividualContactModalV1";
 import NewOrganizationContactModalV1 from "../../../components/contactModal/newOrganizationContactModalV1";
 import { fetchOrganizationByTypeRequest, setSelectedOrganization } from "../../../redux/actions/organizationActions";
+import { fetchAllTagsRequest } from "../../../redux/actions/tagActions";
 
 const ContactListingV1 = ({ active, parent, activeFilter }) => {
   const dispatch = useDispatch();
@@ -59,6 +60,18 @@ const ContactListingV1 = ({ active, parent, activeFilter }) => {
   }
   const header = headers[active] ?? ["Name", "Position", "Company", "Email", "Cell Phone"];
   const width = widthTabs[active] ?? ["20%", "20%", "20%", "20%", "20%"];
+
+  useEffect(()=>{
+    const fetchAllTags = async () => {
+      try {
+        dispatch(fetchAllTagsRequest());
+      } catch (error) {
+        console.error("Error fetching conatct:", error);
+      }
+    };
+    fetchAllTags();
+  },[])
+
 
   useEffect(() => {
     const fetchContactByType = async () => {
