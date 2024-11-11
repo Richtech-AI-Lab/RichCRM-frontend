@@ -33,7 +33,7 @@ const Tag = ({ title, tags, setTags, tagDetails, errors, touched }) => {
                 label: newTag.label,
                 color1: newTag.color1,
                 color2: newTag.color2,
-                tagType: newTag.tagType,
+                tagType: 1,
             }
             dispatch(createTagRequest(payload))
             setNewTag({ ...newTag, label: '', color1: '', color2: '', tagType: '' });
@@ -156,7 +156,7 @@ const Tag = ({ title, tags, setTags, tagDetails, errors, touched }) => {
 
                                             </Dropdown>
                                         </div>
-                                        <div className="">
+                                        <div className="dis-none">
                                             <Label value="contact type" className="block mb-2 mt-4" />
                                             <TextInput
                                                 type="tagType"
