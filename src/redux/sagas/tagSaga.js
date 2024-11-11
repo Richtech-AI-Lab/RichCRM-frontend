@@ -1,12 +1,12 @@
 import { call, fork, put, takeLatest } from 'redux-saga/effects';
-import { CREATE_TAG_REQUEST, CREATE_TASK_REQUEST, FINISH_ALL_TASK_FAILURE, FINISH_ALL_TASK_REQUEST, GET_TASK_REQUEST, UPDATE_STATUS_TASK_REQUEST } from '../type';
+import { CREATE_TAG_REQUEST, CREATE_TASK_REQUEST, DELETE_TAG_REQUEST, FINISH_ALL_TASK_FAILURE, FINISH_ALL_TASK_REQUEST, GET_TASK_REQUEST, UPDATE_STATUS_TASK_REQUEST } from '../type';
 import { API_ENDPOINTS } from '../../constants/api';
 import { createTaskFailure, createTaskSuccess, finishAllTaskFailure, finishAllTaskSuccess, updateTaskStatusFailure, updateTaskStatusSuccess } from '../actions/taskActions';
 import { getRequest, postRequest } from '../../axios/interceptor';
 import { all } from 'redux-saga/effects';
 import { STAGESNAMES } from '../../constants/constants';
 import { handleError } from '../../utils/eventHandler';
-import { createTagFailure, createTagSuccess } from '../actions/tagActions';
+import { createTagFailure, createTagSuccess, deleteTagFailure, deleteTagSuccess } from '../actions/tagActions';
 
 function* createtagSaga(action) {
   const { payload } = action;
@@ -16,6 +16,17 @@ function* createtagSaga(action) {
   } catch (error) {
     handleError(error)
     yield put(createTagFailure(error.response?.data || error));
+  }
+}
+
+function* deletetagSaga(action) {
+  const { payload } = action;
+  try {
+    const response = yield call(() => postRequest(API_ENDPOINTS.DELETE_TAG, payload));
+    yield put(deleteTagSuccess(response?.data?.data[0]?.label));
+  } catch (error) {
+    handleError(error)
+    yield put(deleteTagFailure(error.response?.data || error));
   }
 }
 
@@ -85,7 +96,7 @@ function* finishAllTaskSaga(action) {
 
 export function* tagSaga() {
   yield takeLatest(CREATE_TAG_REQUEST, createtagSaga);
-  // yield takeLatest(GET_TASK_REQUEST, getAllTaskSaga);
+  yield takeLatest(DELETE_TAG_REQUEST, deletetagSaga);
   // yield takeLatest(UPDATE_STATUS_TASK_REQUEST, updateStatusTaskSaga);
   // yield takeLatest(FINISH_ALL_TASK_REQUEST, finishAllTaskSaga);
 }

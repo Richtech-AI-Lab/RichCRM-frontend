@@ -1,4 +1,4 @@
-import { CREATE_TAG_FAILURE, CREATE_TAG_REQUEST, CREATE_TAG_SUCCESS, DELETE_TAG_SUCCESS } from "../type";
+import { CREATE_TAG_FAILURE, CREATE_TAG_REQUEST, CREATE_TAG_SUCCESS, DELETE_TAG_FAILURE, DELETE_TAG_SUCCESS } from "../type";
 
 const initialState = {
   loading: false,
@@ -17,7 +17,9 @@ const tagReducer = (state = initialState, action) => {
     // case DELETE_TAG_SUCCESS:
     //   return { ...state, loading: false, tag: state?.tag.filter(item => item.contactId !== action.payload), error: null };
     case DELETE_TAG_SUCCESS:
-      return { ...state, loading: false, tag: state?.tag.filter(item => item.contactId !== action.payload), error: null };
+      return { ...state, loading: false, tag: state?.tag.filter(item => item.label !== action.payload), error: null };
+    case DELETE_TAG_FAILURE:
+        return { ...state, loading: false, tag: state?.tag.filter(item => item.label !== action.payload), error: null };
     default:
       return state;
   }

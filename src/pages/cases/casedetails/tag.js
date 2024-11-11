@@ -40,10 +40,13 @@ const Tag = ({ title, tags, setTags, tagDetails, errors, touched }) => {
             closeModal();
         }
     };
-    const deleteTagItem = (contactId, index) => {
+    const deleteTagItem = (label, index) => {
         const updatedtags = tags.filter((_, i) => i !== index);
         setTags(updatedtags); // Update the local state
-        dispatch(deleteTagSuccess(contactId)); // Dispatch delete action
+        let payload = {
+            label: label,
+        }
+        dispatch(deleteTagRequest(payload)); // Dispatch delete action
     };
 
     return (
@@ -71,7 +74,7 @@ const Tag = ({ title, tags, setTags, tagDetails, errors, touched }) => {
                                             }}
                                         ></div>
                                         <span className="icon mr-2 ml-5 cursor-pointer" /* onClick={() => remove(index)} */
-                                            onClick={() => deleteTagItem(item.contactId, index)}>
+                                            onClick={() => deleteTagItem(item.label, index)}>
                                             <img src={IMAGES.cross} alt="icon" />
                                         </span>
                                     </span>
