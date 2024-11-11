@@ -1,5 +1,5 @@
 /* global OneDrive */
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Field, Formik } from "formik";
 import { Modal } from "flowbite-react";
 import XButton from "../button/XButton";
@@ -9,6 +9,7 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useMsal } from "@azure/msal-react";
 import XSpinnerLoader from "../spinnerLoader/XSpinnerLoader";
+import { DataStoreContext } from "../../pages/settings/form/dataStoreContext";
 
 const ROOT_FOLDER_PATH = "https://graph.microsoft.com/v1.0/drive/root";
 const fileTypeOptions = [
@@ -30,6 +31,7 @@ const fileTypeOptions = [
 
 const UploadFileModal = ({ onClose, fileName = "", generalUpload, taskName = "", onUpload = () => { } }) => {
   // console.log(fileName, "+===", fileName.split('-').slice(0, 2).join('-'))
+  const { uploadFolderUrlKey, setUploadFolderUrlKey } = useContext(DataStoreContext);
   const { instance, accounts, inProgress } = useMsal();
   const [account, setAccount] = useState(instance.getActiveAccount());
   const [loader, setLoader] = useState(false)
@@ -94,8 +96,15 @@ const UploadFileModal = ({ onClose, fileName = "", generalUpload, taskName = "",
     const token = await getToken();
     const encodedFolderPath = encodeURIComponent(folderName);
     const encodedFilePath = encodeURIComponent(customFileName);
-    const folderUrl = `${ROOT_FOLDER_PATH}:/${encodedFolderPath}:`;
-    const uploadUrl = `${ROOT_FOLDER_PATH}:/${encodedFolderPath}/${encodedFilePath}:/content?@microsoft.graph.conflictBehavior=rename`;
+    let folderUrl;
+    let uploadUrl;
+    if(uploadFolderUrlKey){
+      folderUrl = `${ROOT_FOLDER_PATH}:/${uploadFolderUrlKey}/${encodedFolderPath}:`;
+      uploadUrl = `${ROOT_FOLDER_PATH}:/${uploadFolderUrlKey}/${encodedFolderPath}/${encodedFilePath}:/content?@microsoft.graph.conflictBehavior=rename`;
+    }else{
+      folderUrl = `${ROOT_FOLDER_PATH}:/${encodedFolderPath}:`;
+      uploadUrl = `${ROOT_FOLDER_PATH}:/${encodedFolderPath}/${encodedFilePath}:/content?@microsoft.graph.conflictBehavior=rename`;
+    }
 
     // console.log("==>>furl",folderUrl)
     // console.log("==>>Uurl",uploadUrl)
@@ -112,7 +121,12 @@ const UploadFileModal = ({ onClose, fileName = "", generalUpload, taskName = "",
       // console.log("folderResponse",folderResponse)
       // If folder doesn't exist, create the folder
       if (!folderResponse.ok) {
-        const createFolderUrl = `${ROOT_FOLDER_PATH}/children`;
+        let createFolderUrl;
+        if(uploadFolderUrlKey){
+          createFolderUrl = `${ROOT_FOLDER_PATH}:/${uploadFolderUrlKey}:/children`;
+        }else{
+          createFolderUrl= `${ROOT_FOLDER_PATH}/children`;
+        }
         const createResponse = await fetch(createFolderUrl, {
           method: "POST",
           headers: {
