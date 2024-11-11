@@ -13,7 +13,7 @@ import { DataStoreContext } from "./pages/settings/form/dataStoreContext";
 
 const App = ({ pca }) => {
   const [openaiAPIKey, setOpenaiAPIKey] = useState(process.env.REACT_APP_CHATGPT_KEY);
-  const [uploadFolderUrlKey, setUploadFolderUrlKey] = useState(process.env.REACT_APP_UPLOAD_FOLDER_URL);
+  const [uploadFolderUrlKey, setUploadFolderUrlKey] = useState(null);
   
 return (
   <>
