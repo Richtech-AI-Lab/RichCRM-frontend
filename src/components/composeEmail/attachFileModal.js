@@ -23,13 +23,27 @@ const AttachFileModal = ({ onClose, uploadedFiles, setUploadedFiles}) => {
     }
   };
 
+  const getBase64 = (file) => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.readAsDataURL(file);
+    })
+  }
+
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
+    let filesWithDropdownValues = [];
     if (files) {
-      const filesWithDropdownValues = files.map((file) => ({
-        file,
-        fileType: "",
-      }));
+      files.forEach(async (file) => {
+        const base64 = await getBase64(file);
+        const filesWithDropdownValue = {
+          file,
+          fileType: "",
+          base64,
+        };
+        filesWithDropdownValues.push(filesWithDropdownValue);
+      });
       setUploadedFiles((prevFiles) => [
         ...prevFiles,
         ...filesWithDropdownValues,

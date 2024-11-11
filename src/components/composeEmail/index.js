@@ -12,6 +12,11 @@ import { toast } from 'react-toastify';
 import { Spinner } from 'flowbite-react';
 import AttachFileModal from './attachFileModal';
 
+import { render } from '@react-email/components';
+import { Email } from '../../assets/emails/test';
+import { FEKToPurchaserEmail } from '../../assets/emails/FEK';
+import { sendEmail } from '../ses/sendEmail';
+
 const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
   const dispatch = useDispatch();
   const { client } = useSelector((state) => state.client);
@@ -131,6 +136,19 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
     );
   };
   // alert(initialValues.templateTitle)
+
+  const handleEmailSend = async () => {
+    const emailHtml = await render(<FEKToPurchaserEmail {...{ clientObj: clientObj[0], caseObj: caseObj }} />);
+    const emailSubject = 'Contract and Important Dates';
+    const emailTo = toEmail;
+    const attachments = uploadedFiles.map((fileItem) => ({
+      filename: fileItem.file.name,
+      content: fileItem.base64.split(';base64,').pop(),
+    }));
+    console.log('attachments', attachments);
+    await sendEmail({ emailHtml, emailSubject, emailTo, attachments });
+  }
+
   return (
     <>
       <div className="bg-white rounded-2xl shadow-card fixed bottom-3 right-3 w-[552px]" style={{ zIndex: '9997' }}>
@@ -268,7 +286,8 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
                 />
                 <XButton
                   text="Send"
-                  type="submit"
+                  type="button"
+                  onClick={handleEmailSend}
                   className="bg-active-blue text-active-blue-text text-base py-[10px] px-6 rounded-[100px]"
                 />
               </div>
