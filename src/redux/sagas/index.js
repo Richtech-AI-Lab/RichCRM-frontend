@@ -9,7 +9,8 @@ import { stagesSaga } from "./stagesSaga";
 import { taskSaga } from "./taskSaga";
 import { contactSaga } from "./contactSaga";
 import { organizationSaga } from "./organizationSaga";
+import { tagSaga } from "./tagSaga";
 
 export default function* rootSaga() {
-  yield all([userSaga(), authSaga(), caseSaga(), premisesSaga(), clientSaga(), utilsSaga(), stagesSaga(),taskSaga(),contactSaga(),organizationSaga()]);
+  yield all([userSaga(), authSaga(), caseSaga(), premisesSaga(), clientSaga(), utilsSaga(), stagesSaga(),taskSaga(),contactSaga(),organizationSaga(), tagSaga()]);
 }
