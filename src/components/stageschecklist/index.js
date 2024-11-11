@@ -49,8 +49,8 @@ const StagesChecklist = () => {
         caseId: localStorage.getItem('c_id'),
       }
       dispatch(getStageRequest(sagaPayload));
+      setCurrentStep( currentStep || 0)
     }
-
   }, [data, currentStep])
 
   const foundCase = casesData?.cases?.find(item => item.caseId === localStorage.getItem('c_id'));
