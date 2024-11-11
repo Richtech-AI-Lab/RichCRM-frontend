@@ -8,20 +8,24 @@ import Routing from "./routes/Routing";
 
 import { MsalProvider } from "@azure/msal-react";
 import { LangchainContext } from "./pages/dashboard/langchainContext";
+import { DataStoreContext } from "./pages/settings/form/dataStoreContext";
 
 
 const App = ({ pca }) => {
   const [openaiAPIKey, setOpenaiAPIKey] = useState(process.env.REACT_APP_CHATGPT_KEY);
+  const [uploadFolderUrlKey, setUploadFolderUrlKey] = useState(process.env.REACT_APP_UPLOAD_FOLDER_URL);
   
 return (
   <>
     <LangchainContext.Provider value={{ openaiAPIKey: openaiAPIKey, setOpenaiAPIKey: setOpenaiAPIKey }}>
+      <DataStoreContext.Provider value={{ uploadFolderUrlKey: uploadFolderUrlKey, setUploadFolderUrlKey: setUploadFolderUrlKey }}>
     <MsalProvider instance={pca}>
     <BrowserRouter>
       <Routing />
     </BrowserRouter>
     <ToastContainer />
     </MsalProvider>
+    </DataStoreContext.Provider>
     </LangchainContext.Provider>
   </>
 );
