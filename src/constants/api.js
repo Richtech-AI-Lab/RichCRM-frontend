@@ -27,6 +27,7 @@ export const API_ENDPOINTS = {
   FETCH_CLIENT_BY_QUERY:"client/query",
   FETCH_ADDRESS_BY_QUERY_ID:"/utils/address/query/id",
   UPDATE_CLIENT:"/client/update",
+  GET_CONTACT_BY_TAG:"/contact/query/caseandtag",
   GET_CONTACT_BY_QUERY:"/contact/query/type",
   GET_CONTACT_BY_KEYWORD:"/contact/query",
   UPDATE_CONTACT:"/contact/update",

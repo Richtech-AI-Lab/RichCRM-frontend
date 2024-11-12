@@ -16,9 +16,11 @@ import { Dropdown } from "flowbite-react";
 import { IoCheckmarkSharp } from "react-icons/io5";
 import TagButtonWithModal from "../tagModal/newTagButton";
 import TagModal from "../tagModal/tagModal";
+import { useSelector } from "react-redux";
 
 const ContactsActionbar = ({ active = "", setActive = "", activeFilter = "", setActiveFilter = () => { }, isAddFromContactModal, isEdit, toggleEdit }) => {
   const location = useLocation();
+  const tagDetails = useSelector((state) => state.tag.tag);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleModal = () => {
@@ -108,9 +110,14 @@ const ContactsActionbar = ({ active = "", setActive = "", activeFilter = "", set
     }
 
   }
+
+  const formattedOptions = tagDetails.map(option => ({
+    ...option,
+    value: option.label, // Convert label to a suitable value format
+  }));
   const label =
     active === 0
-      ? IndividualOptions.find((option) => option.value === activeFilter)?.label
+      ? formattedOptions.find((option) => option.value === activeFilter)?.label
       : OrganizationOptions.find((option) => option.value === activeFilter)?.label;
   return (
     <>
@@ -127,7 +134,7 @@ const ContactsActionbar = ({ active = "", setActive = "", activeFilter = "", set
                 className="rounded-2xl w-64 shadow-shadow-light-2"
                 dismissOnClick={true}
               >
-                {(active == "0" ? IndividualOptions : OrganizationOptions).map((option) => (
+                {(active == "0" ? formattedOptions : OrganizationOptions).map((option) => (
                   <Dropdown.Item
                     key={option.value}
                     className="py-3"
@@ -139,7 +146,8 @@ const ContactsActionbar = ({ active = "", setActive = "", activeFilter = "", set
                         }`} />
 
                       <span className={`bg-badge-${getContactLabelAndColor(option.value, "color")} text-secondary-100 text-sm font-semibold py-1 px-3 rounded-full inline-block`}>
-                        {getContactLabelAndColor(option.value, "label")}
+                        {/* {getContactLabelAndColor(option.value, "label")} */}
+                        {option.label}
                       </span>
                     </div>
                   </Dropdown.Item>

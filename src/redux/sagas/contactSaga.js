@@ -20,7 +20,18 @@ function* getContactByType(action) {
     yield put(getContactFailure(error.response.data || error));
   }
 }
-
+function* getContactByTag(action) {
+  try {
+    const contactType = action.payload;
+    const response = yield call(() =>
+      postRequest(API_ENDPOINTS.GET_CONTACT_BY_TAG, contactType)
+    );
+    yield put(getContactSuccess(response.data));
+  } catch (error) {
+    handleError(error)
+    yield put(getContactFailure(error.response.data || error));
+  }
+}
 function* getAttorneyByIds(action) {
   try {
     const payload= action.payload;
@@ -142,7 +153,8 @@ function* deleteAttorney(action) {
 }
 
 export function* contactSaga() {
-  yield takeLatest(GET_CONTACT_BY_TYPE_REQUEST, getContactByType);
+  // yield takeLatest(GET_CONTACT_BY_TYPE_REQUEST, getContactByType);
+  yield takeLatest(GET_CONTACT_BY_TYPE_REQUEST, getContactByTag);
   yield takeLatest(FETCH_ATTORNEY_BY_ID_REQUEST, getAttorneyByIds);
   yield takeLatest(FETCH_REALTOR_BY_ID_REQUEST, getRealtorByIds);
   yield takeLatest(UPDATE_CONTACT_REQUEST, updateContact);

@@ -4,9 +4,10 @@ import { SelectInput, TextInput, XButton } from "..";
 import { IMAGES } from "../../constants/imagePath";
 import states from "../../constants/states.json";
 import { Label, Modal, Textarea } from "flowbite-react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import NewCaseDropdown from "../newcasedropdown";
-import {  contactTagIndividualOption } from "../../utils/formItem";
+import Select from 'react-select';
+import { contactTagIndividualOption } from "../../utils/formItem";
 import { createAddressContactRequest, createAddressRequest } from "../../redux/actions/utilsActions";
 import { createContactRequest } from "../../redux/actions/contactActions";
 import * as Yup from "yup";
@@ -16,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 const initialValues = {
     firstName: '',
     lastName: '',
-    contactType: '',
+    tags: '',
     position: '',
     company: '',
     email: '',
@@ -27,8 +28,9 @@ const initialValues = {
 const NewIndividualContactModalV1 = ({ onSubmit, onClose }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const tagDetails = useSelector((state) => state.tag.tag);
     const validationSchema = Yup.object({
-        contactType: Yup.string().required('Contact Tag is required'),
+        // tags: Yup.array().min(1, 'At least one tag is required'),
         firstName: Yup.string().required("First Name is required"),
         lastName: Yup.string().required("Last Name is required"),
         email: Yup.string().email('Invalid email format'),
@@ -40,7 +42,7 @@ const NewIndividualContactModalV1 = ({ onSubmit, onClose }) => {
             const payload = {
                 firstName: values?.firstName,
                 lastName: values?.lastName,
-                contactType: values?.contactType,
+                tags: values?.tags,
                 position: values?.position,
                 company: values?.company,
                 cellNumber: values?.cellNumber,
@@ -49,7 +51,6 @@ const NewIndividualContactModalV1 = ({ onSubmit, onClose }) => {
             };
 
             dispatch(createContactRequest(payload, navigate))
-
             onClose();
         } catch (error) {
             console.error("Error while handling new contact information", error);
@@ -57,7 +58,10 @@ const NewIndividualContactModalV1 = ({ onSubmit, onClose }) => {
         }
     };
 
-
+    const formattedOptions = tagDetails.map(option => ({
+        ...option,
+        value: option.label, // Convert label to a suitable value format
+    }));
     return (
         <Modal show={true} size="md" onClose={onClose} className="new-case-modal">
             <Modal.Header className="border-b-0">
@@ -123,24 +127,62 @@ const NewIndividualContactModalV1 = ({ onSubmit, onClose }) => {
                                 </div>
                                 <div className="grid grid-cols-1 gap-4">
                                     <div className="block">
-                                        <div className={`items-dropdown ${values.contactType == null || values.contactType == undefined || values.contactType == "" ? "default" :""} single-select mt-3 mb-3`}>
+                                        {/* <div className={`items-dropdown single-select mt-3 mb-3`}>
                                             <Field
                                                 as={NewCaseDropdown}
                                                 defaultLabel="Select Tag"
-                                                name="contactType"
-                                                value={values.contactType}
-                                                onChange={handleChange}
+                                                name="tags"
+                                                // value={values.tags[0]}
+                                                value={contactTagIndividualOption.filter(option =>
+                                                    values.tags.includes(option.label)
+                                                )}
+                                                // onChange={(selectedOptions) =>
+                                                //     setFieldValue(
+                                                //         "tags",
+                                                //         selectedOptions ? selectedOptions.map(option => option.value) : []
+                                                //     )
+                                                // }
+                                                onChange={ (selectedOptions) =>
+                                                    setFieldValue(
+                                                                "tags",
+                                                                [selectedOptions]
+                                                            )
+                                                }
                                                 onBlur={handleBlur}
-                                                options={contactTagIndividualOption}
+                                                options={contactTagIndividualOption.map(opt=>opt.label)}
                                                 contactBadge="individual"
 
                                             />
 
-                                            {touched.contactType && errors.contactType ? (
+                                            {touched.tags && errors.tags ? (
                                                 <div className="text-red-500 text-sm">
                                                     {errors.caseType}
                                                 </div>
                                             ) : null}
+                                        </div> */}
+                                        <div className={`items-dropdown single-select mt-3 mb-3`}>
+                                            <Field
+                                                as={Select}
+                                                isMulti
+                                                name="tags"
+                                                options={formattedOptions}
+                                                value={formattedOptions.filter(option =>
+                                                    values.tags.includes(option.value)
+                                                )}
+                                                onChange={(selectedOptions) =>
+                                                    setFieldValue(
+                                                        "tags",
+                                                        selectedOptions ? selectedOptions.map(option => option.value) : []
+                                                    )
+                                                }
+                                            />
+
+                                            {touched.tags && errors.tags ? (
+                                                <div className="text-red-500 text-sm">
+                                                    {errors.caseType}
+                                                </div>
+                                            ) : null}
+
                                         </div>
                                     </div>
 

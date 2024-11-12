@@ -77,8 +77,9 @@ const ContactListingV1 = ({ active, parent, activeFilter }) => {
     const fetchContactByType = async () => {
       try {
         const payload = {
-          contactType: activeFilter
-        };
+          tag: "Realtor",
+          caseId: localStorage.getItem("c_id")
+        }
         dispatch(getContactRequest(payload));
       } catch (error) {
         console.error("Error fetching conatct:", error);
@@ -192,7 +193,8 @@ const ContactListingV1 = ({ active, parent, activeFilter }) => {
                     {header.includes("Tag") && (
                       <Table.Cell width={width[1]}>
                         <span className={`bg-badge-${getContactLabelAndColor(user.contactType, "color")} text-secondary-100 text-sm font-semibold py-1 px-3 rounded-full inline-block`}>
-                          {getContactLabelAndColor(user.contactType, "label")}
+                          {/* {getContactLabelAndColor(user.contactType, "label")} */}
+                          {user?.tags.map((tag)=>tag)}
                         </span>
                       </Table.Cell>
                     )}
