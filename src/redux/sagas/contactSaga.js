@@ -42,7 +42,7 @@ function* getAttorneyByIds(action) {
     // );
     // const attorneyData = attorneyListRes.map(res => res.data.data[0]);
     const response = yield call(() =>
-      postRequest(API_ENDPOINTS.QUERY_CONTACT_BY_CASE_ID, payload)
+      postRequest(API_ENDPOINTS.GET_CONTACT_BY_TAG, payload)
     );
     yield put(fetchAttorneyByIdsSuccess(response.data.data));
   } catch (error) {
@@ -55,7 +55,7 @@ function* getRealtorByIds(action) {
   try {
     const payload= action.payload;
     const response = yield call(() =>
-      postRequest(API_ENDPOINTS.QUERY_CONTACT_BY_CASE_ID, payload)
+      postRequest(API_ENDPOINTS.GET_CONTACT_BY_TAG, payload)
     );
     yield put(fetchRealtorByIdsSuccess(response.data.data));
   } catch (error) {

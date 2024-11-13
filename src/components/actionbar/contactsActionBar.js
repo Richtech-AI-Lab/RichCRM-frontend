@@ -17,6 +17,7 @@ import { IoCheckmarkSharp } from "react-icons/io5";
 import TagButtonWithModal from "../tagModal/newTagButton";
 import TagModal from "../tagModal/tagModal";
 import { useSelector } from "react-redux";
+import NewBadge from "../newBadge";
 
 const ContactsActionbar = ({ active = "", setActive = "", activeFilterOrg = "", setActiveFilterOrg = () => { }, activeFilterTag = "", setActiveFilterTag = () => { }, isAddFromContactModal, isEdit, toggleEdit }) => {
   const location = useLocation();
@@ -131,7 +132,7 @@ const ContactsActionbar = ({ active = "", setActive = "", activeFilterOrg = "", 
                   className="rounded-2xl w-64 shadow-shadow-light-2"
                   dismissOnClick={true}
                 >
-                
+
                   {formattedOptions.map((option) => (
                     <Dropdown.Item
                       key={option.value}
@@ -143,10 +144,7 @@ const ContactsActionbar = ({ active = "", setActive = "", activeFilterOrg = "", 
                         <IoCheckmarkSharp size={20} className={`inline-block mr-1 ${activeFilterTag == option.value ? "" : "opacity-0"
                           }`} />
 
-                        <span className={`bg-badge-${getContactLabelAndColor(option.value, "color")} text-secondary-100 text-sm font-semibold py-1 px-3 rounded-full inline-block`}>
-                          {/* {getContactLabelAndColor(option.value, "label")} */}
-                          {option.label}
-                        </span>
+                       <NewBadge label={option.label}  />
                       </div>
                     </Dropdown.Item>
                   ))}
@@ -165,7 +163,7 @@ const ContactsActionbar = ({ active = "", setActive = "", activeFilterOrg = "", 
             </div>
             :
             <div className="flex">
-                <div className={`items-dropdown single-select ${activeFilterOrg == "0" ? 'sort-by-filter' : 'sort-by-filter'} mr-4`}>
+              <div className={`items-dropdown single-select ${activeFilterOrg == "0" ? 'sort-by-filter' : 'sort-by-filter'} mr-4`}>
                 <Dropdown
                   label={OrganizationOptions.find((option) => option.value === activeFilterOrg)?.label}
                   // value={"0"}
@@ -193,11 +191,7 @@ const ContactsActionbar = ({ active = "", setActive = "", activeFilterOrg = "", 
                   ))}
                 </Dropdown>
               </div>
-              <TagButtonWithModal
-                buttonClass="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[11px] px-7 rounded-[100px] font-medium mr-4"
-                // modalClass=""  
-                modalContent={<TagModal />}
-              />
+
               <ContactButtonWithModal
                 buttonClass="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[11px] px-7 rounded-[100px] font-medium"
                 // modalClass=""  

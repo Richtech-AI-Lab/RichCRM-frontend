@@ -12,6 +12,7 @@ import NewIndividualContactModalV1 from "../../../components/contactModal/newInd
 import NewOrganizationContactModalV1 from "../../../components/contactModal/newOrganizationContactModalV1";
 import { fetchOrganizationByTypeRequest, setSelectedOrganization } from "../../../redux/actions/organizationActions";
 import { fetchAllTagsRequest } from "../../../redux/actions/tagActions";
+import { NewBadge } from "../../../components";
 
 const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) => {
   const dispatch = useDispatch();
@@ -61,7 +62,7 @@ const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) 
   const header = headers[active] ?? ["Name", "Position", "Company", "Email", "Cell Phone"];
   const width = widthTabs[active] ?? ["20%", "20%", "20%", "20%", "20%"];
 
-  useEffect(()=>{
+  useEffect(() => {
     const fetchAllTags = async () => {
       try {
         dispatch(fetchAllTagsRequest());
@@ -70,14 +71,14 @@ const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) 
       }
     };
     fetchAllTags();
-  },[])
+  }, [])
 
 
   useEffect(() => {
     const fetchContactByType = async () => {
       try {
         const payload = {
-          tag:activeFilterTag,
+          tag: activeFilterTag,
           caseId: localStorage.getItem("c_id")
         }
         dispatch(getContactRequest(payload));
@@ -167,7 +168,7 @@ const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) 
         <Table>
           <Table.Head>
             {header.map((key, index) => (
-              <Table.HeadCell  width={width[index]} key={index}>{key}</Table.HeadCell>
+              <Table.HeadCell width={width[index]} key={index}>{key}</Table.HeadCell>
             ))}
           </Table.Head>
         </Table>
@@ -192,10 +193,8 @@ const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) 
                     </Table.Cell>
                     {header.includes("Tag") && (
                       <Table.Cell width={width[1]}>
-                        <span className={`bg-badge-${getContactLabelAndColor(user.contactType, "color")} text-secondary-100 text-sm font-semibold py-1 px-3 rounded-full inline-block`}>
-                          {/* {getContactLabelAndColor(user.contactType, "label")} */}
-                          {user?.tags.map((tag)=>tag)}
-                        </span>
+                        {user?.tags.map((tag) =>  <NewBadge label={tag}  />)}
+                       
                       </Table.Cell>
                     )}
                     {header.includes("Organization") && <Table.Cell width={width[2]}>{user.company}</Table.Cell>}
