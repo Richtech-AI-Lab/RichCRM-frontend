@@ -1,6 +1,7 @@
 import { Spinner, Table, Textarea, TextInput } from "flowbite-react";
 import React, { useCallback, useEffect, useState } from "react";
 import * as Yup from "yup";
+import Select, {components} from 'react-select';
 import dummyData from "../../../utils/dummyData.json";
 import { ROUTES } from "../../../constants/api";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -23,7 +24,7 @@ import { updateContactRequest } from "../../../redux/actions/contactActions";
 const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
   const dispatch = useDispatch();
   const { cases, loading } = useSelector((state) => state.case.casesData);
-
+  const tagDetails = useSelector((state) => state.tag.tag);
   // console.log(cases[0], "-")
   // const location = useLocation();
   // const contactdetails = location?.state?.contact ;
@@ -61,7 +62,8 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
       contactId: contactdetails?.contactId,
       firstName: values?.firstName,
       lastName: values?.lastName,
-      contactType: contactdetails?.contactType,
+      tags:  values?.tags,
+      // contactType: contactdetails?.contactType,
       position: values?.position,
       company: values?.company,
       ...(values?.email && values?.email.trim() !== "" && { email: values.email }),
@@ -110,6 +112,7 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
     // zipCode: Yup.string().required("Zip code is required"),
   });
   const initialValues = {
+    tags: contactdetails?.tags || '',
     contactId: contactdetails?.contactId || '',
     contactType: contactdetails?.contactType || '',
     firstName: contactdetails?.firstName || '',
@@ -138,6 +141,67 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
     { caseDetails: "535 W 52nd St #9G coop", caseTitle: "Gee, First Name" },
     { caseDetails: "535 W 52nd St #9G coop", caseTitle: "Gee, First Name" }
   ];
+  const formattedOptions = tagDetails.map(option => ({
+    ...option,
+    value: option.label, // Convert label to a suitable value format
+}));
+console.log(formattedOptions,"formattedOptions")
+const customStyles = {
+    multiValue: (styles) => ({
+        ...styles,
+        backgroundColor: "#e0e7ff", // Light blue background
+        borderRadius: "12px",
+        padding: "3px 8px",
+        margin: "2px",
+        color: "#1e3a8a", // Dark blue text
+    }),
+    multiValueLabel: (styles) => ({
+        ...styles,
+        color: "#1e3a8a", // Adjust color to your liking
+    }),
+    multiValueRemove: (styles) => ({
+        ...styles,
+        color: "#1e3a8a",
+        cursor: "pointer",
+        ":hover": {
+            color: "#1e40af", // Darker blue on hover
+        },
+    }),
+};
+const CustomMultiValue = (props) => {
+    const { data } = props;
+    return (
+        <components.MultiValue {...props}>
+            <span
+                className="text-sm font-semibold py-1 px-3 rounded-full inline-block"
+                style={{
+                    backgroundColor: data.color1, // Background color from tag data
+                    color: data.color2, // Text color from tag data
+                }}
+            >
+                {data.label}
+            </span>
+        </components.MultiValue>
+    );
+};
+const CustomOption = (props) => {
+    const { data, innerRef, innerProps } = props;
+    return (
+        <div ref={innerRef} {...innerProps} className="m-3">
+            <span
+                className="text-sm font-semibold py-1 px-3 rounded-full inline-block cursor-pointer"
+                style={{
+                    backgroundColor: data.color1, // Background color for each option
+                    color: data.color2, // Text color for each option
+                    display: 'inline-block',
+                
+                }}
+            >
+                {data.label}
+            </span>
+        </div>
+    );
+};
   return (
     <>
       <div className="grid grid-cols-12 gap-6">
@@ -173,15 +237,24 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
                             <p className="text-[22px] font-medium text-secondary-800">{initialValues?.firstName} {initialValues?.lastName}</p>
                             {/* <p className="font-medium text-secondary-800 text-sm mb-10">Brokers</p> */}
                             <Field
-                              as={SelectInput}
-                              defaultLabel={`Realtor`}
-                              inputClassName="bg-input-surface py-[6px] px-4 rounded-full border-0 text-sm leading-5 font-semibold text-label"
-                              labelClassName="ext-label mr-3"
-                              name="type"
-                              options={caseTypeOptions?.map((option) => ({
-                                value: option.id,
-                                label: option.label,
-                              }))}
+                              as={Select}
+                              isMulti
+                              name="tags"
+                              // styles={customStyles}
+                              components={{
+                                Option: CustomOption,
+                                MultiValue: CustomMultiValue, // Use the custom badge component
+                              }}
+                              options={formattedOptions}
+                              value={formattedOptions.filter(option =>
+                                values.tags.includes(option.value)
+                              )}
+                              onChange={(selectedOptions) =>
+                                setFieldValue(
+                                  "tags",
+                                  selectedOptions ? selectedOptions.map(option => option.value) : []
+                                )
+                              }
                             />
                           </div>
                           <p className="text-secondary-300 text-sm">ID xxxx</p>

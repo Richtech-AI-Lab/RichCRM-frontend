@@ -216,7 +216,7 @@ const NewIndividualContactModalV1 = ({ onSubmit, onClose }) => {
                                                 </div>
                                             ) : null}
                                         </div> */}
-                                        <div className={`form-input w-full mt-3 mb-3 bg-input-surface rounded-[40px] border-0 py-3 px-4 text-base leading-6`}>
+                                        <div className={`form-input w-full mt-3 mb-3 bg-input-surface rounded-[40px] border-0 py-1 px-1 text-base leading-6`}>
                                             <Field
                                                 as={Select}
                                                 isMulti
