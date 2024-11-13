@@ -79,7 +79,7 @@ const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) 
       try {
         const payload = {
           tag: activeFilterTag,
-          caseId: localStorage.getItem("c_id")
+          // caseId: localStorage.getItem("c_id")
         }
         dispatch(getContactRequest(payload));
       } catch (error) {
