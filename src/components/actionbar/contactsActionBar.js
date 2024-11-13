@@ -18,7 +18,7 @@ import TagButtonWithModal from "../tagModal/newTagButton";
 import TagModal from "../tagModal/tagModal";
 import { useSelector } from "react-redux";
 
-const ContactsActionbar = ({ active = "", setActive = "", activeFilter = "", setActiveFilter = () => { }, isAddFromContactModal, isEdit, toggleEdit }) => {
+const ContactsActionbar = ({ active = "", setActive = "", activeFilterOrg = "", setActiveFilterOrg = () => { }, activeFilterTag = "", setActiveFilterTag = () => { }, isAddFromContactModal, isEdit, toggleEdit }) => {
   const location = useLocation();
   const tagDetails = useSelector((state) => state.tag.tag);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,9 +29,9 @@ const ContactsActionbar = ({ active = "", setActive = "", activeFilter = "", set
 
   useEffect(() => {
     if (active == 1) {
-      setActiveFilter(1)
+      setActiveFilterOrg(1)
     } else {
-      setActiveFilter(0)
+      setActiveFilterTag(tagDetails[0].label)
     }
   }, [active])
 
@@ -113,65 +113,104 @@ const ContactsActionbar = ({ active = "", setActive = "", activeFilter = "", set
 
   const formattedOptions = tagDetails.map(option => ({
     ...option,
-    value: option.label, // Convert label to a suitable value format
+    value: option.label,
   }));
-  const label =
-    active === 0
-      ? formattedOptions.find((option) => option.value === activeFilter)?.label
-      : OrganizationOptions.find((option) => option.value === activeFilter)?.label;
+
   return (
     <>
       {shouldShow(ROUTES.CONTACTS) && (
         <div className="flex justify-between items-center mb-6">
           <ContactTabs active={active} setActive={setActive} tabs={addFromContactV1Tabs} />
+          {active === 0 ?
+            <div className="flex">
+              <div className={`items-dropdown single-select mr-4`}>
+                <Dropdown
+                  label={formattedOptions.find((option) => option.value === activeFilterTag)?.label}
+                  // value={"0"}
+                  inline
+                  className="rounded-2xl w-64 shadow-shadow-light-2"
+                  dismissOnClick={true}
+                >
+                
+                  {formattedOptions.map((option) => (
+                    <Dropdown.Item
+                      key={option.value}
+                      className="py-3"
+                      onClick={() => setActiveFilterTag(option.value)}
+                    >
+                      <div className="flex items-center gap-2">
+                        {/* {sortBy === option.value && ( */}
+                        <IoCheckmarkSharp size={20} className={`inline-block mr-1 ${activeFilterTag == option.value ? "" : "opacity-0"
+                          }`} />
 
-          <div className="flex">
-            <div className={`items-dropdown single-select ${activeFilter == "0" ? 'sort-by-filter' : 'sort-by-filter'} mr-4`}>
-              <Dropdown
-                label={label}
-                // value={"0"}
-                inline
-                className="rounded-2xl w-64 shadow-shadow-light-2"
-                dismissOnClick={true}
-              >
-                {(active == "0" ? formattedOptions : OrganizationOptions).map((option) => (
-                  <Dropdown.Item
-                    key={option.value}
-                    className="py-3"
-                    onClick={() => setActiveFilter(option.value)}
-                  >
-                    <div className="flex items-center gap-2">
-                      {/* {sortBy === option.value && ( */}
-                      <IoCheckmarkSharp size={20} className={`inline-block mr-1 ${activeFilter == option.value ? "" : "opacity-0"
-                        }`} />
-
-                      <span className={`bg-badge-${getContactLabelAndColor(option.value, "color")} text-secondary-100 text-sm font-semibold py-1 px-3 rounded-full inline-block`}>
-                        {/* {getContactLabelAndColor(option.value, "label")} */}
-                        {option.label}
-                      </span>
-                    </div>
-                  </Dropdown.Item>
-                ))}
-              </Dropdown>
+                        <span className={`bg-badge-${getContactLabelAndColor(option.value, "color")} text-secondary-100 text-sm font-semibold py-1 px-3 rounded-full inline-block`}>
+                          {/* {getContactLabelAndColor(option.value, "label")} */}
+                          {option.label}
+                        </span>
+                      </div>
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown>
+              </div>
+              <TagButtonWithModal
+                buttonClass="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[11px] px-7 rounded-[100px] font-medium mr-4"
+                // modalClass=""  
+                modalContent={<TagModal />}
+              />
+              <ContactButtonWithModal
+                buttonClass="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[11px] px-7 rounded-[100px] font-medium"
+                // modalClass=""  
+                modalContent={active == 0 ? <NewIndividualContactModalV1 /> : <NewOrganizationContactModalV1 />}
+              />
             </div>
-            <TagButtonWithModal
-              buttonClass="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[11px] px-7 rounded-[100px] font-medium mr-4"
-              // modalClass=""  
-              modalContent={<TagModal />}
-            />
-            <ContactButtonWithModal
-              buttonClass="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[11px] px-7 rounded-[100px] font-medium"
-              // modalClass=""  
-              modalContent={active == 0 ? <NewIndividualContactModalV1 /> : <NewOrganizationContactModalV1 />}
-            />
-            {/* <XButton
+            :
+            <div className="flex">
+                <div className={`items-dropdown single-select ${activeFilterOrg == "0" ? 'sort-by-filter' : 'sort-by-filter'} mr-4`}>
+                <Dropdown
+                  label={OrganizationOptions.find((option) => option.value === activeFilterOrg)?.label}
+                  // value={"0"}
+                  inline
+                  className="rounded-2xl w-64 shadow-shadow-light-2"
+                  dismissOnClick={true}
+                >
+                  {OrganizationOptions.map((option) => (
+                    <Dropdown.Item
+                      key={option.value}
+                      className="py-3"
+                      onClick={() => setActiveFilterOrg(option.value)}
+                    >
+                      <div className="flex items-center gap-2">
+                        {/* {sortBy === option.value && ( */}
+                        <IoCheckmarkSharp size={20} className={`inline-block mr-1 ${activeFilterOrg == option.value ? "" : "opacity-0"
+                          }`} />
+
+                        <span className={`bg-badge-${getContactLabelAndColor(option.value, "color")} text-secondary-100 text-sm font-semibold py-1 px-3 rounded-full inline-block`}>
+                          {/* {getContactLabelAndColor(option.value, "label")} */}
+                          {option.label}
+                        </span>
+                      </div>
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown>
+              </div>
+              <TagButtonWithModal
+                buttonClass="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[11px] px-7 rounded-[100px] font-medium mr-4"
+                // modalClass=""  
+                modalContent={<TagModal />}
+              />
+              <ContactButtonWithModal
+                buttonClass="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[11px] px-7 rounded-[100px] font-medium"
+                // modalClass=""  
+                modalContent={active == 0 ? <NewIndividualContactModalV1 /> : <NewOrganizationContactModalV1 />}
+              />
+              {/* <XButton
               text="New Contact"
               icon={<FiPlus className="text-base mr-2 inline-block" />}
               className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium ml-4"
               onClick={toggleModal}
             />
             {isModalOpen && <NewContactModal onClose={toggleModal} />} */}
-          </div>
+            </div>}
         </div>
       )}
 
