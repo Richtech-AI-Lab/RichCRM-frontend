@@ -14,6 +14,7 @@ import { fetchAllCasesRequest } from "../../redux/actions/caseAction";
 import Contacts from "../contacts";
 import { IMAGES } from "../../constants/imagePath";
 import ChatBox from "./chatBox";
+import { fetchAllTagsRequest } from "../../redux/actions/tagActions";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -31,9 +32,17 @@ const Dashboard = () => {
         console.error("Error fetching cases:", error);
       }
     };
-
+    const fetchAllTags = async () => {
+      try {
+        dispatch(fetchAllTagsRequest());
+      } catch (error) {
+        console.error("Error fetching conatct:", error);
+      }
+    };
+    fetchAllTags();
     fetchAllCases();
   }, []);
+
   // const caseData = {
   //   totalOpenCases: 25, // Total number of open cases
   //   settingUp: 5,       // Cases in the "Setting Up" stage
