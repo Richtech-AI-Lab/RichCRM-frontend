@@ -6,7 +6,7 @@ import states from "../../constants/states.json";
 import { Label, Modal, Textarea } from "flowbite-react";
 import { useDispatch, useSelector } from "react-redux";
 import NewCaseDropdown from "../newcasedropdown";
-import Select from 'react-select';
+import Select, {components} from 'react-select';
 import { contactTagIndividualOption } from "../../utils/formItem";
 import { createAddressContactRequest, createAddressRequest } from "../../redux/actions/utilsActions";
 import { createContactRequest } from "../../redux/actions/contactActions";
@@ -62,6 +62,62 @@ const NewIndividualContactModalV1 = ({ onSubmit, onClose }) => {
         ...option,
         value: option.label, // Convert label to a suitable value format
     }));
+    const customStyles = {
+        multiValue: (styles) => ({
+            ...styles,
+            backgroundColor: "#e0e7ff", // Light blue background
+            borderRadius: "12px",
+            padding: "3px 8px",
+            margin: "2px",
+            color: "#1e3a8a", // Dark blue text
+        }),
+        multiValueLabel: (styles) => ({
+            ...styles,
+            color: "#1e3a8a", // Adjust color to your liking
+        }),
+        multiValueRemove: (styles) => ({
+            ...styles,
+            color: "#1e3a8a",
+            cursor: "pointer",
+            ":hover": {
+                color: "#1e40af", // Darker blue on hover
+            },
+        }),
+    };
+    const CustomMultiValue = (props) => {
+        const { data } = props;
+        return (
+            <components.MultiValue {...props}>
+                <span
+                    className="text-sm font-semibold py-1 px-3 rounded-full inline-block"
+                    style={{
+                        backgroundColor: data.color1, // Background color from tag data
+                        color: data.color2, // Text color from tag data
+                    }}
+                >
+                    {data.label}
+                </span>
+            </components.MultiValue>
+        );
+    };
+    const CustomOption = (props) => {
+        const { data, innerRef, innerProps } = props;
+        return (
+            <div ref={innerRef} {...innerProps} className="m-3">
+                <span
+                    className="text-sm font-semibold py-1 px-3 rounded-full inline-block cursor-pointer"
+                    style={{
+                        backgroundColor: data.color1, // Background color for each option
+                        color: data.color2, // Text color for each option
+                        display: 'inline-block',
+                    
+                    }}
+                >
+                    {data.label}
+                </span>
+            </div>
+        );
+    };
     return (
         <Modal show={true} size="md" onClose={onClose} className="new-case-modal">
             <Modal.Header className="border-b-0">
@@ -160,11 +216,16 @@ const NewIndividualContactModalV1 = ({ onSubmit, onClose }) => {
                                                 </div>
                                             ) : null}
                                         </div> */}
-                                        <div className={`items-dropdown single-select mt-3 mb-3`}>
+                                        <div className={`form-input w-full mt-3 mb-3 bg-input-surface rounded-[40px] border-0 py-3 px-4 text-base leading-6`}>
                                             <Field
                                                 as={Select}
                                                 isMulti
                                                 name="tags"
+                                                // styles={customStyles}
+                                                components={{
+                                                    Option: CustomOption,  
+                                                    MultiValue: CustomMultiValue, // Use the custom badge component
+                                                }}
                                                 options={formattedOptions}
                                                 value={formattedOptions.filter(option =>
                                                     values.tags.includes(option.value)
