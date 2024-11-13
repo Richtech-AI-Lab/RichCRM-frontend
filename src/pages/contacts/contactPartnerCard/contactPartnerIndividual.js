@@ -119,7 +119,7 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
     lastName: contactdetails?.lastName || '',
     company: contactdetails?.company || '',
     position: contactdetails?.position || '',
-    cellNumber: contactdetails?.cellNumber || '',
+    ...(contactdetails && contactdetails.cellNumber && { cellNumber:  contactdetails?.cellNumber }),
     email: contactdetails?.email || '',
     mailingAddress: contactdetails?.mailingAddress || '',
     wechatAccount: contactdetails?.wechatAccount || '',
