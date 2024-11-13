@@ -76,7 +76,7 @@ const CaseCardData = () => {
       try {
         const payload = {
           caseId: localStorage.getItem('c_id'),
-          contactType: 1
+          tag:"Attorney"
         };
         dispatch(fetchAttorneyByIdsRequest(payload));
       } catch (error) {
@@ -87,7 +87,7 @@ const CaseCardData = () => {
       try {
         const payload = {
           caseId: localStorage.getItem('c_id'),
-          contactType: 0
+          tag:"Realtor"
         };
         dispatch(fetchRealtorByIdsRequest(payload));
       } catch (error) {

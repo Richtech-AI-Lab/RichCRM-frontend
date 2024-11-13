@@ -5,7 +5,7 @@ import { Label, TextInput, XButton } from "../../../components";
 import { IMAGES } from "../../../constants/imagePath";
 import { useDispatch } from "react-redux";
 import { debounce, uniqueId } from "lodash";
-import { createTagSuccess, deleteTagRequest, deleteTagSuccess } from "../../../redux/actions/tagActions";
+import { createTagRequest, createTagSuccess, deleteTagRequest, deleteTagSuccess } from "../../../redux/actions/tagActions";
 import { colorOptions } from "../../../constants/constants";
 import { generateRandomFiveDigit } from "../../../utils";
 
@@ -15,7 +15,7 @@ const Tag = ({ title, tags, setTags, tagDetails, errors, touched }) => {
     const { values, setFieldValue } = useFormikContext();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newTag, setNewTag] = useState({
-        label: '', color: '', contactType: ''
+        label: '', color1: '', color2: '', tagType : ''
     });
     useEffect(() => {
         if (tagDetails && tagDetails.length > 0) {
@@ -27,22 +27,26 @@ const Tag = ({ title, tags, setTags, tagDetails, errors, touched }) => {
     const closeModal = () => setIsModalOpen(false);
 
     const addTagItem = (push) => {
-        if (newTag.color && newTag.label) {
+        if (newTag.color1 && newTag.color2 && newTag.label) {
             let payload = {
                 contactId: generateRandomFiveDigit(),
                 label: newTag.label,
-                color: newTag.color,
-                contactType: newTag.contactType,
+                color1: newTag.color1,
+                color2: newTag.color2,
+                tagType: 1,
             }
-            dispatch(createTagSuccess(payload))
-            setNewTag({ ...newTag, label: '', color: '', contactType: '' });
+            dispatch(createTagRequest(payload))
+            setNewTag({ ...newTag, label: '', color1: '', color2: '', tagType: '' });
             closeModal();
         }
     };
-    const deleteTagItem = (contactId, index) => {
+    const deleteTagItem = (label, index) => {
         const updatedtags = tags.filter((_, i) => i !== index);
         setTags(updatedtags); // Update the local state
-        dispatch(deleteTagSuccess(contactId)); // Dispatch delete action
+        let payload = {
+            label: label,
+        }
+        dispatch(deleteTagRequest(payload)); // Dispatch delete action
     };
 
     return (
@@ -57,8 +61,8 @@ const Tag = ({ title, tags, setTags, tagDetails, errors, touched }) => {
                                     <span
                                         className="text-sm font-semibold py-1 px-3 rounded-full inline-block"
                                         style={{
-                                            backgroundColor: item.color.color1,
-                                            color: item.color.color2,
+                                            backgroundColor: item.color1,
+                                            color: item.color2,
                                         }}
                                     >    {item?.label}
                                     </span>
@@ -66,11 +70,11 @@ const Tag = ({ title, tags, setTags, tagDetails, errors, touched }) => {
                                         <div
                                             className="w-6 h-6 rounded-full border-2 border-gray-300"
                                             style={{
-                                                background: `linear-gradient(45deg, ${item.color.color1} 50%, ${item.color.color2} 50%)`,
+                                                background: `linear-gradient(45deg, ${item.color1} 50%, ${item.color2} 50%)`,
                                             }}
                                         ></div>
                                         <span className="icon mr-2 ml-5 cursor-pointer" /* onClick={() => remove(index)} */
-                                            onClick={() => deleteTagItem(item.contactId, index)}>
+                                            onClick={() => deleteTagItem(item.label, index)}>
                                             <img src={IMAGES.cross} alt="icon" />
                                         </span>
                                     </span>
@@ -87,7 +91,7 @@ const Tag = ({ title, tags, setTags, tagDetails, errors, touched }) => {
                         </ul>
 
                         <Modal show={isModalOpen} size="sm" onClose={() => {
-                            setNewTag({ label: '', color: '', contactType: '' });
+                            setNewTag({ label: '', color1: '', color2: '', tagType: '' });
                             closeModal()
                         }
                         }
@@ -113,11 +117,11 @@ const Tag = ({ title, tags, setTags, tagDetails, errors, touched }) => {
                                             <Dropdown
                                                 label={
                                                     <div className="flex items-center">
-                                                        {newTag?.color ? (
+                                                        {newTag?.color1 ? (
                                                             <div
                                                                 className="w-6 h-6 rounded-full border-2 border-gray-300"
                                                                 style={{
-                                                                    background: `linear-gradient(45deg, ${newTag.color.color1} 50%, ${newTag.color.color2} 50%)`,
+                                                                    background: `linear-gradient(45deg, ${newTag.color1} 50%, ${newTag.color2} 50%)`,
                                                                 }}
                                                             ></div>
                                                         ) : (
@@ -137,7 +141,7 @@ const Tag = ({ title, tags, setTags, tagDetails, errors, touched }) => {
                                                     {colorOptions.map((option, index) => (
                                                         <Dropdown.Item
                                                             key={index}
-                                                            onClick={() => setNewTag({ ...newTag, color: option })}
+                                                            onClick={() => setNewTag({ ...newTag, color1: option.color1, color2: option.color2 })}
                                                             className="flex items-center cursor-pointer"
                                                         >
                                                             <div
@@ -155,9 +159,9 @@ const Tag = ({ title, tags, setTags, tagDetails, errors, touched }) => {
                                         <div className="dis-none">
                                             <Label value="contact type" className="block mb-2 mt-4" />
                                             <TextInput
-                                                type="contactType"
-                                                value={newTag.contactType}
-                                                onChange={(e) => setNewTag({ ...newTag, contactType: 1 })}
+                                                type="tagType"
+                                                value={newTag.tagType}
+                                                onChange={(e) => setNewTag({ ...newTag, tagType: 1 })}
                                                 placeholder="Contact Type"
                                             />
                                         </div>
@@ -167,7 +171,7 @@ const Tag = ({ title, tags, setTags, tagDetails, errors, touched }) => {
                                             text={"Cancel"}
                                             className="bg-card-300 text-sm text-secondary-800 py-[10px] px-6 rounded-[100px]"
                                             onClick={() => {
-                                                setNewTag({ label: '', color: '', contactType: '' });
+                                                setNewTag({ label: '', color1: '', color2: '', tagType: '' });
                                                 closeModal()
                                             }
                                             }

@@ -382,3 +382,10 @@
 .dub-input input, .dub-input select {
 	width: 133px !important;
 }
+.css-13cymwt-control{
+  background: transparent !important;
+  border: none !important;
+}
+.css-t3ipsp-control:hover{
+  border-color: transparent !important;
+}

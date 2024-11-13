@@ -11,8 +11,10 @@ import ContactButtonWithModal from "../../../components/newContactButton";
 import NewIndividualContactModalV1 from "../../../components/contactModal/newIndividualContactModalV1";
 import NewOrganizationContactModalV1 from "../../../components/contactModal/newOrganizationContactModalV1";
 import { fetchOrganizationByTypeRequest, setSelectedOrganization } from "../../../redux/actions/organizationActions";
+import { fetchAllTagsRequest } from "../../../redux/actions/tagActions";
+import { NewBadge } from "../../../components";
 
-const ContactListingV1 = ({ active, parent, activeFilter }) => {
+const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const contact = useSelector((state) => state?.contact?.contact)
@@ -61,11 +63,24 @@ const ContactListingV1 = ({ active, parent, activeFilter }) => {
   const width = widthTabs[active] ?? ["20%", "20%", "20%", "20%", "20%"];
 
   useEffect(() => {
+    const fetchAllTags = async () => {
+      try {
+        dispatch(fetchAllTagsRequest());
+      } catch (error) {
+        console.error("Error fetching conatct:", error);
+      }
+    };
+    fetchAllTags();
+  }, [])
+
+
+  useEffect(() => {
     const fetchContactByType = async () => {
       try {
         const payload = {
-          contactType: activeFilter
-        };
+          tag: activeFilterTag,
+          // caseId: localStorage.getItem("c_id")
+        }
         dispatch(getContactRequest(payload));
       } catch (error) {
         console.error("Error fetching conatct:", error);
@@ -74,7 +89,7 @@ const ContactListingV1 = ({ active, parent, activeFilter }) => {
     const fetchOrganizationByType = async () => {
       try {
         const payload = {
-          organizationType: activeFilter
+          organizationType: activeFilterOrg
         };
         dispatch(fetchOrganizationByTypeRequest(payload));
       } catch (error) {
@@ -89,7 +104,7 @@ const ContactListingV1 = ({ active, parent, activeFilter }) => {
     }
     setCurrentPage(1)
 
-  }, [active, activeFilter]);
+  }, [active, activeFilterOrg, activeFilterTag]);
 
   function getContactLabelAndColor(status, name) {
     let label = '';
@@ -153,7 +168,7 @@ const ContactListingV1 = ({ active, parent, activeFilter }) => {
         <Table>
           <Table.Head>
             {header.map((key, index) => (
-              <Table.HeadCell  width={width[index]} key={index}>{key}</Table.HeadCell>
+              <Table.HeadCell width={width[index]} key={index}>{key}</Table.HeadCell>
             ))}
           </Table.Head>
         </Table>
@@ -178,9 +193,8 @@ const ContactListingV1 = ({ active, parent, activeFilter }) => {
                     </Table.Cell>
                     {header.includes("Tag") && (
                       <Table.Cell width={width[1]}>
-                        <span className={`bg-badge-${getContactLabelAndColor(user.contactType, "color")} text-secondary-100 text-sm font-semibold py-1 px-3 rounded-full inline-block`}>
-                          {getContactLabelAndColor(user.contactType, "label")}
-                        </span>
+                        {user?.tags.map((tag) =>  <NewBadge label={tag}  />)}
+                       
                       </Table.Cell>
                     )}
                     {header.includes("Organization") && <Table.Cell width={width[2]}>{user.company}</Table.Cell>}
@@ -223,8 +237,11 @@ const ContactListingV1 = ({ active, parent, activeFilter }) => {
           ) : (
             <div className="flex flex-col items-center justify-center h-[60vh] w-full">
               <p className="text-center text-gray-500">
-                No {active === 0 ? CONTACT_TYPE[activeFilter] : ORGANIZATION_TYPE[activeFilter]} Contact Available
+                No Contact Available
               </p>
+              {/* <p className="text-center text-gray-500">
+                No {active === 0 ? CONTACT_TYPE[activeFilter] : ORGANIZATION_TYPE[activeFilter]} Contact Available
+              </p> */}
               <ContactButtonWithModal
                 buttonClass="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium mt-4"
                 modalContent={active === 0 ? <NewIndividualContactModalV1 /> : <NewOrganizationContactModalV1 />}

@@ -56,16 +56,16 @@ const TagModal = ({ onSubmit, onClose }) => {
                                     />
                                 </div>
                                 <div className="col-span-12 text-end">
-                                        <XButton
-                                            text={"Cancel"}
+                                        {/* <XButton
+                                            text={"Close"}
                                             onClick={onClose}
                                             className="bg-card-300 text-sm text-secondary-800 py-[10px] px-6 rounded-[100px]"
-                                        />
-                                        <XButton
+                                        /> */}
+                                        {/* <XButton
                                             type="submit"
                                             text={"Submit"}
                                             className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px] ml-4"
-                                        />
+                                        /> */}
                                     </div>
                             </div >
                         </form>

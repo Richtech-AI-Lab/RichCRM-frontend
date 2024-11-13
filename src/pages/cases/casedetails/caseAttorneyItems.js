@@ -36,7 +36,8 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
     const addAttorneyItem = (push) => {
         if (newAttorney.company && newAttorney.firstName && newAttorney.lastName) {
             let payload={
-                contactType: 1,
+                // contactType: 1,
+                tags:["Attorney"],
                 company: newAttorney.company,
                 firstName: newAttorney.firstName,
                 lastName: newAttorney.lastName,
