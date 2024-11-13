@@ -32,7 +32,7 @@ const ContactsActionbar = ({ active = "", setActive = "", activeFilterOrg = "", 
     if (active == 1) {
       setActiveFilterOrg(1)
     } else {
-      setActiveFilterTag(tagDetails[0].label)
+      // setActiveFilterTag(tagDetails[0]?.label)
     }
   }, [active])
 

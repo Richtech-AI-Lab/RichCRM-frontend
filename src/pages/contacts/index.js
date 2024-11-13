@@ -13,7 +13,9 @@ const Contacts = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [activeFilterOrg, setActiveFilterOrg] = useState(0);
   const tagDetails = useSelector((state) => state.tag.tag);
-  const [activeFilterTag, setActiveFilterTag] = useState(tagDetails[0].label);
+  const [activeFilterTag, setActiveFilterTag] = useState(
+    tagDetails && tagDetails.length > 0 ? tagDetails[0]?.label : ''
+  );
   const location = useLocation();
   const shouldShow = (routePath) => {
     const pathsToShow = [routePath];
