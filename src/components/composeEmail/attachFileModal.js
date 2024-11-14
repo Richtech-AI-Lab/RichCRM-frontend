@@ -132,17 +132,18 @@ const AttachFileModal = ({ onClose, uploadedFiles, setUploadedFiles}) => {
                   </div>
                   <div className="text-end mt-8">
                     <XButton
-                      text={"Cancel"}
+                      text={"Upload"}
                       onClick={onClose}
                       disabled={isSubmitting}
-                      className="bg-card-300 text-sm text-primary2 py-[10px] px-6 rounded-[100px]"
+                      className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px] ml-4"
+                      // className="bg-card-300 text-sm text-primary2 py-[10px] px-6 rounded-[100px]"
                     />
-                    <XButton
+                    {/* <XButton
                       type="submit"
                       text={"Upload"}
                       disabled={isSubmitting}
                       className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px] ml-4"
-                    />
+                    /> */}
                   </div>
                 </form>
               </>
