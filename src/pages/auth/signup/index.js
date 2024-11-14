@@ -11,7 +11,7 @@ import {
 } from "../../../components";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { clearData, registerRequest } from "../../../redux/actions/authActions";
+import { clearData, loginRequest, registerRequest } from "../../../redux/actions/authActions";
 import { ROUTES } from "../../../constants/api";
 import { userRole } from "../../../constants/constants";
 
@@ -23,9 +23,9 @@ const roleOptions = [
 ];
 
 const Signup = () => {
-  const { loading, user,error } = useSelector((state) => state.auth.register);
+  const { loading, user, error } = useSelector((state) => state.auth);
   let navigate = useNavigate();
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
 
   const initialValues = {
     // firstName: "",
@@ -46,18 +46,18 @@ const Signup = () => {
       .required("Email is required"),
     password: Yup.string()
       .required("Password is required")
-      // .matches(
-      //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      //   "Password must contain at least 8 characters, one uppercase, one lowercase, one number, and one special character"
-      // )
-      ,
+    // .matches(
+    //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+    //   "Password must contain at least 8 characters, one uppercase, one lowercase, one number, and one special character"
+    // )
+    ,
     // confirmPassword: Yup.string()
     //   .oneOf([Yup.ref("password"), null], "Passwords must match")
     //   .required("Confirm password is required"),
     role: Yup.string().required("Role is required"),
   });
 
-  const handleSignup = (values, { setSubmitting , resetForm }) => {
+  const handleSignup = (values, { setSubmitting, resetForm }) => {
     const payload = {
       emailAddress: values.emailAddress,
       password: values.password,
@@ -72,15 +72,21 @@ const Signup = () => {
 
   useEffect(() => {
     if (user && user?.status === 'success') {
+      // let payload={
+      //   emailAddress: user?.data[0]?.emailAddress,
+      //   password:  user?.data[0]?.password,
+      // }
+      // dispatch(loginRequest(payload));
       toast(user?.message);
       navigate(ROUTES.DASHBOARD);
-    }  
-      else if (error && error?.status === 'failed') {
-          toast(error?.message)
-        }
-        dispatch(clearData());
+    }
+    else if (error && error?.status === 'failed') {
+      toast(error?.message)
+    }
+    dispatch(clearData());
 
-  }, [user, error,navigate]);
+  }, [user, error, navigate]);
+
   const handleBackIcon = () => {
     navigate(ROUTES.LOGIN)
   }
@@ -166,22 +172,21 @@ const Signup = () => {
                 form={{ errors, touched }}
               /> */}
               <SelectInput
-                    name="role"
-                    value={values.role}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    options={roleOptions}
-                    error={errors.role}
-                    touched={touched.role}
-                    inputClassName={` select-input-arrow bg-input-surface  w-full py-[14px] px-6 ${
-                      errors.role && touched.role
-                        ? "border-red-500"
-                        : "border-gray-300"
-                    } rounded-full border-0 focus:outline-none focus:ring-transparent sm:text-sm`}
-                    labelClassName="block text-sm font-medium text-gray-700"
-                    defaultLabel="Select role"
-                    className="mt-4"
-                  />    
+                name="role"
+                value={values.role}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                options={roleOptions}
+                error={errors.role}
+                touched={touched.role}
+                inputClassName={` select-input-arrow bg-input-surface  w-full py-[14px] px-6 ${errors.role && touched.role
+                    ? "border-red-500"
+                    : "border-gray-300"
+                  } rounded-full border-0 focus:outline-none focus:ring-transparent sm:text-sm`}
+                labelClassName="block text-sm font-medium text-gray-700"
+                defaultLabel="Select role"
+                className="mt-4"
+              />
               <div className="text-center mb-8 mt-6">
                 <XButton
                   type="submit"
