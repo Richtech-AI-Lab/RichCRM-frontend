@@ -10,6 +10,8 @@ import { toast } from "react-toastify";
 import { useMsal } from "@azure/msal-react";
 import XSpinnerLoader from "../spinnerLoader/XSpinnerLoader";
 
+const MAX_FILE_SIZE_MB = 40; // 40 MB
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 
 const AttachFileModal = ({ onClose, uploadedFiles, setUploadedFiles}) => {
   const [loader, setLoader] = useState(false)
@@ -25,8 +27,15 @@ const AttachFileModal = ({ onClose, uploadedFiles, setUploadedFiles}) => {
 
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
+    const validFiles = files.filter((file) => {
+      if (file.size > MAX_FILE_SIZE_BYTES) {
+        toast.error(`File "${file.name}" exceeds 40 MB limit and was not added.`);
+        return false;
+      }
+      return true;
+    });
     if (files) {
-      const filesWithDropdownValues = files.map((file) => ({
+      const filesWithDropdownValues = validFiles.map((file) => ({
         file,
         fileType: "",
       }));
@@ -105,8 +114,8 @@ const AttachFileModal = ({ onClose, uploadedFiles, setUploadedFiles}) => {
                                 {fileItem.file.name}
                               </p>
                               <p className="text-sm text-text-gray-100">
-                                {/* {(fileItem.file.size / (1024 * 1024)).toFixed(2)} MB */}
-                              </p>
+                              {(fileItem.file.size / (1024 * 1024)).toFixed(2)} MB
+                            </p>
                             </div>
                             <IoIosCloseCircleOutline
                               className="text-xl text-text-gray-100 cursor-pointer"
