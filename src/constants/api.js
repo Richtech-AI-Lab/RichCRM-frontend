@@ -52,7 +52,8 @@ export const API_ENDPOINTS = {
   DELETE_TAG: "/tag/delete",
   GET_ALL_TAG: "/tag/all",
   GET_TAG_BY_TYPE: "/tag/type",
-  UPDATE_TAG: "/tag/update"
+  UPDATE_TAG: "/tag/update",
+  CHANGE_PASSWORD: "/auth/change-password",
 
 };
 
