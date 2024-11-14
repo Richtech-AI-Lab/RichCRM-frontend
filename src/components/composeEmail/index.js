@@ -11,6 +11,9 @@ import { postRequest } from '../../axios/interceptor';
 import { toast } from 'react-toastify';
 import { Spinner } from 'flowbite-react';
 import AttachFileModal from './attachFileModal';
+import { EditorState, convertToRaw } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
+import draftToHtml from 'draftjs-to-html';
 
 const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
   const dispatch = useDispatch();
@@ -26,6 +29,7 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
   const [template, setTemplate] = useState('');
   const [loader, setLoader] = useState();
   const [isModalOpen, setIsModalOpen] = useState();
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
   useEffect(() => {
     const isClientTypeIndividual = caseObj?.clientType === 0;
@@ -91,11 +95,12 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
       return false
     }
     try {
+      const content = draftToHtml(convertToRaw(editorState.getCurrentContent()));
       const payload = {
         toAddresses: toEmail,
         ccAddresses: toEmail,
         templateTitle: values.templateTitle,
-        templateContent: values.templateContent,
+        templateContent: content,
       };
 
       dispatch(sendEmailRequest(payload));
@@ -131,10 +136,40 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
     );
   };
   // alert(initialValues.templateTitle)
+  const handleEditorStateChange = (newEditorState) => {
+    setEditorState(newEditorState);
+  };
+  const toolbarOptions = {
+    options: ['inline', 'blockType', 'fontSize', 'fontFamily', 'list', 'textAlign', 'history'],
+    inline: {
+      options: ['bold', 'italic', 'underline', 'strikethrough'],
+    },
+    blockType: {
+      inDropdown: true,
+      options: ['Normal', 'H1', 'H2', 'H3', 'Blockquote', 'Code'],
+    },
+    fontSize: {
+      options: [8, 10, 12, 14, 16, 18, 24, 30],
+    },
+    fontFamily: {
+      options: ['Arial', 'Georgia', 'Impact', 'Tahoma', 'Times New Roman'],
+    },
+    list: {
+      options: ['unordered', 'ordered'],
+    },
+    textAlign: {
+      options: ['left', 'center', 'right'],
+    },
+    history: {
+      options: ['undo', 'redo'],
+    },
+  };
   return (
     <>
-      <div className="bg-white rounded-2xl shadow-card fixed bottom-3 right-3 w-[552px]" style={{ zIndex: '9997', overflowY: 'scroll'
-,minHeight:'93vh', maxHeight:'94vh' }}>
+      <div className="bg-white rounded-2xl shadow-card fixed bottom-3 right-3 w-[552px]" style={{
+        zIndex: '9997', overflowY: 'scroll'
+        , minHeight: '93vh', maxHeight: '94vh'
+      }}>
         <div className="flex justify-between items-center p-4">
           <h3 className="text-base text-secondary-800 font-medium">Compose Message</h3>
           <IoIosClose size={28} onClick={onClose} className="text-text-gray-100 cursor-pointer" />
@@ -194,7 +229,7 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
               </div>
 
               {loader ? <div className='flex justify-center items-center '
-              style={{minHeight:'51vh',maxHeight:'55vh'}}>
+                style={{ minHeight: '51vh', maxHeight: '55vh' }}>
 
                 <Spinner
                   size="xl"
@@ -207,8 +242,25 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
 
                 </Spinner></div> :
 
-                <div className="mx-4 py-3">
-                  <textarea
+                <div className="" style={{ minHeight: '50vh', maxHeight: '53vh' }} >
+                  <Editor
+                  //  toolbarOnFocus
+                    editorState={editorState}
+                    onEditorStateChange={handleEditorStateChange}
+                    wrapperClassName="editor-wrapper"  // Adjusting the overall editor height
+                    editorClassName="editor-content"  
+                    toolbar={toolbarOptions}
+                    //  toolbarClassName="rdw-editor-toolbar"
+                    // placeholder="Compose your email here..."
+                    // // toolbar={{
+                    //   inline: { inDropdown: true },
+                    //   list: { inDropdown: true },
+                    //   textAlign: { inDropdown: true },
+                    //   link: { inDropdown: true },
+                    //   history: { inDropdown: true },
+                    // }}
+                  />
+                  {/* <textarea
                     name='templateContent'
                     // placeholder="templateContent"
                     value={values.templateContent}
@@ -216,9 +268,14 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
                     onBlur={handleBlur}
                     field={{ name: "templateContent" }}
                     // rows={10}
-                    style={{minHeight:'47vh',maxHeight:'50vh'}}
+                    style={{ minHeight: '47vh', maxHeight: '50vh' }}
                     className="inline border-0 p-0 resize-none w-full focus:ring-transparent"
                   />
+                  <Editor
+                    wrapperClassName="wrapper"
+                    editorClassName="editor"
+                    toolbarClassName="toolbar"
+                  /> */}
                 </div>
               }
               <div className="grid grid-cols-5 gap-4">

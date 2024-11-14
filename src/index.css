@@ -389,3 +389,15 @@
 .css-t3ipsp-control:hover{
   border-color: transparent !important;
 }
+.editor-wrapper {
+  min-height: 48vh; /* Initial height */
+  max-height: 50vh; /* Maximum height */
+  overflow-y: auto;
+  /* border: 1px solid #dcdcdc; */
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.editor-content {
+  min-height: 120px;
+}
