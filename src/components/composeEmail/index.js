@@ -133,7 +133,8 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
   // alert(initialValues.templateTitle)
   return (
     <>
-      <div className="bg-white rounded-2xl shadow-card fixed bottom-3 right-3 w-[552px]" style={{ zIndex: '9997' }}>
+      <div className="bg-white rounded-2xl shadow-card fixed bottom-3 right-3 w-[552px]" style={{ zIndex: '9997', overflowY: 'scroll'
+,minHeight:'93vh', maxHeight:'94vh' }}>
         <div className="flex justify-between items-center p-4">
           <h3 className="text-base text-secondary-800 font-medium">Compose Message</h3>
           <IoIosClose size={28} onClick={onClose} className="text-text-gray-100 cursor-pointer" />
@@ -192,7 +193,9 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
                 </div>
               </div>
 
-              {loader ? <div className='flex justify-center items-center min-h-[calc(100vh-440px)]'>
+              {loader ? <div className='flex justify-center items-center '
+              style={{minHeight:'51vh',maxHeight:'55vh'}}>
+
                 <Spinner
                   size="xl"
                   animation="border"
@@ -212,12 +215,44 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     field={{ name: "templateContent" }}
-                    rows={15}
+                    // rows={10}
+                    style={{minHeight:'47vh',maxHeight:'50vh'}}
                     className="inline border-0 p-0 resize-none w-full focus:ring-transparent"
                   />
                 </div>
               }
-              <div className="mx-4 pb-3 flex">
+              <div className="grid grid-cols-5 gap-4">
+                {uploadedFiles?.length > 0 &&
+                  uploadedFiles.map((fileItem, index) => (
+                    <div
+                      key={index}
+                      className="relative p-4 border border-gray-200 rounded-md shadow-sm hover:shadow-md transition-shadow duration-200"
+                    >
+                      {/* Close Icon in the top-right corner */}
+                      <IoIosCloseCircleOutline
+                        className="absolute top-2 right-2 text-xl text-gray-400 hover:text-gray-600 cursor-pointer"
+                        onClick={() => handleRemoveFile(index)}
+                      />
+
+                      <div className="flex flex-col items-center">
+                        {/* Attachment Icon */}
+                        <IoMdAttach className="text-4xl text-blue-500 mb-2" />
+
+                        {/* File Name */}
+                        <p className="text-sm font-medium text-gray-800 text-center truncate w-24">
+                          {fileItem.file.name}
+                        </p>
+
+                        {/* File Size */}
+                        <p className="text-xs text-gray-500">
+                          {/* Uncomment to show file size */}
+                          {/* {(fileItem.file.size / (1024 * 1024)).toFixed(2)} MB */}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+              <div className="mx-4 pb-3 flex" >
                 <img src={logo} alt="" className="mr-4" />
                 <div>
                   <h3 className="text-base text-secondary-800 font-semibold">Gary Tang</h3>
@@ -225,37 +260,6 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
                 </div>
               </div>
 
-<div className="grid grid-cols-5 gap-4">
-  {uploadedFiles?.length > 0 &&
-    uploadedFiles.map((fileItem, index) => (
-      <div
-        key={index}
-        className="relative p-4 border border-gray-200 rounded-md shadow-sm hover:shadow-md transition-shadow duration-200"
-      >
-        {/* Close Icon in the top-right corner */}
-        <IoIosCloseCircleOutline
-          className="absolute top-2 right-2 text-xl text-gray-400 hover:text-gray-600 cursor-pointer"
-          onClick={() => handleRemoveFile(index)}
-        />
-
-        <div className="flex flex-col items-center">
-          {/* Attachment Icon */}
-          <IoMdAttach className="text-4xl text-blue-500 mb-2" />
-
-          {/* File Name */}
-          <p className="text-sm font-medium text-gray-800 text-center truncate w-24">
-            {fileItem.file.name}
-          </p>
-          
-          {/* File Size */}
-          <p className="text-xs text-gray-500">
-            {/* Uncomment to show file size */}
-            {/* {(fileItem.file.size / (1024 * 1024)).toFixed(2)} MB */}
-          </p>
-        </div>
-      </div>
-    ))}
-</div>
 
 
 
