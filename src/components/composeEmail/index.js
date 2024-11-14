@@ -94,6 +94,16 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
       toast.error("Please Enter to Address")
       return false
     }
+    const attachments = [];
+    if (uploadedFiles?.length > 0) {
+      uploadedFiles.map((item) => {
+        const base64Content = item?.fileContent?.split(",")[1];
+        attachments.push({
+          fileName: item?.file?.name,
+          fileContent: base64Content,
+        });
+      })
+    }
     try {
       const content = draftToHtml(convertToRaw(editorState.getCurrentContent()));
       const payload = {
@@ -101,6 +111,7 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
         ccAddresses: toEmail,
         templateTitle: values.templateTitle,
         templateContent: content,
+        attachments: attachments,
       };
 
       dispatch(sendEmailRequest(payload));
