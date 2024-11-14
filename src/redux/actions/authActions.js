@@ -12,7 +12,10 @@ import {
   REGISTER_SUCCESS,
   DELETE_USER_REQUEST,
   DELETE_USER_SUCCESS,
-  DELETE_USER_FAILURE
+  DELETE_USER_FAILURE,
+  UPDATE_USER_REQUEST,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_FAILURE
 } from "../type";
 
 export const loginRequest = (payload) => ({
@@ -82,5 +85,20 @@ export const deleteUserSuccess = () => ({
 
 export const deleteUserFailure = (error) => ({
   type: DELETE_USER_FAILURE,
+  payload: error,
+});
+
+export const updateUserRequest = (payload) => ({
+  type: UPDATE_USER_REQUEST,
+  payload,
+});
+
+export const updateUserSuccess = (user) => ({
+  type: UPDATE_USER_SUCCESS,
+  payload: user,
+});
+
+export const updateUserFailure = (error) => ({
+  type: UPDATE_USER_FAILURE,
   payload: error,
 });

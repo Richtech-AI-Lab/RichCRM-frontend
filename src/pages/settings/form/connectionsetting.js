@@ -1,16 +1,27 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useState } from 'react';
 import NewCaseDropdown from '../../../components/newcasedropdown'
 import { TextInput, XButton } from '../../../components'
 import { LangchainContext } from '../../dashboard/langchainContext';
 import { DataStoreContext } from './dataStoreContext';
+import { API_ENDPOINTS } from '../../../constants/api';
+import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { postRequest } from '../../../axios/interceptor';
+import { updateUserRequest } from '../../../redux/actions/authActions';
 
 export const ConnectionSetting = ({ title }) => {
+    const dispatch = useDispatch();
     const { openaiAPIKey, setOpenaiAPIKey } = useContext(LangchainContext);
     const [openaiAPIKeyInput, setOpenaiAPIKeyInput] = useState(openaiAPIKey);
-    
-    const { uploadFolderUrlKey, setUploadFolderUrlKey } = useContext(DataStoreContext);
-    const [uploadFolderUrlInput, setUploadFolderUrlInput] = useState(uploadFolderUrlKey);
+
+    const [uploadFolderUrlInput, setUploadFolderUrlInput] = useState(null);
+    const [loader, setLoader] = useState(false);
+    const { data } = useSelector((state) => state.auth.user);
+
+    useEffect(()=>{
+        setUploadFolderUrlInput(data[0]?.uploadFolderName)
+    },[data])
 
     const onSave = () => {
         if (openaiAPIKeyInput && openaiAPIKeyInput.length > 0 && openaiAPIKeyInput.trim().length > 0) {
@@ -20,10 +31,16 @@ export const ConnectionSetting = ({ title }) => {
             console.error('API Key is empty');
         }
     }
-
-    const onFolderSave = () => {
+    const onFolderSave = async () => {
         if (uploadFolderUrlInput && uploadFolderUrlInput.length > 0 && uploadFolderUrlInput.trim().length > 0) {
-            setUploadFolderUrlKey(uploadFolderUrlInput);
+            const payload = {
+                role: data[0]?.role,
+                userName: data[0]?.userName,
+                password: data[0]?.password,
+                emailAddress: data[0]?.emailAddress,
+                uploadFolderName: uploadFolderUrlInput
+            };
+            dispatch(updateUserRequest(payload))
             console.log('Folder Key set:', uploadFolderUrlInput);
         } else {
             console.error('Folder Key is empty');

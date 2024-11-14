@@ -7,6 +7,9 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAILURE,
   CLEAR_DATA,
+  UPDATE_USER_REQUEST,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_FAILURE,
 } from "../type";
 
 const initialState = {
@@ -19,6 +22,7 @@ const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN_REQUEST:
     case REGISTER_REQUEST:
+    case UPDATE_USER_REQUEST: 
       return {
         ...state,
         loading: true,
@@ -27,6 +31,7 @@ const authReducer = (state = initialState, action) => {
       
     case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
+    case UPDATE_USER_SUCCESS: 
       return {
         ...state,
         loading: false,
@@ -36,6 +41,7 @@ const authReducer = (state = initialState, action) => {
       
     case LOGIN_FAILURE:
     case REGISTER_FAILURE:
+    case UPDATE_USER_FAILURE: 
       return {
         ...state,
         loading: false,
