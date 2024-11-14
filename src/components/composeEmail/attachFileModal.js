@@ -26,14 +26,30 @@ const AttachFileModal = ({ onClose, uploadedFiles, setUploadedFiles}) => {
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
     if (files) {
-      const filesWithDropdownValues = files.map((file) => ({
-        file,
-        fileType: "",
-      }));
-      setUploadedFiles((prevFiles) => [
-        ...prevFiles,
-        ...filesWithDropdownValues,
-      ]);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target?.result) {
+          const fileContent = e.target.result;
+          const filesWithDropdownValues = files.map((file) => ({
+            file,
+            fileType: "",
+            fileContent,
+          }));
+          setUploadedFiles((prevFiles) => [
+            ...prevFiles,
+            ...filesWithDropdownValues,
+          ]);
+        }
+      }
+
+      files.forEach((file) => {
+        // check file size
+        if (file.size > 2097152) {
+          toast.error("File size should be less than 2MB");
+          return;
+        }
+        reader.readAsDataURL(file);
+      });
     }
   };
 
@@ -131,6 +147,7 @@ const AttachFileModal = ({ onClose, uploadedFiles, setUploadedFiles}) => {
                     <XButton
                       type="submit"
                       text={"Upload"}
+                      onClick={handleSubmit}
                       disabled={isSubmitting}
                       className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px] ml-4"
                     />
