@@ -11,7 +11,7 @@ import { postRequest } from '../../axios/interceptor';
 import { toast } from 'react-toastify';
 import { Spinner } from 'flowbite-react';
 import AttachFileModal from './attachFileModal';
-import { EditorState, convertToRaw } from 'draft-js';
+import { EditorState, convertToRaw, ContentState, convertFromHTML } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 
@@ -164,6 +164,16 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
       options: ['undo', 'redo'],
     },
   };
+
+  // const prefilledText = '<p>This is a <strong>prefilled</strong> text with <em>HTML</em> content.</p>';
+
+  // useEffect(() => {
+  //   const blocksFromHTML = convertFromHTML(prefilledText);
+  //   const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
+  //   const newEditorState = EditorState.createWithContent(contentState);
+  //   setEditorState(newEditorState); 
+  // }, [template]);
+
   return (
     <>
       <div className="bg-white rounded-2xl shadow-card fixed bottom-3 right-3 w-[552px]" style={{
