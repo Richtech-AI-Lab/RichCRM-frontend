@@ -26,7 +26,10 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
   const [inputValue, setInputValue] = useState('');
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [toEmail, setToEmail] = useState([]);
-  const [template, setTemplate] = useState('');
+  const [template, setTemplate] = useState({
+    templateTitle: "",
+    templateContent: ""
+  });
   const [loader, setLoader] = useState();
   const [isModalOpen, setIsModalOpen] = useState();
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -178,12 +181,12 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
 
   // const prefilledText = '<p>This is a <strong>prefilled</strong> text with <em>HTML</em> content.</p>';
 
-  // useEffect(() => {
-  //   const blocksFromHTML = convertFromHTML(prefilledText);
-  //   const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
-  //   const newEditorState = EditorState.createWithContent(contentState);
-  //   setEditorState(newEditorState); 
-  // }, [template]);
+  useEffect(() => {
+    const blocksFromHTML = convertFromHTML(template?.templateContent);
+    const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
+    const newEditorState = EditorState.createWithContent(contentState);
+    setEditorState(newEditorState); 
+  }, [template]);
 
   return (
     <>
@@ -271,6 +274,7 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
                     wrapperClassName="editor-wrapper"  // Adjusting the overall editor height
                     editorClassName="editor-content"  
                     toolbar={toolbarOptions}
+                    initialContentState={template}
                     //  toolbarClassName="rdw-editor-toolbar"
                     // placeholder="Compose your email here..."
                     // // toolbar={{
