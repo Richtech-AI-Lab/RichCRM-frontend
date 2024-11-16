@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import { useMsal } from "@azure/msal-react";
 import XSpinnerLoader from "../spinnerLoader/XSpinnerLoader";
 import { DataStoreContext } from "../../pages/settings/form/dataStoreContext";
+import { useSelector } from "react-redux";
 
 const ROOT_FOLDER_PATH = "https://graph.microsoft.com/v1.0/drive/root";
 const fileTypeOptions = [
@@ -31,13 +32,13 @@ const fileTypeOptions = [
 
 const UploadFileModal = ({ onClose, fileName = "", generalUpload, taskName = "", onUpload = () => { } }) => {
   // console.log(fileName, "+===", fileName.split('-').slice(0, 2).join('-'))
-  const { uploadFolderUrlKey, setUploadFolderUrlKey } = useContext(DataStoreContext);
   const { instance, accounts, inProgress } = useMsal();
   const [account, setAccount] = useState(instance.getActiveAccount());
   const [loader, setLoader] = useState(false)
   const [path, setPath] = useState("/me/drive/root");
   const fileInputRef = useRef(null);
   const [uploadedFiles, setUploadedFiles] = useState([]);
+  const {data} = useSelector((state)=>state.auth.user)
   const initialValues = {};
 
 
@@ -98,9 +99,9 @@ const UploadFileModal = ({ onClose, fileName = "", generalUpload, taskName = "",
     const encodedFilePath = encodeURIComponent(customFileName);
     let folderUrl;
     let uploadUrl;
-    if(uploadFolderUrlKey){
-      folderUrl = `${ROOT_FOLDER_PATH}:/${uploadFolderUrlKey}/${encodedFolderPath}:`;
-      uploadUrl = `${ROOT_FOLDER_PATH}:/${uploadFolderUrlKey}/${encodedFolderPath}/${encodedFilePath}:/content?@microsoft.graph.conflictBehavior=rename`;
+    if(data[0]?.uploadFolderName){
+      folderUrl = `${ROOT_FOLDER_PATH}:/${data[0]?.uploadFolderName}/${encodedFolderPath}:`;
+      uploadUrl = `${ROOT_FOLDER_PATH}:/${data[0]?.uploadFolderName}/${encodedFolderPath}/${encodedFilePath}:/content?@microsoft.graph.conflictBehavior=rename`;
     }else{
       folderUrl = `${ROOT_FOLDER_PATH}:/${encodedFolderPath}:`;
       uploadUrl = `${ROOT_FOLDER_PATH}:/${encodedFolderPath}/${encodedFilePath}:/content?@microsoft.graph.conflictBehavior=rename`;
@@ -122,8 +123,8 @@ const UploadFileModal = ({ onClose, fileName = "", generalUpload, taskName = "",
       // If folder doesn't exist, create the folder
       if (!folderResponse.ok) {
         let createFolderUrl;
-        if(uploadFolderUrlKey){
-          createFolderUrl = `${ROOT_FOLDER_PATH}:/${uploadFolderUrlKey}:/children`;
+        if(data[0]?.uploadFolderName){
+          createFolderUrl = `${ROOT_FOLDER_PATH}:/${data[0]?.uploadFolderName}:/children`;
         }else{
           createFolderUrl= `${ROOT_FOLDER_PATH}/children`;
         }

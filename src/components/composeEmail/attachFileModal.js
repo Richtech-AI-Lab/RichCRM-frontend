@@ -10,6 +10,8 @@ import { toast } from "react-toastify";
 import { useMsal } from "@azure/msal-react";
 import XSpinnerLoader from "../spinnerLoader/XSpinnerLoader";
 
+const MAX_FILE_SIZE_MB = 40; // 40 MB
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 
 const AttachFileModal = ({ onClose, uploadedFiles, setUploadedFiles}) => {
   const [loader, setLoader] = useState(false)
@@ -25,15 +27,38 @@ const AttachFileModal = ({ onClose, uploadedFiles, setUploadedFiles}) => {
 
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
+    const validFiles = files.filter((file) => {
+      if (file.size > MAX_FILE_SIZE_BYTES) {
+        toast.error(`File "${file.name}" exceeds 40 MB limit and was not added.`);
+        return false;
+      }
+      return true;
+    });
     if (files) {
-      const filesWithDropdownValues = files.map((file) => ({
-        file,
-        fileType: "",
-      }));
-      setUploadedFiles((prevFiles) => [
-        ...prevFiles,
-        ...filesWithDropdownValues,
-      ]);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target?.result) {
+          const fileContent = e.target.result;
+          const filesWithDropdownValues = files.map((file) => ({
+            file,
+            fileType: "",
+            fileContent,
+          }));
+          setUploadedFiles((prevFiles) => [
+            ...prevFiles,
+            ...filesWithDropdownValues,
+          ]);
+        }
+      }
+
+      files.forEach((file) => {
+        // check file size
+        if (file.size > 2097152) {
+          toast.error("File size should be less than 2MB");
+          return;
+        }
+        reader.readAsDataURL(file);
+      });
     }
   };
 
@@ -105,8 +130,8 @@ const AttachFileModal = ({ onClose, uploadedFiles, setUploadedFiles}) => {
                                 {fileItem.file.name}
                               </p>
                               <p className="text-sm text-text-gray-100">
-                                {/* {(fileItem.file.size / (1024 * 1024)).toFixed(2)} MB */}
-                              </p>
+                              {(fileItem.file.size / (1024 * 1024)).toFixed(2)} MB
+                            </p>
                             </div>
                             <IoIosCloseCircleOutline
                               className="text-xl text-text-gray-100 cursor-pointer"
@@ -123,17 +148,18 @@ const AttachFileModal = ({ onClose, uploadedFiles, setUploadedFiles}) => {
                   </div>
                   <div className="text-end mt-8">
                     <XButton
-                      text={"Cancel"}
+                      text={"Upload"}
                       onClick={onClose}
                       disabled={isSubmitting}
-                      className="bg-card-300 text-sm text-primary2 py-[10px] px-6 rounded-[100px]"
+                      className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px] ml-4"
+                      // className="bg-card-300 text-sm text-primary2 py-[10px] px-6 rounded-[100px]"
                     />
-                    <XButton
+                    {/* <XButton
                       type="submit"
                       text={"Upload"}
                       disabled={isSubmitting}
                       className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px] ml-4"
-                    />
+                    /> */}
                   </div>
                 </form>
               </>

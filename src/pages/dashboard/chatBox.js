@@ -15,7 +15,7 @@ import { ParseCases } from "../../utils/parseCases";
 
 const ChatBox = () => {
   const { openaiAPIKey, setOpenaiAPIKey } = useContext(LangchainContext);
-  const { user } = useSelector((state) => state.auth.login);
+  const user = useSelector((state) => state.auth.user);
   const prompt = [
     ['system', 'You are an assistant helping housing lawyers with their cases, please use RichCRM API tools with the informations from the chat to help them query case infomations, creating new cases, updating case details, and managing their contacts.'],
     ['placeholder', '{chat_history}'],
