@@ -14,8 +14,9 @@ import AttachFileModal from './attachFileModal';
 import { EditorState, convertToRaw, ContentState, convertFromHTML } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
+import UpdateTaskTemplateButton from './updateTaskTemplateButton';
 
-const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
+const ComposeEmail = ({ taskItem, onClose, templates, onSendEmail }) => {
   const dispatch = useDispatch();
   const { client } = useSelector((state) => state.client);
   const clientObj = client?.data?.length > 0 ? client?.data : null;
@@ -346,16 +347,17 @@ const ComposeEmail = ({ onClose, templates, onSendEmail }) => {
 
 
               <div className="text-end px-4 py-3 shadow-full rounded-bl-2xl rounded-br-2xl">
+                <UpdateTaskTemplateButton templateTitle={values.templateTitle} editorState={editorState} taskItem={taskItem} setLoader={setLoader} />
                 <XButton
                   text="Attach"
                   onClick={() => { setIsModalOpen(true) }}
                   type="button"
-                  className="bg-active-blue text-active-blue-text text-base py-[10px] px-6 rounded-[100px] m"
+                  className="mr-1 bg-active-blue text-active-blue-text text-base py-[10px] px-6 rounded-[100px] m"
                 />
                 <XButton
                   text="Send"
                   type="submit"
-                  className="bg-active-blue text-active-blue-text text-base py-[10px] px-6 rounded-[100px]"
+                  className="mr-1 bg-active-blue text-active-blue-text text-base py-[10px] px-6 rounded-[100px]"
                 />
               </div>
             </form>
