@@ -22,7 +22,7 @@ function* createCase(action) {
         };
 
         const response = yield call(() => postRequest(API_ENDPOINTS.CREATE_CASE, updatedPayload.casePayload));
-        yield put(caseCreateSuccess(response.data));
+        yield put(caseCreateSuccess(response.data?.data[0]));
         if (response.status == 200) {
             const casedetails = response.data?.data[0];
             const caseId = response.data?.data[0].caseId;
