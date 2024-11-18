@@ -7,6 +7,7 @@ const ClosedCasesGrid = ({ closedCases }) => {
       <div className="grid grid-cols-4 gap-2">
         {closedCases.map((item, index) => (
           <CardItem
+            item={item}
             key={index}
             caseStatus={item?.caseStatus}
             caseDetails={item?.premisesId}
