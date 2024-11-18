@@ -86,11 +86,11 @@ const ContactCard = ({
                   casedetails?.clientType ==0 ?
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                       <span className="left-txt font-medium text-secondary-800">{`${data.firstName} ${data.lastName}`}</span>
-                      <span className="left-txt font-medium text-secondary-800 text-sm">Purchaser (Client)</span>
+                      <span className="left-txt font-medium text-secondary-800 text-sm">{!casedetails?.caseType ? "Purchaser" : "Seller"} (Client)</span>
                     </div> :
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                       <span className="left-txt font-medium text-secondary-800">{`${data.organizationName}`}</span>
-                      <span className="left-txt font-medium text-secondary-800 text-sm">Purchaser (Organization)</span>
+                      <span className="left-txt font-medium text-secondary-800 text-sm">{!casedetails?.caseType ? "Purchaser" : "Seller"} (Organization)</span>
                     </div>
                 }
               </div>
@@ -99,7 +99,7 @@ const ContactCard = ({
               <ul className="card-details">
                 <ContactDetailItem
                   label="Role"
-                  content="Purchaser(Client)"
+                  content={`${!casedetails?.caseType ? "Purchaser" : "Seller"} (${!casedetails?.clientType ? "Client" : "Organization"})`}
                   isInput={false} />
                 {/* <ContactDetailItem
                   label="Referred by"
@@ -150,11 +150,11 @@ const ContactCard = ({
                   casedetails?.clientType ==0 ?
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                       <span className="left-txt font-medium text-secondary-800">{`${data.firstName} ${data.lastName}`}</span>
-                      <span className="left-txt font-medium text-secondary-800 text-sm">Purchaser (Additional Organization)</span>
+                      <span className="left-txt font-medium text-secondary-800 text-sm">{!casedetails?.caseType ? "Purchaser" : "Seller"} (Additional Client)</span>
                     </div> :
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                       <span className="left-txt font-medium text-secondary-800">{`${data.organizationName}`}</span>
-                      <span className="left-txt font-medium text-secondary-800 text-sm">Purchaser (Additional Organization)</span>
+                      <span className="left-txt font-medium text-secondary-800 text-sm">{!casedetails?.caseType ? "Purchaser" : "Seller"} (Additional Organization)</span>
                     </div>
                 }
               </div>
@@ -163,7 +163,8 @@ const ContactCard = ({
               <ul className="card-details">
                 <ContactDetailItem
                   label="Role"
-                  isInput={true} />
+                  content={`${!casedetails?.caseType ? "Purchaser" : "Seller"} (${!casedetails?.clientType ? "Additional Client" : "Additional Organization"})`}
+                  isInput={false} />
                 {/* <ContactDetailItem
                   label="Referred by"
                   content="Add a referral"
