@@ -18,9 +18,9 @@ import UpdateTaskTemplateButton from './updateTaskTemplateButton';
 
 const ComposeEmail = ({ taskItem, onClose, templates, onSendEmail }) => {
   const dispatch = useDispatch();
-  const { client } = useSelector((state) => state.client);
+  const { client, additionalClient } = useSelector((state) => state.client);
   const clientObj = client?.data?.length > 0 ? client?.data : null;
-  const { organization } = useSelector((state) => state.organization);
+  const { organization, additionalOrganization } = useSelector((state) => state.organization);
   const organizationObj = organization?.data?.length > 0 ? organization?.data : null;
   const { casesData } = useSelector((state) => state.case);
   const caseObj = casesData?.cases?.find(item => item.caseId === localStorage.getItem('c_id'));
@@ -38,16 +38,35 @@ const ComposeEmail = ({ taskItem, onClose, templates, onSendEmail }) => {
   useEffect(() => {
     const isClientTypeIndividual = caseObj?.clientType === 0;
     const targetObj = isClientTypeIndividual ? clientObj : organizationObj;
+    const additionalData = isClientTypeIndividual ? additionalClient : additionalOrganization;
+
+    let emailArray = [];
 
     if (targetObj?.length > 0) {
-      const email = targetObj[0]?.email;
+      // Extract the main target email
+      const mainEmail = targetObj[0]?.email;
+      if (mainEmail) {
+        emailArray.push(mainEmail);
+      }
 
-      if (email) {
-        setToEmail([email]);
+      // Extract emails from additional data if available
+      if (additionalData?.length > 0) {
+        const additionalEmails = additionalData
+          .map(item => item.email)
+          .filter(email => email); // Filter out undefined/null emails
+        emailArray = [...emailArray, ...additionalEmails];
+      }
+
+      if (emailArray.length > 0) {
+        setToEmail(emailArray);
       } else {
         toast.error("Please update client email, No email exists!");
       }
+    } else {
+      toast.error("No primary client or organization found!");
     }
+
+
 
     const fetchData = async () => {
       setLoader(true)
@@ -186,7 +205,7 @@ const ComposeEmail = ({ taskItem, onClose, templates, onSendEmail }) => {
     const blocksFromHTML = convertFromHTML(template?.templateContent);
     const contentState = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
     const newEditorState = EditorState.createWithContent(contentState);
-    setEditorState(newEditorState); 
+    setEditorState(newEditorState);
   }, [template]);
 
   return (
@@ -269,22 +288,22 @@ const ComposeEmail = ({ taskItem, onClose, templates, onSendEmail }) => {
 
                 <div className="" style={{ minHeight: '50vh', maxHeight: '53vh' }} >
                   <Editor
-                  //  toolbarOnFocus
+                    //  toolbarOnFocus
                     editorState={editorState}
                     onEditorStateChange={handleEditorStateChange}
                     wrapperClassName="editor-wrapper"  // Adjusting the overall editor height
-                    editorClassName="editor-content"  
+                    editorClassName="editor-content"
                     toolbar={toolbarOptions}
                     initialContentState={template}
-                    //  toolbarClassName="rdw-editor-toolbar"
-                    // placeholder="Compose your email here..."
-                    // // toolbar={{
-                    //   inline: { inDropdown: true },
-                    //   list: { inDropdown: true },
-                    //   textAlign: { inDropdown: true },
-                    //   link: { inDropdown: true },
-                    //   history: { inDropdown: true },
-                    // }}
+                  //  toolbarClassName="rdw-editor-toolbar"
+                  // placeholder="Compose your email here..."
+                  // // toolbar={{
+                  //   inline: { inDropdown: true },
+                  //   list: { inDropdown: true },
+                  //   textAlign: { inDropdown: true },
+                  //   link: { inDropdown: true },
+                  //   history: { inDropdown: true },
+                  // }}
                   />
                   {/* <textarea
                     name='templateContent'
