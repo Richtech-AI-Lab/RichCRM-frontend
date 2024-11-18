@@ -6,18 +6,40 @@ import { JsonOutputParser } from "@langchain/core/output_parsers";
 import { HumanMessage, AIMessage } from "@langchain/core/messages";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IMAGES } from "../../constants/imagePath";
-import { responseSchema, updateCasesTool, fetchCasesByKeywordTool, updateClientTool } from "./tools";
+import { updateCasesTool, fetchCasesByKeywordTool, updateClientTool } from "./tools";
 import { SlDislike, SlLike } from "react-icons/sl";
 import { LangchainContext } from "./langchainContext";
 import BubbleLoader from "../../components/bubbleLoader";
 import { useSelector } from "react-redux";
 import { ParseCases } from "../../utils/parseCases";
+import { format } from "date-fns";
 
 const ChatBox = () => {
   const { openaiAPIKey, setOpenaiAPIKey } = useContext(LangchainContext);
   const user = useSelector((state) => state.auth.user);
   const prompt = [
-    ['system', 'You are an assistant helping housing lawyers with their cases, please use RichCRM API tools with the informations from the chat to help them query case infomations, creating new cases, updating case details, and managing their contacts.'],
+    ['system', `You are an assistant helping housing lawyers with their cases, 
+please use RichCRM API tools with the informations from the chat to help 
+them query case infomations, creating new cases, updating case details, 
+and managing their contacts. \n Please always answer the question following 
+the following JSON schema: \n\n\n
+const responseSchema = z.object(
+    message: z.string(),
+    status: z.string(),
+    cases: z.array(
+      z.object(
+        caseId: z.string(),
+        caseType: z.number(),
+        premisesId: z.string(),
+        stage: z.number(),
+        closingDate: z.string(),
+        clientId: z.string(),
+        clientType: z.number(),
+        clientName: z.string(),
+      ),
+    ).optional(),
+);
+`],
     ['placeholder', '{chat_history}'],
     ['human', '{input}'],
     ['placeholder', '{agent_scratchpad}']
@@ -41,12 +63,12 @@ const ChatBox = () => {
       openAIApiKey: openaiAPIKey,
       model: "gpt-4",
       temperature: 0,
-    });
+    })
+
     const agent = createToolCallingAgent({
       llm,
       tools,
       prompt: ChatPromptTemplate.fromMessages(prompt),
-      outputParser: new JsonOutputParser(responseSchema),
     });
     const executor = new AgentExecutor({
       agent,
@@ -148,10 +170,10 @@ const ChatBox = () => {
                                         {/* <span className="text-error ml-2">2 days</span> */}
                                       </p>
                                       <p className="text-base text-secondary-800 font-semibold mb-1">
-                                        {caseItem?.client}
+                                        {caseItem?.clientName}
                                       </p>
                                       <p className="text-sm text-secondary-800 font-medium mb-1">
-                                        {caseItem?.stage}
+                                        Stage: {caseItem?.stage}
                                       </p>
                                       <span className="text-sm text-secondary-300">{caseItem?.closingDate}</span>
                                     </div>
