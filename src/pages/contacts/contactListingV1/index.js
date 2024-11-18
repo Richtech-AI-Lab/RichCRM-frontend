@@ -193,7 +193,7 @@ const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) 
                     </Table.Cell>
                     {header.includes("Tag") && (
                       <Table.Cell width={width[1]}>
-                        {user?.tags.map((tag) =>  <NewBadge label={tag}  />)}
+                        {user?.tags?.map((tag) =>  <NewBadge label={tag}  />)}
                        
                       </Table.Cell>
                     )}
