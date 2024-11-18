@@ -1,10 +1,13 @@
 import React from "react";
 import Badge from "../badge";
 import { caseTypeOptions } from "../../utils/formItem";
+import { formatDateToCustomString } from "../../utils";
+import { format } from "date-fns";
 
 const CardItem = ({
   badgeColor,
   badgeText,
+  item={},
   caseDetails,
   caseTitle,
   caseCount,
@@ -69,8 +72,10 @@ const CardItem = ({
         </p>
       )}
 
+{closedCases?.length >= 0 ?  <p className="text-sm text-secondary-800 font-medium mt-1">{item?.closingDate && format(item?.closingDate, 'MMMM dd, yyyy')}</p>:
 
       <p className="text-sm text-secondary-800 font-medium mt-1">{caseDetails}</p>
+}
 
       <span className={`text-xs ${closedCases ? 'text-secondary-800' : 'text-secondary-700'}`}>{caseTypeLabel}</span>
     </div>
