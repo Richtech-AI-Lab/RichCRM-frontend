@@ -252,15 +252,15 @@ const ComposeEmail = ({ taskItem, onClose, templates, onSendEmail }) => {
                   </ul>
                   <input
                     type="text"
-                    className="inline border-0 focus:ring-transparent"
+                    className="inline border-0 focus:ring-transparent w-full"
                     value={inputValue}
                     onChange={handleInputChange}
                     onBlur={handleInputBlur} // or use onKeyDown to detect 'Enter' key
                     placeholder="Enter email"
                   />
                 </div>
-                <div className="border-b border-b-border py-[6px]">
-                  <label className="inline text-sm font-medium text-text-gray-100 mr-2">Subject</label>
+                <div className="flex justify-between items-center border-b border-b-border py-[6px] ">
+                  <label className="inline text-sm font-medium text-text-gray-100 mr-2 ">Subject</label>
                   <input
                     name='templateTitle'
                     type="text"
@@ -269,7 +269,7 @@ const ComposeEmail = ({ taskItem, onClose, templates, onSendEmail }) => {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     field={{ name: "templateTitle" }}
-                    className="inline border-0 focus:ring-transparent"
+                    className="inline border-0 focus:ring-transparent w-full"
                   />
                 </div>
               </div>
