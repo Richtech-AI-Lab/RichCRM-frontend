@@ -7,20 +7,20 @@ import { tool } from "@langchain/core/tools";
 
 // Response schema
 const responseSchema = z.object({
-    status: z.string(),
-    data: [
-        z.object({
-            caseId: z.ostring(),
-            caseType: z.onumber(),
-            premisesId: z.ostring(),
-            stage: z.onumber(),
-            closingDate: z.ostring(),
-            clientId: z.ostring(),
-            clientType: z.onumber(),
-            clientName: z.ostring(),
-        })
-    ],
     message: z.string(),
+    status: z.string(),
+    cases: z.array(
+      z.object({
+        caseId: z.string(),
+        caseType: z.number(),
+        premisesId: z.string(),
+        stage: z.number(),
+        closingDate: z.string(),
+        clientId: z.string(),
+        clientType: z.number(),
+        clientName: z.string(),
+      }),
+    ).optional(),
 });
 
 
@@ -77,7 +77,7 @@ const fetchCasesByKeywordTool = tool(
   },
   {
     name: "fetchCasesByKeyword",
-    description: `Call our API to search all cases by keyword, requires a keyword string`,
+    description: `Call our API to search all cases by keyword, requires a keyword string, return all cases in a JSON format`,
     schema: getCasesByKeywordSchemaZod,
   }
 );
