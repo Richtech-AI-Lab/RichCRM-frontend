@@ -45,7 +45,7 @@ const AttorneyDetails = ({ attorneyDetails, title }) => {
                                         <li>
                                             {/* <span className="left-txt flex items-center">{`${attorney?.firstName} ${attorney?.lastName}`}</span> */}
                                             <span className="left-txt flex items-center">{`${attorney?.company}`}</span>
-                                            <span onClick={()=>handleNavigate(attorney)} className="left-txt flex items-center cursor-pointer">{`${attorney?.lastName}, ${attorney?.firstName}`}</span>
+                                            <span onClick={()=>handleNavigate(attorney)} className="left-txt flex items-center cursor-pointer underline" style={{color:"#366093"}}>{`${attorney?.lastName}, ${attorney?.firstName}`}</span>
                                         </li>
                                     </React.Fragment>
                                 ))}
