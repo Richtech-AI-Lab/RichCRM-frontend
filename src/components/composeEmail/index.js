@@ -242,9 +242,11 @@ const ComposeEmail = ({ taskItem, onClose, templates, onSendEmail }) => {
                   <label className="inline text-sm font-medium text-text-gray-100 mr-2">To</label>
                   <ul>
                     {toEmail?.map((item, index) =>
-                      <li className="flex items-center p-2 bg-bg-gray-300 rounded-full">
+                      <li className="flex items-center justify-between p-2 bg-bg-gray-300 rounded-full">
+                        <div className='flex items-center'>
                         <img src={avatar} alt="" className="mr-2" />
-                        <span>{item}</span>
+                        <span className='overflow-hidden'>{item}</span>
+                        </div>
                         <IoIosClose size={28} className="text-text-gray-100 cursor-pointer" onClick={() => removeToEmail(index)} />
                       </li>
                     )}
