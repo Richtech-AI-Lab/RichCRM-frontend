@@ -1,10 +1,10 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { API_ENDPOINTS, ROUTES } from "../../constants/api";
-import { CREATE_ATTORNEY_REQUEST, CREATE_CONTACT_REQUEST, DELETE_ATTORNEY_REQUEST, FETCH_ATTORNEY_BY_ID_REQUEST, FETCH_REALTOR_BY_ID_REQUEST, GET_CONTACT_BY_KEYWORD_REQUEST, GET_CONTACT_BY_TYPE_REQUEST, GET_CONTACT_REQUEST, UPDATE_CONTACT_REQUEST } from "../type";
+import { CREATE_ATTORNEY_REQUEST, CREATE_CONTACT_REQUEST, DELETE_ATTORNEY_REQUEST, DELETE_CONTACT_REQUEST, DELETE_CONTACT_SUCCESS, FETCH_ATTORNEY_BY_ID_REQUEST, FETCH_REALTOR_BY_ID_REQUEST, GET_CONTACT_BY_KEYWORD_REQUEST, GET_CONTACT_BY_TYPE_REQUEST, GET_CONTACT_REQUEST, UPDATE_CONTACT_REQUEST } from "../type";
 import { getRequest, postRequest } from "../../axios/interceptor";
 import { toast } from "react-toastify";
 import { handleError } from "../../utils/eventHandler";
-import { createAttorneySuccess, deleteAttorneySuccess, fetchAttorneyByIdsFailure, fetchAttorneyByIdsSuccess, fetchRealtorByIdsFailure, fetchRealtorByIdsSuccess, getContactFailure, getContactSuccess, setSelectedContact, updateContactFailure, updateContactSuccess } from "../actions/contactActions";
+import { createAttorneySuccess, deleteAttorneySuccess, deleteContactFailure, deleteContactSuccess, fetchAttorneyByIdsFailure, fetchAttorneyByIdsSuccess, fetchRealtorByIdsFailure, fetchRealtorByIdsSuccess, getContactFailure, getContactSuccess, setSelectedContact, updateContactFailure, updateContactSuccess } from "../actions/contactActions";
 import { all } from "redux-saga/effects";
 import { updateCaseContactRequest } from "../actions/caseAction";
 
@@ -152,6 +152,19 @@ function* deleteAttorney(action) {
   }
 }
 
+function* deleteContact(action) {
+  try {
+    const { payload } = action;
+    const response = yield call(() =>
+      postRequest(API_ENDPOINTS.DELETE_CONTACT,{contactId: payload})
+    );
+    yield put(deleteContactSuccess(payload));
+  } catch (error) {
+    handleError(error)
+    yield put(deleteContactFailure(error.response?.data || error));
+  }
+}
+
 export function* contactSaga() {
   // yield takeLatest(GET_CONTACT_BY_TYPE_REQUEST, getContactByType);
   yield takeLatest(GET_CONTACT_BY_TYPE_REQUEST, getContactByTag);
@@ -162,4 +175,5 @@ export function* contactSaga() {
   yield takeLatest(GET_CONTACT_BY_KEYWORD_REQUEST, getContactByKeyword);
   yield takeLatest(CREATE_ATTORNEY_REQUEST, createAttorney);
   yield takeLatest(DELETE_ATTORNEY_REQUEST, deleteAttorney);
+  yield takeLatest(DELETE_CONTACT_REQUEST, deleteContact);
 }

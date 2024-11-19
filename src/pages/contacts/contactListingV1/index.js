@@ -1,10 +1,10 @@
-import { Pagination, Table } from "flowbite-react";
+import { Modal, Pagination, Table } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { ROUTES } from "../../../constants/api";
 import { useNavigate } from "react-router-dom";
 import { IMAGES } from "../../../constants/imagePath";
 import { addFromContactTab, addFromContactV1Tab, CONTACT_TYPE, ORGANIZATION_TYPE } from "../../../constants/constants";
-import { getContactRequest, setSelectedContact } from "../../../redux/actions/contactActions";
+import { deleteContactRequest, getContactRequest, setSelectedContact } from "../../../redux/actions/contactActions";
 import { useDispatch, useSelector } from "react-redux";
 import XSpinnerLoader from "../../../components/spinnerLoader/XSpinnerLoader";
 import ContactButtonWithModal from "../../../components/newContactButton";
@@ -13,12 +13,18 @@ import NewOrganizationContactModalV1 from "../../../components/contactModal/newO
 import { fetchOrganizationByTypeRequest, setSelectedOrganization } from "../../../redux/actions/organizationActions";
 import { fetchAllTagsRequest } from "../../../redux/actions/tagActions";
 import { NewBadge } from "../../../components";
+import DeleteModal from "../../../components/deleteModal";
+import { LuUpload } from "react-icons/lu";
+import { MdDeleteForever } from "react-icons/md";
 
 const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const contact = useSelector((state) => state?.contact?.contact)
   // const [currentPage, setCurrentPage] = useState(1);
+  const [contactToDelete, setContactToDelete] = useState(null); // Contact selected for deletion
+  const [showDeleteModal, setShowDeleteModal] = useState(false); // Modal visibility
+
   const [currentPage, setCurrentPage] = useState(1);
 
   const { loading: loadingContact } = useSelector((state) => state?.contact)
@@ -37,17 +43,49 @@ const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) 
   );
   // console.log(paginatedData, "paginatedData", active, "contact", organization)
 
-
   const headers = {
-    [addFromContactV1Tab.individuals]: ["Name", "Tag", "Organization", "Position", "Email", "Cell Phone"],
-    [addFromContactV1Tab.organizations]: ["Name", "Tag", "Website", "Email", "Cell Phone"]
+    [addFromContactV1Tab.individuals]: [
+      "Name", 
+      "Tag", 
+      "Organization", 
+      "Position", 
+      "Email", 
+      "Cell Phone",
+      "" // Added empty column
+    ],
+    [addFromContactV1Tab.organizations]: [
+      "Name", 
+      "Tag", 
+      "Website", 
+      "Email", 
+      "Cell Phone",
+    ]
   };
-
+  
   const widthTabs = {
-    [addFromContactV1Tab.individuals]: ["19.17%", "14.17%", "19.17%", "14.17%", "19.17%", "14.17%"],
+    [addFromContactV1Tab.individuals]: [
+      "18.17%", // Adjusted to accommodate the extra column
+      "14.17%", 
+      "18.17%", 
+      "14.17%", 
+      "18.17%", 
+      "14.17%", 
+      "3%" // Width for the empty column
+    ],
     [addFromContactV1Tab.organizations]: ["22%", "10%", "29%", "22%", "17%"]
   };
+  
   const onPageChange = (page) => setCurrentPage(page);
+  const handleDeleteClick = (contact) => {
+    console.log(contact,"--------")
+    setContactToDelete(contact);
+    setShowDeleteModal(true); // Open modal
+  };
+
+  const confirmDelete = () => {
+    dispatch(deleteContactRequest(contactToDelete?.contactId)); // Dispatch delete action
+    setShowDeleteModal(false);
+  };
   const handleNavigation = (item) => {
     if (active == 0) {
       dispatch(setSelectedContact(item));
@@ -170,6 +208,7 @@ const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) 
             {header.map((key, index) => (
               <Table.HeadCell width={width[index]} key={index}>{key}</Table.HeadCell>
             ))}
+            <Table.HeadCell></Table.HeadCell>
           </Table.Head>
         </Table>
       </div>
@@ -193,14 +232,25 @@ const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) 
                     </Table.Cell>
                     {header.includes("Tag") && (
                       <Table.Cell width={width[1]}>
-                        {user?.tags?.map((tag) =>  <NewBadge label={tag}  />)}
-                       
+                        {user?.tags.map((tag) => <NewBadge label={tag} />)}
+
                       </Table.Cell>
                     )}
                     {header.includes("Organization") && <Table.Cell width={width[2]}>{user.company}</Table.Cell>}
                     {header.includes("Position") && <Table.Cell width={width[3]}>{user.position}</Table.Cell>}
                     {header.includes("Email") && <Table.Cell width={width[4]}>{user.email}</Table.Cell>}
                     {header.includes("Cell Phone") && <Table.Cell width={width[5]}>{user.cellNumber}</Table.Cell>}
+                    <Table.Cell width={width[6]}>
+                    <button
+                      className="text-red-500 hover:text-red-700"
+                      onClick={(e) => {
+                        e.stopPropagation(); 
+                        handleDeleteClick(user);
+                      }}
+                      >
+                      <MdDeleteForever />
+                    </button>
+                  </Table.Cell>
                   </Table.Row>
                 ))}
               </Table.Body>
@@ -230,6 +280,18 @@ const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) 
                     {header.includes("Website") && <Table.Cell width={width[2]}>{org?.website}</Table.Cell>}
                     {header.includes("Email") && <Table.Cell width={width[3]}>{org?.email}</Table.Cell>}
                     {header.includes("Cell Phone") && <Table.Cell width={width[4]}>{org?.cellNumber}</Table.Cell>}
+                    {/* <Table.Cell width={width[5]}>
+                    <button
+                      className="text-red-500 hover:text-red-700"
+                      onClick={(e) => {
+                        e.stopPropagation(); 
+                        handleDeleteClick(org);
+                      }}
+                      >
+                      <MdDeleteForever />
+                     
+                    </button>
+                  </Table.Cell> */}
                   </Table.Row>
                 ))}
               </Table.Body>
@@ -262,6 +324,17 @@ const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) 
           className="pagination-btm"
         />
       </div>}
+      <DeleteModal
+        isOpen={showDeleteModal}
+        onConfirm={confirmDelete}
+        onCancel={() => setShowDeleteModal(false)}
+        title="Confirm delete contact"
+        message="This action can't be undone. Do you want to delete?"
+        confirmText="Delete"
+        cancelText="Cancel"
+      />
+
+
     </>
   );
 };
