@@ -5,7 +5,7 @@ import { FieldArray, useFormikContext } from "formik";
 import { Label, TextInput, XButton } from "../../../components";
 import { IMAGES } from "../../../constants/imagePath";
 import { useDispatch } from "react-redux";
-import { createAttorneyRequest, deleteAttorneyRequest } from "../../../redux/actions/contactActions";
+import { createAttorneyRequest, createAttorneySuccess, deleteAttorneyRequest } from "../../../redux/actions/contactActions";
 import { postRequest } from "../../../axios/interceptor";
 import { API_ENDPOINTS } from "../../../constants/api";
 import { debounce } from "lodash";
@@ -44,7 +44,14 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
                 ...(newAttorney.email && newAttorney.email.trim() !== "" && { email: newAttorney.email }), 
                 cellNumber: newAttorney.cellNumber
             }
+           if(newAttorney?.contactId){
+            dispatch(createAttorneySuccess({...payload,
+                contactId:newAttorney?.contactId
+            }))
+           }else{
             dispatch(createAttorneyRequest(payload))
+           }
+            // dispatch(createAttorneyRequest(payload))
             // push({
             //     contactId: `new${Date.now()}`, // Changed key to contactId
             //     note: newAttorney.note, // Changed key to note
@@ -168,7 +175,7 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
                                                         key={index} // Adding a key for each list item for better performance
                                                         className={'px-4 py-2 hover:bg-input-surface'}
                                                         onClick={() => {
-                                                            setNewAttorney({ ...newAttorney, firstName: item?.firstName, lastName: item?.lastName, email: item?.email, cellNumber: item?.cellNumber });
+                                                            setNewAttorney({ ...newAttorney, contactId:item?.contactId, firstName: item?.firstName, lastName: item?.lastName, email: item?.email, cellNumber: item?.cellNumber });
                                                             setSearchResults([]);
                                                         }}
                                                     >
