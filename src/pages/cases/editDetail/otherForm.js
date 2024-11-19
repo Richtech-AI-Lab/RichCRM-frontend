@@ -175,6 +175,26 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
             </li>
           </ul>
         </div>
+        <div className="bg-white p-4 rounded-2xl mb-5">
+          {<div className="flex justify-between items-center mb-5">
+            <span className="text-base text-2Fary-800 font-medium">Mortgage</span>
+          </div>}
+
+          <ul className="card-details">
+            <li>
+              <>
+                <span className={` left-txt flex items-center`}>
+                  Mortgage Due Date
+                </span>
+                <DateInput
+                  name="mortgageContingencyDate"
+                  value={values.mortgageContingencyDate}
+                  onSelectedDateChanged={(date) => setFieldValue("mortgageContingencyDate", date)}
+                />
+              </>
+            </li>
+          </ul>
+        </div>
         {/* <div className="bg-white p-4 rounded-2xl mb-5">
           {title && <div className="flex justify-between items-center mb-5">
             <span className="text-base text-2Fary-800 font-medium">{"Realtors"}</span>
