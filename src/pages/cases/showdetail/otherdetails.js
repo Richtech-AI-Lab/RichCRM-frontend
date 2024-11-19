@@ -35,10 +35,10 @@ const OtherDetail = ({ dummy, caseObj }) => {
                 <span className="left-txt flex items-center" >Mortgage Amount</span>
                 <span className="left-txt flex items-center" >{caseObj?.mortgageAmount && "$"}{caseObj?.mortgageAmount} </span>
               </li>
-              <li>
+              {/* <li>
                 <span className="left-txt flex items-center" >Annual Property Tax</span>
                 <span className="left-txt flex items-center" >{caseObj?.annualPropertyTax && "$"}{caseObj?.annualPropertyTax}  </span>
-              </li>
+              </li> */}
               <li>
                 <span className="left-txt flex items-center" >Seller's Concession</span>
                 <span className="left-txt flex items-center" >{caseObj?.sellersConcession && "$"}{caseObj?.sellersConcession} </span>

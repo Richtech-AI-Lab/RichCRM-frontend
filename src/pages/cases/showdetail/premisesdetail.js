@@ -153,6 +153,11 @@ const PremisesDetail = ({ premises, address }) => {
                   <span className="left-txt flex items-center" >Managing Company</span>
                   <span className="left-txt flex items-center" >{premises[0]?.managingCompany}</span>
                 </li>
+
+                <li>
+                <span className="left-txt flex items-center" >Annual Property Tax</span>
+                <span className="left-txt flex items-center" >{premises[0]?.annualPropertyTax && "$"}{premises[0]?.annualPropertyTax}  </span>
+              </li>
               </ul> : ""}
           </div>
         </div>}

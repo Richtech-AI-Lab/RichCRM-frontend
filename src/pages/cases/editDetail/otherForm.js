@@ -149,7 +149,7 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
               // value={values.}
               />
             </li>
-            <li>
+            {/* <li>
               <span className="left-txt flex items-center" >Annual Property Tax</span>
               <input
                 className=" p-0 border-none focus:ring-transparent"
@@ -160,7 +160,7 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
                 onBlur={handleBlur}
               // value={values.}
               />
-            </li>
+            </li> */}
             <li>
               <span className="left-txt flex items-center" >Seller's Concession</span>
               <input

@@ -15,7 +15,14 @@ import DateInput from "../../../components/datePicker";
 
 
 const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, form }) => {
-
+  const formatCurrency = (value) => {
+    if (!value) return ''; // No dollar sign if the input is empty
+    return '$' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+  const handleCurrencyChange = (event, fieldName) => {
+    const inputVal = event.target.value.replace(/[^0-9.]+/g, ''); // Remove non-numeric except '.'
+    setFieldValue(fieldName, inputVal); // Save as plain number in form state
+  };
   return (
     <>
       <div className="col-span-6">
@@ -450,6 +457,18 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
                 onBlur={handleBlur}
                 value={values.managingCompany}
               /></li>
+              <li>
+              <span className="left-txt flex items-center" >Annual Property Tax</span>
+              <input
+                className="text-left p-0 border-none focus:ring-transparent"
+                name="annualPropertyTax"
+                value={formatCurrency(values.annualPropertyTax)}
+                type="text"
+                onChange={(e) => handleCurrencyChange(e, 'annualPropertyTax')}
+                onBlur={handleBlur}
+              // value={values.}
+              />
+            </li>
           </ul>
         </div>
 
