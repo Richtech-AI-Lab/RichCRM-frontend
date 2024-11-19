@@ -34,6 +34,7 @@ const ComposeEmail = ({ taskItem, onClose, templates, onSendEmail }) => {
   const [loader, setLoader] = useState();
   const [isModalOpen, setIsModalOpen] = useState();
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     const isClientTypeIndividual = caseObj?.clientType === 0;
@@ -132,6 +133,7 @@ const ComposeEmail = ({ taskItem, onClose, templates, onSendEmail }) => {
       const payload = {
         toAddresses: toEmail,
         ccAddresses: toEmail,
+        replyAddress: user?.data[0]?.emailAddress,
         templateTitle: values.templateTitle,
         templateContent: content,
         attachments: attachments,
