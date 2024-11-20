@@ -16,10 +16,9 @@ import { CASETYPE } from "../../../constants/constants";
 // import ContactEditForm from "../contactEdit";
 import { createAddressRequest, fetchAddressByIdFailure, fetchAddressByIdRequest } from "../../../redux/actions/utilsActions";
 import { useDispatch, useSelector } from "react-redux";
-import { getCaseByContactRequest } from "../../../redux/actions/caseAction";
 import ContactIndividualDetail from "../contactDetail/contactIndividualDetail";
 import ContactIndividualEditForm from "../contactEdit/contactIndividualEditForm";
-import { updateContactRequest } from "../../../redux/actions/contactActions";
+import { getCaseByContactRequest, updateContactRequest } from "../../../redux/actions/contactActions";
 
 const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
   const dispatch = useDispatch();
