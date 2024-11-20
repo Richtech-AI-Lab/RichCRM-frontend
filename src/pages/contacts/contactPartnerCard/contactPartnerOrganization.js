@@ -21,7 +21,7 @@ import NewCaseDropdown from "../../../components/newcasedropdown";
 
 const ContactPartnerOrganization = ({ isEdit, toggleEdit }) => {
   const dispatch = useDispatch();
-  const { cases, loading } = useSelector((state) => state.case.casesData);
+  const { cases, loading } = useSelector((state) => state?.contact);
 
   // console.log(cases[0], "-")
   // const location = useLocation();

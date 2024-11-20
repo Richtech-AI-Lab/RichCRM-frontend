@@ -22,7 +22,7 @@ import { getCaseByContactRequest, updateContactRequest } from "../../../redux/ac
 
 const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
   const dispatch = useDispatch();
-  const { cases, loading } = useSelector((state) => state.case.casesData);
+  const { cases, loading } = useSelector((state) => state?.contact);
   const tagDetails = useSelector((state) => state.tag.tag);
   // console.log(cases[0], "-")
   // const location = useLocation();
