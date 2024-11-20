@@ -1,10 +1,11 @@
-import { CREATE_ATTORNEY_FAILURE, CREATE_ATTORNEY_REQUEST, CREATE_ATTORNEY_SUCCESS, CREATE_CONTACT_FAILURE, CREATE_CONTACT_REQUEST, CREATE_CONTACT_SUCCESS, DELETE_ATTORNEY_SUCCESS, DELETE_CONTACT_SUCCESS, FETCH_ATTORNEY_BY_ID_FAILURE, FETCH_ATTORNEY_BY_ID_REQUEST, FETCH_ATTORNEY_BY_ID_SUCCESS, FETCH_REALTOR_BY_ID_FAILURE, FETCH_REALTOR_BY_ID_REQUEST, FETCH_REALTOR_BY_ID_SUCCESS, GET_CONTACT_BY_KEYWORD_FAILURE, GET_CONTACT_BY_KEYWORD_REQUEST, GET_CONTACT_BY_KEYWORD_SUCCESS, GET_CONTACT_BY_TYPE_FAILURE, GET_CONTACT_BY_TYPE_REQUEST, GET_CONTACT_BY_TYPE_SUCCESS, SET_ATTORNEY_EMPTY, SET_REALTOR_EMPTY, SET_SELECTED_CONTACT, UPDATE_CONTACT_FAILURE, UPDATE_CONTACT_REQUEST, UPDATE_CONTACT_SUCCESS } from "../type";
+import { CREATE_ATTORNEY_FAILURE, CREATE_ATTORNEY_REQUEST, CREATE_ATTORNEY_SUCCESS, CREATE_CONTACT_FAILURE, CREATE_CONTACT_REQUEST, CREATE_CONTACT_SUCCESS, DELETE_ATTORNEY_SUCCESS, DELETE_CONTACT_SUCCESS, FETCH_ATTORNEY_BY_ID_FAILURE, FETCH_ATTORNEY_BY_ID_REQUEST, FETCH_ATTORNEY_BY_ID_SUCCESS, FETCH_REALTOR_BY_ID_FAILURE, FETCH_REALTOR_BY_ID_REQUEST, FETCH_REALTOR_BY_ID_SUCCESS, GET_CONTACT_BY_KEYWORD_FAILURE, GET_CONTACT_BY_KEYWORD_REQUEST, GET_CONTACT_BY_KEYWORD_SUCCESS, GET_CONTACT_BY_TYPE_FAILURE, GET_CONTACT_BY_TYPE_REQUEST, GET_CONTACT_BY_TYPE_SUCCESS, READ_CASE_BY_CONTACT_FAILURE, READ_CASE_BY_CONTACT_REQ, READ_CASE_BY_CONTACT_SUCCESS, SET_ATTORNEY_EMPTY, SET_REALTOR_EMPTY, SET_SELECTED_CONTACT, UPDATE_CONTACT_FAILURE, UPDATE_CONTACT_REQUEST, UPDATE_CONTACT_SUCCESS } from "../type";
 
 const initialState = {
   loading: false,
   contact: null,
   attorney: [],
   error: null,
+  cases: []
 };
 
 const contactReducer = (state = initialState, action) => {
@@ -51,8 +52,8 @@ const contactReducer = (state = initialState, action) => {
       return { ...state, loading: false, realtor: action.payload, error: null };
     case FETCH_REALTOR_BY_ID_FAILURE:
       return { ...state, loading: false, error: action.payload };
-      case DELETE_CONTACT_SUCCESS:
-        return { ...state, loading: false, contact: state.contact.filter(item => item.contactId !== action.payload), error: null };
+    case DELETE_CONTACT_SUCCESS:
+      return { ...state, loading: false, contact: state.contact.filter(item => item.contactId !== action.payload), error: null };
     case DELETE_ATTORNEY_SUCCESS:
       return { ...state, loading: false, attorney: state.attorney.filter(item => item.contactId !== action.payload), error: null };
     case SET_ATTORNEY_EMPTY:
@@ -66,6 +67,12 @@ const contactReducer = (state = initialState, action) => {
         loading: false,
         selectedItem: action.payload || null,
       };
+    case READ_CASE_BY_CONTACT_REQ:
+      return { ...state, loading: true, error: null };
+    case READ_CASE_BY_CONTACT_SUCCESS:
+      return { ...state, loading: false, cases: [action.payload], error: null };
+    case READ_CASE_BY_CONTACT_FAILURE:
+      return { ...state, loading: false, cases: [], error: action.payload };
     default:
       return state;
   }

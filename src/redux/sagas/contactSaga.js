@@ -1,10 +1,10 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { API_ENDPOINTS, ROUTES } from "../../constants/api";
-import { CREATE_ATTORNEY_REQUEST, CREATE_CONTACT_REQUEST, DELETE_ATTORNEY_REQUEST, DELETE_CONTACT_REQUEST, DELETE_CONTACT_SUCCESS, FETCH_ATTORNEY_BY_ID_REQUEST, FETCH_REALTOR_BY_ID_REQUEST, GET_CONTACT_BY_KEYWORD_REQUEST, GET_CONTACT_BY_TYPE_REQUEST, GET_CONTACT_REQUEST, UPDATE_CONTACT_REQUEST } from "../type";
+import { CREATE_ATTORNEY_REQUEST, CREATE_CONTACT_REQUEST, DELETE_ATTORNEY_REQUEST, DELETE_CONTACT_REQUEST, DELETE_CONTACT_SUCCESS, FETCH_ATTORNEY_BY_ID_REQUEST, FETCH_REALTOR_BY_ID_REQUEST, GET_CONTACT_BY_KEYWORD_REQUEST, GET_CONTACT_BY_TYPE_REQUEST, GET_CONTACT_REQUEST, READ_CASE_BY_CONTACT_REQ, UPDATE_CONTACT_REQUEST } from "../type";
 import { getRequest, postRequest } from "../../axios/interceptor";
 import { toast } from "react-toastify";
 import { handleError } from "../../utils/eventHandler";
-import { createAttorneySuccess, deleteAttorneySuccess, deleteContactFailure, deleteContactSuccess, fetchAttorneyByIdsFailure, fetchAttorneyByIdsSuccess, fetchRealtorByIdsFailure, fetchRealtorByIdsSuccess, getContactFailure, getContactSuccess, setSelectedContact, updateContactFailure, updateContactSuccess } from "../actions/contactActions";
+import { createAttorneySuccess, deleteAttorneySuccess, deleteContactFailure, deleteContactSuccess, fetchAttorneyByIdsFailure, fetchAttorneyByIdsSuccess, fetchRealtorByIdsFailure, fetchRealtorByIdsSuccess, getCaseByContactFailure, getCaseByContactSuccess, getContactFailure, getContactSuccess, setSelectedContact, updateContactFailure, updateContactSuccess } from "../actions/contactActions";
 import { all } from "redux-saga/effects";
 import { updateCaseContactRequest } from "../actions/caseAction";
 
@@ -164,8 +164,41 @@ function* deleteContact(action) {
     yield put(deleteContactFailure(error.response?.data || error));
   }
 }
+function* getCaseByContact(action) {
+  try {
+      const { payload } = action;
+
+      // Create payloads for both API calls
+      const closedTruePayload = { ...payload, closed: true };
+      const closedFalsePayload = { ...payload, closed: false };
+
+      // Make both API calls in parallel
+      const [responseTrue, responseFalse] = yield all([
+          call(() => postRequest(API_ENDPOINTS.GET_CASE_BY_CONTACT, closedTruePayload)),
+          call(() => postRequest(API_ENDPOINTS.GET_CASE_BY_CONTACT, closedFalsePayload)),
+      ]);
+
+      // Check the status of both responses and combine data if both are successful
+      if (responseTrue?.status === 200 && responseFalse?.status === 200) {
+          const combinedData = [
+              responseTrue?.data?.data || [], // First API response data
+              responseFalse?.data?.data || [], // Second API response data
+          ];
+          // console.log(combinedData,"responseTrue?.data?.data")
+          // Dispatch success action with combined data
+          yield put(getCaseByContactSuccess(combinedData));
+      } else {
+          // Handle failure if any of the responses fail
+          throw new Error('One or both API calls failed');
+      }
+  } catch (error) {
+      handleError(error);
+      yield put(getCaseByContactFailure(error.response.data || error));
+  }
+}
 
 export function* contactSaga() {
+  yield takeLatest(READ_CASE_BY_CONTACT_REQ, getCaseByContact);
   // yield takeLatest(GET_CONTACT_BY_TYPE_REQUEST, getContactByType);
   yield takeLatest(GET_CONTACT_BY_TYPE_REQUEST, getContactByTag);
   yield takeLatest(FETCH_ATTORNEY_BY_ID_REQUEST, getAttorneyByIds);
