@@ -24,7 +24,7 @@ const CaseDetails = () => {
   const [isEdit, setIsEdit] = useState(false)
   const [newTab, setNewTab] = useState(null);
   function getCaseValue() {
-    // console.log(cases,"_____")
+
     const caseObject = cases.find(caseItem => caseItem.caseId === caseId);
     if (!caseObject) {
       return undefined;

@@ -248,7 +248,7 @@ const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) 
                         handleDeleteClick(user);
                       }}
                       >
-                      <MdDeleteForever />
+                      <MdDeleteForever style={{fontSize:'25px'}}/>
                     </button>
                   </Table.Cell>
                   </Table.Row>
