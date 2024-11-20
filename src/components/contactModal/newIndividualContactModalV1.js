@@ -9,7 +9,7 @@ import NewCaseDropdown from "../newcasedropdown";
 import Select, {components} from 'react-select';
 import { contactTagIndividualOption } from "../../utils/formItem";
 import { createAddressContactRequest, createAddressRequest } from "../../redux/actions/utilsActions";
-import { createContactRequest } from "../../redux/actions/contactActions";
+import { clearContactCases, createContactRequest } from "../../redux/actions/contactActions";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 
@@ -49,7 +49,7 @@ const NewIndividualContactModalV1 = ({ onSubmit, onClose }) => {
                 workNumber: values?.workNumber,
                 ...(values?.email && values?.email?.trim() !== "" && { email: values.email }), // Add email only if it's not empty
             };
-
+            dispatch(clearContactCases())
             dispatch(createContactRequest(payload, navigate))
             onClose();
         } catch (error) {
