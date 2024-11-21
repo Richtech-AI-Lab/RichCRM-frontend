@@ -11,6 +11,7 @@ import CalendarPage from "../calender";
 import Setting from "../settings";
 import Documents from "../documents";
 import OneDrive from "../../components/onedrive";
+import Docusign from "../docusign";
 
 
 const Content = () => {
@@ -27,6 +28,7 @@ const Content = () => {
       <Route path="/calendar" element={<CalendarPage />} />
       <Route path="/documents" element={<Documents />} />
       <Route path="/settings" element={<Setting />} />
+      <Route path="/docusign" element={<Docusign />} />
     </Routes>
   );
 };
