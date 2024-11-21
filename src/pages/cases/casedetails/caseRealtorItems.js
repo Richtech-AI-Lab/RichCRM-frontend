@@ -5,7 +5,7 @@ import { FieldArray, useFormikContext } from "formik";
 import { Label, TextInput, XButton } from "../../../components";
 import { IMAGES } from "../../../constants/imagePath";
 import { useDispatch } from "react-redux";
-import { createAttorneyRequest, createAttorneySuccess, deleteAttorneyRequest } from "../../../redux/actions/contactActions";
+import { createAttorneyRequest, createAttorneySuccess, createRealtorRequest, createRealtorSuccess, deleteAttorneyRequest } from "../../../redux/actions/contactActions";
 import { postRequest } from "../../../axios/interceptor";
 import { API_ENDPOINTS } from "../../../constants/api";
 import { debounce } from "lodash";
@@ -34,7 +34,7 @@ const CaseRealtorItems = ({ title, realtors, setRealtors, realtorDetails, errors
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
-    const addAttorneyItem = (push) => {
+    const addRealtorItem = (push) => {
         if (newRealtor.company && newRealtor.firstName && newRealtor.lastName) {
             let payload={
                 // contactType: 1,
@@ -46,11 +46,11 @@ const CaseRealtorItems = ({ title, realtors, setRealtors, realtorDetails, errors
                 cellNumber: newRealtor.cellNumber
             }
            if(newRealtor?.contactId){
-            dispatch(createAttorneySuccess({...payload,
+            dispatch(createRealtorSuccess({...payload,
                 contactId:newRealtor?.contactId
             }))
            }else{
-            dispatch(createAttorneyRequest(payload))
+            dispatch(createRealtorRequest(payload))
            }
             // dispatch(createAttorneyRequest(payload))
             // push({
@@ -233,7 +233,7 @@ const CaseRealtorItems = ({ title, realtors, setRealtors, realtorDetails, errors
                                         <XButton
                                             type="submit"
                                             text={"Submit"}
-                                            onClick={() => addAttorneyItem(push)}
+                                            onClick={() => addRealtorItem(push)}
                                             className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px] ml-4"
                                         />
                                     </div>
