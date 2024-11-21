@@ -325,7 +325,7 @@ const CustomOption = (props) => {
                       <span className="visually-hidden">Loading...</span>
                     </Spinner></div> :
                   <div className="grid">
-                    {cases[0][1]?.map((item, index) => (
+                    {cases?.length > 0 && cases[0][1]?.map((item, index) => (
                       <CardItem
                         key={index}
                         caseDetails={item?.premisesName}
@@ -354,7 +354,7 @@ const CustomOption = (props) => {
                       >
                         <span className="visually-hidden">Loading...</span>
                       </Spinner></div> :
-                    cases[0][0]?.map((item, index) => (
+                    cases?.length > 0 && cases[0][0]?.map((item, index) => (
                       <CardItem
                         // onClick={()=>{handleCaseCardClick(item)}}
                         // key={index}
