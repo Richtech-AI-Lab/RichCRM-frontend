@@ -13,9 +13,10 @@ import ParticipantBothDetail from "../showdetail/participantbothdetail";
 import { createAttorneyRequest } from "../../../redux/actions/contactActions";
 import AttorneyDetails from "../showdetail/attorneydetail";
 import { updateCaseContactRequest } from "../../../redux/actions/caseAction";
+import CaseRealtorItems from "./caseRealtorItems";
 
 
-const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType ,setDirtyFormnik}) => {
+const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik }) => {
   const dispatch = useDispatch();
   const formikRef = useRef();
   const { client } = useSelector((state) => state.client);
@@ -86,6 +87,10 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType ,setDirtyFormnik})
   }
   const handleAttorneysChange = (attorneys, handleChange) => {
     handleChange({ target: { name: 'attorneys', value: attorneys } });
+  };
+
+  const handleRealtorsChange = (realtors, handleChange) => {
+    handleChange({ target: { name: 'realtors', value: realtors } });
   };
   const initialPurchaserValues = clientDetails && clientDetails.length > 0 ? {
     name: `${clientDetails[0]?.firstName || ''} ${clientDetails[0]?.lastName || ''}`,
@@ -160,6 +165,8 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType ,setDirtyFormnik})
                   <div className="col-span-6">
                     <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} attorneyDetails={attorneyDetails} errors={errors.attorneys || []}
                       touched={touched.attorneys || []} setAttorneys={(attorneys) => handleAttorneysChange(attorneys, handleChange)} />
+                    <CaseRealtorItems title="Realtors" realtors={values.realtors} realtorDetails={realtorDetails} errors={errors.realtors || []}
+                      touched={touched.realtors || []} setRealtors={(realtors) => handleRealtorsChange(realtors, handleChange)} />
                     {/* <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} errors={errors.attorneys || []}
                     touched={touched.attorneys || []} setAttorneys={(attorneys) => handleAttorneysChange(attorneys, handleChange)} />
                   <CaseCardDetails items={titleMortgageItems} title="Title & Mortgage" handle={handleChange} /> */}
@@ -174,10 +181,10 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType ,setDirtyFormnik})
         (<div className="grid grid-cols-12 gap-6">
           <div className="col-span-6">
             <ParticipantBothDetail client={clientDetails} attorneyDetails={attorneyDetails} title={caseType ? "Seller" : "Purchaser"} />
-            </div>
-            <div className="col-span-6">
-          {attorneyDetails?.length > 0 && <AttorneyDetails attorneyDetails={attorneyDetails} title={"Attorney"} />}
-          {realtorDetails?.length > 0 && <AttorneyDetails attorneyDetails={realtorDetails} title={"Realtor"} />}
+          </div>
+          <div className="col-span-6">
+            {attorneyDetails?.length > 0 && <AttorneyDetails attorneyDetails={attorneyDetails} title={"Attorney"} />}
+            {realtorDetails?.length > 0 && <AttorneyDetails attorneyDetails={realtorDetails} title={"Realtor"} />}
           </div>
         </div>)}
     </>
