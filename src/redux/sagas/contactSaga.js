@@ -1,10 +1,10 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { API_ENDPOINTS, ROUTES } from "../../constants/api";
-import { CREATE_ATTORNEY_REQUEST, CREATE_CONTACT_REQUEST, CREATE_REALTOR_REQUEST, DELETE_ATTORNEY_REQUEST, DELETE_CONTACT_REQUEST, DELETE_CONTACT_SUCCESS, FETCH_ATTORNEY_BY_ID_REQUEST, FETCH_REALTOR_BY_ID_REQUEST, GET_CONTACT_BY_KEYWORD_REQUEST, GET_CONTACT_BY_TYPE_REQUEST, GET_CONTACT_REQUEST, READ_CASE_BY_CONTACT_REQ, UPDATE_CONTACT_REQUEST } from "../type";
+import { CREATE_ATTORNEY_REQUEST, CREATE_CONTACT_REQUEST, CREATE_REALTOR_REQUEST, DELETE_ATTORNEY_REQUEST, DELETE_CONTACT_REQUEST, DELETE_CONTACT_SUCCESS, DELETE_REALTOR_REQUEST, FETCH_ATTORNEY_BY_ID_REQUEST, FETCH_REALTOR_BY_ID_REQUEST, GET_CONTACT_BY_KEYWORD_REQUEST, GET_CONTACT_BY_TYPE_REQUEST, GET_CONTACT_REQUEST, READ_CASE_BY_CONTACT_REQ, UPDATE_CONTACT_REQUEST } from "../type";
 import { getRequest, postRequest } from "../../axios/interceptor";
 import { toast } from "react-toastify";
 import { handleError } from "../../utils/eventHandler";
-import { createAttorneySuccess, createRealtorFailure, createRealtorSuccess, deleteAttorneySuccess, deleteContactFailure, deleteContactSuccess, fetchAttorneyByIdsFailure, fetchAttorneyByIdsSuccess, fetchRealtorByIdsFailure, fetchRealtorByIdsSuccess, getCaseByContactFailure, getCaseByContactSuccess, getContactFailure, getContactSuccess, setSelectedContact, updateContactFailure, updateContactSuccess } from "../actions/contactActions";
+import { createAttorneySuccess, createRealtorFailure, createRealtorSuccess, deleteAttorneySuccess, deleteContactFailure, deleteContactSuccess, deleteRealtorFailure, deleteRealtorSuccess, fetchAttorneyByIdsFailure, fetchAttorneyByIdsSuccess, fetchRealtorByIdsFailure, fetchRealtorByIdsSuccess, getCaseByContactFailure, getCaseByContactSuccess, getContactFailure, getContactSuccess, setSelectedContact, updateContactFailure, updateContactSuccess } from "../actions/contactActions";
 import { all } from "redux-saga/effects";
 import { updateCaseContactRequest } from "../actions/caseAction";
 
@@ -158,6 +158,18 @@ function* createRealtor(action) {
     yield put(createRealtorFailure(error.response?.data || error));
   }
 }
+function* deleteRealtor(action) {
+  try {
+    const { payload } = action;
+    const response = yield call(() =>
+      postRequest(API_ENDPOINTS.DELETE_CONTACT,{contactId: payload})
+    );
+    yield put(deleteRealtorSuccess(payload));
+  } catch (error) {
+    handleError(error)
+    yield put(deleteRealtorFailure(error.response?.data || error));
+  }
+}
 
 function* deleteContact(action) {
   try {
@@ -216,5 +228,6 @@ export function* contactSaga() {
   yield takeLatest(CREATE_ATTORNEY_REQUEST, createAttorney);
   yield takeLatest(DELETE_ATTORNEY_REQUEST, deleteAttorney);
   yield takeLatest(CREATE_REALTOR_REQUEST, createRealtor);
+  yield takeLatest(DELETE_REALTOR_REQUEST, deleteRealtor);
   yield takeLatest(DELETE_CONTACT_REQUEST, deleteContact);
 }

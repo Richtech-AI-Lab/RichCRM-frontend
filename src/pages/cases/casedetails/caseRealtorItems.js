@@ -5,7 +5,7 @@ import { FieldArray, useFormikContext } from "formik";
 import { Label, TextInput, XButton } from "../../../components";
 import { IMAGES } from "../../../constants/imagePath";
 import { useDispatch } from "react-redux";
-import { createAttorneyRequest, createAttorneySuccess, createRealtorRequest, createRealtorSuccess, deleteAttorneyRequest } from "../../../redux/actions/contactActions";
+import { createRealtorRequest, createRealtorSuccess, deleteAttorneyRequest, deleteRealtorRequest } from "../../../redux/actions/contactActions";
 import { postRequest } from "../../../axios/interceptor";
 import { API_ENDPOINTS } from "../../../constants/api";
 import { debounce } from "lodash";
@@ -66,10 +66,10 @@ const CaseRealtorItems = ({ title, realtors, setRealtors, realtorDetails, errors
             closeModal();
         }
     };
-    const deleteAttorneyItem = (contactId, index) => {
-        const updatedAttorneys = realtors.filter((_, i) => i !== index); 
-        setRealtors(updatedAttorneys); // Update the local state
-        dispatch(deleteAttorneyRequest(contactId)); // Dispatch delete action
+    const deleteRealtorItem = (contactId, index) => {
+        const updatedRealtors = realtors.filter((_, i) => i !== index); 
+        setRealtors(updatedRealtors); // Update the local state
+        dispatch(deleteRealtorRequest(contactId)); // Dispatch delete action
     };
 
 
@@ -109,7 +109,7 @@ const CaseRealtorItems = ({ title, realtors, setRealtors, realtorDetails, errors
                                 <li key={item.contactId} className="flex justify-between">
                                     <span className="left-txt flex items-center">
                                         <span className="icon mr-2 cursor-pointer" /* onClick={() => remove(index)} */
-                                        onClick={() => deleteAttorneyItem(item.contactId, index)}>
+                                        onClick={() => deleteRealtorItem(item.contactId, index)}>
                                             <img src={IMAGES.removeIcon} alt="icon" />
                                         </span>
                                         {item?.company} - {item?.lastName}, {item?.firstName}
@@ -143,18 +143,18 @@ const CaseRealtorItems = ({ title, realtors, setRealtors, realtorDetails, errors
                             className="new-case-modal">
                             <Modal.Header className="border-b-0">
                                 <div>
-                                    <h2 className="mb-2 text-2xl leading-9 font-medium text-secondary-800">Add Attorney</h2>
+                                    <h2 className="mb-2 text-2xl leading-9 font-medium text-secondary-800">Add Realtor</h2>
                                 </div>
                             </Modal.Header>
                             <Modal.Body className="pt-0">
                                 <div>
                                     <div>
-                                        <Label value="Attorney Type" className="block mb-2" />
+                                        <Label value="Realtor Type" className="block mb-2" />
                                         <TextInput
                                             type="text"
                                             value={newRealtor.company}
                                             onChange={(e) => setNewRealtor({ ...newRealtor, company: e.target.value })}
-                                            placeholder="Attorney Type"
+                                            placeholder="Realtor Type"
                                         />
                                     </div>
                                     <div className="grid grid-cols-2 gap-x-3">
