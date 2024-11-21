@@ -8,7 +8,7 @@ import { fetchAllCasesRequest, setSearchCases } from "../../redux/actions/caseAc
 import { stageTypes } from "../../utils/formItem";
 import { clearStageData } from "../../redux/actions/stagesActions";
 import { clearTaskData } from "../../redux/actions/taskActions";
-import { clearAttorney, clearRealtor } from "../../redux/actions/contactActions";
+import { clearAttorney, clearBroker, clearRealtor } from "../../redux/actions/contactActions";
 import { clearClientData } from "../../redux/actions/clientActions";
 
 const Cases = () => {
@@ -47,6 +47,7 @@ const Cases = () => {
     dispatch(clearTaskData())
     dispatch(clearAttorney())
     dispatch(clearRealtor())
+    dispatch(clearBroker())
   },[dispatch])
 
   return (

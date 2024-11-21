@@ -16,14 +16,13 @@ import { CASETYPE } from "../../../constants/constants";
 // import ContactEditForm from "../contactEdit";
 import { createAddressRequest, fetchAddressByIdFailure, fetchAddressByIdRequest } from "../../../redux/actions/utilsActions";
 import { useDispatch, useSelector } from "react-redux";
-import { getCaseByContactRequest } from "../../../redux/actions/caseAction";
 import ContactIndividualDetail from "../contactDetail/contactIndividualDetail";
 import ContactIndividualEditForm from "../contactEdit/contactIndividualEditForm";
-import { updateContactRequest } from "../../../redux/actions/contactActions";
+import { getCaseByContactRequest, updateContactRequest } from "../../../redux/actions/contactActions";
 
 const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
   const dispatch = useDispatch();
-  const { cases, loading } = useSelector((state) => state.case.casesData);
+  const { cases, loading } = useSelector((state) => state?.contact);
   const tagDetails = useSelector((state) => state.tag.tag);
   // console.log(cases[0], "-")
   // const location = useLocation();
@@ -145,7 +144,7 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
     ...option,
     value: option.label, // Convert label to a suitable value format
 }));
-console.log(formattedOptions,"formattedOptions")
+
 const customStyles = {
     multiValue: (styles) => ({
         ...styles,
@@ -326,7 +325,7 @@ const CustomOption = (props) => {
                       <span className="visually-hidden">Loading...</span>
                     </Spinner></div> :
                   <div className="grid">
-                    {cases[0][1]?.map((item, index) => (
+                    {cases?.length > 0 && cases[0][1]?.map((item, index) => (
                       <CardItem
                         key={index}
                         caseDetails={item?.premisesName}
@@ -355,7 +354,7 @@ const CustomOption = (props) => {
                       >
                         <span className="visually-hidden">Loading...</span>
                       </Spinner></div> :
-                    cases[0][0]?.map((item, index) => (
+                    cases?.length > 0 && cases[0][0]?.map((item, index) => (
                       <CardItem
                         // onClick={()=>{handleCaseCardClick(item)}}
                         // key={index}

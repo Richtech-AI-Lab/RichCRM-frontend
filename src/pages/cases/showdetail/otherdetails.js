@@ -35,10 +35,10 @@ const OtherDetail = ({ dummy, caseObj }) => {
                 <span className="left-txt flex items-center" >Mortgage Amount</span>
                 <span className="left-txt flex items-center" >{caseObj?.mortgageAmount && "$"}{caseObj?.mortgageAmount} </span>
               </li>
-              <li>
+              {/* <li>
                 <span className="left-txt flex items-center" >Annual Property Tax</span>
                 <span className="left-txt flex items-center" >{caseObj?.annualPropertyTax && "$"}{caseObj?.annualPropertyTax}  </span>
-              </li>
+              </li> */}
               <li>
                 <span className="left-txt flex items-center" >Seller's Concession</span>
                 <span className="left-txt flex items-center" >{caseObj?.sellersConcession && "$"}{caseObj?.sellersConcession} </span>
@@ -62,6 +62,21 @@ const OtherDetail = ({ dummy, caseObj }) => {
               </li>              
             </ul> : ""}
         </div> */}
+                <div className="bg-white p-4 rounded-2xl mb-5">
+          {<div className="flex justify-between items-center mb-5">
+            <span className="text-base text-secondary-800 font-medium">Mortgage</span>
+            {/* <div className="flex items-center gap-2">
+          <BsThreeDotsVertical className="text-lg opacity-40" />
+        </div> */}
+          </div>}
+   
+            <ul className="card-details">
+            <li>
+                <span className="left-txt flex items-center" > Mortgage Due Date</span>
+                <span className="left-txt flex items-center" >  {caseObj?.mortgageContingencyDate && format(caseObj?.mortgageContingencyDate, 'MMMM dd, yyyy')} </span>
+              </li>
+            </ul>
+        </div>
       </div>
       <div className="col-span-6">
         <div className="bg-white p-4 rounded-2xl mb-5">

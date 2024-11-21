@@ -123,10 +123,10 @@ export const getCaseByClientRequest = (payload) => ({
     payload,
 });
 
-export const getCaseByContactRequest = (payload) => ({
-    type: READ_CASE_BY_CONTACT,
-    payload,
-});
+// export const getCaseByContactRequest = (payload) => ({
+//     type: READ_CASE_BY_CONTACT,
+//     payload,
+// });
 //close case
 export const closeCaseRequest = (payload,navigate) => ({
     type: CLOSE_CASE,

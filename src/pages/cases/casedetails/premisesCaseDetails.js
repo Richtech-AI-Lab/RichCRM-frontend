@@ -57,6 +57,7 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit, setDirtyFormnik }) => {
       inspectionDate: values?.inspectionDate,
       receivedDate: values?.receivedDate,
       needTermitesInspection: values?.needTermitesInspection,
+        annualPropertyTax: values?.annualPropertyTax,
     };
 
     const tenantPayload = values.isTwoFamily == 1 
@@ -123,6 +124,7 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit, setDirtyFormnik }) => {
       inspectionDate : premisesDetails[0]?.inspectionDate,
       receivedDate: premisesDetails[0]?.receivedDate,
       needTermitesInspection: premisesDetails[0]?.needTermitesInspection,
+      annualPropertyTax: premisesDetails[0]?.annualPropertyTax ,
       fname1f: premisesDetails?.[0]?.tenant?.[0]?.firstName || "",
       lname1f: premisesDetails?.[0]?.tenant?.[0]?.lastName || "",
       rent1f: premisesDetails?.[0]?.tenant?.[0]?.rent1f || "",

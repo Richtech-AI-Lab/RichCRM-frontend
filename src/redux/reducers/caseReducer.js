@@ -18,7 +18,6 @@ import {
   SET_STAGE,
   SET_SEARCH_CASES,
   UPDATE_CASE_DATE_SUCCESS,
-  READ_CASE_BY_CONTACT,
   UPDATE_CASE_CONTACT_SUCCESS,
   CLEAR_CASES_DATA,
 } from "../type";
@@ -143,12 +142,6 @@ const casesReducer = (state = initialCasesState, action) => {
         filterStatus: action.payload.filterStatus,
         error: null,
       }
-    case READ_CASE_BY_CONTACT:
-      return {
-        ...state,
-        loading: true,
-        error: null,
-      };
     default:
       return state;
   }

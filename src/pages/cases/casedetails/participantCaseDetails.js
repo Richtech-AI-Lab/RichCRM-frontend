@@ -10,12 +10,12 @@ import PurchaserParticipantForm from "../editDetail/purchaserParticipantForm";
 import { updateClientByIdRequest } from "../../../redux/actions/clientActions";
 import { createAddressRequest } from "../../../redux/actions/utilsActions";
 import ParticipantBothDetail from "../showdetail/participantbothdetail";
-import { createAttorneyRequest } from "../../../redux/actions/contactActions";
 import AttorneyDetails from "../showdetail/attorneydetail";
 import { updateCaseContactRequest } from "../../../redux/actions/caseAction";
+import CaseBrokerItems from "./CaseBrokerItems";
 
 
-const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType ,setDirtyFormnik}) => {
+const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik }) => {
   const dispatch = useDispatch();
   const formikRef = useRef();
   const { client } = useSelector((state) => state.client);
@@ -24,6 +24,7 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType ,setDirtyFormnik})
   const clientDetails = client?.data?.length > 0 ? client?.data : null;
   const attorneyDetails = useSelector((state) => state.contact.attorney);
   const realtorDetails = useSelector((state) => state.contact.realtor);
+  const brokerDetails = useSelector((state) => state.contact.broker);
   // const { data } = useSelector((state) => state?.utils?.address);
   // const addressDetails = data?.length > 0 ? data : null;
 
@@ -43,7 +44,9 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType ,setDirtyFormnik})
   const handleSubmit = (values, { setSubmitting }) => {
     // Split the name into firstName and lastName
     const [firstName, lastName] = values?.name?.split(' ');
-    const attorneyIds = attorneyDetails?.map(attorney => attorney.contactId);
+    const attorneyIds = attorneyDetails?.map(attorney => attorney.contactId) || [];
+    const brokerIds = brokerDetails?.map(broker => broker.contactId) || [];
+
     // Create the payload for the first API call
     const firstApiPayload = {
       firstName,
@@ -73,7 +76,7 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType ,setDirtyFormnik})
 
     const casePayload = {
       ...caseObj,
-      contacts: attorneyIds
+      contacts: [...attorneyIds, ...brokerIds]
     }
     if (values?.addressLine1) {
       dispatch(createAddressRequest(data))
@@ -86,6 +89,10 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType ,setDirtyFormnik})
   }
   const handleAttorneysChange = (attorneys, handleChange) => {
     handleChange({ target: { name: 'attorneys', value: attorneys } });
+  };
+
+  const handleBrokersChange = (brokers, handleChange) => {
+    handleChange({ target: { name: 'brokers', value: brokers } });
   };
   const initialPurchaserValues = clientDetails && clientDetails.length > 0 ? {
     name: `${clientDetails[0]?.firstName || ''} ${clientDetails[0]?.lastName || ''}`,
@@ -160,6 +167,8 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType ,setDirtyFormnik})
                   <div className="col-span-6">
                     <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} attorneyDetails={attorneyDetails} errors={errors.attorneys || []}
                       touched={touched.attorneys || []} setAttorneys={(attorneys) => handleAttorneysChange(attorneys, handleChange)} />
+                    <CaseBrokerItems title="Brokers" brokers={values.brokers} brokerDetails={brokerDetails} errors={errors.brokers || []}
+                      touched={touched.brokers || []} setBrokers={(brokers) => handleBrokersChange(brokers, handleChange)} />
                     {/* <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} errors={errors.attorneys || []}
                     touched={touched.attorneys || []} setAttorneys={(attorneys) => handleAttorneysChange(attorneys, handleChange)} />
                   <CaseCardDetails items={titleMortgageItems} title="Title & Mortgage" handle={handleChange} /> */}
@@ -174,10 +183,11 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType ,setDirtyFormnik})
         (<div className="grid grid-cols-12 gap-6">
           <div className="col-span-6">
             <ParticipantBothDetail client={clientDetails} attorneyDetails={attorneyDetails} title={caseType ? "Seller" : "Purchaser"} />
-            </div>
-            <div className="col-span-6">
-          {attorneyDetails?.length > 0 && <AttorneyDetails attorneyDetails={attorneyDetails} title={"Attorney"} />}
-          {realtorDetails?.length > 0 && <AttorneyDetails attorneyDetails={realtorDetails} title={"Realtor"} />}
+          </div>
+          <div className="col-span-6">
+            {attorneyDetails?.length > 0 && <AttorneyDetails attorneyDetails={attorneyDetails} title={"Attorney"} />}
+            {realtorDetails?.length > 0 && <AttorneyDetails attorneyDetails={realtorDetails} title={"Realtor"} />}
+            {brokerDetails?.length > 0 && <AttorneyDetails attorneyDetails={brokerDetails} title={"Broker"} />}
           </div>
         </div>)}
     </>

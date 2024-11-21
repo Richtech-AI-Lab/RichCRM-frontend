@@ -1,10 +1,10 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { API_ENDPOINTS, ROUTES } from "../../constants/api";
-import { CREATE_ATTORNEY_REQUEST, CREATE_CONTACT_REQUEST, DELETE_ATTORNEY_REQUEST, FETCH_ATTORNEY_BY_ID_REQUEST, FETCH_REALTOR_BY_ID_REQUEST, GET_CONTACT_BY_KEYWORD_REQUEST, GET_CONTACT_BY_TYPE_REQUEST, GET_CONTACT_REQUEST, UPDATE_CONTACT_REQUEST } from "../type";
+import { CREATE_ATTORNEY_REQUEST, CREATE_BROKER_REQUEST, CREATE_CONTACT_REQUEST, CREATE_REALTOR_REQUEST, DELETE_ATTORNEY_REQUEST, DELETE_BROKER_REQUEST, DELETE_CONTACT_REQUEST, DELETE_CONTACT_SUCCESS, DELETE_REALTOR_REQUEST, FETCH_ATTORNEY_BY_ID_REQUEST, FETCH_BROKER_BY_ID_REQUEST, FETCH_REALTOR_BY_ID_REQUEST, GET_CONTACT_BY_KEYWORD_REQUEST, GET_CONTACT_BY_TYPE_REQUEST, GET_CONTACT_REQUEST, READ_CASE_BY_CONTACT_REQ, UPDATE_CONTACT_REQUEST } from "../type";
 import { getRequest, postRequest } from "../../axios/interceptor";
 import { toast } from "react-toastify";
 import { handleError } from "../../utils/eventHandler";
-import { createAttorneySuccess, deleteAttorneySuccess, fetchAttorneyByIdsFailure, fetchAttorneyByIdsSuccess, fetchRealtorByIdsFailure, fetchRealtorByIdsSuccess, getContactFailure, getContactSuccess, setSelectedContact, updateContactFailure, updateContactSuccess } from "../actions/contactActions";
+import { createAttorneySuccess, createBrokerFailure, createBrokerSuccess, createRealtorFailure, createRealtorSuccess, deleteAttorneySuccess, deleteBrokerFailure, deleteBrokerSuccess, deleteContactFailure, deleteContactSuccess, deleteRealtorFailure, deleteRealtorSuccess, fetchAttorneyByIdsFailure, fetchAttorneyByIdsSuccess, fetchBrokerByIdsFailure, fetchBrokerByIdsSuccess, fetchRealtorByIdsFailure, fetchRealtorByIdsSuccess, getCaseByContactFailure, getCaseByContactSuccess, getContactFailure, getContactSuccess, setSelectedContact, updateContactFailure, updateContactSuccess } from "../actions/contactActions";
 import { all } from "redux-saga/effects";
 import { updateCaseContactRequest } from "../actions/caseAction";
 
@@ -61,6 +61,19 @@ function* getRealtorByIds(action) {
   } catch (error) {
     handleError(error)
     yield put(fetchRealtorByIdsFailure(error.response.data || error));
+  }
+}
+
+function* getBrokerByIds(action) {
+  try {
+    const payload= action.payload;
+    const response = yield call(() =>
+      postRequest(API_ENDPOINTS.GET_CONTACT_BY_CASETAG, payload)
+    );
+    yield put(fetchBrokerByIdsSuccess(response.data.data));
+  } catch (error) {
+    handleError(error)
+    yield put(fetchBrokerByIdsFailure(error.response.data || error));
   }
 }
 
@@ -127,12 +140,6 @@ function* createAttorney(action) {
     const response = yield call(() =>
       postRequest(API_ENDPOINTS.CREATE_CONTACT, payload)
     );
-    // const attorneyListRes = yield all(
-    //   payload?.map(At =>
-    //     call(postRequest, API_ENDPOINTS.CREATE_CONTACT, At)
-    //   )
-    // );
-    // const attorneyData = attorneyListRes.map(res => res.data.data[0]);
     yield put(createAttorneySuccess(response.data.data[0]));
   } catch (error) {
     handleError(error)
@@ -152,14 +159,89 @@ function* deleteAttorney(action) {
   }
 }
 
+function* createBroker(action) {
+  try {
+    const { payload } = action;
+    const response = yield call(() =>
+      postRequest(API_ENDPOINTS.CREATE_CONTACT, payload)
+    );
+    yield put(createBrokerSuccess(response.data.data[0]));
+  } catch (error) {
+    handleError(error)
+    yield put(createBrokerFailure(error.response?.data || error));
+  }
+}
+function* deleteBroker(action) {
+  try {
+    const { payload } = action;
+    const response = yield call(() =>
+      postRequest(API_ENDPOINTS.DELETE_CONTACT,{contactId: payload})
+    );
+    yield put(deleteBrokerSuccess(payload));
+  } catch (error) {
+    handleError(error)
+    yield put(deleteBrokerFailure(error.response?.data || error));
+  }
+}
+
+function* deleteContact(action) {
+  try {
+    const { payload } = action;
+    const response = yield call(() =>
+      postRequest(API_ENDPOINTS.DELETE_CONTACT,{contactId: payload})
+    );
+    yield put(deleteContactSuccess(payload));
+  } catch (error) {
+    handleError(error)
+    yield put(deleteContactFailure(error.response?.data || error));
+  }
+}
+function* getCaseByContact(action) {
+  try {
+      const { payload } = action;
+
+      // Create payloads for both API calls
+      const closedTruePayload = { ...payload, closed: true };
+      const closedFalsePayload = { ...payload, closed: false };
+
+      // Make both API calls in parallel
+      const [responseTrue, responseFalse] = yield all([
+          call(() => postRequest(API_ENDPOINTS.GET_CASE_BY_CONTACT, closedTruePayload)),
+          call(() => postRequest(API_ENDPOINTS.GET_CASE_BY_CONTACT, closedFalsePayload)),
+      ]);
+
+      // Check the status of both responses and combine data if both are successful
+      if (responseTrue?.status === 200 && responseFalse?.status === 200) {
+          const combinedData = [
+              responseTrue?.data?.data || [], // First API response data
+              responseFalse?.data?.data || [], // Second API response data
+          ];
+          // console.log(combinedData,"responseTrue?.data?.data")
+          // Dispatch success action with combined data
+          yield put(getCaseByContactSuccess(combinedData));
+      } else {
+          // Handle failure if any of the responses fail
+          throw new Error('One or both API calls failed');
+      }
+  } catch (error) {
+      handleError(error);
+      yield put(getCaseByContactFailure(error.response.data || error));
+  }
+}
+
 export function* contactSaga() {
+  yield takeLatest(READ_CASE_BY_CONTACT_REQ, getCaseByContact);
   // yield takeLatest(GET_CONTACT_BY_TYPE_REQUEST, getContactByType);
   yield takeLatest(GET_CONTACT_BY_TYPE_REQUEST, getContactByTag);
   yield takeLatest(FETCH_ATTORNEY_BY_ID_REQUEST, getAttorneyByIds);
   yield takeLatest(FETCH_REALTOR_BY_ID_REQUEST, getRealtorByIds);
+  yield takeLatest(FETCH_BROKER_BY_ID_REQUEST, getBrokerByIds);
   yield takeLatest(UPDATE_CONTACT_REQUEST, updateContact);
   yield takeLatest(CREATE_CONTACT_REQUEST,createContact);
   yield takeLatest(GET_CONTACT_BY_KEYWORD_REQUEST, getContactByKeyword);
   yield takeLatest(CREATE_ATTORNEY_REQUEST, createAttorney);
   yield takeLatest(DELETE_ATTORNEY_REQUEST, deleteAttorney);
+  yield takeLatest(CREATE_BROKER_REQUEST, createBroker);
+  yield takeLatest(DELETE_BROKER_REQUEST, deleteBroker);
+  yield takeLatest(DELETE_CONTACT_REQUEST, deleteContact);
 }

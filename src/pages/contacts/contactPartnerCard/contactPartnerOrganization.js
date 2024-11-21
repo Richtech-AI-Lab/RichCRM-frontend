@@ -21,7 +21,7 @@ import NewCaseDropdown from "../../../components/newcasedropdown";
 
 const ContactPartnerOrganization = ({ isEdit, toggleEdit }) => {
   const dispatch = useDispatch();
-  const { cases, loading } = useSelector((state) => state.case.casesData);
+  const { cases, loading } = useSelector((state) => state?.contact);
 
   // console.log(cases[0], "-")
   // const location = useLocation();
@@ -265,7 +265,7 @@ const ContactPartnerOrganization = ({ isEdit, toggleEdit }) => {
                       >
                         <span className="visually-hidden">Loading...</span>
                       </Spinner></div> :
-                    cases[0][1]?.map((item, index) => (
+                    cases?.length > 0 && cases[0][1]?.map((item, index) => (
                       <CardItem
                         key={index}
                         caseDetails={item?.premisesName}
@@ -295,7 +295,7 @@ const ContactPartnerOrganization = ({ isEdit, toggleEdit }) => {
                         >
                           <span className="visually-hidden">Loading...</span>
                         </Spinner></div> :
-                      cases[0][0]?.map((item, index) => (
+                    cases?.length > 0 &&  cases[0][0]?.map((item, index) => (
                         <CardItem
                           key={index}
                           caseDetails={item?.premisesName}
