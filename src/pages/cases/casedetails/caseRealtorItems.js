@@ -176,7 +176,7 @@ const CaseRealtorItems = ({ title, realtors, setRealtors, realtorDetails, errors
                                                         key={index} // Adding a key for each list item for better performance
                                                         className={'px-4 py-2 hover:bg-input-surface'}
                                                         onClick={() => {
-                                                            setNewRealtor({ ...newRealtor, contactId:item?.contactId, firstName: item?.firstName, lastName: item?.lastName, email: item?.email, cellNumber: item?.cellNumber });
+                                                            setNewRealtor({ ...newRealtor, company: item?.company, contactId:item?.contactId, firstName: item?.firstName, lastName: item?.lastName, email: item?.email, cellNumber: item?.cellNumber });
                                                             setSearchResults([]);
                                                         }}
                                                     >
@@ -186,6 +186,7 @@ const CaseRealtorItems = ({ title, realtors, setRealtors, realtorDetails, errors
                                                             <div>
                                                                 <p className="text-base text-secondary-800">{item?.firstName}</p>
                                                                 <span className="text-text-gray-100 text-sm">{item.email}</span>
+                                                                {item?.company && <p className="text-text-gray-100 text-sm">{item.company}</p>}
                                                             </div>
                                                         </div>
                                                     </li>

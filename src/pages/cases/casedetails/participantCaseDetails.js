@@ -44,7 +44,9 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik }
   const handleSubmit = (values, { setSubmitting }) => {
     // Split the name into firstName and lastName
     const [firstName, lastName] = values?.name?.split(' ');
-    const attorneyIds = attorneyDetails?.map(attorney => attorney.contactId);
+    const attorneyIds = attorneyDetails?.map(attorney => attorney.contactId) || [];
+    const realtorIds = realtorDetails?.map(realtor => realtor.contactId) || [];
+
     // Create the payload for the first API call
     const firstApiPayload = {
       firstName,
@@ -74,7 +76,7 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik }
 
     const casePayload = {
       ...caseObj,
-      contacts: attorneyIds
+      contacts: [...attorneyIds, ...realtorIds]
     }
     if (values?.addressLine1) {
       dispatch(createAddressRequest(data))
