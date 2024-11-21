@@ -8,7 +8,7 @@ const NewBadge = ({ label }) => {
   // Find the tag that matches the provided label
   const tag = tagDetails.find((tag) => tag.label === label);
 
-  console.log(tag,"tag")
+
   // If no matching tag is found, return null or some default Newbadge
   if (!tag) return null;
 

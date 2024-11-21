@@ -144,7 +144,7 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
     ...option,
     value: option.label, // Convert label to a suitable value format
 }));
-console.log(formattedOptions,"formattedOptions")
+
 const customStyles = {
     multiValue: (styles) => ({
         ...styles,

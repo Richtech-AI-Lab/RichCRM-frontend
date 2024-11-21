@@ -82,7 +82,7 @@ const ChatBox = () => {
       setInputValue(""); // Clear input after sending
     }
   };
-  console.log(resData, "message")
+
   return (
     <div className="card">
       <div className="msg_box">

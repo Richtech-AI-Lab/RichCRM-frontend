@@ -163,12 +163,12 @@ const StagesChecklist = () => {
     currentstepstr = `${currentStep}`;
   }
 
-    console.log(currentstepstr)
+
     const getTaskPayload = {
       currentStageData: data[STAGESNAMES[currentstepstr]]?.tasks,
       currentStep: currentstepstr
     }
-    console.log(currentstepstr)
+
     dispatch(getTaskRequest(getTaskPayload));
   }, [dispatch, currentStep, data])
 
