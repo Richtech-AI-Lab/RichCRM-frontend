@@ -12,6 +12,7 @@ import PurchaserOrganizationForm from "../editDetail/purchaserOrganizationForm";
 import AttorneyDetails from "../showdetail/attorneydetail";
 import { updateCaseContactRequest } from "../../../redux/actions/caseAction";
 import { updateOrganizationByIdRequest } from "../../../redux/actions/organizationActions";
+import CaseBrokerItems from "./CaseBrokerItems";
 
 
 const OrganizationCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik }) => {
@@ -23,6 +24,7 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik 
   const organizationDetails = organization?.data?.length > 0 ? organization?.data : null;
   const attorneyDetails = useSelector((state) => state.contact.attorney);
   const realtorDetails = useSelector((state) => state.contact.realtor);
+  const brokerDetails = useSelector((state) => state.contact.broker);
   // const { data } = useSelector((state) => state?.utils?.address);
   // const addressDetails = data?.length > 0 ? data : null;
 
@@ -32,7 +34,8 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik 
   };
 
   const handleSubmit = (values, { setSubmitting }) => {
-    const attorneyIds = attorneyDetails?.map(attorney => attorney.contactId);
+    const attorneyIds = attorneyDetails?.map(attorney => attorney.contactId) || [];
+    const brokerIds = brokerDetails?.map(broker => broker.contactId) || [];
     // Create the payload for the first API call
     const firstApiPayload = {
       organizationName: values.organizationName,
@@ -56,7 +59,7 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik 
     }
     const casePayload = {
       ...caseObj,
-      contacts: attorneyIds
+      contacts: [...attorneyIds, ...brokerIds]
     }
     if (values?.addressLine1) {
       dispatch(createAddressRequest(data))
@@ -67,6 +70,11 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik 
     toggleEdit()
     setDirtyFormnik(false)
   }
+
+
+  const handleBrokersChange = (brokers, handleChange) => {
+    handleChange({ target: { name: 'brokers', value: brokers } });
+  };
 
   const handleAttorneysChange = (attorneys, handleChange) => {
     handleChange({ target: { name: 'attorneys', value: attorneys } });
@@ -132,8 +140,9 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik 
                   </div>
                   <div className="col-span-6">
                     <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} attorneyDetails={attorneyDetails} errors={errors.attorneys || []}
-                      touched={touched.attorneys || []} setAttorneys={(attorneys) => handleAttorneysChange(attorneys, handleChange)} />
-                    {/* <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} errors={errors.attorneys || []}
+                      touched={touched.attorneys || []} setAttorneys={(attorneys) => handleAttorneysChange(attorneys, handleChange)} />      
+                    <CaseBrokerItems title="Brokers" brokers={values.brokers} brokerDetails={brokerDetails} errors={errors.brokers || []}
+                      touched={touched.brokers || []} setBrokers={(brokers) => handleBrokersChange(brokers, handleChange)} />{/* <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} errors={errors.attorneys || []}
                     touched={touched.attorneys || []} setAttorneys={(attorneys) => handleAttorneysChange(attorneys, handleChange)} />
                   <CaseCardDetails items={titleMortgageItems} title="Title & Mortgage" handle={handleChange} /> */}
                   </div>
@@ -151,6 +160,7 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik 
           <div className="col-span-6">
             {attorneyDetails?.length > 0 && <AttorneyDetails attorneyDetails={attorneyDetails} title={"Attorney"} />}
             {realtorDetails?.length > 0 && <AttorneyDetails attorneyDetails={realtorDetails} title={"Realtor"} />}
+            {brokerDetails?.length > 0 && <AttorneyDetails attorneyDetails={brokerDetails} title={"Broker"} />}
           </div>
         </div>)}
 

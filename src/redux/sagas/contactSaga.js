@@ -1,10 +1,10 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { API_ENDPOINTS, ROUTES } from "../../constants/api";
-import { CREATE_ATTORNEY_REQUEST, CREATE_CONTACT_REQUEST, CREATE_REALTOR_REQUEST, DELETE_ATTORNEY_REQUEST, DELETE_CONTACT_REQUEST, DELETE_CONTACT_SUCCESS, DELETE_REALTOR_REQUEST, FETCH_ATTORNEY_BY_ID_REQUEST, FETCH_REALTOR_BY_ID_REQUEST, GET_CONTACT_BY_KEYWORD_REQUEST, GET_CONTACT_BY_TYPE_REQUEST, GET_CONTACT_REQUEST, READ_CASE_BY_CONTACT_REQ, UPDATE_CONTACT_REQUEST } from "../type";
+import { CREATE_ATTORNEY_REQUEST, CREATE_BROKER_REQUEST, CREATE_CONTACT_REQUEST, CREATE_REALTOR_REQUEST, DELETE_ATTORNEY_REQUEST, DELETE_BROKER_REQUEST, DELETE_CONTACT_REQUEST, DELETE_CONTACT_SUCCESS, DELETE_REALTOR_REQUEST, FETCH_ATTORNEY_BY_ID_REQUEST, FETCH_BROKER_BY_ID_REQUEST, FETCH_REALTOR_BY_ID_REQUEST, GET_CONTACT_BY_KEYWORD_REQUEST, GET_CONTACT_BY_TYPE_REQUEST, GET_CONTACT_REQUEST, READ_CASE_BY_CONTACT_REQ, UPDATE_CONTACT_REQUEST } from "../type";
 import { getRequest, postRequest } from "../../axios/interceptor";
 import { toast } from "react-toastify";
 import { handleError } from "../../utils/eventHandler";
-import { createAttorneySuccess, createRealtorFailure, createRealtorSuccess, deleteAttorneySuccess, deleteContactFailure, deleteContactSuccess, deleteRealtorFailure, deleteRealtorSuccess, fetchAttorneyByIdsFailure, fetchAttorneyByIdsSuccess, fetchRealtorByIdsFailure, fetchRealtorByIdsSuccess, getCaseByContactFailure, getCaseByContactSuccess, getContactFailure, getContactSuccess, setSelectedContact, updateContactFailure, updateContactSuccess } from "../actions/contactActions";
+import { createAttorneySuccess, createBrokerFailure, createBrokerSuccess, createRealtorFailure, createRealtorSuccess, deleteAttorneySuccess, deleteBrokerFailure, deleteBrokerSuccess, deleteContactFailure, deleteContactSuccess, deleteRealtorFailure, deleteRealtorSuccess, fetchAttorneyByIdsFailure, fetchAttorneyByIdsSuccess, fetchBrokerByIdsFailure, fetchBrokerByIdsSuccess, fetchRealtorByIdsFailure, fetchRealtorByIdsSuccess, getCaseByContactFailure, getCaseByContactSuccess, getContactFailure, getContactSuccess, setSelectedContact, updateContactFailure, updateContactSuccess } from "../actions/contactActions";
 import { all } from "redux-saga/effects";
 import { updateCaseContactRequest } from "../actions/caseAction";
 
@@ -61,6 +61,19 @@ function* getRealtorByIds(action) {
   } catch (error) {
     handleError(error)
     yield put(fetchRealtorByIdsFailure(error.response.data || error));
+  }
+}
+
+function* getBrokerByIds(action) {
+  try {
+    const payload= action.payload;
+    const response = yield call(() =>
+      postRequest(API_ENDPOINTS.GET_CONTACT_BY_CASETAG, payload)
+    );
+    yield put(fetchBrokerByIdsSuccess(response.data.data));
+  } catch (error) {
+    handleError(error)
+    yield put(fetchBrokerByIdsFailure(error.response.data || error));
   }
 }
 
@@ -146,28 +159,28 @@ function* deleteAttorney(action) {
   }
 }
 
-function* createRealtor(action) {
+function* createBroker(action) {
   try {
     const { payload } = action;
     const response = yield call(() =>
       postRequest(API_ENDPOINTS.CREATE_CONTACT, payload)
     );
-    yield put(createRealtorSuccess(response.data.data[0]));
+    yield put(createBrokerSuccess(response.data.data[0]));
   } catch (error) {
     handleError(error)
-    yield put(createRealtorFailure(error.response?.data || error));
+    yield put(createBrokerFailure(error.response?.data || error));
   }
 }
-function* deleteRealtor(action) {
+function* deleteBroker(action) {
   try {
     const { payload } = action;
     const response = yield call(() =>
       postRequest(API_ENDPOINTS.DELETE_CONTACT,{contactId: payload})
     );
-    yield put(deleteRealtorSuccess(payload));
+    yield put(deleteBrokerSuccess(payload));
   } catch (error) {
     handleError(error)
-    yield put(deleteRealtorFailure(error.response?.data || error));
+    yield put(deleteBrokerFailure(error.response?.data || error));
   }
 }
 
@@ -222,12 +235,13 @@ export function* contactSaga() {
   yield takeLatest(GET_CONTACT_BY_TYPE_REQUEST, getContactByTag);
   yield takeLatest(FETCH_ATTORNEY_BY_ID_REQUEST, getAttorneyByIds);
   yield takeLatest(FETCH_REALTOR_BY_ID_REQUEST, getRealtorByIds);
+  yield takeLatest(FETCH_BROKER_BY_ID_REQUEST, getBrokerByIds);
   yield takeLatest(UPDATE_CONTACT_REQUEST, updateContact);
   yield takeLatest(CREATE_CONTACT_REQUEST,createContact);
   yield takeLatest(GET_CONTACT_BY_KEYWORD_REQUEST, getContactByKeyword);
   yield takeLatest(CREATE_ATTORNEY_REQUEST, createAttorney);
   yield takeLatest(DELETE_ATTORNEY_REQUEST, deleteAttorney);
-  yield takeLatest(CREATE_REALTOR_REQUEST, createRealtor);
-  yield takeLatest(DELETE_REALTOR_REQUEST, deleteRealtor);
+  yield takeLatest(CREATE_BROKER_REQUEST, createBroker);
+  yield takeLatest(DELETE_BROKER_REQUEST, deleteBroker);
   yield takeLatest(DELETE_CONTACT_REQUEST, deleteContact);
 }

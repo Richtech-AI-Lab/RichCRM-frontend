@@ -5,18 +5,18 @@ import { FieldArray, useFormikContext } from "formik";
 import { Label, TextInput, XButton } from "../../../components";
 import { IMAGES } from "../../../constants/imagePath";
 import { useDispatch } from "react-redux";
-import { createRealtorRequest, createRealtorSuccess, deleteAttorneyRequest, deleteRealtorRequest } from "../../../redux/actions/contactActions";
 import { postRequest } from "../../../axios/interceptor";
 import { API_ENDPOINTS } from "../../../constants/api";
 import { debounce } from "lodash";
 import NewCaseDropdown from "../../../components/newcasedropdown";
+import { createBrokerRequest, createBrokerSuccess, deleteBrokerRequest } from "../../../redux/actions/contactActions";
 
-const CaseRealtorItems = ({ title, realtors, setRealtors, realtorDetails, errors, touched }) => {
+const CaseBrokerItems = ({ title, brokers, setBrokers, brokerDetails, errors, touched }) => {
     const dispatch = useDispatch();
     const { values, setFieldValue } = useFormikContext();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [searchResults, setSearchResults] = useState([]);
-    const [newRealtor, setNewRealtor] = useState({
+    const [newBroker, setNewBroker] = useState({
         contactType: 1,
         company: '',
         firstName: '',
@@ -26,50 +26,50 @@ const CaseRealtorItems = ({ title, realtors, setRealtors, realtorDetails, errors
     });
 
     useEffect(() => {
-        if (realtorDetails && realtorDetails.length > 0) {
-            setFieldValue("realtors", realtorDetails);
+        if (brokerDetails && brokerDetails.length > 0) {
+            setFieldValue("brokers", brokerDetails);
         }
-    }, [realtorDetails, setFieldValue]);
+    }, [brokerDetails, setFieldValue]);
 
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
-    const addRealtorItem = (push) => {
-        if (newRealtor.company && newRealtor.firstName && newRealtor.lastName) {
+    const addBrokerItem = (push) => {
+        if (newBroker.company && newBroker.firstName && newBroker.lastName) {
             let payload={
                 // contactType: 1,
-                tags:["Realtor"],
-                company: newRealtor.company,
-                firstName: newRealtor.firstName,
-                lastName: newRealtor.lastName,
-                ...(newRealtor.email && newRealtor.email.trim() !== "" && { email: newRealtor.email }), 
-                cellNumber: newRealtor.cellNumber
+                tags:["Broker"],
+                company: newBroker.company,
+                firstName: newBroker.firstName,
+                lastName: newBroker.lastName,
+                ...(newBroker.email && newBroker.email.trim() !== "" && { email: newBroker.email }), 
+                cellNumber: newBroker.cellNumber
             }
-           if(newRealtor?.contactId){
-            dispatch(createRealtorSuccess({...payload,
-                contactId:newRealtor?.contactId
+           if(newBroker?.contactId){
+            dispatch(createBrokerSuccess({...payload,
+                contactId:newBroker?.contactId
             }))
            }else{
-            dispatch(createRealtorRequest(payload))
+            dispatch(createBrokerRequest(payload))
            }
             // dispatch(createAttorneyRequest(payload))
             // push({
             //     contactId: `new${Date.now()}`, // Changed key to contactId
-            //     note: newRealtor.note, // Changed key to note
-            //     firstName: newRealtor.firstName,
-            //     lastName: newRealtor.lastName,
-            //     email: newRealtor.email,
-            //     cellNumber: newRealtor.cellNumber // Changed key to cellNumber
+            //     note: newBroker.note, // Changed key to note
+            //     firstName: newBroker.firstName,
+            //     lastName: newBroker.lastName,
+            //     email: newBroker.email,
+            //     cellNumber: newBroker.cellNumber // Changed key to cellNumber
             // });
-            setNewRealtor({ ...newRealtor, company: '', firstName: '', lastName: '', email: '', cellNumber: '' });
+            setNewBroker({ ...newBroker, company: '', firstName: '', lastName: '', email: '', cellNumber: '' });
             setSearchResults([])
             closeModal();
         }
     };
-    const deleteRealtorItem = (contactId, index) => {
-        const updatedRealtors = realtors.filter((_, i) => i !== index); 
-        setRealtors(updatedRealtors); // Update the local state
-        dispatch(deleteRealtorRequest(contactId)); // Dispatch delete action
+    const deleteBrokerItem = (contactId, index) => {
+        const updatedBrokers = brokers.filter((_, i) => i !== index); 
+        setBrokers(updatedBrokers); // Update the local state
+        dispatch(deleteBrokerRequest(contactId)); // Dispatch delete action
     };
 
 
@@ -101,15 +101,15 @@ const CaseRealtorItems = ({ title, realtors, setRealtors, realtorDetails, errors
             }
 
             <FieldArray
-                name="realtors"
+                name="brokers"
                 render={({ push, remove }) => (
                     <>
                         <ul className="card-details">
-                            {realtors?.map((item, index) => (
+                            {brokers?.map((item, index) => (
                                 <li key={item.contactId} className="flex justify-between">
                                     <span className="left-txt flex items-center">
                                         <span className="icon mr-2 cursor-pointer" /* onClick={() => remove(index)} */
-                                        onClick={() => deleteRealtorItem(item.contactId, index)}>
+                                        onClick={() => deleteBrokerItem(item.contactId, index)}>
                                             <img src={IMAGES.removeIcon} alt="icon" />
                                         </span>
                                         {item?.company} - {item?.lastName}, {item?.firstName}
@@ -130,31 +130,31 @@ const CaseRealtorItems = ({ title, realtors, setRealtors, realtorDetails, errors
                                     <span className="icon mr-2 cursor-pointer" onClick={openModal}>
                                         <img src={IMAGES.addIcon} alt="icon" />
                                     </span>
-                                    Add an attorney
+                                    Add a broker
                                 </span>
                             </li>
                         </ul>
 
                         <Modal show={isModalOpen} size="md" onClose={() => {
-                            setNewRealtor({ company: '', firstName: '', lastName: '', email: '', cellNumber: '' });
+                            setNewBroker({ company: '', firstName: '', lastName: '', email: '', cellNumber: '' });
                             closeModal()
                         }
                         }
                             className="new-case-modal">
                             <Modal.Header className="border-b-0">
                                 <div>
-                                    <h2 className="mb-2 text-2xl leading-9 font-medium text-secondary-800">Add Realtor</h2>
+                                    <h2 className="mb-2 text-2xl leading-9 font-medium text-secondary-800">Add Broker</h2>
                                 </div>
                             </Modal.Header>
                             <Modal.Body className="pt-0">
                                 <div>
                                     <div>
-                                        <Label value="Realtor Type" className="block mb-2" />
+                                        <Label value="Broker Type" className="block mb-2" />
                                         <TextInput
                                             type="text"
-                                            value={newRealtor.company}
-                                            onChange={(e) => setNewRealtor({ ...newRealtor, company: e.target.value })}
-                                            placeholder="Realtor Type"
+                                            value={newBroker.company}
+                                            onChange={(e) => setNewBroker({ ...newBroker, company: e.target.value })}
+                                            placeholder="Broker Type"
                                         />
                                     </div>
                                     <div className="grid grid-cols-2 gap-x-3">
@@ -162,9 +162,9 @@ const CaseRealtorItems = ({ title, realtors, setRealtors, realtorDetails, errors
                                             <Label value="First Name" className="block mb-2 mt-4" />
                                             <TextInput
                                                 type="text"
-                                                value={newRealtor.firstName}
+                                                value={newBroker.firstName}
                                                 onChange={(e) => {
-                                                    setNewRealtor({ ...newRealtor, firstName: e.target.value });
+                                                    setNewBroker({ ...newBroker, firstName: e.target.value });
                                                     debouncedFunction(e.target.value);
                                                 }
                                                 }
@@ -176,7 +176,7 @@ const CaseRealtorItems = ({ title, realtors, setRealtors, realtorDetails, errors
                                                         key={index} // Adding a key for each list item for better performance
                                                         className={'px-4 py-2 hover:bg-input-surface'}
                                                         onClick={() => {
-                                                            setNewRealtor({ ...newRealtor, company: item?.company, contactId:item?.contactId, firstName: item?.firstName, lastName: item?.lastName, email: item?.email, cellNumber: item?.cellNumber });
+                                                            setNewBroker({ ...newBroker, company: item?.company, contactId:item?.contactId, firstName: item?.firstName, lastName: item?.lastName, email: item?.email, cellNumber: item?.cellNumber });
                                                             setSearchResults([]);
                                                         }}
                                                     >
@@ -197,8 +197,8 @@ const CaseRealtorItems = ({ title, realtors, setRealtors, realtorDetails, errors
                                             <Label value="Last Name" className="block mb-2 mt-4" />
                                             <TextInput
                                                 type="text"
-                                                value={newRealtor.lastName}
-                                                onChange={(e) => setNewRealtor({ ...newRealtor, lastName: e.target.value })}
+                                                value={newBroker.lastName}
+                                                onChange={(e) => setNewBroker({ ...newBroker, lastName: e.target.value })}
                                                 placeholder="Last Name"
                                             />
                                         </div>
@@ -206,8 +206,8 @@ const CaseRealtorItems = ({ title, realtors, setRealtors, realtorDetails, errors
                                             <Label value="Email" className="block mb-2 mt-4" />
                                             <TextInput
                                                 type="email"
-                                                value={newRealtor.email}
-                                                onChange={(e) => setNewRealtor({ ...newRealtor, email: e.target.value })}
+                                                value={newBroker.email}
+                                                onChange={(e) => setNewBroker({ ...newBroker, email: e.target.value })}
                                                 placeholder="Email"
                                             />
                                         </div>
@@ -215,8 +215,8 @@ const CaseRealtorItems = ({ title, realtors, setRealtors, realtorDetails, errors
                                             <Label value="Cell Phone" className="block mb-2 mt-4" />
                                             <TextInput
                                                 type="tel"
-                                                value={newRealtor.cellNumber}
-                                                onChange={(e) => setNewRealtor({ ...newRealtor, cellNumber: e.target.value })}
+                                                value={newBroker.cellNumber}
+                                                onChange={(e) => setNewBroker({ ...newBroker, cellNumber: e.target.value })}
                                                 placeholder="Cell Phone"
                                             />
                                         </div>
@@ -226,7 +226,7 @@ const CaseRealtorItems = ({ title, realtors, setRealtors, realtorDetails, errors
                                             text={"Cancel"}
                                             className="bg-card-300 text-sm text-secondary-800 py-[10px] px-6 rounded-[100px]"
                                             onClick={() => {
-                                                setNewRealtor({ company: '', firstName: '', lastName: '', email: '', cellNumber: '' });
+                                                setNewBroker({ company: '', firstName: '', lastName: '', email: '', cellNumber: '' });
                                                 closeModal()
                                             }
                                             }
@@ -234,7 +234,7 @@ const CaseRealtorItems = ({ title, realtors, setRealtors, realtorDetails, errors
                                         <XButton
                                             type="submit"
                                             text={"Submit"}
-                                            onClick={() => addRealtorItem(push)}
+                                            onClick={() => addBrokerItem(push)}
                                             className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px] ml-4"
                                         />
                                     </div>
@@ -248,4 +248,4 @@ const CaseRealtorItems = ({ title, realtors, setRealtors, realtorDetails, errors
     );
 };
 
-export default CaseRealtorItems;
+export default CaseBrokerItems;
