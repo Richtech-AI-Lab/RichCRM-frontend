@@ -122,7 +122,7 @@ const OneDriveManager = () => {
         newHistory.pop();
 
         const previousPath = newHistory[newHistory.length - 1] || "/me/drive/root";
-        setPath(previousPath); // Navigate back to the previous path
+        setPath(previousPath?.path ? previousPath?.path : previousPath); // Navigate back to the previous path
         setPathHistory(newHistory);
     };
 
