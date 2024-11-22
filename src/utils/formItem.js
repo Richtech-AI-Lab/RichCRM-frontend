@@ -335,14 +335,28 @@ export const caseTypeOptions = [
 ];
 
 export const contactTagIndividualOption = [
-    { value: CONTACTTAG.REALTORS, label: "Realtor" },
-    { value: CONTACTTAG.ATTORNEY, label: "Attorney" },
-    { value: CONTACTTAG.TITLE, label: "Title" },
-    { value: CONTACTTAG.LENDER, label: "Lender" },
-];
+    {
+        "label": "Broker",
+        "color1": "#a4edbb",
+        "color2": "#004d26",
+        "tagType": 1
+    },
+    {
+        "label": "Client",
+        "color1": "#ff9f95",
+        "color2": "#410002",
+        "tagType": 1
+    },
+    {
+        "label": "Realtor",
+        "color1": "#d8c8f9",
+        "color2": "#3d00ad",
+        "tagType": 1
+    }
+]
 
 export const contactTagOrganizationOption = [
-    { value: ORGANIZATION_TYPE_VALUE.OTHER, label: "Real Estate" },
+    // { value: ORGANIZATION_TYPE_VALUE.OTHER, label: "Real Estate" },
     { value: ORGANIZATION_TYPE_VALUE.COMPANY, label: "Company" },
     { value: ORGANIZATION_TYPE_VALUE.TRUST, label: "Trust" }
 ];

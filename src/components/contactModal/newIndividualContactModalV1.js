@@ -4,11 +4,12 @@ import { SelectInput, TextInput, XButton } from "..";
 import { IMAGES } from "../../constants/imagePath";
 import states from "../../constants/states.json";
 import { Label, Modal, Textarea } from "flowbite-react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import NewCaseDropdown from "../newcasedropdown";
-import {  contactTagIndividualOption } from "../../utils/formItem";
+import Select, {components} from 'react-select';
+import { contactTagIndividualOption } from "../../utils/formItem";
 import { createAddressContactRequest, createAddressRequest } from "../../redux/actions/utilsActions";
-import { createContactRequest } from "../../redux/actions/contactActions";
+import { clearContactCases, createContactRequest } from "../../redux/actions/contactActions";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 
@@ -16,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 const initialValues = {
     firstName: '',
     lastName: '',
-    contactType: '',
+    tags: '',
     position: '',
     company: '',
     email: '',
@@ -27,8 +28,9 @@ const initialValues = {
 const NewIndividualContactModalV1 = ({ onSubmit, onClose }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const tagDetails = useSelector((state) => state.tag.tag);
     const validationSchema = Yup.object({
-        contactType: Yup.string().required('Contact Tag is required'),
+        // tags: Yup.array().min(1, 'At least one tag is required'),
         firstName: Yup.string().required("First Name is required"),
         lastName: Yup.string().required("Last Name is required"),
         email: Yup.string().email('Invalid email format'),
@@ -40,16 +42,15 @@ const NewIndividualContactModalV1 = ({ onSubmit, onClose }) => {
             const payload = {
                 firstName: values?.firstName,
                 lastName: values?.lastName,
-                contactType: values?.contactType,
+                tags: values?.tags,
                 position: values?.position,
                 company: values?.company,
                 cellNumber: values?.cellNumber,
                 workNumber: values?.workNumber,
                 ...(values?.email && values?.email?.trim() !== "" && { email: values.email }), // Add email only if it's not empty
             };
-
+            dispatch(clearContactCases())
             dispatch(createContactRequest(payload, navigate))
-
             onClose();
         } catch (error) {
             console.error("Error while handling new contact information", error);
@@ -57,7 +58,66 @@ const NewIndividualContactModalV1 = ({ onSubmit, onClose }) => {
         }
     };
 
-
+    const formattedOptions = tagDetails.map(option => ({
+        ...option,
+        value: option.label, // Convert label to a suitable value format
+    }));
+    const customStyles = {
+        multiValue: (styles) => ({
+            ...styles,
+            backgroundColor: "#e0e7ff", // Light blue background
+            borderRadius: "12px",
+            padding: "3px 8px",
+            margin: "2px",
+            color: "#1e3a8a", // Dark blue text
+        }),
+        multiValueLabel: (styles) => ({
+            ...styles,
+            color: "#1e3a8a", // Adjust color to your liking
+        }),
+        multiValueRemove: (styles) => ({
+            ...styles,
+            color: "#1e3a8a",
+            cursor: "pointer",
+            ":hover": {
+                color: "#1e40af", // Darker blue on hover
+            },
+        }),
+    };
+    const CustomMultiValue = (props) => {
+        const { data } = props;
+        return (
+            <components.MultiValue {...props}>
+                <span
+                    className="text-sm font-semibold py-1 px-3 rounded-full inline-block"
+                    style={{
+                        backgroundColor: data.color1, // Background color from tag data
+                        color: data.color2, // Text color from tag data
+                    }}
+                >
+                    {data.label}
+                </span>
+            </components.MultiValue>
+        );
+    };
+    const CustomOption = (props) => {
+        const { data, innerRef, innerProps } = props;
+        return (
+            <div ref={innerRef} {...innerProps} className="m-3">
+                <span
+                    className="text-sm font-semibold py-1 px-3 rounded-full inline-block cursor-pointer"
+                    style={{
+                        backgroundColor: data.color1, // Background color for each option
+                        color: data.color2, // Text color for each option
+                        display: 'inline-block',
+                    
+                    }}
+                >
+                    {data.label}
+                </span>
+            </div>
+        );
+    };
     return (
         <Modal show={true} size="md" onClose={onClose} className="new-case-modal">
             <Modal.Header className="border-b-0">
@@ -123,23 +183,67 @@ const NewIndividualContactModalV1 = ({ onSubmit, onClose }) => {
                                 </div>
                                 <div className="grid grid-cols-1 gap-4">
                                     <div className="block">
-                                        <div className={`items-dropdown ${values.contactType == null || values.contactType == undefined || values.contactType == "" ? "default" :""} single-select mt-3 mb-3`}>
+                                        {/* <div className={`items-dropdown single-select mt-3 mb-3`}>
                                             <Field
                                                 as={NewCaseDropdown}
                                                 defaultLabel="Select Tag"
-                                                name="contactType"
-                                                value={values.contactType}
-                                                onChange={handleChange}
+                                                name="tags"
+                                                // value={values.tags[0]}
+                                                value={contactTagIndividualOption.filter(option =>
+                                                    values.tags.includes(option.label)
+                                                )}
+                                                // onChange={(selectedOptions) =>
+                                                //     setFieldValue(
+                                                //         "tags",
+                                                //         selectedOptions ? selectedOptions.map(option => option.value) : []
+                                                //     )
+                                                // }
+                                                onChange={ (selectedOptions) =>
+                                                    setFieldValue(
+                                                                "tags",
+                                                                [selectedOptions]
+                                                            )
+                                                }
                                                 onBlur={handleBlur}
-                                                options={contactTagIndividualOption}
+                                                options={contactTagIndividualOption.map(opt=>opt.label)}
+                                                contactBadge="individual"
 
                                             />
 
-                                            {touched.contactType && errors.contactType ? (
+                                            {touched.tags && errors.tags ? (
                                                 <div className="text-red-500 text-sm">
                                                     {errors.caseType}
                                                 </div>
                                             ) : null}
+                                        </div> */}
+                                        <div className={`form-input w-full mt-3 mb-3 bg-input-surface rounded-[40px] border-0 py-1 px-1 text-base leading-6`}>
+                                            <Field
+                                                as={Select}
+                                                isMulti
+                                                name="tags"
+                                                // styles={customStyles}
+                                                components={{
+                                                    Option: CustomOption,  
+                                                    MultiValue: CustomMultiValue, // Use the custom badge component
+                                                }}
+                                                options={formattedOptions}
+                                                value={formattedOptions.filter(option =>
+                                                    values.tags.includes(option.value)
+                                                )}
+                                                onChange={(selectedOptions) =>
+                                                    setFieldValue(
+                                                        "tags",
+                                                        selectedOptions ? selectedOptions.map(option => option.value) : []
+                                                    )
+                                                }
+                                            />
+
+                                            {touched.tags && errors.tags ? (
+                                                <div className="text-red-500 text-sm">
+                                                    {errors.caseType}
+                                                </div>
+                                            ) : null}
+
                                         </div>
                                     </div>
 

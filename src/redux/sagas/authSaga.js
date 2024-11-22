@@ -1,9 +1,10 @@
 import { takeLatest, put, call } from "redux-saga/effects";
-import { forgotPasswordFailure, forgotPasswordSuccess, loginFailure, loginSuccess, registerFailure, registerSuccess, deleteUserSuccess, deleteUserFailure } from "../actions/authActions";
-import { DELETE_USER_REQUEST, FORGOT_PASSWORD_REQUEST, LOGIN_REQUEST, REGISTER_REQUEST } from "../type";
+import { forgotPasswordFailure, forgotPasswordSuccess, loginFailure, loginSuccess, registerFailure, registerSuccess, deleteUserSuccess, deleteUserFailure, updateUserFailure, updateUserSuccess } from "../actions/authActions";
+import { DELETE_USER_REQUEST, FORGOT_PASSWORD_REQUEST, LOGIN_REQUEST, REGISTER_REQUEST, UPDATE_USER_REQUEST } from "../type";
 import { postRequest } from "../../axios/interceptor";
 import { API_ENDPOINTS } from "../../constants/api";
 import { handleError } from "../../utils/eventHandler";
+import { toast } from "react-toastify";
 
 function* login(action) {
   try {
@@ -19,6 +20,20 @@ function* login(action) {
   } catch (error) {
     handleError(error)
     yield put(loginFailure(error.response?.data || error));
+  }
+}
+
+function* updateUser(action) {
+  try {
+    const { payload } = action;
+    const response = yield call(() => postRequest(API_ENDPOINTS.UPDATE_USER, payload));
+    if (response.status == 200) {
+      yield put(updateUserSuccess(response?.data));
+      toast.success("User details updated!");
+    }
+  } catch (error) {
+    handleError(error)
+    yield put(updateUserFailure(error.response?.data || error));
   }
 }
 
@@ -60,6 +75,7 @@ function* deleteUser(action) {
 
 export function* authSaga() {
   yield takeLatest(LOGIN_REQUEST, login);
+  yield takeLatest(UPDATE_USER_REQUEST, updateUser);
   yield takeLatest(REGISTER_REQUEST, register);
   yield takeLatest(FORGOT_PASSWORD_REQUEST, forgotPassword);
   yield takeLatest(DELETE_USER_REQUEST, deleteUser);

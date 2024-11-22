@@ -16,15 +16,18 @@ import { ROUTES } from "../../../constants/api";
 import DeleteModal from "../../../components/deleteModal";
 
 const CaseDetails = () => {
-  const { cases } = useSelector((state) => state.case.casesData);
+  const dispatch = useDispatch();
   const [dirtyFormnik, setDirtyFormnik] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const caseId = localStorage.getItem('c_id')
   const [activeTab, setActiveTab] = useState(caseDetailTab.PARTICIPANTS);
   const [isEdit, setIsEdit] = useState(false)
   const [newTab, setNewTab] = useState(null);
+  const { cases } = useSelector((state) => state.case.casesData);
+  const { premises, loading } = useSelector((state) => state.premises);
+  const premisesDetails = premises?.data?.length > 0 ? premises?.data[0] : null;
   function getCaseValue() {
-    // console.log(cases,"_____")
+
     const caseObject = cases.find(caseItem => caseItem.caseId === caseId);
     if (!caseObject) {
       return undefined;
@@ -32,6 +35,17 @@ const CaseDetails = () => {
     return caseObject;
     // return caseObject[keyName];
   }
+// when redirected back from contact attorney page, we need address.
+  useEffect(() => {
+    if (premisesDetails && premisesDetails?.addressId) {
+      let data = {
+        addressId: premisesDetails?.addressId
+      }
+      dispatch(fetchAddressByIdRequest(data))
+    }
+
+  }, [premisesDetails])
+
   const headerItems = [
     { text: "Cases", link: ROUTES.CASES, className: "mr-8" },
     {

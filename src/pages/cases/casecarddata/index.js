@@ -21,7 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchClientByIdRequest } from "../../../redux/actions/clientActions";
 import { fetchAddressByIdRequest } from "../../../redux/actions/utilsActions";
 import { fetchOrganizationByIdRequest } from "../../../redux/actions/organizationActions";
-import { fetchAttorneyByIdsRequest, fetchRealtorByIdsRequest } from "../../../redux/actions/contactActions";
+import { fetchAttorneyByIdsRequest, fetchBrokerByIdsRequest, fetchRealtorByIdsRequest } from "../../../redux/actions/contactActions";
 
 const CaseCardData = () => {
   const navigate = useNavigate();
@@ -76,7 +76,7 @@ const CaseCardData = () => {
       try {
         const payload = {
           caseId: localStorage.getItem('c_id'),
-          contactType: 1
+          tag:"Attorney"
         };
         dispatch(fetchAttorneyByIdsRequest(payload));
       } catch (error) {
@@ -87,15 +87,27 @@ const CaseCardData = () => {
       try {
         const payload = {
           caseId: localStorage.getItem('c_id'),
-          contactType: 0
+          tag:"Realtor"
         };
         dispatch(fetchRealtorByIdsRequest(payload));
       } catch (error) {
         console.error("failed to fetch attorney", error);
       }
     };
+    const fetchBrokerById = async () => {
+      try {
+        const payload = {
+          caseId: localStorage.getItem('c_id'),
+          tag:"Broker"
+        };
+        dispatch(fetchBrokerByIdsRequest(payload));
+      } catch (error) {
+        console.error("failed to fetch attorney", error);
+      }
+    };
     fetchRealtorById()
     fetchAttorneyById()
+    fetchBrokerById()
   }, [casedetails]);
 
   // useEffect(() => {
@@ -230,7 +242,7 @@ const CaseCardData = () => {
         </div>
         <StagesChecklist />
       </div>
-      {isUploadFileModalOpen && <UploadFileModal onClose={toggleUploadFileModal} />}
+      {isUploadFileModalOpen && <UploadFileModal fileName={`${casedetails?.clientName}-${casedetails?.premisesName}`} generalUpload={true} onClose={toggleUploadFileModal} />}
     </div>
   );
 };

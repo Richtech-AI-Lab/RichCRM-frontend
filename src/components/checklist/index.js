@@ -159,7 +159,7 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
     // console.log(item?.status)
     // console.log(localStorage.getItem("c_id"))
     let fname=`${caseObj?.clientName}-${caseObj?.premisesName}-${item?.name}`
-    console.log(fname)
+    // console.log(fname)
     setFileName(fname)
     if (option == "compose message") {
       setIsCompose(true)
@@ -282,11 +282,11 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
   return (
     <>
       <div className="border-t-2 border-black-10">
-        <li className="flex justify-between items-center mb-5 pb-5 task-checklist mt-2">
+        <li className="flex justify-between items-center mb-3 task-checklist mt-3">
           <div className="flex items-center gap-2 custom-radio">
             <Checkbox id={checkboxId} checked={taskStatus === 2} className="mr-6" onChange={() => handleChangeTaskStatus()} />
-            <Label htmlFor={checkboxId} className="flex items-center lg:text-base xl:text-base text-title font-medium">
-              {displayIcon && <span className="mr-2 text-2xl">{displayIcon}</span>}
+            <Label htmlFor={checkboxId} className="flex items-center lg:text-base xl:text-base text-secondary-800 font-medium">
+              {displayIcon && <span className="mr-2 text-3xl">{displayIcon}</span>}
               {/* {stageId }: */}
               {actionInfo}
             </Label>
@@ -297,7 +297,7 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
                 {taskStatusColor?.label}
               </span>
             </p>
-            <div className="items-dropdown single-select mt-3">
+            <div className="items-dropdown single-select option-dropdown mt-3">
               <NewCaseDropdown
                 disabled={disabled}
                 defaultLabel="Options"
@@ -320,8 +320,8 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
           </div>
         </li>
       </div>
-      {isUploadFileModalOpen && <UploadFileModal fileName={fileName} onClose={toggleUploadFileModal} />}
-      {isCompose ? <ComposeEmail templates={templates} onClose={toggleComposeModal} onSendEmail={(value) => handleChangeTaskStatus(value)} /> : ""}
+      {isUploadFileModalOpen && <UploadFileModal fileName={fileName} taskName={item?.name} generalUpload={false} onUpload={(value) => handleChangeTaskStatus(value)} onClose={toggleUploadFileModal} />}
+      {isCompose ? <ComposeEmail taskItem={item} templates={templates} onClose={toggleComposeModal} onSendEmail={(value) => handleChangeTaskStatus(value)} /> : ""}
     </>
   );
 };

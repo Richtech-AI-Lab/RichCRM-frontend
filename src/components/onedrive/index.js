@@ -46,7 +46,6 @@ const OneDriveManager = () => {
     };
 
     const handleOptionSubmit = (fileId, label, item) => {
-        console.log(fileId, label)
         if (label == 0) {
             handleDownloadClick(fileId);
         } else if (label == 1) {
@@ -123,7 +122,7 @@ const OneDriveManager = () => {
         newHistory.pop();
 
         const previousPath = newHistory[newHistory.length - 1] || "/me/drive/root";
-        setPath(previousPath); // Navigate back to the previous path
+        setPath(previousPath?.path ? previousPath?.path : previousPath); // Navigate back to the previous path
         setPathHistory(newHistory);
     };
 
@@ -202,6 +201,37 @@ const OneDriveManager = () => {
                 console.log(error);
             });
     }
+    const openFilePreview = async (fileId) => {
+        const authToken = await getToken();
+        try {
+            const response = await fetch(
+                `https://graph.microsoft.com/v1.0/me/drive/items/${fileId}/preview`,
+                {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${authToken}`,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
+            if (response.ok) {
+                const data = await response.json();
+                const previewUrl = data.getUrl; // The URL to preview the file
+
+                if (previewUrl) {
+                    window.open(previewUrl, "_blank"); // Open the preview URL in a new tab
+                } else {
+                    alert("Unable to retrieve file preview URL.");
+                }
+            } else {
+                console.error("Error fetching preview URL:", response.statusText);
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+
+    };
 
     async function logout(e) {
         e.preventDefault();
@@ -271,7 +301,7 @@ const OneDriveManager = () => {
 
                     {!loader ? (
                         <>
-                            <div style={{ display: "flex", flexDirection: "column"}} className="overflow-x-auto h-[68vh] ">
+                            <div style={{ display: "flex", flexDirection: "column" }} className="overflow-x-auto h-[68vh] ">
                                 {files.map((file) => (
                                     <div
                                         className="m-2 flex justify-between items-center hover:bg-badge-gray cursor-pointer min-h-[50px] w-full"
@@ -280,37 +310,43 @@ const OneDriveManager = () => {
                                             padding: "10px",
                                             borderBottom: "1px solid #eaeaea",
                                         }}
-                                        >
+                                    >
                                         {file.folder ? (
                                             <>
-                                            <div className="flex items-center w-full"
-                                                onClick={() => handleFolderClick(file.id, file.name)}
-                                            >
-                                                <img
-                                                    src="https://img.icons8.com/color/96/000000/folder-invoices.png"
-                                                    alt="folder"
-                                                    style={{ width: "40px", height: "40px" }}
-                                                />
-                                                <p className="ml-4 text-left">{file.name}</p>
-                                                
-                                            </div>
-                                            <div className="ml-auto">
-                                            <MenuPopup
-                                                handleOptionSubmit={(label) => handleOptionSubmit(file.id, label)}
-                                                dropdownItems={menuOption.map((option) => option.label)}
-                                                icon={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />}
-                                            />
-                                        </div>
-                                        </>
+                                                <div className="flex items-center w-full"
+                                                    onClick={() => handleFolderClick(file.id, file.name)}
+                                                >
+                                                    <img
+                                                        src="https://img.icons8.com/color/96/000000/folder-invoices.png"
+                                                        alt="folder"
+                                                        style={{ width: "40px", height: "40px" }}
+                                                    />
+                                                    <p className="ml-4 text-left">{file.name}</p>
+
+                                                </div>
+                                                <div className="ml-auto">
+                                                    <MenuPopup
+                                                        handleOptionSubmit={(label) => handleOptionSubmit(file.id, label)}
+                                                        dropdownItems={menuOption.map((option) => option.label)}
+                                                        icon={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />}
+                                                    />
+                                                </div>
+                                            </>
                                         ) : (
+
                                             // File Icon and Clickable
-                                            <div className="flex items-center w-full">
-                                                <img
-                                                    src={file.thumbnail ? file.thumbnail : "https://img.icons8.com/color/96/000000/file.png"}
-                                                    alt="file"
-                                                    style={{ width: "40px", height: "40px" }}
-                                                />
-                                                <p className="ml-4 text-left">{file.name}</p>
+                                            <>
+                                                <div className="flex items-center w-full"
+                                                    onClick={() => openFilePreview(file.id)}
+                                                >
+                                                    <img
+                                                        src={file.thumbnail ? file.thumbnail : "https://img.icons8.com/color/96/000000/file.png"}
+                                                        alt="file"
+                                                        style={{ width: "40px", height: "40px" }}
+                                                    />
+                                                    <p className="ml-4 text-left">{file.name}</p>
+
+                                                </div>
                                                 <div className="ml-auto">
                                                     <MenuPopup
                                                         handleOptionSubmit={(label) => handleOptionSubmit(file.id, label)}
@@ -318,7 +354,7 @@ const OneDriveManager = () => {
                                                         icon={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />}
                                                     />
                                                 </div>
-                                            </div>
+                                            </>
                                         )}
                                     </div>
                                 ))}

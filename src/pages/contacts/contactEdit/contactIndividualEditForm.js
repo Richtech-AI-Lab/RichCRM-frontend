@@ -44,14 +44,14 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
     return (
         <>
 
-            <div className="bg-white p-4 rounded-2xl mb-5">
+            <div className="bg-white p-4 rounded-2xl mb-5 cnt-edt">
 
                 <ul className="card-details">
 
                     <li>
                         <span className={`left-txt flex items-center`}>Position</span>
                         <input
-                            className="text-right p-0 border-none focus:ring-transparent"
+                            className="p-0 border-none focus:ring-transparent"
                             name="position"
                             type="text"
                             onChange={handleChange}
@@ -61,7 +61,7 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
                     <li>
                         <span className={`left-txt flex items-center`}>Company</span>
                         <input
-                            className="text-right p-0 border-none focus:ring-transparent"
+                            className=" p-0 border-none focus:ring-transparent"
                             name="company"
                             type="text"
                             onChange={handleChange}
@@ -71,7 +71,7 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
 
                 </ul>
             </div>
-            <div className="bg-white p-4 rounded-2xl mb-5">
+            <div className="bg-white p-4 rounded-2xl mb-5 cnt-edt">
 
                 <ul className="card-details">
                     <li>
@@ -80,7 +80,7 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
                         <span className="text-sm text-red-500">{form.errors["email"]}</span>
                     )}
                         <input
-                            className="text-right p-0 border-none focus:ring-transparent"
+                            className="p-0 border-none focus:ring-transparent"
                             name="email"
                             type="text"
                             onChange={handleChange}
@@ -94,7 +94,7 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
                         <span className="text-sm text-red-500">{form.errors["cellNumber"]}</span>
                     )}
                         <input
-                            className="text-right p-0 border-none focus:ring-transparent"
+                            className=" p-0 border-none focus:ring-transparent"
                             name="cellNumber"
                             type="text"
                             placeholder=""
@@ -113,7 +113,7 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
                                     Work Phone
                                 </span>
                                 <input
-                                    className="text-right p-0 border-none focus:ring-transparent"
+                                    className=" p-0 border-none focus:ring-transparent"
                                     name="workNumber"
                                     type="text"
                                     onChange={handleChange}
@@ -142,7 +142,7 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
                                     WeChat
                                 </span>
                                 <input
-                                    className="text-right p-0 border-none focus:ring-transparent"
+                                    className="p-0 border-none focus:ring-transparent"
                                     name="wechatAccount"
                                     type="text"
                                     onChange={handleChange}
@@ -172,7 +172,7 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
                                     WhatsApp
                                 </span>
                                 <input
-                                    className="text-right p-0 border-none focus:ring-transparent"
+                                    className=" p-0 border-none focus:ring-transparent"
                                     name="whatsAppNumber"
                                     type="text"
                                     onChange={handleChange}
@@ -203,7 +203,7 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
                                     Line
                                 </span>
                                 <input
-                                    className="text-right p-0 border-none focus:ring-transparent"
+                                    className=" p-0 border-none focus:ring-transparent"
                                     name="lineNumber"
                                     type="text"
                                     onChange={handleChange}
@@ -228,7 +228,7 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
                         <span className="text-sm text-red-500">{form.errors["addressLine1"]}</span>
                     )}
                         <input
-                            className="text-right p-0 border-none focus:ring-transparent"
+                            className=" p-0 border-none focus:ring-transparent"
                             name="addressLine1"
                             type="text"
                             onChange={handleChange}
@@ -238,7 +238,7 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
                     <li>
                         <span className={`left-txt flex items-center`}>Apt, suite, floor, or unit # (optional)</span>
                         <input
-                            className="text-right p-0 border-none focus:ring-transparent"
+                            className=" p-0 border-none focus:ring-transparent"
                             name="addressLine2"
                             type="text"
                             onChange={handleChange}
@@ -251,7 +251,7 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
                         <span className="text-sm text-red-500">{form.errors["city"]}</span>
                     )}
                         <input
-                            className="text-right p-0 border-none focus:ring-transparent"
+                            className=" p-0 border-none focus:ring-transparent"
                             name="city"
                             type="text"
                             onChange={handleChange}
@@ -288,7 +288,7 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
                         <span className="text-sm text-red-500">{form.errors["zipCode"]}</span>
                     )}
                         <input
-                            className="text-right p-0 border-none focus:ring-transparent"
+                            className=" p-0 border-none focus:ring-transparent"
                             name="zipCode"
                             type="text"
                             onChange={handleChange}
@@ -299,7 +299,7 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
 
                 </ul>
             </div>
-            <div className="bg-white p-4 rounded-2xl mb-5">
+            <div className="bg-white p-4 rounded-2xl mb-5 cnt-edt">
 
                 <ul className="card-details">
 
@@ -312,7 +312,7 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
                                     SSN
                                 </span>
                                 <input
-                                    className="text-right p-0 border-none focus:ring-transparent"
+                                    className=" p-0 border-none focus:ring-transparent"
                                     name="ssn"
                                     type="text"
                                     onChange={handleChange}
@@ -340,7 +340,7 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
                                     Driving License
                                 </span>
                                 <input
-                                    className="text-right p-0 border-none focus:ring-transparent"
+                                    className=" p-0 border-none focus:ring-transparent"
                                     name="driverlicense"
                                     type="text"
                                     onChange={handleChange}

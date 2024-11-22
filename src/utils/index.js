@@ -82,3 +82,13 @@ export const daysLeft= (targetDateStr) =>{
   
   return daysLeft;
 }
+
+export const generateRandomFiveDigit =  () => {
+  return Math.floor(10000 + Math.random() * 90000);
+}
+
+export const formatDateToCustomString =  (dateString) => {
+  const date = new Date(dateString);
+  const options = { day: '2-digit', month: 'short', year: 'numeric' };
+  return date.toLocaleDateString('en-US', options).replace(',', '');
+}

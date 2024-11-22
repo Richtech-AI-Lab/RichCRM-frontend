@@ -24,6 +24,7 @@ import CardListItem from "./cardlistitem";
 import AuthFormContainer from "./authContainer";
 import DropdownMenu from "./dropdownmenu";
 import CaseExportPdf from "./caseExportPdf";
+import NewBadge from "./newBadge";
 
 export {
   Header,
@@ -51,5 +52,7 @@ export {
   CaseCardDetails,
   AuthFormContainer,
   DropdownMenu,
-  CaseExportPdf
+  CaseExportPdf,
+  NewBadge
+
 };

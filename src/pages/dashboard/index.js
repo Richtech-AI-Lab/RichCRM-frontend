@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/actions/authActions";
+import { BsThreeDotsVertical } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { Card, CardGrid, UpcomingEventCard } from "../../components";
 import { ROUTES } from "../../constants/api";
@@ -11,6 +12,9 @@ import CaseOverview from "./caseOverview";
 import CaseAlert from "./caseAlert";
 import { fetchAllCasesRequest } from "../../redux/actions/caseAction";
 import Contacts from "../contacts";
+import { IMAGES } from "../../constants/imagePath";
+import ChatBox from "./chatBox";
+import { fetchAllTagsRequest } from "../../redux/actions/tagActions";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -28,9 +32,17 @@ const Dashboard = () => {
         console.error("Error fetching cases:", error);
       }
     };
-
+    const fetchAllTags = async () => {
+      try {
+        dispatch(fetchAllTagsRequest());
+      } catch (error) {
+        console.error("Error fetching conatct:", error);
+      }
+    };
+    fetchAllTags();
     fetchAllCases();
   }, []);
+
   // const caseData = {
   //   totalOpenCases: 25, // Total number of open cases
   //   settingUp: 5,       // Cases in the "Setting Up" stage
@@ -43,12 +55,14 @@ const Dashboard = () => {
   return (
     <div>
       <CaseOverview />
-      <CaseAlert />
-      <div className="card">
-        <p className="text-[22px] text-secondary-800 font-medium leading-[30px] mb-[18px]">
-          <span>Recent Contacts</span>
-        </p>
-        <Contacts />
+
+      <div className="flex justify-between gap-4">
+        <div className="basis-4/6">
+          <ChatBox />
+        </div>
+        <div className="basis-2/6">
+          <CaseAlert />
+        </div>
       </div>
       {/* <div className="card">
         <p className="text-[22px] text-secondary-800 font-medium leading-[30px] mb-[18px]">

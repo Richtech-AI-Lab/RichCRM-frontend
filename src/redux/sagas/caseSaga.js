@@ -22,7 +22,7 @@ function* createCase(action) {
         };
 
         const response = yield call(() => postRequest(API_ENDPOINTS.CREATE_CASE, updatedPayload.casePayload));
-        yield put(caseCreateSuccess(response.data));
+        yield put(caseCreateSuccess(response.data?.data[0]));
         if (response.status == 200) {
             const casedetails = response.data?.data[0];
             const caseId = response.data?.data[0].caseId;
@@ -178,38 +178,38 @@ function* getCaseByClient(action) {
     }
 }
 
-function* getCaseByContact(action) {
-    try {
-        const { payload } = action;
+// function* getCaseByContact(action) {
+//     try {
+//         const { payload } = action;
 
-        // Create payloads for both API calls
-        const closedTruePayload = { ...payload, closed: true };
-        const closedFalsePayload = { ...payload, closed: false };
+//         // Create payloads for both API calls
+//         const closedTruePayload = { ...payload, closed: true };
+//         const closedFalsePayload = { ...payload, closed: false };
 
-        // Make both API calls in parallel
-        const [responseTrue, responseFalse] = yield all([
-            call(() => postRequest(API_ENDPOINTS.GET_CASE_BY_CONTACT, closedTruePayload)),
-            call(() => postRequest(API_ENDPOINTS.GET_CASE_BY_CONTACT, closedFalsePayload)),
-        ]);
+//         // Make both API calls in parallel
+//         const [responseTrue, responseFalse] = yield all([
+//             call(() => postRequest(API_ENDPOINTS.GET_CASE_BY_CONTACT, closedTruePayload)),
+//             call(() => postRequest(API_ENDPOINTS.GET_CASE_BY_CONTACT, closedFalsePayload)),
+//         ]);
 
-        // Check the status of both responses and combine data if both are successful
-        if (responseTrue?.status === 200 && responseFalse?.status === 200) {
-            const combinedData = [
-                responseTrue?.data?.data || [], // First API response data
-                responseFalse?.data?.data || [], // Second API response data
-            ];
-            // console.log(combinedData,"responseTrue?.data?.data")
-            // Dispatch success action with combined data
-            yield put(caseCreateSuccess(combinedData));
-        } else {
-            // Handle failure if any of the responses fail
-            throw new Error('One or both API calls failed');
-        }
-    } catch (error) {
-        handleError(error);
-        yield put(updateCaseFailure(error.response.data || error));
-    }
-}
+//         // Check the status of both responses and combine data if both are successful
+//         if (responseTrue?.status === 200 && responseFalse?.status === 200) {
+//             const combinedData = [
+//                 responseTrue?.data?.data || [], // First API response data
+//                 responseFalse?.data?.data || [], // Second API response data
+//             ];
+//             // console.log(combinedData,"responseTrue?.data?.data")
+//             // Dispatch success action with combined data
+//             yield put(caseCreateSuccess(combinedData));
+//         } else {
+//             // Handle failure if any of the responses fail
+//             throw new Error('One or both API calls failed');
+//         }
+//     } catch (error) {
+//         handleError(error);
+//         yield put(updateCaseFailure(error.response.data || error));
+//     }
+// }
 
 
 
@@ -265,7 +265,7 @@ export function* caseSaga() {
     yield takeLatest(DELETE_CASE_REQUEST, deleteCase);
     yield takeLatest(READ_CASE_REQUEST, getCase);
     yield takeLatest(READ_CASE_BY_CLIENT, getCaseByClient);
-    yield takeLatest(READ_CASE_BY_CONTACT, getCaseByContact);
+    // yield takeLatest(READ_CASE_BY_CONTACT, getCaseByContact);
     yield takeLatest(UPDATE_CASE_DATE_REQUEST,updateCasedate);
     yield takeLatest(UPDATE_CASE_CONTACT_REQUEST,updateCaseContact);
     yield takeLatest(CLOSE_CASE, closeCaseByCaseId);

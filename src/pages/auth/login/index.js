@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,8 +12,15 @@ const Login = () => {
   const dispatch = useDispatch();
   let navigate = useNavigate();
 
-  const { loading, user ,error} = useSelector((state) => state.auth.login);
-  
+  // const { loading, user , error} = useSelector((state) => state?.auth?.login);
+  const data = useSelector((state) => state.auth);
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    // console.log(data, "+++")
+    setUserData(data?.user)
+  }, [data])
+
   const initialValues = {
     emailAddress: "",
     password: "",
@@ -24,11 +31,11 @@ const Login = () => {
       .required("Email is required"),
     password: Yup.string()
       .required("Password is required")
-      // .matches(
-      //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      //   "Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special case character"
-      // )
-      ,
+    // .matches(
+    //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+    //   "Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special case character"
+    // )
+    ,
   });
 
   const handleLogin = (values, { setSubmitting, resetForm }) => {
@@ -38,28 +45,27 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (user && user?.status === 'success') {
-      toast(user?.message);
+    if (userData?.data[0] && userData?.status === 'success') {
+      toast(userData?.message);
       navigate(ROUTES.DASHBOARD);
-    }  
-      else if (error && error?.status === 'failed') {
-          toast(error?.message)
-        }
-        dispatch(clearData());
+    }
+    else if (userData?.error && userData?.error?.status === 'failed') {
+      toast(userData?.error?.message)
+    }
+    // dispatch(clearData());
 
-  }, [user, error,navigate]);
+  }, [userData, navigate]);
 
   const handleRegisterClick = () => {
     navigate(ROUTES.REGISTER);
   };
 
-  const handleForgotPassword=()=>{
+  const handleForgotPassword = () => {
     navigate(ROUTES.FORGOT_PASSWORD_ONE);
   }
-
   return (
     <>
-      <XSpinnerLoader loading={loading} size="lg" />
+      <XSpinnerLoader loading={data?.loading} size="lg" />
       <AuthFormContainer title={'Log in'} subtitle={'Welcome! Select method to log in.'}>
         <Formik
           initialValues={initialValues}

@@ -49,8 +49,8 @@ const StagesChecklist = () => {
         caseId: localStorage.getItem('c_id'),
       }
       dispatch(getStageRequest(sagaPayload));
+      setCurrentStep( currentStep || 0)
     }
-
   }, [data, currentStep])
 
   const foundCase = casesData?.cases?.find(item => item.caseId === localStorage.getItem('c_id'));
@@ -163,12 +163,12 @@ const StagesChecklist = () => {
     currentstepstr = `${currentStep}`;
   }
 
-    console.log(currentstepstr)
+
     const getTaskPayload = {
       currentStageData: data[STAGESNAMES[currentstepstr]]?.tasks,
       currentStep: currentstepstr
     }
-    console.log(currentstepstr)
+
     dispatch(getTaskRequest(getTaskPayload));
   }, [dispatch, currentStep, data])
 
@@ -413,8 +413,8 @@ const StagesChecklist = () => {
                 <p className="text-white text-base font-medium">The Contract is due in {closingAlertInfo.daysUntilDue} days.</p>
               </div>
             }
-            <div className="bg-white py-4 rounded-2xl mb-5">
-              <div className={`flex justify-between items-center ${currentStep === 3 ? '' : 'pb-4'} px-4`}>
+            <div className="bg-white p-4 rounded-2xl mb-5">
+              <div className={`flex justify-between items-center ${currentStep === 3 ? '' : 'pb-4'}`}>
                 {/* <span className="text-base text-secondary-800 font-medium">{getHeadLabel(currentStep)}</span> */}
 
                 {currentStep === 3 ? (

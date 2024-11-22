@@ -102,7 +102,7 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
                 <span className="text-sm text-red-500">{form.errors['purchasePrice']}</span>
               )}
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className=" p-0 border-none focus:ring-transparent"
                 name="purchasePrice"
                 value={values.purchasePrice}
                 type="text"
@@ -116,7 +116,7 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
                 <span className="text-sm text-red-500">{form.errors['purchaserPrice']}</span>
               )}
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className=" p-0 border-none focus:ring-transparent"
                 name="purchaserPrice"
                 value={formatCurrency(values.purchaserPrice)}
                 type="text"
@@ -128,7 +128,7 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
             <li>
               <span className="left-txt flex items-center" >Down Payment</span>
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className=" p-0 border-none focus:ring-transparent"
                 name="downPayment"
                 value={formatCurrency(values.downPayment)}
                 type="text"
@@ -140,7 +140,7 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
             <li>
               <span className="left-txt flex items-center" >Mortgage Amount</span>
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className=" p-0 border-none focus:ring-transparent"
                 name="mortgageAmount"
                 value={formatCurrency(values.mortgageAmount)}
                 type="text"
@@ -149,10 +149,10 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
               // value={values.}
               />
             </li>
-            <li>
+            {/* <li>
               <span className="left-txt flex items-center" >Annual Property Tax</span>
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className=" p-0 border-none focus:ring-transparent"
                 name="annualPropertyTax"
                 value={formatCurrency(values.annualPropertyTax)}
                 type="text"
@@ -160,11 +160,11 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
                 onBlur={handleBlur}
               // value={values.}
               />
-            </li>
+            </li> */}
             <li>
               <span className="left-txt flex items-center" >Seller's Concession</span>
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className=" p-0 border-none focus:ring-transparent"
                 name="sellersConcession"
                 value={formatCurrency(values.sellersConcession)}
                 type="text"
@@ -172,6 +172,26 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
                 onBlur={handleBlur}
               // value={values.}
               />
+            </li>
+          </ul>
+        </div>
+        <div className="bg-white p-4 rounded-2xl mb-5">
+          {<div className="flex justify-between items-center mb-5">
+            <span className="text-base text-2Fary-800 font-medium">Mortgage</span>
+          </div>}
+
+          <ul className="card-details">
+            <li>
+              <>
+                <span className={` left-txt flex items-center`}>
+                  Mortgage Due Date
+                </span>
+                <DateInput
+                  name="mortgageContingencyDate"
+                  value={values.mortgageContingencyDate}
+                  onSelectedDateChanged={(date) => setFieldValue("mortgageContingencyDate", date)}
+                />
+              </>
             </li>
           </ul>
         </div>
@@ -185,7 +205,7 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
             <li>
               <span className="left-txt flex items-center" >Realtors Sale</span>
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className=" p-0 border-none focus:ring-transparent"
                 name="realtorSale"
                 value={values.realtorSale}
                 type="text"
@@ -196,7 +216,7 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
             <li>
               <span className="left-txt flex items-center" >Realtors Listing</span>
               <input
-                className="text-right p-0 border-none focus:ring-transparent"
+                className=" p-0 border-none focus:ring-transparent"
                 name="realtorListing"
                 value={values.realtorListing}
                 type="text"
@@ -256,7 +276,7 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
                     Referral
                   </span>
                   <input
-                    className="text-right p-0 border-none focus:ring-transparent"
+                    className=" p-0 border-none focus:ring-transparent"
                     name="referral"
                     type="text"
                     onChange={handleChange}
@@ -285,7 +305,7 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
                     Bank
                   </span>
                   <input
-                    className="text-right p-0 border-none focus:ring-transparent"
+                    className=" p-0 border-none focus:ring-transparent"
                     name="bank"
                     type="text"
                     onChange={handleChange}
@@ -315,7 +335,7 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
                     Personal Note
                   </span>
                   <input
-                    className="text-right p-0 border-none focus:ring-transparent"
+                    className=" p-0 border-none focus:ring-transparent"
                     name="personalNotes"
                     type="text"
                     onChange={handleChange}
@@ -345,7 +365,7 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
                     Excluded Note
                   </span>
                   <input
-                    className="text-right p-0 border-none focus:ring-transparent"
+                    className=" p-0 border-none focus:ring-transparent"
                     name="excludedNotes"
                     type="text"
                     onChange={handleChange}

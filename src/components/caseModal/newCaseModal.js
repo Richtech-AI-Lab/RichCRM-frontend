@@ -137,7 +137,7 @@ const NewCaseModal = ({ onClose }) => {
     clientType: Yup.string().required('Client Type is required'),
     premisesType: Yup.string().required('Premises Type is required'),
     address: Yup.string().required("Address is required"),
-    // addressLine2: Yup.string('Address Line 2 is required'),
+    addressLine2: Yup.string().optional(),
     city: Yup.string().required("City is required"),
     state: Yup.string().required("State is required"),
     zipCode: Yup.string().required("Zip code is required"),
@@ -249,6 +249,7 @@ const NewCaseModal = ({ onClose }) => {
     const combinedPayload = {
       addressDetails: {
         addressLine1: values.address,
+        addressLine2: values.addressLine2,
         city: values.city,
         state: values.state,
         zipCode: values.zipCode,

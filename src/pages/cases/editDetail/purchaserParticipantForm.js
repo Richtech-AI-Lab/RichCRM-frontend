@@ -48,7 +48,7 @@ const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, form
     <>
       <div className="bg-white p-4 rounded-2xl mb-5">
         {title && <div className="flex justify-between items-center mb-5">
-          <span className="text-base text-secondary-800 font-medium">{title}</span>
+          <span className="text-base text-secondary-800 font-bold">{title}(client)</span>
           <div className="flex items-center gap-2">
             <BsThreeDotsVertical className="text-lg opacity-40" />
           </div>
@@ -60,7 +60,7 @@ const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, form
               <span className="text-sm text-red-500">{form.errors["name"]}</span>
             )}
             <input
-              className="text-right p-0 border-none focus:ring-transparent"
+              className="p-0 border-none focus:ring-transparent"
               name="name"
               type="text"
               onChange={handleChange}
@@ -70,7 +70,7 @@ const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, form
           <li>
             <span className={`left-txt flex items-center`}>SSN</span>
             <input
-              className="text-right p-0 border-none focus:ring-transparent"
+              className="p-0 border-none focus:ring-transparent"
               onChange={handleChange}
               onBlur={handleBlur}
               name="ssn"
@@ -83,7 +83,7 @@ const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, form
               <span className="text-sm text-red-500">{form.errors["email"]}</span>
             )}
             <input
-              className="text-right p-0 border-none focus:ring-transparent"
+              className="p-0 border-none focus:ring-transparent"
               name="email"
               type="text"
               onChange={handleChange}
@@ -96,7 +96,7 @@ const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, form
               <span className="text-sm text-red-500">{form.errors["cellNumber"]}</span>
             )}
             <input
-              className="text-right p-0 border-none focus:ring-transparent"
+              className="p-0 border-none focus:ring-transparent"
               name="cellNumber"
               type="text"
               onChange={handleChange}
@@ -113,7 +113,7 @@ const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, form
                   Work Phone
                 </span>
                 <input
-                  className="text-right p-0 border-none focus:ring-transparent"
+                  className="p-0 border-none focus:ring-transparent"
                   name="workNumber"
                   type="text"
                   onChange={handleChange}
@@ -142,7 +142,7 @@ const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, form
                   WeChat
                 </span>
                 <input
-                  className="text-right p-0 border-none focus:ring-transparent"
+                  className="p-0 border-none focus:ring-transparent"
                   name="wechatAccount"
                   type="text"
                   onChange={handleChange}
@@ -172,7 +172,7 @@ const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, form
                   WhatsApp
                 </span>
                 <input
-                  className="text-right p-0 border-none focus:ring-transparent"
+                  className="p-0 border-none focus:ring-transparent"
                   name="whatsAppNumber"
                   type="text"
                   onChange={handleChange}
@@ -203,7 +203,7 @@ const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, form
                   Line
                 </span>
                 <input
-                  className="text-right p-0 border-none focus:ring-transparent"
+                  className=" p-0 border-none focus:ring-transparent"
                   name="lineNumber"
                   type="text"
                   onChange={handleChange}
@@ -228,7 +228,7 @@ const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, form
               <span className="text-sm text-red-500">{form.errors["addressLine1"]}</span>
             )}
             <input
-              className="text-right p-0 border-none focus:ring-transparent"
+              className=" p-0 border-none focus:ring-transparent"
               name="addressLine1"
               type="text"
               onChange={handleChange}
@@ -238,7 +238,7 @@ const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, form
           <li>
             <span className={`left-txt flex items-center`}>Apt, suite, floor, or unit # (optional)</span>
             <input
-              className="text-right p-0 border-none focus:ring-transparent"
+              className=" p-0 border-none focus:ring-transparent"
               name="addressLine2"
               type="text"
               onChange={handleChange}
@@ -251,7 +251,7 @@ const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, form
               <span className="text-sm text-red-500">{form.errors["city"]}</span>
             )}
             <input
-              className="text-right p-0 border-none focus:ring-transparent"
+              className=" p-0 border-none focus:ring-transparent"
               name="city"
               type="text"
               onChange={handleChange}
@@ -288,7 +288,7 @@ const PurchaserParticipantForm = ({ title, initialValues, onSubmit, values, form
               <span className="text-sm text-red-500">{form.errors["zipCode"]}</span>
             )}
             <input
-              className="text-right p-0 border-none focus:ring-transparent"
+              className=" p-0 border-none focus:ring-transparent"
               name="zipCode"
               type="text"
               onChange={handleChange}

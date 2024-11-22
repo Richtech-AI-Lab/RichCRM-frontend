@@ -39,14 +39,20 @@
   .sidebar-items ul li a svg {
     @apply text-secondary-800;
   }
+  .sidebar-item .item-title {
+    @apply pl-3
+  }
+  .sidebar-item span {
+    @apply p-0
+  }
   .active-item {
-    @apply bg-active-blue rounded-[100px] !important;
+    @apply bg-badge-gray rounded-[100px] !important;
   }
   .active-item svg path {
-    @apply text-active-blue-text;
+    @apply text-secondary-800;
   }
   .active-item span {
-    @apply text-active-blue-text;
+    @apply text-secondary-800;
   }
   .card {
     @apply bg-white p-4 rounded-3xl;
@@ -57,7 +63,10 @@
   .sidebar-toggle ul li a{
   @apply justify-start;
   }
-  .sidebar-toggle ul li a span{
+  .sidebar-item img {
+    @apply max-w-5;
+  }
+  .sidebar-toggle .sidebar-item .item-title{
     @apply hidden;
   }
   /* .sidebar-toggle .sidebar-logo{
@@ -152,13 +161,13 @@
     @apply ring-transparent
   }
   .task-checklist {
-    @apply border-b border-b-border pl-6 pr-4
+    @apply border-b border-b-border pl-4 pr-2
   }
   .task-checklist:last-child {
     @apply border-b-0
   }
   .task-checklist input[type="checkbox"] {
-    @apply bg-white border-black w-6 h-6
+    @apply bg-white border-2 border-secondary-800 w-[18px] h-[18px] rounded-sm
   }
   .task-checklist input[type="checkbox"]:checked {
     @apply bg-primary2 border-primary2
@@ -219,6 +228,13 @@
   }
   .contacts-table.addFromContactModal td {
     @apply  bg-input-surface
+  }
+  
+  .items-dropdown.option-dropdown > button {
+    @apply bg-bg-gray-400 py-[6px] px-[14px]
+  }
+  .items-dropdown.option-dropdown  > button:disabled {
+    @apply opacity-40;
   }
   .items-dropdown > button {
     @apply bg-white shadow-shadow-light py-[10px] px-5 rounded-full flex items-center text-base text-secondary-800 font-medium
@@ -297,4 +313,91 @@
   .export-pdf-modal > div {
     @apply max-w-[1200px]
   }
+  .pagination-btm ul {
+    @apply shadow-shadow-light
+  }
+  .pagination-btm ul button {
+    @apply border-0 p-[14px] bg-white
+  }
+  .custom-datepicker .react-datepicker__header {
+    background-color: #F3F3F8;
+  }
+  /* .custom-datepicker .react-datepicker__header {
+    background-color: #F3F3F8;
+  } */
+
+}
+.msgr-name {
+  min-height: 200px;
+}
+.msgr-name {
+  align-items: center;
+}
+.type-msg textarea {
+  max-width: 100%;
+  min-width: 100%;
+  border: none;
+  background-color: transparent;
+  min-height: 78px;
+  max-height: 204px;
+}
+.type-msg textarea:focus{
+  box-shadow: none;
+}
+.remders {
+  background-color: #fff;
+  padding: 20px;
+}
+.remders .card {
+  margin-bottom: 20px;
+  background-color: #F3F3F8;
+  box-shadow: none;
+}
+.remders {
+	height: 702px;
+	overflow-y: scroll;
+}
+.dis-none{
+  display: none;
+}
+.msg-box-cnt {
+	height: 472px;
+	padding: 12px;
+	overflow-y: scroll;
+}
+.chat-box {
+  background-color:#f3f3f8;
+}
+.atched {
+  background-color:#e8e8ec;
+}
+.participant-form .card-details input, .participant-form .card-details select, .premises-form input:not(input[type="radio"]), .premises-form .card-details select, .cnt-edt input:not(input[type="radio"]), .cnt-edt select {
+	background-color: #f3f3f8;
+	border-radius: 30px;
+	height: 35px;
+	padding: 4px 18px;
+	width:280px;
+	font-size: 14px;
+}
+.dub-input input, .dub-input select {
+	width: 133px !important;
+}
+.css-13cymwt-control{
+  background: transparent !important;
+  border: none !important;
+}
+.css-t3ipsp-control:hover{
+  border-color: transparent !important;
+}
+.editor-wrapper {
+  min-height: 48vh; /* Initial height */
+  max-height: 50vh; /* Maximum height */
+  overflow-y: auto;
+  /* border: 1px solid #dcdcdc; */
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.editor-content {
+  min-height: 120px;
 }
