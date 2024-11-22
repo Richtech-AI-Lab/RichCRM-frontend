@@ -41,9 +41,9 @@ const ContactCard = ({
     }else{
       dispatch(fetchAdditionalOrganizationByIdsRequest(casedetails?.additionalOrganizations));
     }
-   return () => {
-    dispatch(cleanupAdditionalClientRequest()); 
-  };    
+  //  return () => {
+  //   dispatch(cleanupAdditionalClientRequest()); 
+  // };    
   }, []);
 
   useEffect(() => {
