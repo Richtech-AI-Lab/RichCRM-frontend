@@ -18,7 +18,8 @@ import CaseBrokerItems from "./CaseBrokerItems";
 const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik }) => {
   const dispatch = useDispatch();
   const formikRef = useRef();
-  const { client } = useSelector((state) => state.client);
+  const [addClient, setAddClient] = useState([])
+  const { client, additionalClient } = useSelector((state) => state.client);
   const { cases } = useSelector((state) => state.case.casesData);
   const caseObj = cases?.find(item => item.caseId === localStorage.getItem('c_id'));
   const clientDetails = client?.data?.length > 0 ? client?.data : null;
@@ -134,7 +135,10 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik }
     // state: Yup.string().required("State is required"),
     // zipCode: Yup.string().required("Zip code is required"),
   });
-
+  useEffect(()=>{
+    setAddClient(additionalClient?.map((client) => [client]))
+  },[additionalClient])
+  // let transform = additionalClient?.map((client) => [client])
   return (
     <>
       {isEdit ?
@@ -183,6 +187,9 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik }
         (<div className="grid grid-cols-12 gap-6">
           <div className="col-span-6">
             <ParticipantBothDetail client={clientDetails} attorneyDetails={attorneyDetails} title={caseType ? "Seller" : "Purchaser"} />
+            {addClient?.map(client =>
+              <ParticipantBothDetail client={client} title={caseType ? "Seller" : "Purchaser"} />
+            )}
           </div>
           <div className="col-span-6">
             {attorneyDetails?.length > 0 && <AttorneyDetails attorneyDetails={attorneyDetails} title={"Attorney"} />}

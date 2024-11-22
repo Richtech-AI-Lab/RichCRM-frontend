@@ -213,13 +213,9 @@ const ComposeEmail = ({ taskItem, onClose, templates, onSendEmail }) => {
   return (
     <>
       <div className="bg-white rounded-2xl shadow-card fixed bottom-3 right-3 w-[552px]" style={{
-        zIndex: '9997', overflowY: 'scroll'
-        , minHeight: '93vh', maxHeight: '94vh'
+        zIndex: '9997', overflowY: 'scroll', maxHeight: '94vh'
       }}>
-        <div className="flex justify-between items-center p-4">
-          <h3 className="text-base text-secondary-800 font-medium">Compose Message</h3>
-          <IoIosClose size={28} onClick={onClose} className="text-text-gray-100 cursor-pointer" />
-        </div>
+
         <Formik
           enableReinitialize
           initialValues={initialValues}
@@ -237,6 +233,10 @@ const ComposeEmail = ({ taskItem, onClose, templates, onSendEmail }) => {
           }) => (
 
             <form onSubmit={handleSubmit} className="">
+                      <div className="flex justify-between items-center p-4">
+          <h3 className="text-base text-secondary-800 font-medium">Compose Message</h3>
+          <IoIosClose size={28} onClick={onClose} className="text-text-gray-100 cursor-pointer" />
+        </div>
               <div className="mx-4">
                 <div className="border-b border-b-border py-[6px] flex items-center">
                   <label className="inline text-sm font-medium text-text-gray-100 mr-2">To</label>
