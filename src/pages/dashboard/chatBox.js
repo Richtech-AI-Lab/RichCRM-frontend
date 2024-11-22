@@ -39,7 +39,7 @@ const ChatBox = () => {
   useEffect(() => {
     const llm = new ChatOpenAI({
       openAIApiKey: openaiAPIKey,
-      model: "gpt-4",
+      model: "gpt-3.5",
       temperature: 0,
     });
     const agent = createToolCallingAgent({
