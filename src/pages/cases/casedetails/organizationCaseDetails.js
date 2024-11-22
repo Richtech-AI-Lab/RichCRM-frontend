@@ -18,9 +18,10 @@ import CaseBrokerItems from "./CaseBrokerItems";
 const OrganizationCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik }) => {
   const dispatch = useDispatch();
   const formikRef = useRef();
+  const [addOrg, setAddOrg] = useState([])
   const { cases } = useSelector((state) => state.case.casesData);
   const caseObj = cases?.find(item => item.caseId === localStorage.getItem('c_id'));
-  const { organization } = useSelector((state) => state.organization);
+  const { organization, additionalOrganization } = useSelector((state) => state.organization);
   const organizationDetails = organization?.data?.length > 0 ? organization?.data : null;
   const attorneyDetails = useSelector((state) => state.contact.attorney);
   const realtorDetails = useSelector((state) => state.contact.realtor);
@@ -113,6 +114,11 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik 
     // state: Yup.string().required("State is required"),
     // zipCode: Yup.string().required("Zip code is required"),
   });
+
+  useEffect(()=>{
+    setAddOrg(additionalOrganization?.map((org) => [org]))
+  },[additionalOrganization])
+
   return (
     <>
       {isEdit ?
@@ -156,6 +162,9 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik 
         (<div className="grid grid-cols-12 gap-6">
           <div className="col-span-6">
             <ParticipantBothDetail organization={organizationDetails} title={caseType ? "Seller" : "Purchaser"} />
+            {addOrg?.map(org =>
+              <ParticipantBothDetail organization={org} title={caseType ? "Seller" : "Purchaser"} />
+            )}
           </div>
           <div className="col-span-6">
             {attorneyDetails?.length > 0 && <AttorneyDetails attorneyDetails={attorneyDetails} title={"Attorney"} />}
