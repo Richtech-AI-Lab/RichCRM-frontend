@@ -14,13 +14,17 @@ export const ParseCases = (dataString) =>{
     // });
     try {
       const introJson = JSON.parse(dataString);
-      const {message, status, cases} = introJson;
+      const {message, status, cases, clients, organizations } = introJson;
       console.log("[langchain][ParseCases] introJson: ", introJson);
       if (status === "success") {
-        return { introText: message, cases };
+        return { introText: message, cases, clients, organizations };
+      } else if (status === "error") {
+        return { introText: message };
+      } else {
+        return { introText: dataString };
       }
     } catch (error) {
       console.error("[langchain][ParseCases] error: ", error);
-      return { introText: dataString, cases: [] };
+      return { introText: dataString };
     }
   }

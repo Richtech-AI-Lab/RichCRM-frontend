@@ -6,7 +6,17 @@ import { JsonOutputParser } from "@langchain/core/output_parsers";
 import { HumanMessage, AIMessage } from "@langchain/core/messages";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IMAGES } from "../../constants/imagePath";
-import { updateCasesTool, fetchCasesByKeywordTool, updateClientTool } from "./tools";
+import { 
+  updateCasesTool,
+  fetchCasesByKeywordTool,
+  deleteCaseTool,
+  updateClientTool,
+  fetchClientsByKeywordTool,
+  deleteClientTool,
+  updateOrganizationTool,
+  fetchOrganizationsByKeywordTool,
+  deleteOrganizationTool,
+} from "./tools";
 import { SlDislike, SlLike } from "react-icons/sl";
 import { LangchainContext } from "./langchainContext";
 import BubbleLoader from "../../components/bubbleLoader";
@@ -25,17 +35,59 @@ and managing their contacts. \n Please always answer the question following
 the following JSON schema: \n\n\n
 const responseSchema = z.object(
     message: z.string(),
-    status: z.string(),
+    status: z.string().constraint((status) => status === "success" || status === "error"),
     cases: z.array(
       z.object(
         caseId: z.string(),
         caseType: z.number(),
         premisesId: z.string(),
         stage: z.number(),
-        closingDate: z.string(),
+        closingDate: z.string().optional(),
         clientId: z.string(),
         clientType: z.number(),
         clientName: z.string(),
+        closeAt: z.string().optional(),
+        mortgageContingencyDate: z.string().optional(),
+        additionalClients: z.array(z.string()).optional(),
+        contacts: z.array(z.string()).optional(),
+        additionalOrganizations: z.array(z.string()).optional(),
+        purchaserPrice: z.number().optional(),
+        downPayment: z.number().optional(),
+        mortgageAmount: z.number().optional(),
+        sellersConcession: z.number().optional(),
+        referral: z.string().optional(),
+        bank: z.string().optional(),
+        personalNote: z.string().optional(),
+      ),
+    ).optional(),
+    clients: z.array(
+      z.object(
+        clientId: z.string(),
+        firstName: z.string(),
+        lastName: z.string(),
+        clientType: z.number(),
+        tags: z.array(z.string()),
+        gender: z.string().optional(),
+        title: z.string().optional(),
+        cellNumber: z.string().optional(),
+        workNumber: z.string().optional(),
+        email: z.string().optional(),
+        wechatAccount: z.string().optional(),
+        ssn: z.string().optional(),
+        dob: z.string().optional(),
+        addressId: z.string().optional(),
+        organizationId: z.string().optional(),
+      ),
+    ).optional(),
+    organizations: z.array(
+      z.object(
+        organizationId: z.string(),
+        organizationName: z.string(),
+        organizationType: z.string().optional(),
+        cellNumber: z.string().optional(),
+        email: z.string().optional(),
+        website: z.string().optional(),
+        addressId: z.string().optional(),
       ),
     ).optional(),
 );
@@ -45,7 +97,17 @@ const responseSchema = z.object(
     ['placeholder', '{agent_scratchpad}']
   ];
   const [agentExecutor, setAgentExecutor] = useState(null);
-  const tools = [updateCasesTool, fetchCasesByKeywordTool, updateClientTool];
+  const tools = [
+    updateCasesTool,
+    fetchCasesByKeywordTool,
+    deleteCaseTool,
+    updateClientTool,
+    fetchClientsByKeywordTool,
+    deleteClientTool,
+    updateOrganizationTool,
+    fetchOrganizationsByKeywordTool,
+    deleteOrganizationTool,
+  ];
   const [chatHistory, setChatHistory] = useState([]);
   const [messages, setMessages] = useState([]);
   const [resData, setResData] = useState({});
@@ -140,19 +202,17 @@ const responseSchema = z.object(
                   </div>
                   {msg.loader == "true" ? <BubbleLoader loading={true} /> :
                     <div className="ag-msg">
+                      {/* Intro text */}
                       {
-                        resData?.cases?.length == 0 && <p className="text-[16px] text-secondary-800 font-normal pb-[20px]">
-                          {msg.text}
+                        <p className="text-[16px] text-secondary-800 font-normal pb-[20px]">
+                          {resData?.introText}
                         </p>
                       }
+                      {/* Case bubble */}
                       {
                         resData?.cases?.length > 0 && (
                           <div>
                             <div key={index} className="ag-msg">
-                              {/* Intro text */}
-                              <p className="text-[16px] text-secondary-800 font-normal pb-[20px]">
-                                {resData?.introText}
-                              </p>
                               <div className="grid gap-4 grid-cols-3">
                               {/* Grid structure */}
                               {resData.cases.map((caseItem, index) => (
@@ -179,12 +239,82 @@ const responseSchema = z.object(
                                     </div>
                                   </div>
                               
-                            ))}
+                              ))}
                             </div>
                             </div>
                           </div>
                         )
                       }
+
+                      {/* Client bubble */}
+                      {
+                        resData?.clients?.length > 0 && (
+                          <div>
+                            <div key={index} className="ag-msg">
+                              {resData.clients.map((client, index) => (
+                                  <div className="basis-1/3">
+                                    <div className="card bg-gray-100 p-4">
+                                      <div className="flex justify-between">
+                                        <span className="bg-badge-yellow text-secondary-100 text-sm font-semibold px-4 py-1 rounded-full inline-block">
+                                          {client?.clientId}
+                                        </span>
+                                        {/* <span className="text-[12px]">1/3</span> */}
+                                      </div>
+                                      <p className="text-[22px] text-secondary-800 font-medium leading-[30px] mb-[18px]">
+                                        {/* <span className="text-error ml-2">2 days</span> */}
+                                      </p>
+                                      <p className="text-base text-secondary-800 font-semibold mb-1">
+                                        {client?.firstName} {client?.lastName}
+                                      </p>
+                                      <p className="text-sm text-secondary-800 font-medium mb-1">
+                                        {client?.clientType}
+                                      </p>
+                                      <span className="text-sm text-secondary-300">Email: {client?.email}</span>
+                                      <span className="text-sm text-secondary-300">Cell Number: {client?.cellNumber}</span>
+                                      <span className="text-sm text-secondary-300">Work Number: {client?.workNumber}</span>
+                                    </div>
+                                  </div>
+                                ))}
+                            </div>
+                          </div>
+                        )
+                      }
+
+                      {/* Organization bubble */}
+                      {
+                        resData?.organizations?.length > 0 && (
+                          <div>
+                            <div key={index} className="ag-msg">
+                              {resData.organizations.map((organization, index) => (
+                                  <div className="basis-1/3">
+                                    <div className="card bg-gray-100 p-4">
+                                      <div className="flex justify-between">
+                                        <span className="bg-badge-yellow text-secondary-100 text-sm font-semibold px-4 py-1 rounded-full inline-block">
+                                          {organization?.organizationId}
+                                        </span>
+                                        {/* <span className="text-[12px]">1/3</span> */}
+                                      </div>
+                                      <p className="text-[22px] text-secondary-800 font-medium leading-[30px] mb-[18px]">
+                                        {/* <span className="text-error ml-2">2 days</span> */}
+                                      </p>
+                                      <p className="text-base text-secondary-800 font-semibold mb-1">
+                                        {organization?.organizationName}
+                                      </p>
+                                      <p className="text-sm text-secondary-800 font-medium mb-1">
+                                        {organization?.organizationType}
+                                      </p>
+                                      <span className="text-sm text-secondary-300">Email: {organization?.email}</span>
+                                      <span className="text-sm text-secondary-300">Cell Number: {organization?.cellNumber}</span>
+                                      <span className="text-sm text-secondary-300">Website: {organization?.website}</span>
+                                    </div>
+                                  </div>
+                                ))}
+                            </div>
+                          </div>
+                        )
+                      }
+                      {/* End of bubbles */}
+                            
 
 
                       <div className="like-dislike flex gap-3 mt-[5px]">
