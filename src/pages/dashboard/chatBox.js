@@ -125,7 +125,7 @@ const responseSchema = z.object(
   useEffect(() => {
     const llm = new ChatOpenAI({
       openAIApiKey: openaiAPIKey,
-      model: "gpt-3.5",
+      model: "gpt-4",
       temperature: 0,
     })
 
