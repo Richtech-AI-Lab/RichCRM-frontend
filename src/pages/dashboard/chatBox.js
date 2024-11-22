@@ -6,7 +6,7 @@ import { JsonOutputParser } from "@langchain/core/output_parsers";
 import { HumanMessage, AIMessage } from "@langchain/core/messages";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IMAGES } from "../../constants/imagePath";
-import { 
+import {
   updateCasesTool,
   fetchCasesByKeywordTool,
   deleteCaseTool,
@@ -23,6 +23,7 @@ import BubbleLoader from "../../components/bubbleLoader";
 import { useSelector } from "react-redux";
 import { ParseCases } from "../../utils/parseCases";
 import { format } from "date-fns";
+import { CHATGPT_CLIENT_TYPE, STAGESNAMES, STAGESNAMESLOWER } from "../../constants/constants";
 
 const ChatBox = () => {
   const { openaiAPIKey, setOpenaiAPIKey } = useContext(LangchainContext);
@@ -41,6 +42,7 @@ const responseSchema = z.object(
         caseId: z.string(),
         caseType: z.number(),
         premisesId: z.string(),
+        premisesName: z.string(),
         stage: z.number(),
         closingDate: z.string().optional(),
         clientId: z.string(),
@@ -205,7 +207,7 @@ const responseSchema = z.object(
                       {/* Intro text */}
                       {
                         <p className="text-[16px] text-secondary-800 font-normal pb-[20px]">
-                          {resData?.introText}
+                          {resData?.introText}.
                         </p>
                       }
                       {/* Case bubble */}
@@ -214,33 +216,25 @@ const responseSchema = z.object(
                           <div>
                             <div key={index} className="ag-msg">
                               <div className="grid gap-4 grid-cols-3">
-                              {/* Grid structure */}
-                              {resData.cases.map((caseItem, index) => (
+                                {/* Grid structure */}
+                                {resData.cases.map((caseItem, index) => (
 
-                               
+
                                   <div className="basis-1/3">
                                     <div className="card bg-gray-100 p-4">
-                                      <div className="flex justify-between">
-                                        <span className="bg-badge-yellow text-secondary-100 text-sm font-semibold px-4 py-1 rounded-full inline-block">
-                                          {caseItem?.caseId}
-                                        </span>
-                                        {/* <span className="text-[12px]">1/3</span> */}
-                                      </div>
-                                      <p className="text-[22px] text-secondary-800 font-medium leading-[30px] mb-[18px]">
-                                        {/* <span className="text-error ml-2">2 days</span> */}
-                                      </p>
-                                      <p className="text-base text-secondary-800 font-semibold mb-1">
-                                        {caseItem?.clientName}
-                                      </p>
-                                      <p className="text-sm text-secondary-800 font-medium mb-1">
-                                        Stage: {caseItem?.stage}
-                                      </p>
-                                      <span className="text-sm text-secondary-300">{caseItem?.closingDate}</span>
+                                      {/* <div class="card rounded-2xl mb-2  bg-white shadow-shadow-light" > */}
+                                      <div class="flex items-center justify-between">
+                                        <span class="badge bg-badge-yellow">To-do</span></div>
+                                      <p class="text-base text-secondary-800 font-semibold mt-2">  {caseItem?.clientName}</p>
+                                      <p class="text-xs text-secondary-800"> Stage: {STAGESNAMESLOWER[caseItem?.stage]}</p>
+                                      <p class="text-sm text-secondary-800 font-medium mt-1">{caseItem?.premisesName}</p>
+                                      <span class="text-xs text-secondary-700"> {caseItem?.caseType ? "Selling" : "Purchasing"}</span>
+                                      {/* </div> */}
+
                                     </div>
                                   </div>
-                              
-                              ))}
-                            </div>
+                                ))}
+                              </div>
                             </div>
                           </div>
                         )
@@ -251,30 +245,38 @@ const responseSchema = z.object(
                         resData?.clients?.length > 0 && (
                           <div>
                             <div key={index} className="ag-msg">
-                              {resData.clients.map((client, index) => (
+                              <div className="grid gap-4 grid-cols-3">
+                                {resData.clients.map((client, index) => (
                                   <div className="basis-1/3">
                                     <div className="card bg-gray-100 p-4">
-                                      <div className="flex justify-between">
-                                        <span className="bg-badge-yellow text-secondary-100 text-sm font-semibold px-4 py-1 rounded-full inline-block">
-                                          {client?.clientId}
-                                        </span>
-                                        {/* <span className="text-[12px]">1/3</span> */}
+
+                                      <div className="flex">
+                                        <img
+                                          src={IMAGES.avatarpic}
+                                          alt="Profile"
+                                          className="rounded-full"
+                                          style={{ height: '40px', width: '40px' }}
+                                        // className="mt-2"
+                                        />
+                                        <div className="ml-2">
+                                          <div className="mb">
+                                            <p className="text-secondary-800">{client?.firstName} {client?.lastName}</p>
+                                            {/* <p className="font-medium text-secondary-800 text-sm mb-10">Brokers</p> */}
+                                            {/* {client?.tags.map((tag) => <NewBadge label={tag} />)}  */}
+                                          </div>
+                                          {/* <p className="text-secondary-300 text-sm">{client?.email}</p> */}
+                                          <p class="text-sm text-secondary-800 font-medium mt-1">{client?.email}</p>
+                                          <p class="text-sm text-secondary-800 font-medium mt-1">{client?.cellNumber}</p>
+                                          {/* <p class="text-sm text-secondary-800 font-medium mt-1">{client?.workNumber}</p> */}
+                                          <span class="text-xs text-secondary-700"> {CHATGPT_CLIENT_TYPE[client?.clientType]}</span>
+                                        </div>
                                       </div>
-                                      <p className="text-[22px] text-secondary-800 font-medium leading-[30px] mb-[18px]">
-                                        {/* <span className="text-error ml-2">2 days</span> */}
-                                      </p>
-                                      <p className="text-base text-secondary-800 font-semibold mb-1">
-                                        {client?.firstName} {client?.lastName}
-                                      </p>
-                                      <p className="text-sm text-secondary-800 font-medium mb-1">
-                                        {client?.clientType}
-                                      </p>
-                                      <span className="text-sm text-secondary-300">Email: {client?.email}</span>
-                                      <span className="text-sm text-secondary-300">Cell Number: {client?.cellNumber}</span>
-                                      <span className="text-sm text-secondary-300">Work Number: {client?.workNumber}</span>
+
+
                                     </div>
                                   </div>
                                 ))}
+                              </div>
                             </div>
                           </div>
                         )
@@ -285,36 +287,44 @@ const responseSchema = z.object(
                         resData?.organizations?.length > 0 && (
                           <div>
                             <div key={index} className="ag-msg">
+                            <div className="grid gap-4 grid-cols-3">
                               {resData.organizations.map((organization, index) => (
-                                  <div className="basis-1/3">
-                                    <div className="card bg-gray-100 p-4">
-                                      <div className="flex justify-between">
-                                        <span className="bg-badge-yellow text-secondary-100 text-sm font-semibold px-4 py-1 rounded-full inline-block">
-                                          {organization?.organizationId}
-                                        </span>
-                                        {/* <span className="text-[12px]">1/3</span> */}
-                                      </div>
-                                      <p className="text-[22px] text-secondary-800 font-medium leading-[30px] mb-[18px]">
-                                        {/* <span className="text-error ml-2">2 days</span> */}
-                                      </p>
-                                      <p className="text-base text-secondary-800 font-semibold mb-1">
-                                        {organization?.organizationName}
-                                      </p>
-                                      <p className="text-sm text-secondary-800 font-medium mb-1">
-                                        {organization?.organizationType}
-                                      </p>
-                                      <span className="text-sm text-secondary-300">Email: {organization?.email}</span>
-                                      <span className="text-sm text-secondary-300">Cell Number: {organization?.cellNumber}</span>
-                                      <span className="text-sm text-secondary-300">Website: {organization?.website}</span>
-                                    </div>
-                                  </div>
-                                ))}
+                                   <div className="basis-1/3">
+                                   <div className="card bg-gray-100 p-4">
+
+                                     <div className="flex">
+                                       <img
+                                         src={IMAGES.avatarpic}
+                                         alt="Profile"
+                                         className="rounded-full"
+                                         style={{ height: '40px', width: '40px' }}
+                                       // className="mt-2"
+                                       />
+                                       <div className="ml-2">
+                                         <div className="mb">
+                                           <p className="text-secondary-800">{organization?.organizationName}</p>
+                                           {/* <p className="font-medium text-secondary-800 text-sm mb-10">Brokers</p> */}
+                                           {/* {client?.tags.map((tag) => <NewBadge label={tag} />)}  */}
+                                         </div>
+                                         {/* <p className="text-secondary-300 text-sm">{client?.email}</p> */}
+                                         <p class="text-sm text-secondary-800 font-medium mt-1">{organization?.email}</p>
+                                         <p class="text-sm text-secondary-800 font-medium mt-1">{organization?.cellNumber}</p>
+                                         <p class="text-sm text-secondary-800 font-medium mt-1">{organization?.website}</p>
+                                         <span class="text-xs text-secondary-700"> {organization?.organizationType}</span>
+                                       </div>
+                                     </div>
+
+
+                                   </div>
+                                 </div>
+                              ))}
+                              </div>
                             </div>
                           </div>
                         )
                       }
                       {/* End of bubbles */}
-                            
+
 
 
                       <div className="like-dislike flex gap-3 mt-[5px]">

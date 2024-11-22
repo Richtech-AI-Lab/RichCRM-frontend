@@ -630,6 +630,14 @@ export const STAGESNAMES ={
   '4': 'CLOSING'
 }
 
+export const STAGESNAMESLOWER ={
+  '0': 'Setup',
+  '1': 'Contract preparing',
+  '2': 'Contact signing',
+  '3': 'Mortgage',
+  '4': 'Closing'
+}
+
 export const ACTIONTYPELABEL ={
   0: 'Action',
   1: 'Contact',
@@ -684,6 +692,12 @@ export const CONTACT_TYPE = {
   3: 'Lender',
   4: 'Client',
   5: 'Other'
+};
+
+export const CHATGPT_CLIENT_TYPE = {
+  0: "Client",
+  1: "Company",
+  2: "Trust",
 };
 
 export const maintenanceFeePer =["Month", "Quarter", "Year"]
