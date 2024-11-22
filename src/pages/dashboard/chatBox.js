@@ -326,7 +326,6 @@ const responseSchema = z.object(
                       {/* End of bubbles */}
 
 
-
                       <div className="like-dislike flex gap-3 mt-[5px]">
                         <SlLike className="text-lg opacity-40" />
                         <SlDislike className="text-lg opacity-40" />
