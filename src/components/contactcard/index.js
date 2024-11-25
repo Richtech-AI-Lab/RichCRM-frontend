@@ -34,6 +34,7 @@ const ContactCard = ({
   const [isAddFromContactsModalOpen, setIsAddFromContactsModalOpen] = useState(false); // Modal state
   const { additionalClient } = useSelector((state) => state.client);
   const { additionalOrganization } = useSelector((state) => state.organization);
+  const attorneyDetails = useSelector((state) => state.contact.attorney);
 
   useEffect(() => {
     if(casedetails?.clientType ==0){
@@ -193,6 +194,52 @@ const ContactCard = ({
                   // icon={<GrLocation className="text-xl" />}
                   label="Address"
                   content={data.addressId || 'not available'}
+                  isInput={false}
+                />
+              </ul>
+            </AccordionContent>
+          </AccordionPanel>
+        ))}
+      </Accordion>
+      <Accordion className="border-0" collapseAll>
+        {attorneyDetails?.map((data, index) => (
+          <AccordionPanel key={index} >
+            <AccordionTitle className="py-3 px-4 border-t border-badge-gray rounded-none first:rounded-t-none bg-white hover:bg-white focus:ring-transparent contact-accordian-title">
+              <div className="flex items-center">
+                <img
+                  src={data?.profileImage || IMAGES.profile}
+                  alt="Profile"
+                  className="mr-4 w-10 h-10 rounded-full"
+                />
+
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <span className="left-txt font-medium text-secondary-800">{`${data.firstName} ${data.lastName}`}</span>
+                      <span className="left-txt font-medium text-secondary-800 text-sm">{data.company}</span>
+                    </div>
+              </div>
+            </AccordionTitle>
+            <AccordionContent className="bg-light-purple py-3 px-4 contact-accordian-body">
+              <ul className="card-details">
+                <ContactDetailItem
+                  label="Role"
+                  content={`${data.company}`}
+                  isInput={false} />
+                {/* <ContactDetailItem
+                  label="Referred by"
+                  content="Add a referral"
+                  isInput={false}
+                  className="text-text-blue-400 font-semibold"
+                  /> */}
+                <ContactDetailItem
+                  // icon={<MdOutlineEmail className="text-xl" />}
+                  label="Email"
+                  content={data?.email || 'not available'}
+                  isInput={false}
+                />
+                <ContactDetailItem
+                  // icon={<MdOutlinePhone className="text-xl" />}
+                  label="Cell Phone"
+                  content={data?.cellNumber || 'not available'}
                   isInput={false}
                 />
               </ul>
