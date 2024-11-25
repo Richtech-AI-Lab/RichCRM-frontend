@@ -91,6 +91,7 @@ const OneDriveManager = () => {
         setFiles(data.value || []);
         setLoader(false)
     }
+
     const handleDeleteClick = async (itemId) => {
         const authToken = await getToken();
         await fetch(`https://graph.microsoft.com/v1.0/me/drive/items/${itemId}`, {
@@ -130,6 +131,7 @@ const OneDriveManager = () => {
         { id: addFromContactV1Tab.individuals, label: "OneDrive" },
         // { id: addFromContactV1Tab.organizations, label: "Organizations" },
     ];
+
     const handleDownloadClick = async (fileId) => {
         const authToken = await getToken();
         const response = await fetch(`https://graph.microsoft.com/v1.0/me/drive/items/${fileId}`, {
@@ -245,6 +247,7 @@ const OneDriveManager = () => {
                 console.log(error);
             });
     }
+    
     if (accounts.length > 0) {
         return (
             <div>
