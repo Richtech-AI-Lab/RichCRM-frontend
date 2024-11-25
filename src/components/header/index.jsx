@@ -6,7 +6,7 @@ import { IoIosLogOut, IoMdClose } from "react-icons/io";
 import { logout } from "../../redux/actions/authActions";
 import { deleteUserRequest } from "../../redux/actions/authActions";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { API_ENDPOINTS, ROUTES } from "../../constants/api";
 import { postRequest } from "../../axios/interceptor";
 import { debounce } from "lodash";
@@ -26,6 +26,7 @@ import { setSelectedOrganization } from "../../redux/actions/organizationActions
 import { fetchAllCasesRequest } from "../../redux/actions/caseAction";
 
 const Header = ({ toggleDrawer, title }) => {
+  const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [searchResults, setSearchResults] = useState({});
@@ -161,6 +162,11 @@ const Header = ({ toggleDrawer, title }) => {
     navigate(ROUTES.LOGIN);
   };
 
+  const shouldShow = (routePath) => {
+    const pathsToShow = [routePath];
+    return pathsToShow.includes(location.pathname);
+  };
+
   return (
     <div className="flex justify-between items-center">
       <h1 className="flex items-center text-[28px] text-title font-medium leading-9">
@@ -170,6 +176,7 @@ const Header = ({ toggleDrawer, title }) => {
         {title}
       </h1>
       <div className="flex items-center">
+      {!shouldShow(ROUTES.DOCUMENTS) && (
         <div className="relative">
           <input
             className="text-base text-secondary-700 font-normal leading-6 bg-bg-gray-100 py-2 px-6 rounded-[28px] w-[360px]"
@@ -199,7 +206,7 @@ const Header = ({ toggleDrawer, title }) => {
           ) : (
             ""
           )}
-        </div>
+        </div>)}
         <Dropdown
           arrowIcon={false}
           label={<img src={IMAGES.profile} className="cursor-pointer ml-6" />}

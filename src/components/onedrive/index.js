@@ -18,7 +18,8 @@ import DeleteModal from "../deleteModal";
 import { IMAGES } from "../../constants/imagePath";
 import { format } from "date-fns";
 import { FiPlus } from "react-icons/fi";
-
+import { FaArrowDown, FaArrowUp } from "react-icons/fa";
+import OneDriveSearch from "./search";
 
 const OneDriveManager = () => {
     const { instance, accounts, inProgress } = useMsal();
@@ -263,9 +264,8 @@ const OneDriveManager = () => {
     if (accounts.length > 0) {
         return (
             <div>
-                <div className="flex justify-between items-center mb-2">
-                    <div className="flex justify-between items-center">
-                        {pathHistory.length > 1 && (
+                <div className="flex items-center mb-2">
+                {pathHistory.length > 1 && (
                             <div
                                 style={{
                                     display: "flex",
@@ -290,21 +290,43 @@ const OneDriveManager = () => {
                                 </span>
                             </div>
                         )}
+                    <div className={"bg-bg-gray-100 px-4 py-2 rounded-full cursor-pointer"}>
+                        <span className="text-base font-medium text-secondary-800">
+                            OneDrive
+                        </span>
+                    </div>
+                    {pathHistory?.map((crumb, index) => (
+                        <React.Fragment key={index}>
+                            {index > 0 && <span><SlArrowRight className="inline mr-2" /></span>}
+                            <span className={`text-xl text-secondary-800 font-medium mr-5`} key={index} onClick={() => handleBackClick(index)} style={{ cursor: "pointer" }}>
+                                {crumb.name}
+                            </span>
+                        </React.Fragment>
+                    ))}
+                </div>
+
+
+                <div className="flex justify-between items-center mb-2">
+                    <div className="flex justify-between items-center">
+
                         {<div className="flex justify-between items-center">
                         </div>}
-                        <div className={"bg-bg-gray-100 px-4 py-2 rounded-full cursor-pointer"}>
-                            <span className="text-base font-medium text-secondary-800">
-                                OneDrive
-                            </span>
+                        <div className="flex items-center">
+                            <div className="relative mb-2">
+                                <input
+                                    className="text-base text-secondary-700 font-normal leading-6 bg-bg-gray-100 py-2 px-6 rounded-[28px] w-[360px]"
+                                    placeholder="Search case, contact or address"
+                                // value={searchValue}
+                                // onChange={handleInputChange}
+                                />
+                                <img
+                                    src={IMAGES.searchIcon}
+                                    alt="icon"
+                                    className="absolute right-5 top-[10px]"
+                                />
+                            </div>
                         </div>
-                        {pathHistory?.map((crumb, index) => (
-                            <React.Fragment key={index}>
-                                {index > 0 && <span><SlArrowRight className="inline mr-2" /></span>}
-                                <span className={`text-xl text-secondary-800 font-medium mr-5`} key={index} onClick={() => handleBackClick(index)} style={{ cursor: "pointer" }}>
-                                    {crumb.name}
-                                </span>
-                            </React.Fragment>
-                        ))}
+
                     </div>
                     <div className="flex justify-between items-center">
                         <XButton
@@ -322,27 +344,22 @@ const OneDriveManager = () => {
                         />
                     </div>
                 </div>
+                {/* <OneDriveSearch getToken={() => getToken()} /> */}
+
                 <div className={`mb-2 contacts-table`}>
                     <Table>
                         <Table.Head>
                             {header.map((key, index) => (
                                 <Table.HeadCell width={width[index]} key={index}>
-                                    {/* {index == 1 && <div className="flex justify-end mb-4">
-                                        <select
-                                            className="border rounded px-2 py-1"
-                                            onChange={(e) => {
-                                                const [attribute, order] = e.target.value.split(",");
-                                                handleSortChange(attribute, order);
-                                            }}
-                                        >
-                                            <option value="lastModifiedDateTime,asc">Last Modified (Asc)</option>
-                                            <option value="lastModifiedDateTime,desc">Last Modified (Desc)</option>
-                                            <option value="name,asc">Name (A-Z)</option>
-                                            <option value="name,desc">Name (Z-A)</option>
-                                        </select>
+                                    <div className="flex items-center justify-start">
+                                        <span>{key}</span>
+                                        {index === 0 && !loader && (
+                                            <div className="cursor-pointer ml-2" onClick={() => handleSortChange("name", sortOrder === "desc" ? "asc" : "desc")}>
+                                                {sortOrder === "desc" ? <FaArrowDown /> : <FaArrowUp />}
+                                            </div>
+                                        )}
                                     </div>
-                                    } */}
-                                    {key}</Table.HeadCell>
+                                </Table.HeadCell>
                             ))}
                         </Table.Head>
                     </Table>
@@ -351,6 +368,7 @@ const OneDriveManager = () => {
                     {!loader ? (
                         <>
                             <Table>
+                                {console.log(files, "files")}
                                 {files?.length > 0 ? (
                                     <>
                                         <Table.Body className="divide-y">
@@ -384,7 +402,7 @@ const OneDriveManager = () => {
                                                     :
                                                     <Table.Row key={file.id} className="bg-white dark:border-gray-700 dark:bg-gray-800 cursor-pointer"
                                                     >
-                                                        {      console.log(file,"fffff")}
+                                                        {console.log(file, "fffff")}
                                                         <Table.Cell
                                                             onClick={() => openFilePreview(file.id)}
                                                             width={width[0]}
