@@ -167,6 +167,7 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik }
                 <div className="grid grid-cols-12 gap-6">
                   <div className="col-span-6">
                     <PurchaserParticipantForm title={caseType ? "Seller" : "Purchaser"} handleChange={handleChange} setFieldValue={setFieldValue} values={values} form={{ errors, touched }} initialValues={initialPurchaserValues} />
+                    {/* <PurchaserParticipantForm title={caseType ? "Seller" : "Purchaser"} handleChange={handleChange} setFieldValue={setFieldValue} values={values} form={{ errors, touched }} initialValues={initialPurchaserValues} /> */}
                   </div>
                   <div className="col-span-6">
                     <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} attorneyDetails={attorneyDetails} errors={errors.attorneys || []}
