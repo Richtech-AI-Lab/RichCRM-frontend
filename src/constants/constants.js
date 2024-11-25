@@ -715,3 +715,13 @@ export const colorOptions = [
   { label: "tagI", color1: "#d8c8f9", color2: "#3d00ad" },  // Purple colors (tagI)
   { label: "tagJ", color1: "#fad6ee", color2: "#8f003e" }   // Burgundy colors (tagJ)
 ];
+
+export const formatFileSize = (bytes) => {
+  if (bytes === 0) return '0 Bytes';
+
+  const units = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+  const unitIndex = Math.floor(Math.log(bytes) / Math.log(1024));
+  const size = bytes / Math.pow(1024, unitIndex);
+
+  return `${size.toFixed(2)} ${units[unitIndex]}`;
+}

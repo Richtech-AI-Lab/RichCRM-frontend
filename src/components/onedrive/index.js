@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useMsal } from "@azure/msal-react";
-import { Button, Modal, Spinner } from "flowbite-react";
+import { Button, Modal, Spinner, Table } from "flowbite-react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import ContactTabs from "../actionbar/contactTabs";
 // import { FiPlus } from "react-icons/fi";
@@ -8,13 +8,16 @@ import { IoArrowBackCircle } from "react-icons/io5";
 import { IoMdLogIn } from "react-icons/io";
 import { IoMdLogOut } from "react-icons/io";
 import XButton from "../button/XButton";
-import { addFromContactV1Tab } from "../../constants/constants";
+import { addFromContactV1Tab, formatFileSize } from "../../constants/constants";
 import { SlArrowRight } from "react-icons/sl";
 import { IoCloudDownload } from "react-icons/io5";
 import { toast } from "react-toastify";
 import TextInput from "../TextInput";
 import MenuPopup from "../menupopup";
 import DeleteModal from "../deleteModal";
+import { IMAGES } from "../../constants/imagePath";
+import { format } from "date-fns";
+import { FiPlus } from "react-icons/fi";
 
 
 const OneDriveManager = () => {
@@ -28,6 +31,8 @@ const OneDriveManager = () => {
     const [showDeletePopup, setShowDeletePopup] = useState(false);
     const [currentField, setCurrentFileId] = useState(false);
     const [newFolderName, setNewFolderName] = useState("");
+    const [sortAttribute, setSortAttribute] = useState("name");
+    const [sortOrder, setSortOrder] = useState("asc");
     const menuOption = [
         { id: 0, label: "Download" },
         { id: 1, label: "Delete" },
@@ -45,6 +50,11 @@ const OneDriveManager = () => {
         }
     };
 
+    const handleSortChange = (attribute, order) => {
+        setSortAttribute(attribute);
+        setSortOrder(order);
+        fetchFiles(path, attribute, order);
+    };
     const handleOptionSubmit = (fileId, label, item) => {
         if (label == 0) {
             handleDownloadClick(fileId);
@@ -79,10 +89,10 @@ const OneDriveManager = () => {
         return authResult.accessToken;
     }
 
-    async function fetchFiles(folderPath = "/me/drive/root") {
+    async function fetchFiles(folderPath = "/me/drive/root", sortAttribute = "name", sortOrder = "asc") {
         setLoader(true)
         const authToken = await getToken();
-        const response = await fetch(`https://graph.microsoft.com/v1.0${folderPath}/children`, {
+        const response = await fetch(`https://graph.microsoft.com/v1.0${folderPath}/children?$orderby=${sortAttribute} ${sortOrder}`, {
             headers: {
                 Authorization: `Bearer ${authToken}`,
             },
@@ -106,9 +116,9 @@ const OneDriveManager = () => {
 
     useEffect(() => {
         if (account) {
-            fetchFiles(path); // Fetch files on path change
+            fetchFiles(path, sortAttribute, sortOrder); // Fetch files on path change
         }
-    }, [account, path]);
+    }, [account, path, sortAttribute, sortOrder]);
 
     const handleFolderClick = (folderId, folderName) => {
         // alert(folderId, folderName)
@@ -247,128 +257,170 @@ const OneDriveManager = () => {
                 console.log(error);
             });
     }
-    
+    const header = ["Name", "Last Modified", "Size", "Kind", ""];
+    const width = ["40%", "15%", "10%", "25%", "5%"];
+
     if (accounts.length > 0) {
         return (
             <div>
-                <div className="bg-white p-4 rounded-2xl mb-2 h-[calc(100vh-140px)]">
-                    <div className="flex justify-between items-center mb-2">
-                        <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center mb-2">
+                    <div className="flex justify-between items-center">
+                        {pathHistory.length > 1 && (
+                            <div
+                                style={{
+                                    display: "flex",
+                                    flexShrink: "0",
+                                    opacity: 0.5,
+                                    marginRight: '10px'
+                                }}
 
-                            {<div className="flex justify-between items-center">
-                                {pathHistory.length > 1 && (
-                                    <XButton
-                                        // text="Back"
-                                        icon={<IoArrowBackCircle style={{ height: '40px', width: '40px' }} className="text-base inline-block" />}
-                                        className="bg-bg-gray-100 hover:bg-gray-700 text-secondary shadow-shadow-light  rounded-full cursor-pointer"
-                                        onClick={handleBackClick}
-                                    // onClick={toggleModal}
-                                    />
-                                )}
-                                {/* <span className="text-base text-secondary-800 font-medium">{"Onedrive"}</span>
-                        <div className="flex items-center gap-2">
-                            <BsThreeDotsVertical className="text-lg opacity-40" />
-                        </div> */}
-                            </div>}
-                            <div className={"bg-bg-gray-100 px-4 py-2 rounded-full cursor-pointer"}>
-                                <span className="text-base font-medium text-secondary-800">
-                                    OneDrive
+                            >
+                                <span style={{ display: "flex", gap: "8px", alignItems: "center", cursor: "pointer" }} onClick={handleBackClick}>
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                        <path
+                                            d="M14.25 9H3.75M3.75 9L9 14.25M3.75 9L9 3.75"
+                                            stroke="#1A1C1F"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        />
+                                    </svg>
+                                    <span style={{ color: "#1A1C1F", fontSize: "14px" }}>Back</span>
                                 </span>
                             </div>
-                            {pathHistory?.map((crumb, index) => (
-                                <React.Fragment key={index}>
-                                    {index > 0 && <span><SlArrowRight className="inline mr-2" /></span>}
-                                    <span className={`text-xl text-secondary-800 font-medium mr-5`} key={index} onClick={() => handleBackClick(index)} style={{ cursor: "pointer" }}>
-                                        {crumb.name}
-                                    </span>
-                                </React.Fragment>
-                            ))}
+                        )}
+                        {<div className="flex justify-between items-center">
+                        </div>}
+                        <div className={"bg-bg-gray-100 px-4 py-2 rounded-full cursor-pointer"}>
+                            <span className="text-base font-medium text-secondary-800">
+                                OneDrive
+                            </span>
                         </div>
-                        <div className="flex justify-between items-center">
-                            <XButton
-                                text="Create Folder"
-                                icon={<IoMdLogIn className="text-base mr-2 inline-block" />}
-                                className="bg-blue-500 hover:bg-blue-700 shadow-shadow-light text-sm text-white py-[10px] px-6 rounded-[100px] font-medium ml-4"
-                                onClick={() => setShowCreateFolderModal(true)}
-                            />
-                            <XButton
-                                text="Logout"
-                                icon={<IoMdLogOut className="text-base mr-2 inline-block" />}
-                                className="bg-red-500 hover:bg-red-700 shadow-shadow-light text-sm text-white py-[10px] px-6 rounded-[100px] font-medium ml-4"
-                                onClick={logout}
-                            // onClick={toggleModal}
-                            />
-                        </div>
+                        {pathHistory?.map((crumb, index) => (
+                            <React.Fragment key={index}>
+                                {index > 0 && <span><SlArrowRight className="inline mr-2" /></span>}
+                                <span className={`text-xl text-secondary-800 font-medium mr-5`} key={index} onClick={() => handleBackClick(index)} style={{ cursor: "pointer" }}>
+                                    {crumb.name}
+                                </span>
+                            </React.Fragment>
+                        ))}
                     </div>
-
-
+                    <div className="flex justify-between items-center">
+                        <XButton
+                            text="New Folder"
+                            icon={<FiPlus className="text-base mr-2 inline-block" />}
+                            className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium ml-4"
+                            onClick={() => setShowCreateFolderModal(true)}
+                        />
+                        <XButton
+                            text="Logout"
+                            icon={<IoMdLogOut className="text-base mr-2 inline-block" />}
+                            className="bg-red-500 hover:bg-red-700 shadow-shadow-light text-sm text-white py-[10px] px-6 rounded-[100px] font-medium ml-4"
+                            onClick={logout}
+                        // onClick={toggleModal}
+                        />
+                    </div>
+                </div>
+                <div className={`mb-2 contacts-table`}>
+                    <Table>
+                        <Table.Head>
+                            {header.map((key, index) => (
+                                <Table.HeadCell width={width[index]} key={index}>
+                                    {/* {index == 1 && <div className="flex justify-end mb-4">
+                                        <select
+                                            className="border rounded px-2 py-1"
+                                            onChange={(e) => {
+                                                const [attribute, order] = e.target.value.split(",");
+                                                handleSortChange(attribute, order);
+                                            }}
+                                        >
+                                            <option value="lastModifiedDateTime,asc">Last Modified (Asc)</option>
+                                            <option value="lastModifiedDateTime,desc">Last Modified (Desc)</option>
+                                            <option value="name,asc">Name (A-Z)</option>
+                                            <option value="name,desc">Name (Z-A)</option>
+                                        </select>
+                                    </div>
+                                    } */}
+                                    {key}</Table.HeadCell>
+                            ))}
+                        </Table.Head>
+                    </Table>
+                </div>
+                <div className='overflow-x-auto contacts-table h-[calc(100vh-280px)]'>
                     {!loader ? (
                         <>
-                            <div style={{ display: "flex", flexDirection: "column" }} className="overflow-x-auto h-[68vh] ">
-                                {files.map((file) => (
-                                    <div
-                                        className="m-2 flex justify-between items-center hover:bg-badge-gray cursor-pointer min-h-[50px] w-full"
-                                        key={file.id}
-                                        style={{
-                                            padding: "10px",
-                                            borderBottom: "1px solid #eaeaea",
-                                        }}
-                                    >
-                                        {file.folder ? (
-                                            <>
-                                                <div className="flex items-center w-full"
-                                                    onClick={() => handleFolderClick(file.id, file.name)}
-                                                >
-                                                    <img
-                                                        src="https://img.icons8.com/color/96/000000/folder-invoices.png"
-                                                        alt="folder"
-                                                        style={{ width: "40px", height: "40px" }}
-                                                    />
-                                                    <p className="ml-4 text-left">{file.name}</p>
+                            <Table>
+                                {files?.length > 0 ? (
+                                    <>
+                                        <Table.Body className="divide-y">
+                                            {files?.map((file) => (
+                                                file.folder ?
+                                                    <Table.Row key={file.id} className="bg-white dark:border-gray-700 dark:bg-gray-800 cursor-pointer"
+                                                    >
+                                                        <Table.Cell
+                                                            onClick={() => handleFolderClick(file.id, file.name)}
+                                                            width={width[0]}
+                                                            className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                                            <div className="flex items-center">
+                                                                <img src={IMAGES.folderIcon} alt="Profile" className="mr-3 " />
+                                                                <span className="left-txt font-medium text-secondary-800">
+                                                                    {/* {user.firstName} {user.lastName} */}{file.name}
+                                                                </span>
+                                                            </div>
+                                                        </Table.Cell>
+                                                        <Table.Cell width={width[1]}>{format(file?.createdDateTime, 'MMM dd, yyyy hh:mm')}</Table.Cell>
+                                                        <Table.Cell width={width[2]}>{file?.folder?.childCount} items</Table.Cell>
+                                                        <Table.Cell width={width[3]}>Folder</Table.Cell>
+                                                        <Table.Cell width={width[4]}>
+                                                            <div className="ml-auto">
+                                                                <MenuPopup
+                                                                    handleOptionSubmit={(label) => handleOptionSubmit(file.id, label)}
+                                                                    dropdownItems={menuOption.map((option) => option.label)}
+                                                                    icon={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />}
+                                                                />
+                                                            </div></Table.Cell>
+                                                    </Table.Row>
+                                                    :
+                                                    <Table.Row key={file.id} className="bg-white dark:border-gray-700 dark:bg-gray-800 cursor-pointer"
+                                                    >
+                                                        {      console.log(file,"fffff")}
+                                                        <Table.Cell
+                                                            onClick={() => openFilePreview(file.id)}
+                                                            width={width[0]}
+                                                            className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                                            <div className="flex items-center">
+                                                                <img src={IMAGES.fileIcon} alt="Profile" className="mr-3" />
+                                                                <span className="left-txt font-medium text-secondary-800">
+                                                                    {/* {user.firstName} {user.lastName} */}{file.name}
+                                                                </span>
+                                                            </div>
+                                                        </Table.Cell>
+                                                        <Table.Cell
+                                                            width={width[1]}
+                                                        >{format(file?.createdDateTime, 'MMM dd, yyyy hh:mm')}</Table.Cell>
+                                                        <Table.Cell width={width[2]}>{formatFileSize(file?.size)}</Table.Cell>
+                                                        <Table.Cell width={width[3]}>File</Table.Cell>
+                                                        <Table.Cell width={width[4]}>                                                <div className="ml-auto">
+                                                            <MenuPopup
+                                                                handleOptionSubmit={(label) => handleOptionSubmit(file.id, label)}
+                                                                dropdownItems={menuOption?.map((option) => option.label)}
+                                                                icon={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />}
+                                                            />
+                                                        </div></Table.Cell>
+                                                    </Table.Row>
 
-                                                </div>
-                                                <div className="ml-auto">
-                                                    <MenuPopup
-                                                        handleOptionSubmit={(label) => handleOptionSubmit(file.id, label)}
-                                                        dropdownItems={menuOption.map((option) => option.label)}
-                                                        icon={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />}
-                                                    />
-                                                </div>
-                                            </>
-                                        ) : (
-
-                                            // File Icon and Clickable
-                                            <>
-                                                <div className="flex items-center w-full"
-                                                    onClick={() => openFilePreview(file.id)}
-                                                >
-                                                    <img
-                                                        src={file.thumbnail ? file.thumbnail : "https://img.icons8.com/color/96/000000/file.png"}
-                                                        alt="file"
-                                                        style={{ width: "40px", height: "40px" }}
-                                                    />
-                                                    <p className="ml-4 text-left">{file.name}</p>
-
-                                                </div>
-                                                <div className="ml-auto">
-                                                    <MenuPopup
-                                                        handleOptionSubmit={(label) => handleOptionSubmit(file.id, label)}
-                                                        dropdownItems={menuOption?.map((option) => option.label)}
-                                                        icon={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />}
-                                                    />
-                                                </div>
-                                            </>
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
-                            {files?.length === 0 && (
-                                <div className="bg-white p-4 rounded-2xl mb-5">
+                                            ))}
+                                        </Table.Body>
+                                    </>
+                                ) : (
                                     <div className="flex flex-col items-center justify-center h-[60vh] w-full">
-                                        <p className="text-center text-gray-500">No files exist!</p>
+                                        <p className="text-center text-gray-500">
+                                            No files exist!
+                                        </p>
                                     </div>
-                                </div>
-                            )}
+                                )}
+                            </Table>
                         </>
                     ) : (
                         <div className="flex justify-center items-center">
@@ -381,63 +433,64 @@ const OneDriveManager = () => {
                             />
                         </div>
                     )}
+                </div>
 
 
-                    <Modal show={showCreateFolderModal} onClose={() => handleCloseCreateModal()} className="new-case-modal">
-                        <Modal.Header className="border-b-0">
-                            <div>
-                                <h2 className="mb-2 text-[28px] leading-9 font-medium text-secondary-800">
-                                    Create Folder
-                                </h2>
-                                {/* <p className="text-sm leading-5 text-secondary-700">
+                <Modal show={showCreateFolderModal} onClose={() => handleCloseCreateModal()} className="new-case-modal">
+                    <Modal.Header className="border-b-0">
+                        <div>
+                            <h2 className="mb-2 text-[28px] leading-9 font-medium text-secondary-800">
+                                Create Folder
+                            </h2>
+                            {/* <p className="text-sm leading-5 text-secondary-700">
                                     Enter folder name
                                 </p> */}
-                            </div>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <div className="block">
-                                <div className="grid grid-col">
-                                    <div className="block">
-                                        <TextInput
-                                            name="folderName"
-                                            type="text"
-                                            placeholder="Enter folder name"
-                                            value={newFolderName}
-                                            onChange={(e) => setNewFolderName(e.target.value)}
-                                        />
-                                        {/* <ErrorMessage
+                        </div>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <div className="block">
+                            <div className="grid grid-col">
+                                <div className="block">
+                                    <TextInput
+                                        name="folderName"
+                                        type="text"
+                                        placeholder="Enter folder name"
+                                        value={newFolderName}
+                                        onChange={(e) => setNewFolderName(e.target.value)}
+                                    />
+                                    {/* <ErrorMessage
                                             name={`caseName`}
                                             component="div"
                                             className="text-red-500 text-sm"
                                         /> */}
-                                    </div>
-                                </div>
-                                <div className="text-end mt-8">
-                                    <XButton
-                                        text={"Cancel"}
-                                        onClick={() => handleCloseCreateModal()}
-                                        className="bg-card-300 text-sm text-primary2 py-[10px] px-6 rounded-[100px]"
-                                    />
-                                    <XButton
-                                        text={"Create"}
-                                        onClick={() => handleCreateFolder()}
-                                        className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px] ml-4"
-                                    />
                                 </div>
                             </div>
-                        </Modal.Body>
-                    </Modal>
+                            <div className="text-end mt-8">
+                                <XButton
+                                    text={"Cancel"}
+                                    onClick={() => handleCloseCreateModal()}
+                                    className="bg-card-300 text-sm text-primary2 py-[10px] px-6 rounded-[100px]"
+                                />
+                                <XButton
+                                    text={"Create"}
+                                    onClick={() => handleCreateFolder()}
+                                    className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px] ml-4"
+                                />
+                            </div>
+                        </div>
+                    </Modal.Body>
+                </Modal>
 
-                    <DeleteModal
-                        isOpen={showDeletePopup}
-                        onConfirm={() => handleDelete(currentField)}
-                        onCancel={() => setShowDeletePopup(false)}
-                        title="Confirm Deletion"
-                        message="Are you sure you want to delete this item? This action cannot be undone."
-                        confirmText="Delete"
-                        cancelText="Cancel"
-                    />
-                </div>
+                <DeleteModal
+                    isOpen={showDeletePopup}
+                    onConfirm={() => handleDelete(currentField)}
+                    onCancel={() => setShowDeletePopup(false)}
+                    title="Confirm Deletion"
+                    message="Are you sure you want to delete this item? This action cannot be undone."
+                    confirmText="Delete"
+                    cancelText="Cancel"
+                />
+                {/* </div> */}
             </div>
         );
     } else if (inProgress === "login") {

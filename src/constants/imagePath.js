@@ -14,6 +14,10 @@ import cases from "../assets/images/cases.png"
 import document from "../assets/images/document.png"
 import setting from "../assets/images/setting.png"
 import cross from "../assets/images/cross.png"
+import folder from "../assets/images/folder.svg";
+import file from "../assets/images/file.svg";
+import image from "../assets/images/image.svg";
+
 
 export const IMAGES = {
   profile: avatarImage,
@@ -31,5 +35,8 @@ export const IMAGES = {
   contact: contact,
   calendar: calendar,
   document: document,
-  cross:cross
+  cross:cross,
+  folderIcon:folder,
+  fileIcon:file,
+  galleryIcon: image
 };
