@@ -14,6 +14,9 @@ import {
   REGISTER_TENANT_FAILURE,
   REGISTER_TENANT_REQUEST,
   REGISTER_TENANT_SUCCESS,
+  UPDATE_ADD_CLIENT_BY_ID_FAILURE,
+  UPDATE_ADD_CLIENT_BY_ID_REQUEST,
+  UPDATE_ADD_CLIENT_BY_ID_SUCCESS,
   UPDATE_CLIENT_BY_ID_FAILURE,
   UPDATE_CLIENT_BY_ID_REQUEST,
   UPDATE_CLIENT_BY_ID_SUCCESS,
@@ -100,4 +103,19 @@ export const cleanupAdditionalClientRequest = () => ({
 
 export const clearClientData = () => ({
   type: CLEAR_CLIENT_DATA
+});
+
+export const updateAddClientByIdRequest = (clientData) => ({
+  type: UPDATE_ADD_CLIENT_BY_ID_REQUEST,
+  payload: clientData
+});
+
+export const updateAddClientByIdSuccess = (data) => ({
+  type: UPDATE_ADD_CLIENT_BY_ID_SUCCESS,
+  payload: data
+});
+
+export const updateAddClientByIdFailure = (error) => ({
+  type: UPDATE_ADD_CLIENT_BY_ID_FAILURE,
+  payload: error
 });
