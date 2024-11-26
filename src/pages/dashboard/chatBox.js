@@ -126,7 +126,8 @@ const responseSchema = z.object(
     const llm = new ChatOpenAI({
       openAIApiKey: openaiAPIKey,
       model: "gpt-3.5-turbo",
-      temperature: 0,
+      temperature: 0.2,
+      topP: 0.1,
     })
 
     const agent = createToolCallingAgent({
