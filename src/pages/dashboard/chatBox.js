@@ -125,9 +125,8 @@ const responseSchema = z.object(
   useEffect(() => {
     const llm = new ChatOpenAI({
       openAIApiKey: openaiAPIKey,
-      model: "gpt-3.5-turbo",
-      temperature: 0.2,
-      topP: 0.1,
+      model: "gpt-3.5",
+      temperature: 0,
     })
 
     const agent = createToolCallingAgent({
@@ -261,7 +260,7 @@ const responseSchema = z.object(
                                         />
                                         <div className="ml-2">
                                           <div className="mb">
-                                            <p className="font-medium" style={{color:"#366093"}}>{client?.firstName} {client?.lastName}</p>
+                                            <p className="text-secondary-800">{client?.firstName} {client?.lastName}</p>
                                             {/* <p className="font-medium text-secondary-800 text-sm mb-10">Brokers</p> */}
                                             {/* {client?.tags.map((tag) => <NewBadge label={tag} />)}  */}
                                           </div>
@@ -303,7 +302,7 @@ const responseSchema = z.object(
                                        />
                                        <div className="ml-2">
                                          <div className="mb">
-                                           <p className="font-medium " style={{color:"#366093"}}>{organization?.organizationName}</p>
+                                           <p className="text-secondary-800">{organization?.organizationName}</p>
                                            {/* <p className="font-medium text-secondary-800 text-sm mb-10">Brokers</p> */}
                                            {/* {client?.tags.map((tag) => <NewBadge label={tag} />)}  */}
                                          </div>
@@ -311,7 +310,7 @@ const responseSchema = z.object(
                                          <p class="text-sm text-secondary-800 font-medium mt-1">{organization?.email}</p>
                                          <p class="text-sm text-secondary-800 font-medium mt-1">{organization?.cellNumber}</p>
                                          <p class="text-sm text-secondary-800 font-medium mt-1">{organization?.website}</p>
-                                         <span class="text-xs text-secondary-700"> {CHATGPT_CLIENT_TYPE[organization?.organizationType]}</span>
+                                         <span class="text-xs text-secondary-700"> {organization?.organizationType}</span>
                                        </div>
                                      </div>
 
