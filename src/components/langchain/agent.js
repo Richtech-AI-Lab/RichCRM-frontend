@@ -25,7 +25,7 @@ const LangChainAgent = () => {
     useEffect(() => {
         const llm = new ChatOpenAI({
             openAIApiKey: "",
-            model: "gpt-4",
+            model: "gpt-3.5-turbo",
             temperature: 0,
         });
         const agent = createToolCallingAgent({
