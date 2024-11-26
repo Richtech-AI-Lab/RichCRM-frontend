@@ -11,6 +11,9 @@ import {
   REGISTER_CLIENT_FAILURE,
   REGISTER_CLIENT_REQUEST,
   REGISTER_CLIENT_SUCCESS,
+  UPDATE_ADD_CLIENT_BY_ID_FAILURE,
+  UPDATE_ADD_CLIENT_BY_ID_REQUEST,
+  UPDATE_ADD_CLIENT_BY_ID_SUCCESS,
   UPDATE_CLIENT_BY_ID_FAILURE,
   UPDATE_CLIENT_BY_ID_REQUEST,
   UPDATE_CLIENT_BY_ID_SUCCESS,
@@ -48,6 +51,21 @@ const clientReducer = (state = initialState, action) => {
     case FETCH_ADDITIONAL_CLIENTS_BY_IDS_SUCCESS:
       return { ...state, loading: false, additionalClient: action.payload, error: null };
     case FETCH_ADDITIONAL_CLIENTS_BY_IDS_FAILURE:
+      return { ...state, loading: false, error: action.payload };
+    case UPDATE_ADD_CLIENT_BY_ID_REQUEST:
+      return { ...state, loading: true, error: null };
+      case UPDATE_ADD_CLIENT_BY_ID_SUCCESS:
+        return {
+          ...state,
+          loading: false,
+          additionalClient: state.additionalClient.map((client) =>
+            client.clientId === action.payload.clientId
+              ? { ...action.payload }
+              : client
+          ),
+          error: null,
+        };
+    case UPDATE_ADD_CLIENT_BY_ID_FAILURE:
       return { ...state, loading: false, error: action.payload };
     case CLEAN_ADDITIONAL_CLIENT:
       return { ...state, loading: false, additionalClient: null, error: null };

@@ -1,4 +1,5 @@
 import {
+  CREATE_ADD_CLIENT_ADDRESS_REQUEST,
   CREATE_ADDRESS_CONTACT_REQUEST,
   CREATE_ADDRESS_REQUEST,
   FETCH_ADDRESS_BY_ID_FAILURE,
@@ -68,3 +69,9 @@ export const sendEmailFailure = (error) => ({
   type: SEND_MAIL_FAILURE,
   payload: error
 });
+
+export const createAddClientAddressRequest = (address) => ({
+  type: CREATE_ADD_CLIENT_ADDRESS_REQUEST,
+  payload: address,
+});
+

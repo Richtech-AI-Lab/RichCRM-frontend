@@ -7,10 +7,12 @@ import {
   fetchClientByIdSuccess,
   registerClientFailure,
   registerClientSuccess,
+  updateAddClientByIdFailure,
+  updateAddClientByIdSuccess,
   updateClientByIdFailure,
   updateClientByIdSuccess,
 } from "../actions/clientActions";
-import { FETCH_ADDITIONAL_CLIENTS_BY_IDS_REQUEST, FETCH_CLIENT_BY_ID_REQUEST, FETCH_CLIENTS_BY_IDS_REQUEST, REGISTER_CLIENT_REQUEST, REGISTER_TENANT_REQUEST, UPDATE_CLIENT_BY_ID_REQUEST } from "../type";
+import { FETCH_ADDITIONAL_CLIENTS_BY_IDS_REQUEST, FETCH_CLIENT_BY_ID_REQUEST, FETCH_CLIENTS_BY_IDS_REQUEST, REGISTER_CLIENT_REQUEST, REGISTER_TENANT_REQUEST, UPDATE_ADD_CLIENT_BY_ID_REQUEST, UPDATE_CLIENT_BY_ID_REQUEST } from "../type";
 import { getRequest, postRequest } from "../../axios/interceptor";
 import { toast } from "react-toastify";
 import { createAddressRequest, registerAddressRequest } from "../actions/utilsActions";
@@ -109,22 +111,38 @@ function* fetchClientsByIds(action) {
   try {
     const clientIds = action.payload;
 
+    // Fetch all clients by their IDs
     const clientResponses = yield all(
       clientIds.map(clientId =>
         call(getRequest, `${API_ENDPOINTS.FETCH_CLIENT_BY_ID}/${clientId}`)
       )
     );
 
-    // Map over responses to extract the relevant data
+    // Extract client data
     const clients = clientResponses.map(response => response?.data?.data[0]);
+
+    // Fetch addresses for each client by their addressId
+    const addressResponses = yield all(
+      clients.map(client => 
+        call(postRequest, API_ENDPOINTS.FETCH_ADDRESS_BY_QUERY_ID, { addressId: client.addressId })
+      )
+    );
+
+    // Merge address data into the respective clients
+    const mergedClients = clients.map((client, index) => ({
+      ...client,
+      ...addressResponses[index]?.data?.data[0], // Merge address details
+    }));
+
     // Dispatch success with merged client data
-    yield put(fetchAdditionalClientByIdsSuccess(clients));
+    yield put(fetchAdditionalClientByIdsSuccess(mergedClients));
 
   } catch (error) {
     handleError(error);
     yield put(fetchAdditionalClientByIdsFailure(error.response?.data || error));
   }
 }
+
 
 function* registerTenant(action) {
   try {
@@ -159,11 +177,43 @@ function* registerTenant(action) {
     yield put(registerClientFailure(error.response?.data || error));
   }
 }
-
+function* updateAddClientById(action) {
+  try {
+    const { payload } = action;
+    const response = yield call(() =>
+      postRequest(API_ENDPOINTS.UPDATE_CLIENT, payload?.client)
+    );
+    if(response.status == 200){
+      if(response?.data?.data[0]?.addressId && payload.util) {
+          // let payload = {
+          //   addressId: response?.data?.data[0]?.addressId,
+          //   // addressId: 'Virginia Beach VA 23462-3012',
+          // }
+          // const addResponse = yield call(() => postRequest(API_ENDPOINTS.FETCH_ADDRESS_BY_QUERY_ID, payload));
+          response.data.data[0] = { ...response?.data?.data[0], ...payload.util};
+        }
+        yield put(updateAddClientByIdSuccess(response.data));
+        toast.success("Client Updated!");
+    }
+     
+    // if (response.status == 200) {
+    //   // const updatedPayload = {
+    //   //   ...payload.util,
+    //   //   addressId: response.data.data[0].addressId
+    //   // };
+    //   // yield put(registerAddressRequest(updatedPayload))
+    //   toast.success("Client Updated!");
+    // }
+  } catch (error) {
+    handleError(error)
+    yield put(updateAddClientByIdFailure(error.response?.data || error));
+  }
+}
 export function* clientSaga() {
   yield takeLatest(REGISTER_CLIENT_REQUEST, registerClient);
   yield takeLatest(FETCH_CLIENT_BY_ID_REQUEST, fetchClientById);
   yield takeLatest(UPDATE_CLIENT_BY_ID_REQUEST, updateClientById);
+  yield takeLatest(UPDATE_ADD_CLIENT_BY_ID_REQUEST, updateAddClientById);
   yield takeLatest(FETCH_ADDITIONAL_CLIENTS_BY_IDS_REQUEST, fetchClientsByIds);
   yield takeLatest(REGISTER_TENANT_REQUEST, registerTenant);
 

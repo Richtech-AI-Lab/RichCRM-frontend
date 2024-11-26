@@ -8,11 +8,12 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import PurchaserParticipantForm from "../editDetail/purchaserParticipantForm";
 import { updateClientByIdRequest } from "../../../redux/actions/clientActions";
-import { createAddressRequest } from "../../../redux/actions/utilsActions";
+import { createAddClientAddressRequest, createAddressRequest } from "../../../redux/actions/utilsActions";
 import ParticipantBothDetail from "../showdetail/participantbothdetail";
 import AttorneyDetails from "../showdetail/attorneydetail";
 import { updateCaseContactRequest } from "../../../redux/actions/caseAction";
 import CaseBrokerItems from "./CaseBrokerItems";
+import AdditionalClientForm from "../editDetail/additionalClientForm";
 
 
 const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik }) => {
@@ -43,13 +44,15 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik }
   // }, [addressDetails])
 
   const handleSubmit = (values, { setSubmitting }) => {
-    // Split the name into firstName and lastName
-    const [firstName, lastName] = values?.name?.split(' ');
+    console.log(values, "values.additionalClientData");
+  
+    // Extract main client details
+    const [firstName, lastName] = values?.name?.split(' ') || ["", ""];
     const attorneyIds = attorneyDetails?.map(attorney => attorney.contactId) || [];
     const brokerIds = brokerDetails?.map(broker => broker.contactId) || [];
-
-    // Create the payload for the first API call
-    const firstApiPayload = {
+  
+    // Payload for the main client
+    const mainClientPayload = {
       firstName,
       lastName,
       ssn: values.ssn,
@@ -57,37 +60,82 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik }
       cellNumber: values.cellNumber,
       workNumber: values.workNumber,
       wechatAccount: values.wechatAccount,
-      // whatsApp: values.whatsApp,
-      // line: values.line,
       clientId: clientDetails[0]?.clientId
     };
-
-    const secondApiPayload = {
+  
+    const mainAddressPayload = {
       addressLine1: values.addressLine1,
       addressLine2: values.addressLine2,
       city: values.city,
       state: values.state,
       zipCode: values.zipCode,
+    };
+  
+    // Prepare data for dispatch
+    const mainData = {
+      client: mainClientPayload,
+      util: mainAddressPayload
+    };
+  
+    // Dispatch based on presence of address
+    if (values?.addressLine1) {
+      dispatch(createAddressRequest(mainData));
+    } else {
+      dispatch(updateClientByIdRequest(mainData));
     }
-
-    let data = {
-      client: firstApiPayload,
-      util: secondApiPayload
+  
+    // Handle additional clients
+    if (values.additionalClientData?.length > 0) {
+      values.additionalClientData.forEach(client => {
+        const [firstName, lastName] = client?.name?.split(' ') || ["", ""];
+  
+        const additionalClientPayload = {
+          firstName,
+          lastName,
+          ssn: client?.ssn,
+          email: client?.email,
+          cellNumber: client?.cellNumber,
+          workNumber: client?.workNumber,
+          wechatAccount: client?.wechatAccount,
+          clientId: client?.clientId
+        };
+  
+        const additionalAddressPayload = {
+          addressLine1: client?.addressLine1,
+          addressLine2: client?.addressLine2,
+          city: client?.city,
+          state: client?.state,
+          zipCode: client?.zipCode,
+        };
+  
+        const additionalData = {
+          client: additionalClientPayload,
+          util: additionalAddressPayload
+        };
+  
+        if (client?.addressLine1) {
+          dispatch(createAddClientAddressRequest(additionalData));
+        } else {
+          dispatch(updateClientByIdRequest(additionalData));
+        }
+      });
     }
-
+  
+    // Case contact update payload
     const casePayload = {
       ...caseObj,
       contacts: [...attorneyIds, ...brokerIds]
-    }
-    if (values?.addressLine1) {
-      dispatch(createAddressRequest(data))
-    } else {
-      dispatch(updateClientByIdRequest(data));
-    }
-    dispatch(updateCaseContactRequest(casePayload))
-    toggleEdit()
-    setDirtyFormnik(false)
-  }
+    };
+  
+    // Dispatch case contact update
+    dispatch(updateCaseContactRequest(casePayload));
+  
+    // Final cleanup
+    toggleEdit();
+    setDirtyFormnik(false);
+    setSubmitting(false);
+  };
+  
   const handleAttorneysChange = (attorneys, handleChange) => {
     handleChange({ target: { name: 'attorneys', value: attorneys } });
   };
@@ -109,6 +157,7 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik }
     city: clientDetails[0]?.city || '',
     state: clientDetails[0]?.state || '',
     zipCode: clientDetails[0]?.zipCode || '',
+    additionalClientData: addClient || []
   } : {
     name: '',
     ssn: '',
@@ -135,9 +184,10 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik }
     // state: Yup.string().required("State is required"),
     // zipCode: Yup.string().required("Zip code is required"),
   });
-  useEffect(()=>{
-    setAddClient(additionalClient?.map((client) => [client]))
-  },[additionalClient])
+  useEffect(() => {
+    setAddClient(additionalClient)
+    // setAddClient(additionalClient?.map((client) => [client]))
+  }, [additionalClient])
   // let transform = additionalClient?.map((client) => [client])
   return (
     <>
@@ -168,6 +218,9 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik }
                   <div className="col-span-6">
                     <PurchaserParticipantForm title={caseType ? "Seller" : "Purchaser"} handleChange={handleChange} setFieldValue={setFieldValue} values={values} form={{ errors, touched }} initialValues={initialPurchaserValues} />
                     {/* <PurchaserParticipantForm title={caseType ? "Seller" : "Purchaser"} handleChange={handleChange} setFieldValue={setFieldValue} values={values} form={{ errors, touched }} initialValues={initialPurchaserValues} /> */}
+
+                    <AdditionalClientForm title={caseType ? "Seller" : "Purchaser"} client={values?.additionalClientData} handleChange={handleChange} setFieldValue={setFieldValue} form={{ errors, touched }} initialValues={initialPurchaserValues} />
+                  
                   </div>
                   <div className="col-span-6">
                     <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} attorneyDetails={attorneyDetails} errors={errors.attorneys || []}
@@ -187,7 +240,7 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik }
         :
         (<div className="grid grid-cols-12 gap-6">
           <div className="col-span-6">
-            <ParticipantBothDetail client={clientDetails} attorneyDetails={attorneyDetails} title={caseType ? "Seller" : "Purchaser"} />
+            <ParticipantBothDetail client={clientDetails[0]} attorneyDetails={attorneyDetails} title={caseType ? "Seller" : "Purchaser"} />
             {addClient?.map(client =>
               <ParticipantBothDetail client={client} title={caseType ? "Seller" : "Purchaser"} />
             )}

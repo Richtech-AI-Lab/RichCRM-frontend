@@ -28,43 +28,43 @@ const ParticipantBothDetail = ({ client, organization, title }) => {
           <button className="rotate-180 active" onClick={()=>{setCollapse(true)} }><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" aria-hidden="true" class="h-6 w-6 shrink-0" data-testid="flowbite-accordion-arrow" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></button>
         </div> 
       </div>}
-      {client?.length > 0 ?
+      {client ?
         <ul className="card-details show">
           <li>
             <span className="left-txt flex items-center" > Name</span>
-            <span className="left-txt flex items-center" >{`${client[0]?.firstName} ${client[0]?.lastName}`}</span>
+            <span className="left-txt flex items-center" >{`${client?.firstName} ${client?.lastName}`}</span>
           </li>
           <li>
             <span className="left-txt flex items-center" > SSN</span>
-            <span className="left-txt flex items-center" > {client[0]?.ssn} </span>
+            <span className="left-txt flex items-center" > {client?.ssn} </span>
           </li>
           <li>
             <span className="left-txt flex items-center" > Email</span>
-            <span className="left-txt flex items-center" > {client[0]?.email} </span>
+            <span className="left-txt flex items-center" > {client?.email} </span>
           </li>
           <li>
             <span className="left-txt flex items-center" > Cell Phone</span>
-            <span className="left-txt flex items-center" >{client[0]?.cellNumber}</span>
+            <span className="left-txt flex items-center" >{client?.cellNumber}</span>
           </li>
           <li>
             <span className="left-txt flex items-center" > Work Phone</span>
-            <span className="left-txt flex items-center" > {client[0]?.workNumber} </span>
+            <span className="left-txt flex items-center" > {client?.workNumber} </span>
           </li>
           <li>
             <span className="left-txt flex items-center" >WeChat</span>
-            <span className="left-txt flex items-center" > {client[0]?.wechatAccount} </span>
+            <span className="left-txt flex items-center" > {client?.wechatAccount} </span>
           </li>
           <li>
             <span className="left-txt flex items-center" >WhatsApp</span>
-            <span className="left-txt flex items-center" > {client[0]?.whatsApp}</span>
+            <span className="left-txt flex items-center" > {client?.whatsApp}</span>
           </li>
           <li>
             <span className="left-txt flex items-center">Mailing address</span>
-            <span className="left-txt flex items-center">{client[0]?.addressLine1} {client[0]?.addressLine2} {client[0]?.city} {findLabelByValue(client[0]?.state)} {client[0]?.zipCode} </span>
+            <span className="left-txt flex items-center">{client?.addressLine1} {client?.addressLine2} {client?.city} {findLabelByValue(client?.state)} {client?.zipCode} </span>
           </li>
-          {/* {client[0]?.line && <li>
+          {/* {client?.line && <li>
             <span className="left-txt flex items-center" >Line</span>
-            <span className="left-txt flex items-center" > {client[0]?.line} </span>
+            <span className="left-txt flex items-center" > {client?.line} </span>
           </li>} */}
           {/* {address[0] && Object.keys(address[0]).some(key =>
             ['addressLine1', 'addressLine2', 'city', 'state', 'zipCode'].includes(key) && address[0][key]
