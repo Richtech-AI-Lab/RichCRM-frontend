@@ -20,6 +20,7 @@ import { handleError } from "../../utils/eventHandler";
 import { update } from "lodash";
 import { all } from "redux-saga/effects";
 import { updatePremisesRequest } from "../actions/premisesActions";
+import { takeEvery } from "redux-saga/effects";
 
 function* registerClient(action) {
   try {
@@ -192,8 +193,8 @@ function* updateAddClientById(action) {
           // const addResponse = yield call(() => postRequest(API_ENDPOINTS.FETCH_ADDRESS_BY_QUERY_ID, payload));
           response.data.data[0] = { ...response?.data?.data[0], ...payload.util};
         }
-        yield put(updateAddClientByIdSuccess(response.data));
-        toast.success("Client Updated!");
+        yield put(updateAddClientByIdSuccess(response.data.data[0]));
+        // toast.success("Client Updated!");
     }
      
     // if (response.status == 200) {
@@ -213,7 +214,7 @@ export function* clientSaga() {
   yield takeLatest(REGISTER_CLIENT_REQUEST, registerClient);
   yield takeLatest(FETCH_CLIENT_BY_ID_REQUEST, fetchClientById);
   yield takeLatest(UPDATE_CLIENT_BY_ID_REQUEST, updateClientById);
-  yield takeLatest(UPDATE_ADD_CLIENT_BY_ID_REQUEST, updateAddClientById);
+  yield takeEvery(UPDATE_ADD_CLIENT_BY_ID_REQUEST, updateAddClientById);
   yield takeLatest(FETCH_ADDITIONAL_CLIENTS_BY_IDS_REQUEST, fetchClientsByIds);
   yield takeLatest(REGISTER_TENANT_REQUEST, registerTenant);
 

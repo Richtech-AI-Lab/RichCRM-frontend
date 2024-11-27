@@ -17,6 +17,7 @@ import { createTenantRequest, updateAddClientByIdRequest, updateClientByIdReques
 import { createContactRequest, updateContactRequest } from "../actions/contactActions";
 import { updateOrganizationByIdRequest } from "../actions/organizationActions";
 import { all } from "axios";
+import { takeEvery } from "redux-saga/effects";
 
 function* registerAddress(action) {
   try {
@@ -218,7 +219,6 @@ function* createAddClientAddress(action) {
           client: {
             ...payload.client,
             addressId: response.data?.data[0]?.addressId,
-            ...payload.util,
           },
           util: {
             ...payload.util,
@@ -227,7 +227,7 @@ function* createAddClientAddress(action) {
         };
 
         yield put(updateAddClientByIdRequest(updatedPayload));
-        toast.success("Address updated!");
+        // toast.success("Address updated!");
       }
     } 
   } catch (error) {
@@ -240,7 +240,7 @@ function* createAddClientAddress(action) {
 export function* utilsSaga() {
   yield takeLatest(REGISTER_ADDRESS_REQUEST, registerAddress);
   yield takeLatest(CREATE_ADDRESS_REQUEST, createAddress);
-  yield takeLatest(CREATE_ADD_CLIENT_ADDRESS_REQUEST, createAddClientAddress);
+  yield takeEvery(CREATE_ADD_CLIENT_ADDRESS_REQUEST, createAddClientAddress);
   yield takeLatest(CREATE_ADDRESS_CONTACT_REQUEST, createAddressThenContact);
   yield takeLatest(FETCH_ADDRESS_BY_ID_REQUEST, fetchAddressById);
   yield takeLatest(SEND_MAIL_REQUEST, sendMail);

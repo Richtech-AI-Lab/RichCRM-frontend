@@ -44,7 +44,6 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik }
   // }, [addressDetails])
 
   const handleSubmit = (values, { setSubmitting }) => {
-    console.log(values, "values.additionalClientData");
   
     // Extract main client details
     const [firstName, lastName] = values?.name?.split(' ') || ["", ""];
@@ -86,6 +85,7 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik }
   
     // Handle additional clients
     if (values.additionalClientData?.length > 0) {
+      // console.log(values.additionalClientData,"values.additionalClientData")
       values.additionalClientData.forEach(client => {
         const [firstName, lastName] = client?.name?.split(' ') || ["", ""];
   
@@ -112,8 +112,8 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik }
           client: additionalClientPayload,
           util: additionalAddressPayload
         };
-  
         if (client?.addressLine1) {
+          // console.log(additionalData,"additionalData", client.firstName)
           dispatch(createAddClientAddressRequest(additionalData));
         } else {
           dispatch(updateClientByIdRequest(additionalData));
@@ -184,10 +184,14 @@ const ParticipantCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik }
     // state: Yup.string().required("State is required"),
     // zipCode: Yup.string().required("Zip code is required"),
   });
-  useEffect(() => {
-    setAddClient(additionalClient)
-    // setAddClient(additionalClient?.map((client) => [client]))
-  }, [additionalClient])
+useEffect(() => {
+  const formattedClients = additionalClient.map(client => ({
+    ...client, // Preserve other properties
+    name: `${client.firstName || ''} ${client.lastName || ''}`.trim(), // Combine firstName and lastName
+  }));
+  
+  setAddClient(formattedClients);
+}, [additionalClient]);
   // let transform = additionalClient?.map((client) => [client])
   return (
     <>

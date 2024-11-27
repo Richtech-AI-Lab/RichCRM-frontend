@@ -69,11 +69,11 @@ const AdditionalClientForm = ({ title, client, form, setFieldValue, handleChange
               <input
                 className="p-0 border-none focus:ring-transparent"
                 // name="name"
-                name={`additionalClientData[${index}].firstName`}
+                name={`additionalClientData[${index}].name`}
                 type="text"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={item.firstName}
+                value={item.name}
               /></li>
             <li>
               <span className={`left-txt flex items-center`}>SSN</span>
