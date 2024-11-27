@@ -6,13 +6,14 @@ import { sellerItems, buyerItems, titleMortgageItems } from "../../../utils/form
 import FormButton from "../../../components/formButton";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import { createAddressRequest } from "../../../redux/actions/utilsActions";
+import { createAddOrgAddressRequest, createAddressRequest } from "../../../redux/actions/utilsActions";
 import ParticipantBothDetail from "../showdetail/participantbothdetail";
 import PurchaserOrganizationForm from "../editDetail/purchaserOrganizationForm";
 import AttorneyDetails from "../showdetail/attorneydetail";
 import { updateCaseContactRequest } from "../../../redux/actions/caseAction";
-import { updateOrganizationByIdRequest } from "../../../redux/actions/organizationActions";
+import { updateAddOrganizationByIdRequest, updateOrganizationByIdRequest } from "../../../redux/actions/organizationActions";
 import CaseBrokerItems from "./CaseBrokerItems";
+import AdditionalOrganizationForm from "../editDetail/additionalOrganizationForm";
 
 
 const OrganizationCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik }) => {
@@ -38,7 +39,7 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik 
     const attorneyIds = attorneyDetails?.map(attorney => attorney.contactId) || [];
     const brokerIds = brokerDetails?.map(broker => broker.contactId) || [];
     // Create the payload for the first API call
-    const firstApiPayload = {
+    const mainOrgPayload = {
       organizationName: values.organizationName,
       website: values.website,
       email: values.email,
@@ -46,7 +47,7 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik 
       organizationId: organizationDetails[0]?.organizationId
     };
 
-    const secondApiPayload = {
+    const mainAddressPayload = {
       addressLine1: values.addressLine1,
       addressLine2: values.addressLine2,
       city: values.city,
@@ -54,19 +55,53 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik 
       zipCode: values.zipCode,
     }
 
-    let data = {
-      organization: firstApiPayload,
-      util: secondApiPayload
+    let mainData = {
+      organization: mainOrgPayload,
+      util: mainAddressPayload
     }
+
+    if (values?.addressLine1) {
+      dispatch(createAddressRequest(mainData))
+    } else {
+      dispatch(updateOrganizationByIdRequest(mainData));
+    }
+    if (values.additionalOrgData?.length > 0) {
+
+      values.additionalOrgData.forEach(org => {
+        const additionalOrgPayload = {
+          organizationName: org.organizationName,
+          website: org.website,
+          email: org.email,
+          cellNumber: org.cellNumber,
+          organizationId: org?.organizationId
+        };
+    
+        const additionalAddressPayload = {
+          addressLine1: org.addressLine1,
+          addressLine2: org.addressLine2,
+          city: org.city,
+          state: org.state,
+          zipCode: org.zipCode,
+        }
+    
+        let additionalData = {
+          organization: additionalOrgPayload,
+          util: additionalAddressPayload
+        }
+        
+        if (org?.addressLine1) {
+          dispatch(createAddOrgAddressRequest(additionalData))
+        } else {
+          dispatch(updateAddOrganizationByIdRequest(additionalData));
+        }
+      });
+    }
+
     const casePayload = {
       ...caseObj,
       contacts: [...attorneyIds, ...brokerIds]
     }
-    if (values?.addressLine1) {
-      dispatch(createAddressRequest(data))
-    } else {
-      dispatch(updateOrganizationByIdRequest(data));
-    }
+   
     dispatch(updateCaseContactRequest(casePayload))
     toggleEdit()
     setDirtyFormnik(false)
@@ -90,6 +125,7 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik 
     city: organizationDetails[0]?.city || '',
     state: organizationDetails[0]?.state || '',
     zipCode: organizationDetails[0]?.zipCode || '',
+    additionalOrgData: addOrg || []
   } : {
     organizationName: '',
     website: '',
@@ -115,9 +151,9 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik 
     // zipCode: Yup.string().required("Zip code is required"),
   });
 
-  useEffect(()=>{
-    setAddOrg(additionalOrganization?.map((org) => [org]))
-  },[additionalOrganization])
+  useEffect(() => {
+    setAddOrg(additionalOrganization)
+  }, [additionalOrganization])
 
   return (
     <>
@@ -143,10 +179,14 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik 
                 <div className="grid grid-cols-12 gap-6">
                   <div className="col-span-6">
                     <PurchaserOrganizationForm title={caseType ? "Seller" : "Purchaser"} handleChange={handleChange} setFieldValue={setFieldValue} values={values} form={{ errors, touched }} initialValues={initialOrganizationValues} />
+
+                    <AdditionalOrganizationForm title={caseType ? "Seller" : "Purchaser"} handleChange={handleChange} setFieldValue={setFieldValue} organization={values?.additionalOrgData} values={values} form={{ errors, touched }} initialValues={initialOrganizationValues} />
+
+
                   </div>
                   <div className="col-span-6">
                     <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} attorneyDetails={attorneyDetails} errors={errors.attorneys || []}
-                      touched={touched.attorneys || []} setAttorneys={(attorneys) => handleAttorneysChange(attorneys, handleChange)} />      
+                      touched={touched.attorneys || []} setAttorneys={(attorneys) => handleAttorneysChange(attorneys, handleChange)} />
                     <CaseBrokerItems title="Brokers" brokers={values.brokers} brokerDetails={brokerDetails} errors={errors.brokers || []}
                       touched={touched.brokers || []} setBrokers={(brokers) => handleBrokersChange(brokers, handleChange)} />{/* <CaseAttorneyItems title="Attorneys" attorneys={values.attorneys} errors={errors.attorneys || []}
                     touched={touched.attorneys || []} setAttorneys={(attorneys) => handleAttorneysChange(attorneys, handleChange)} />
@@ -161,7 +201,7 @@ const OrganizationCaseDetails = ({ isEdit, setIsEdit, caseType, setDirtyFormnik 
         :
         (<div className="grid grid-cols-12 gap-6">
           <div className="col-span-6">
-            <ParticipantBothDetail organization={organizationDetails} title={caseType ? "Seller" : "Purchaser"} />
+            <ParticipantBothDetail organization={organizationDetails[0]} title={caseType ? "Seller" : "Purchaser"} />
             {addOrg?.map(org =>
               <ParticipantBothDetail organization={org} title={caseType ? "Seller" : "Purchaser"} />
             )}

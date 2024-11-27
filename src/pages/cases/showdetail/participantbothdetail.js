@@ -4,6 +4,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 
 
 const ParticipantBothDetail = ({ client, organization, title }) => {
+  console.log(organization,"organizatssssion")
   const [collapse, setCollapse] = useState(false);
   const findLabelByValue = (value) => {
     const result = states?.find(item => item.value === value);
@@ -76,27 +77,27 @@ const ParticipantBothDetail = ({ client, organization, title }) => {
             )} */}
         </ul> : ""}
 
-        {organization?.length > 0 ?
+        {organization ?
         <ul className="card-details">
           <li>
             <span className="left-txt flex items-center" > Name</span>
-            <span className="left-txt flex items-center" >{`${organization[0]?.organizationName}`}</span>
+            <span className="left-txt flex items-center" >{`${organization?.organizationName}`}</span>
           </li>
           <li>
             <span className="left-txt flex items-center" > Email</span>
-            <span className="left-txt flex items-center" > {organization[0]?.email} </span>
+            <span className="left-txt flex items-center" > {organization?.email} </span>
           </li>
           <li>
             <span className="left-txt flex items-center" > Cell Phone</span>
-            <span className="left-txt flex items-center" >{organization[0]?.cellNumber}</span>
+            <span className="left-txt flex items-center" >{organization?.cellNumber}</span>
           </li>
           <li>
             <span className="left-txt flex items-center" > Website</span>
-            <span className="left-txt flex items-center" >{organization[0]?.website}</span>
+            <span className="left-txt flex items-center" >{organization?.website}</span>
           </li>
           <li>
             <span className="left-txt flex items-center">Mailing address</span>
-            <span className="left-txt flex items-center">{organization[0]?.addressLine1} {organization[0]?.addressLine2} {organization[0]?.city} {findLabelByValue(organization[0]?.state)} {organization[0]?.zipCode} </span>
+            <span className="left-txt flex items-center">{organization?.addressLine1} {organization?.addressLine2} {organization?.city} {findLabelByValue(organization?.state)} {organization?.zipCode} </span>
           </li>
           {/* {address[0] && Object.keys(address[0]).some(key =>
             ['addressLine1', 'addressLine2', 'city', 'state', 'zipCode'].includes(key) && address[0][key]

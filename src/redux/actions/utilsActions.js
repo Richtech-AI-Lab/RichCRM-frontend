@@ -1,5 +1,6 @@
 import {
   CREATE_ADD_CLIENT_ADDRESS_REQUEST,
+  CREATE_ADD_ORGANIZATION_ADDRESS_REQUEST,
   CREATE_ADDRESS_CONTACT_REQUEST,
   CREATE_ADDRESS_REQUEST,
   FETCH_ADDRESS_BY_ID_FAILURE,
@@ -75,3 +76,7 @@ export const createAddClientAddressRequest = (address) => ({
   payload: address,
 });
 
+export const createAddOrgAddressRequest = (address) => ({
+  type: CREATE_ADD_ORGANIZATION_ADDRESS_REQUEST,
+  payload: address,
+});
