@@ -19,9 +19,9 @@ import UpdateTaskTemplateButton from './updateTaskTemplateButton';
 const ComposeEmail = ({ taskItem, onClose, templates, onSendEmail }) => {
   const dispatch = useDispatch();
   const { client, additionalClient } = useSelector((state) => state.client);
-  const clientObj = client?.data?.length > 0 ? client?.data : null;
+  const clientObj = client?.data?.length > 0 ? client?.data : [];
   const { organization, additionalOrganization } = useSelector((state) => state.organization);
-  const organizationObj = organization?.data?.length > 0 ? organization?.data : null;
+  const organizationObj = organization?.data?.length > 0 ? organization?.data : [];
   const { casesData } = useSelector((state) => state.case);
   const caseObj = casesData?.cases?.find(item => item.caseId === localStorage.getItem('c_id'));
   const [inputValue, setInputValue] = useState('');
@@ -98,7 +98,8 @@ const ComposeEmail = ({ taskItem, onClose, templates, onSendEmail }) => {
       const response = await postRequest(API_ENDPOINTS.UPDATE_TEMPLATE_BY_NAME, {
         templateTitle: templates[0],
         data: {
-          clientObj: clientObj[0],
+          clientObj: clientObj[0] ?? {},
+          organizationObj: organizationObj[0] ?? {},
           caseObj,
         }
       });
