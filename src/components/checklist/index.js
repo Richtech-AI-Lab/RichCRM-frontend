@@ -11,18 +11,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateTaskStatusRequest } from "../../redux/actions/taskActions";
 import { updateStageStatusRequest } from "../../redux/actions/stagesActions";
 import UploadFileModal from "../caseModal/uploadFileModal";
+import GoogleMeetModal from "../gmeet/googleMeetModal";
 
 const ChecklistItem = ({ item, stageName, key, icon, label, status, action, actionInfo, optionsValue, checkboxId, currentStep, templates, stageId }) => {
   const dispatch = useDispatch();
   const [isCompose, setIsCompose] = useState(false);
+  const [isUploadFileModalOpen, setIsUploadFileModalOpen] = useState(false);
+  const [isGmeetModalOpen, setIsGmeetModalOpen] = useState(false);
   const [taskStatus, setTaskStatus] = useState(status);
   const [fileName, setFileName] = useState(null);
   const { casesData } = useSelector((state) => state.case);
   const caseObj = casesData?.cases?.find(item => item.caseId === localStorage.getItem('c_id'));
   const taskData = useSelector((state) => state.task);
-  const [isUploadFileModalOpen, setIsUploadFileModalOpen] = useState(false);
   const toggleUploadFileModal = () => {
     setIsUploadFileModalOpen(!isUploadFileModalOpen);
+  };
+  const toggleGMeetModal = () => {
+    setIsGmeetModalOpen(!isGmeetModalOpen);
   };
   const toggleComposeModal = () => {
     setIsCompose(!isCompose);
@@ -32,8 +37,8 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
       // case "Action":
       case ACTIONTYPE.ACTION:
         return [
-          { value: "unfinished", label: "Unfinished" },
-          { value: "finished", label: "Finished" },
+          { value: "addmeet", label: "Add Meeting" },
+          // { value: "finished", label: "Finished" },
         ];
         break;
       // case "Contact":
@@ -100,7 +105,7 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
 
   const isOptionDisable = (acc) => {
     if (acc == 0) {
-      return true
+      return false
     }
     return false
   };
@@ -165,10 +170,12 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
       setIsCompose(true)
     } else if (option == "upload") {
       toggleUploadFileModal();
+    }  else if (option == "addmeet") {
+      toggleGMeetModal();
     }
-    if (option == "upload") {
-      setIsUploadFileModalOpen(true)
-    }
+    // if (option == "upload") {
+    //   setIsUploadFileModalOpen(true)
+    // }
   }
   useEffect(() => {
     setTaskStatus(status);
@@ -322,6 +329,7 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
       </div>
       {isUploadFileModalOpen && <UploadFileModal fileName={fileName} taskName={item?.name} generalUpload={false} onUpload={(value) => handleChangeTaskStatus(value)} onClose={toggleUploadFileModal} />}
       {isCompose ? <ComposeEmail taskItem={item} templates={templates} onClose={toggleComposeModal} onSendEmail={(value) => handleChangeTaskStatus(value)} /> : ""}
+      {isGmeetModalOpen && <GoogleMeetModal onClose={toggleGMeetModal} />}
     </>
   );
 };
