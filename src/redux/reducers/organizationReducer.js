@@ -20,6 +20,9 @@ import {
   REGISTER_CLIENT_REQUEST,
   REGISTER_CLIENT_SUCCESS,
   SET_SELECTED_ORG,
+  UPDATE_ADD_ORG_BY_ID_FAILURE,
+  UPDATE_ADD_ORG_BY_ID_REQUEST,
+  UPDATE_ADD_ORG_BY_ID_SUCCESS,
   UPDATE_CLIENT_BY_ID_FAILURE,
   UPDATE_CLIENT_BY_ID_REQUEST,
   UPDATE_CLIENT_BY_ID_SUCCESS,
@@ -36,6 +39,7 @@ const initialState = {
 };
 
 const organizationReducer = (state = initialState, action) => {
+  console.log(state.additionalOrganization, "______", action?.payload)
   switch (action.type) {
     case FETCH_ORG_BY_ID_REQUEST:
       return { ...state, loading: true, error: null };
@@ -78,6 +82,21 @@ const organizationReducer = (state = initialState, action) => {
       };
     case CLEAR_ORGANIZATION_DATA:
       return initialState;
+    case UPDATE_ADD_ORG_BY_ID_REQUEST:
+      return { ...state, loading: true, error: null };
+    case UPDATE_ADD_ORG_BY_ID_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        additionalOrganization: state.additionalOrganization.map((organization) =>
+          organization.organizationId === action.payload.organizationId
+            ? { ...action.payload }
+            : organization
+        ),
+        error: null,
+      };
+    case UPDATE_ADD_ORG_BY_ID_FAILURE:
+      return { ...state, loading: false, error: action.payload };
     default:
       return state;
   }
