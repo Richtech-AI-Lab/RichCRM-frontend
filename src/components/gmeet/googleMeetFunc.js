@@ -30,3 +30,35 @@ export const signOutFromGoogle = () => {
   authInstance.signOut();
 };
 
+// Fetch upcoming events
+export const fetchUpcomingEvents = async () => {
+  try {
+    const response = await gapi?.client?.calendar?.events?.list({
+      calendarId: "primary",
+      timeMin: new Date().toISOString(),
+      // maxResults: 10,
+      singleEvents: true,
+      orderBy: "startTime",
+    });
+    // console.log(response,"responseresponse")
+    return response?.result?.items;
+  } catch (error) {
+    console.error("Error fetching events: ", error);
+    throw error;
+  }
+};
+
+// Create a new calendar event
+export const createCalendarEvent = async (event) => {
+    try {
+      const response = await gapi.client.calendar.events.insert({
+        calendarId: "primary",
+        resource: event,
+        conferenceDataVersion: 1, // Enable conference data creation
+      });
+      return response.result;
+    } catch (error) {
+      console.error("Error creating event: ", error);
+      throw error;
+    }
+  };

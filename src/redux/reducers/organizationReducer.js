@@ -39,7 +39,7 @@ const initialState = {
 };
 
 const organizationReducer = (state = initialState, action) => {
-  console.log(state.additionalOrganization, "______", action?.payload)
+  // console.log(state.additionalOrganization, "______", action?.payload)
   switch (action.type) {
     case FETCH_ORG_BY_ID_REQUEST:
       return { ...state, loading: true, error: null };

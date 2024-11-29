@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
-import { format, parse } from 'date-fns';
-import { Datepicker } from 'flowbite-react';
 import DatePicker from 'react-datepicker';
 
-const DateInput = ({ name, value, onSelectedDateChanged }) => {
+const DateTimeInput = ({ name, value, onSelectedDateChanged , placeHolder}) => {
 
   const [startDate, setStartDate] = useState(value ? new Date(value) : null);
 
   const handleDateChange = (date) => {
     // if(!date== null){
-      setStartDate(date);
-      onSelectedDateChanged(date);
+    setStartDate(date);
+    onSelectedDateChanged(date);
     // }
   };
   const customtheme = {
@@ -22,26 +20,20 @@ const DateInput = ({ name, value, onSelectedDateChanged }) => {
   }
   return (
     <div className="custom-datepicker">
-      {/* {value} */}
-      {/* <Datepicker
-        showClearButton={true}
-        showTodayButton={true}
-        theme={customtheme}
-        defaultDate={value ? new Date(startDate) : undefined}
-        name={name}
-        onSelectedDateChanged={handleDateChange}
-        dateFormat="MMMM dd, yyyy"
-      /> */}
       <DatePicker
-      autoComplete={false}
+        autoComplete={false}
         name={name}
+        showTimeSelect
+        timeFormat="HH:mm"
+        timeIntervals={15}
+        // dateFormat="LLL"
         selected={startDate}
         onChange={(date) => handleDateChange(date)}
         isClearable
-        placeholderText="Select a date"
-        dateFormat="MMMM dd, yyyy"
+        placeholderText={placeHolder}
+        dateFormat="MMMM dd, HH:mm"
       />
     </div>
   );
 };
-export default DateInput;
+export default DateTimeInput;
