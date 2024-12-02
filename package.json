@@ -22,6 +22,7 @@
     "flowbite-react": "^0.10.1",
     "formik": "^2.4.6",
     "fullcalendar": "^6.1.15",
+    "gapi-script": "^1.2.0",
     "langchain": "^0.3.5",
     "lodash": "^4.17.21",
     "react": "^18.3.1",
