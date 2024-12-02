@@ -13,47 +13,122 @@ import { Formik } from "formik";
 import TextInput from "../TextInput";
 import DateTimeInput from "../dateTimePicker";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { IoIosClose } from "react-icons/io";
+import avatar from '../../assets/images/contact_avtar.png'
 
-const GoogleMeetModal = ({ onClose, title}) => {
+const GoogleMeetModal = ({ onClose, title }) => {
+  const { casesData } = useSelector((state) => state.case);
+  const caseObj = casesData?.cases?.find(item => item.caseId === localStorage.getItem('c_id'));
+  const { client, additionalClient } = useSelector((state) => state.client);
+  const clientObj = client?.data?.length > 0 ? client?.data : [];
+  const { organization, additionalOrganization } = useSelector((state) => state.organization);
+  const organizationObj = organization?.data?.length > 0 ? organization?.data : [];
   const [events, setEvents] = useState([]);
   const [auth, setAuth] = useState(false);
+  const [toEmail, setToEmail] = useState([]);
+  const [inputValue, setInputValue] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
   // Initialize GAPI client on component mount
   useEffect(() => {
     initializeGapiClient();
   }, []);
 
-    // Initialize GAPI client and handle persisted auth
-    useEffect(() => {
-      const initGapi = async () => {
-        try {
-          const isSignedIn = await initializeGapiClient();
-          const persistedAuth = localStorage.getItem("googleAuth") === "true";
-          if (isSignedIn || persistedAuth) {
-            setAuth(true);
-          }
-        } catch (error) {
-          console.error("Failed to initialize GAPI client: ", error);
-        }
-      };
-      initGapi();
-    }, []);
-  
-    const handleSignIn = async () => {
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleInputBlur = () => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (emailPattern.test(inputValue)) {
+      setToEmail((prevEmails) => [...prevEmails, inputValue]);
+      setInputValue('');
+    }
+  };
+  const removeToEmail = (index) => {
+    const updatedEmails = toEmail.filter((_, i) => i !== index);
+    setToEmail(updatedEmails);
+  }
+  useEffect(() => {
+    const isClientTypeIndividual = caseObj?.clientType === 0;
+    const targetObj = isClientTypeIndividual ? clientObj : organizationObj;
+    const additionalData = isClientTypeIndividual ? additionalClient : additionalOrganization;
+
+    let emailArray = [];
+
+    if (targetObj?.length > 0) {
+      // Extract the main target email
+      const mainEmail = targetObj[0]?.email;
+      if (mainEmail) {
+        emailArray.push(mainEmail);
+      }
+
+      // Extract emails from additional data if available
+      if (additionalData?.length > 0) {
+        const additionalEmails = additionalData
+          .map(item => item.email)
+          .filter(email => email); // Filter out undefined/null emails
+        emailArray = [...emailArray, ...additionalEmails];
+      }
+
+      if (emailArray.length > 0) {
+        setToEmail(emailArray);
+      } else {
+        toast.error("Please update client email, No email exists!");
+      }
+    } else {
+      toast.error("No primary client or organization found!");
+    }
+  }, []);
+  // Initialize GAPI client and handle persisted auth
+  useEffect(() => {
+    const initGapi = async () => {
+      setIsLoading(true);
       try {
-        await signInToGoogle();
-        setAuth(true);
-        toast.success("Signed In!");
+        const isSignedIn = await initializeGapiClient();
+        const persistedAuth = localStorage.getItem("googleAuth") === "true";
+        if (isSignedIn || persistedAuth) {
+          setAuth(true);
+        }
       } catch (error) {
-        console.error("Sign-in failed: ", error);
-        setAuth(false);
+        console.error("Failed to initialize GAPI client:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
-  
-    const handleSignOut = () => {
+    initGapi();
+  }, []);
+
+const handleSignIn = async () => {
+    setIsLoading(true);
+    try {
+      await signInToGoogle();
+      setAuth(true);
+      toast.success("Signed In!");
+    } catch (error) {
+      console.error("Sign-in failed:", error);
+      setAuth(false);
+      toast.error("Failed to sign in!");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSignOut = async () => {
+    setIsLoading(true);
+    try {
       signOutFromGoogle();
       setAuth(false);
       toast.success("Signed Out!");
-    };
+    } catch (error) {
+      console.error("Sign-out failed:", error);
+      toast.error("Failed to sign out!");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
 
   // Handle sign-in
   // const handleSignIn = async () => {
@@ -101,10 +176,7 @@ const GoogleMeetModal = ({ onClose, title}) => {
           dateTime: values.endTime,
           // timeZone: "America/Los_Angeles",
         },
-        attendees: [
-          // { email: "example1@yopmail.com" },
-          // { email: "example2@yopmail.com" }, // Add attendees if needed
-        ],
+        attendees: toEmail?.map(email => ({ email })),
         conferenceData: {
           createRequest: {
             requestId: "sample123", // Unique ID to avoid duplication
@@ -122,23 +194,23 @@ const GoogleMeetModal = ({ onClose, title}) => {
         const createdEvent = await createCalendarEvent(newEvent);
 
         if (createdEvent.conferenceData) {
-          console.log(createdEvent,"createdEvent")
+          console.log(createdEvent, "createdEvent")
           const { htmlLink } = createdEvent; // Extract the Google Calendar event link
 
           // Open the Google Calendar event in a new tab
           window.open(htmlLink, '_blank');
-  
+
           // const { summary, start, end, description, location } = createdEvent;
 
           // const startDate = new Date(start).toISOString().replace(/-|:|\.\d+/g, '');
           // const endDate = new Date(end).toISOString().replace(/-|:|\.\d+/g, '');
-  
+
           // const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
           //   summary
           // )}&dates=${startDate}/${endDate}&details=${encodeURIComponent(
           //   description
           // )}&location=${encodeURIComponent(location)}`;
-  
+
           // // Open in new tab
           // window.open(googleCalendarUrl, '_blank');
           toast.success("Meeting created!");
@@ -214,68 +286,100 @@ const GoogleMeetModal = ({ onClose, title}) => {
                       onClick={handleCreateEvent}
                     /> */}
                   </div>
-                  {auth?<>
-                  <TextInput
-                  name="title"
-                    type="text"
-                    placeholder="Title"
-                    value={values.title}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    field={{ name: "title" }}
-                    form={{ errors, touched }}
-                    data-lpignore="true"
+                  {auth ? <>
+                    <TextInput
+                      name="title"
+                      type="text"
+                      placeholder="Title"
+                      value={values.title}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      field={{ name: "title" }}
+                      form={{ errors, touched }}
+                      data-lpignore="true"
                     />
-                  <TextInput
-                    name="description"
-                    type="text"
-                    placeholder="Description"
-                    value={values.description}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    field={{ name: "description" }}
-                    form={{ errors, touched }}
-                    data-lpignore="true"
+                    <TextInput
+                      name="description"
+                      type="text"
+                      placeholder="Description"
+                      value={values.description}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      field={{ name: "description" }}
+                      form={{ errors, touched }}
+                      data-lpignore="true"
                     />
-                    </>
-                    :<>
+                  </>
+                    : <>
                     </>
                   }
-                    
-                </div>
-                
-               { auth && <>
-               <div className="grid grid-cols-2 mt-3">
-                  <DateTimeInput
-                    name="startTime"
-                    value={values.startTime}
-                    placeHolder="Select Start Time"
-                    onSelectedDateChanged={(date) => setFieldValue("startTime", date)}
-
-                  />
-                  <DateTimeInput
-                    name="endTime"
-                    value={values.endTime}
-                    placeHolder="Select End Time"
-                    onSelectedDateChanged={(date) => setFieldValue("endTime", date)}
-
-                  />
 
                 </div>
-                <div className="text-end mt-8">
-                  <XButton
-                    text={"Cancel"}
-                    onClick={onClose}
-                    disabled={isSubmitting}
-                    className="bg-card-300 text-sm text-primary2 py-[10px] px-6 rounded-[100px]"
-                  />
-                  <XButton
-                    type="submit"
-                    text={"Create"}
-                    disabled={isSubmitting}
-                    className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px] ml-4"
-                  />
-                </div></>}
+
+
+                {auth && <>
+                  <div className="grid grid-cols-2 mt-3">
+                    <DateTimeInput
+                      name="startTime"
+                      value={values.startTime}
+                      placeHolder="Select Start Time"
+                      onSelectedDateChanged={(date) => setFieldValue("startTime", date)}
+
+                    />
+                    <DateTimeInput
+                      name="endTime"
+                      value={values.endTime}
+                      placeHolder="Select End Time"
+                      onSelectedDateChanged={(date) => setFieldValue("endTime", date)}
+
+                    />
+
+                  </div>
+</>}
+
+                  {auth && 
+                  <>
+                      <div className="border-b border-b-border py-[6px] items-center">
+                      <label className="inline text-sm font-medium text-text-gray-100 mr-2">Participants</label>
+                      <ul>
+                        {toEmail?.map((item, index) =>
+                          <li className="flex items-center justify-between p-2 bg-bg-gray-300 rounded-full mb-2">
+                            <div className='flex items-center'>
+                              <img src={avatar} alt="" className="mr-2" />
+                              <span className='overflow-hidden'>{item}</span>
+                            </div>
+                            <IoIosClose size={28} className="text-text-gray-100 cursor-pointer" 
+                            onClick={() => removeToEmail(index)} 
+                            />
+                          </li>
+                        )}
+
+                      </ul>
+                      <input
+                        type="text"
+                        className="inline border-0 focus:ring-transparent w-full"
+                        value={inputValue}
+                        onChange={handleInputChange}
+                        onBlur={handleInputBlur} // or use onKeyDown to detect 'Enter' key
+                        placeholder="Enter email"
+                      />
+                    </div>
+                                      <div className="text-end mt-8">
+                                      <XButton
+                                        text={"Cancel"}
+                                        onClick={onClose}
+                                        disabled={isSubmitting}
+                                        className="bg-card-300 text-sm text-primary2 py-[10px] px-6 rounded-[100px]"
+                                      />
+                                      <XButton
+                                        type="submit"
+                                        text={"Create"}
+                                        disabled={isSubmitting}
+                                        className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px] ml-4"
+                                      />
+                                    </div>
+                                    </>
+}
               </form>
             )}
           </Formik>
