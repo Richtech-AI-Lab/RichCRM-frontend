@@ -14,6 +14,7 @@ import UploadFileModal from "../caseModal/uploadFileModal";
 import GoogleMeetModal from "../gmeet/googleMeetModal";
 
 const ChecklistItem = ({ item, stageName, key, icon, label, status, action, actionInfo, optionsValue, checkboxId, currentStep, templates, stageId }) => {
+  
   const dispatch = useDispatch();
   const [isCompose, setIsCompose] = useState(false);
   const [isUploadFileModalOpen, setIsUploadFileModalOpen] = useState(false);
@@ -285,6 +286,7 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
   const disabled = isOptionDisable(action);
   const taskStatusColor = getTaskLabelAndColor(ACTIONTYPELABEL[action], status);
 
+  
   // console.log(taskStatusColor?.badgeClass,"displayOption");
   return (
     <>
@@ -329,7 +331,7 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
       </div>
       {isUploadFileModalOpen && <UploadFileModal fileName={fileName} taskName={item?.name} generalUpload={false} onUpload={(value) => handleChangeTaskStatus(value)} onClose={toggleUploadFileModal} />}
       {isCompose ? <ComposeEmail taskItem={item} templates={templates} onClose={toggleComposeModal} onSendEmail={(value) => handleChangeTaskStatus(value)} /> : ""}
-      {isGmeetModalOpen && <GoogleMeetModal onClose={toggleGMeetModal} />}
+      {isGmeetModalOpen && <GoogleMeetModal title={`${caseObj?.clientName}-${caseObj?.premisesName}-${item?.name}`} onClose={toggleGMeetModal} />}
     </>
   );
 };

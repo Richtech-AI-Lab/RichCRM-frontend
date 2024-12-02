@@ -14,7 +14,7 @@ import TextInput from "../TextInput";
 import DateTimeInput from "../dateTimePicker";
 import { toast } from "react-toastify";
 
-const GoogleMeetModal = ({ onClose }) => {
+const GoogleMeetModal = ({ onClose, title}) => {
   const [events, setEvents] = useState([]);
   const [auth, setAuth] = useState(false);
   // Initialize GAPI client on component mount
@@ -154,11 +154,12 @@ const GoogleMeetModal = ({ onClose }) => {
   };
 
   const initialValues = {
-    title: "",
+    title: title,
     description: "",
     startTime: null,
     endTime: null
   }
+
   return (
     <Modal show={true} size="md" onClose={onClose} className="new-case-modal">
       <Modal.Header className="border-b-0">
@@ -171,6 +172,7 @@ const GoogleMeetModal = ({ onClose }) => {
             initialValues={initialValues}
             // validationSchema={validationSchema}
             onSubmit={handleCreateEvent}
+            enableReinitialize
           >
             {({
               values,
