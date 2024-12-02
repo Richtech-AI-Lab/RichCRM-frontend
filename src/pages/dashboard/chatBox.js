@@ -158,7 +158,7 @@ const responseSchema = z.object(
     setChatHistory([...chatHistory, new HumanMessage(message), new AIMessage(response.output)]);
     setMessages([...messages,
     { text: message, role: "human" },
-    { text: response.output, role: "agent", loader: "false" }
+    { text: response.output, role: "agent", loader: "false", resData: data }
     ]);
 
   };
@@ -208,17 +208,17 @@ const responseSchema = z.object(
                       {/* Intro text */}
                       {
                         <p className="text-[16px] text-secondary-800 font-normal pb-[20px]">
-                          {resData?.introText}.
+                          {msg.resData?.introText}
                         </p>
                       }
                       {/* Case bubble */}
                       {
-                        resData?.cases?.length > 0 && (
+                        msg.resData?.cases?.length > 0 && (
                           <div>
                             <div key={index} className="ag-msg">
                               <div className="grid gap-4 grid-cols-3">
                                 {/* Grid structure */}
-                                {resData.cases.map((caseItem, index) => (
+                                {msg.resData.cases.map((caseItem, index) => (
 
 
                                   <div className="basis-1/3">
@@ -243,11 +243,11 @@ const responseSchema = z.object(
 
                       {/* Client bubble */}
                       {
-                        resData?.clients?.length > 0 && (
+                        msg.resData?.clients?.length > 0 && (
                           <div>
                             <div key={index} className="ag-msg">
                               <div className="grid gap-4 grid-cols-3">
-                                {resData.clients.map((client, index) => (
+                                {msg.resData.clients.map((client, index) => (
                                   <div className="basis-1/3">
                                     <div className="card bg-gray-100 p-4">
 
@@ -285,11 +285,11 @@ const responseSchema = z.object(
 
                       {/* Organization bubble */}
                       {
-                        resData?.organizations?.length > 0 && (
+                        msg.resData?.organizations?.length > 0 && (
                           <div>
                             <div key={index} className="ag-msg">
                             <div className="grid gap-4 grid-cols-3">
-                              {resData.organizations.map((organization, index) => (
+                              {msg.resData.organizations.map((organization, index) => (
                                    <div className="basis-1/3">
                                    <div className="card bg-gray-100 p-4">
 
