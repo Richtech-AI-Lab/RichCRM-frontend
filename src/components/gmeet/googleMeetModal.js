@@ -11,7 +11,7 @@ import XButton from "../button/XButton";
 import { FiPlus } from "react-icons/fi";
 import { Formik } from "formik";
 import TextInput from "../TextInput";
-import DateTimeInput from "../datePicker";
+import DateTimeInput from "../dateTimePicker";
 import { toast } from "react-toastify";
 
 const GoogleMeetModal = ({ onClose }) => {
@@ -22,25 +22,60 @@ const GoogleMeetModal = ({ onClose }) => {
     initializeGapiClient();
   }, []);
 
-  // Handle sign-in
-  const handleSignIn = async () => {
-    try {
-      await signInToGoogle();
-      setAuth(true)
-      toast.success("Sign In!");
-    } catch (error) {
-      console.error("Sign-in failed:", error);
-      setAuth(false)
-    }
-  };
+    // Initialize GAPI client and handle persisted auth
+    useEffect(() => {
+      const initGapi = async () => {
+        try {
+          const isSignedIn = await initializeGapiClient();
+          const persistedAuth = localStorage.getItem("googleAuth") === "true";
+          if (isSignedIn || persistedAuth) {
+            setAuth(true);
+          }
+        } catch (error) {
+          console.error("Failed to initialize GAPI client: ", error);
+        }
+      };
+      initGapi();
+    }, []);
+  
+    const handleSignIn = async () => {
+      try {
+        await signInToGoogle();
+        setAuth(true);
+        toast.success("Signed In!");
+      } catch (error) {
+        console.error("Sign-in failed: ", error);
+        setAuth(false);
+      }
+    };
+  
+    const handleSignOut = () => {
+      signOutFromGoogle();
+      setAuth(false);
+      toast.success("Signed Out!");
+    };
 
-  // Handle sign-out
-  const handleSignOut = () => {
-    signOutFromGoogle();
-    // alert("Signed out successfully!");
-    setAuth(false)
-    toast.success("Sign Out!");
-  };
+  // Handle sign-in
+  // const handleSignIn = async () => {
+  //   try {
+  //     await signInToGoogle();
+  //     setAuth(true)
+  //     toast.success("Sign In!");
+  //   } catch (error) {
+  //     console.error("Sign-in failed:", error);
+  //     setAuth(false)
+  //   }
+  // };
+
+  // // Handle sign-out
+  // const handleSignOut = () => {
+  //   signOutFromGoogle();
+  //   // alert("Signed out successfully!");
+  //   setAuth(false)
+  //   toast.success("Sign Out!");
+  // };
+
+
 
   const handleFetchEvents = async () => {
     try {
@@ -85,8 +120,27 @@ const GoogleMeetModal = ({ onClose }) => {
 
       try {
         const createdEvent = await createCalendarEvent(newEvent);
-        // alert(`Event created: ${createdEvent.htmlLink}`);
+
         if (createdEvent.conferenceData) {
+          console.log(createdEvent,"createdEvent")
+          const { htmlLink } = createdEvent; // Extract the Google Calendar event link
+
+          // Open the Google Calendar event in a new tab
+          window.open(htmlLink, '_blank');
+  
+          // const { summary, start, end, description, location } = createdEvent;
+
+          // const startDate = new Date(start).toISOString().replace(/-|:|\.\d+/g, '');
+          // const endDate = new Date(end).toISOString().replace(/-|:|\.\d+/g, '');
+  
+          // const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
+          //   summary
+          // )}&dates=${startDate}/${endDate}&details=${encodeURIComponent(
+          //   description
+          // )}&location=${encodeURIComponent(location)}`;
+  
+          // // Open in new tab
+          // window.open(googleCalendarUrl, '_blank');
           toast.success("Meeting created!");
           resetForm()
           onClose()
@@ -98,6 +152,7 @@ const GoogleMeetModal = ({ onClose }) => {
       }
     }
   };
+
   const initialValues = {
     title: "",
     description: "",

@@ -7,28 +7,28 @@ const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v
 const SCOPES = "https://www.googleapis.com/auth/calendar.events";
 
 // Initialize the Google API client
-export const initializeGapiClient = () => {
-  gapi.load("client:auth2", () => {
-    gapi.client.init({
-      apiKey: API_KEY,
-      clientId: CLIENT_ID,
-      discoveryDocs: DISCOVERY_DOCS,
-      scope: SCOPES,
-    });
-  });
-};
+// export const initializeGapiClient = () => {
+//   gapi.load("client:auth2", () => {
+//     gapi.client.init({
+//       apiKey: API_KEY,
+//       clientId: CLIENT_ID,
+//       discoveryDocs: DISCOVERY_DOCS,
+//       scope: SCOPES,
+//     });
+//   });
+// };
 
-// Sign in to Google
-export const signInToGoogle = async () => {
-  const authInstance = gapi.auth2.getAuthInstance();
-  await authInstance.signIn();
-};
+// // Sign in to Google
+// export const signInToGoogle = async () => {
+//   const authInstance = gapi.auth2.getAuthInstance();
+//   await authInstance.signIn();
+// };
 
-// Sign out of Google
-export const signOutFromGoogle = () => {
-  const authInstance = gapi.auth2.getAuthInstance();
-  authInstance.signOut();
-};
+// // Sign out of Google
+// export const signOutFromGoogle = () => {
+//   const authInstance = gapi.auth2.getAuthInstance();
+//   authInstance.signOut();
+// };
 
 // Fetch upcoming events
 export const fetchUpcomingEvents = async () => {
@@ -61,4 +61,49 @@ export const createCalendarEvent = async (event) => {
       console.error("Error creating event: ", error);
       throw error;
     }
+  };
+
+
+  export const initializeGapiClient = () => {
+    return new Promise((resolve, reject) => {
+      gapi.load("client:auth2", async () => {
+        try {
+          await gapi.client.init({
+            apiKey: API_KEY,
+            clientId: CLIENT_ID,
+            discoveryDocs: DISCOVERY_DOCS,
+            scope: SCOPES,
+          });
+  
+          const authInstance = gapi.auth2.getAuthInstance();
+          const isSignedIn = authInstance.isSignedIn.get();
+          resolve(isSignedIn);
+        } catch (error) {
+          console.error("Error initializing GAPI client: ", error);
+          reject(error);
+        }
+      });
+    });
+  };
+  
+  // Get the current authentication instance
+  export const getAuthInstance = () => gapi.auth2.getAuthInstance();
+  
+  // Sign in to Google
+  export const signInToGoogle = async () => {
+    try {
+      const authInstance = gapi.auth2.getAuthInstance();
+      await authInstance.signIn();
+      localStorage.setItem("googleAuth", "true"); // Save login state
+    } catch (error) {
+      console.error("Error signing in: ", error);
+      throw error;
+    }
+  };
+  
+  // Sign out of Google
+  export const signOutFromGoogle = () => {
+    const authInstance = gapi.auth2.getAuthInstance();
+    authInstance.signOut();
+    localStorage.removeItem("googleAuth"); // Clear login state
   };
