@@ -6,7 +6,7 @@ import {
   fetchUpcomingEvents,
   createCalendarEvent,
 } from "./googleMeetFunc";
-import { Label, Modal } from 'flowbite-react';
+import { Label, Modal, Spinner } from 'flowbite-react';
 import XButton from "../button/XButton";
 import { FiPlus } from "react-icons/fi";
 import { Formik } from "formik";
@@ -239,8 +239,18 @@ const GoogleMeetModal = ({ onClose, title }) => {
         <h2 className="text-4 font-medium text-secondary-800">Add Meeting</h2>
       </Modal.Header>
       <Modal.Body className="pt-3">
-        <div>
-          <Formik
+         { isLoading ?
+         <div className="flex justify-center">
+          <Spinner
+                  size="xl"
+                  animation="border"
+                  role="status"
+                  variant="primary"
+                // className={`spinner-${size}`}
+                >
+                  <span className="visually-hidden">Loading...</span>
+                </Spinner> 
+          </div>:<Formik
             initialValues={initialValues}
             // validationSchema={validationSchema}
             onSubmit={handleCreateEvent}
@@ -377,8 +387,7 @@ const GoogleMeetModal = ({ onClose, title }) => {
                 }
               </form>
             )}
-          </Formik>
-        </div>
+          </Formik>}
       </Modal.Body>
     </Modal>
   );
