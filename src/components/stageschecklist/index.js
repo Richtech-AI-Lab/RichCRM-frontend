@@ -453,7 +453,7 @@ const StagesChecklist = () => {
               )
             })}
         </ul> */}
-              <ul className="mb-6 overflow-y-auto min-h-[calc(100vh-440px)] flex justify-center items-center">
+              <ul className="mb-6 overflow-y-auto min-h-[calc(100vh-440px)] flex justify-center">
                 {isLoading && <Spinner
                   size="xl"
                   animation="border"
