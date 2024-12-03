@@ -5,7 +5,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import DetailCaseModal from './detailCaseModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllCasesRequest } from '../../../redux/actions/caseAction';
-import { fetchUpcomingEvents, signInToGoogle } from '../../../components/gmeet/googleMeetFunc';
+import { checkGoogleSignInStatus, fetchUpcomingEvents, signInToGoogle } from '../../../components/gmeet/googleMeetFunc';
 import MeetingDetailModal from './meetingDetailModal';
 
 const Calendar = ({ toggleAddReminderModal, filters, selectedCase, setSelectedCase }) => {
@@ -14,9 +14,11 @@ const Calendar = ({ toggleAddReminderModal, filters, selectedCase, setSelectedCa
   const { cases } = useSelector((state) => state.case.casesData);
   const casesWithDates = cases.filter((caseItem) => caseItem.closingDate || caseItem.mortgageContingencyDate);
   const calendarRef = useRef(null);
-
+  
   const [isAuthenticated, setIsAuthenticated] = useState(false); // Track authentication status
-
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [isMeetOpen, setIsMeetOpen] = useState(false);
+  
   const calendarEvents = casesWithDates.flatMap((caseItem) => [
     filters.closingDue && caseItem.closingDate ? {
       id: `${caseItem.caseId}_Closing Due`,
@@ -61,17 +63,21 @@ const Calendar = ({ toggleAddReminderModal, filters, selectedCase, setSelectedCa
 
     const authenticateAndFetchEvents = async () => {
       try {
-        // Check if the user is signed in
-        await signInToGoogle(); // Custom function to handle Google Sign-In
-        // console.log(isSignedIn,"isSignedIn")
-        // if (isSignedIn) {
+        const isSignedIn = await checkGoogleSignInStatus(); // Custom function to check sign-in status
+        console.log(isSignedIn,"isSignedIn")
+        if (isSignedIn) {
+          // User is signed in, fetch events directly
+          setIsAuthenticated(true);
+          const fetchedEvents = await fetchUpcomingEvents(); // Fetch events
+          setGoogleEvents(mapGoogleEvents(fetchedEvents));
+        } else {
+          // User is not signed in, initiate sign-in flow
+          await signInToGoogle(); // Custom function to handle Google Sign-In
           setIsAuthenticated(true);
           const fetchedEvents = await fetchUpcomingEvents(); // Fetch events after sign-in
+          console.log(fetchedEvents, "fetchedEvents")
           setGoogleEvents(mapGoogleEvents(fetchedEvents));
-          // console.log(fetchedEvents,"fetchedEvents")
-        // } else {
-        //   console.error("User not authenticated.");
-        // }
+        }
       } catch (err) {
         console.error("Error during sign-in or fetching events:", err);
       }
@@ -79,7 +85,9 @@ const Calendar = ({ toggleAddReminderModal, filters, selectedCase, setSelectedCa
 
     fetchAllCases();
     authenticateAndFetchEvents();
-  }, [dispatch]);
+
+    // window.onload = authenticateAndFetchEvents(); 
+  }, []);
 
   const handleResize = () => {
     if (calendarRef.current) {
@@ -95,8 +103,6 @@ const Calendar = ({ toggleAddReminderModal, filters, selectedCase, setSelectedCa
     };
   }, []);
 
-  const [isDetailOpen, setIsDetailOpen] = useState(false);
-  const [isMeetOpen, setIsMeetOpen] = useState(false);
 
   const toggleDetailModal = () => {
     setIsDetailOpen(!isDetailOpen);

@@ -92,6 +92,7 @@ const GoogleMeetModal = ({ onClose, title }) => {
           setAuth(true);
         }
       } catch (error) {
+        setAuth(false);
         console.error("Failed to initialize GAPI client:", error);
       } finally {
         setIsLoading(false);
@@ -100,7 +101,7 @@ const GoogleMeetModal = ({ onClose, title }) => {
     initGapi();
   }, []);
 
-const handleSignIn = async () => {
+  const handleSignIn = async () => {
     setIsLoading(true);
     try {
       await signInToGoogle();
@@ -239,7 +240,6 @@ const handleSignIn = async () => {
       </Modal.Header>
       <Modal.Body className="pt-3">
         <div>
-
           <Formik
             initialValues={initialValues}
             // validationSchema={validationSchema}
@@ -260,19 +260,19 @@ const handleSignIn = async () => {
               <form onSubmit={handleSubmit} className="">
                 <div className="block">
 
-                  <div className="grid grid-cols-2 mt-3">
-                    <XButton
+                  <div className="grid grid-cols-1 mt-3">
+                    {!auth ? <XButton
                       text="Sign In"
                       icon={<FiPlus className="text-base mr-2 inline-block" />}
                       className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium ml-4"
                       onClick={handleSignIn}
-                    />
-                    <XButton
-                      text="Sign Out"
-                      icon={<FiPlus className="text-base mr-2 inline-block" />}
-                      className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium ml-4"
-                      onClick={handleSignOut}
-                    />
+                    /> :
+                      <XButton
+                        text="Sign Out"
+                        icon={<FiPlus className="text-base mr-2 inline-block" />}
+                        className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium ml-4"
+                        onClick={handleSignOut}
+                      />}
                     {/* <XButton
                       text="Fetch Events"
                       icon={<FiPlus className="text-base mr-2 inline-block" />}
@@ -286,8 +286,13 @@ const handleSignIn = async () => {
                       onClick={handleCreateEvent}
                     /> */}
                   </div>
-                  {auth ? <>
-                    <TextInput
+
+                </div>
+
+
+                {auth && <>
+                  <div className="grid grid-cols-1">
+                  <TextInput
                       name="title"
                       type="text"
                       placeholder="Title"
@@ -309,16 +314,10 @@ const handleSignIn = async () => {
                       form={{ errors, touched }}
                       data-lpignore="true"
                     />
-                  </>
-                    : <>
-                    </>
-                  }
+                  </div>
 
-                </div>
-
-
-                {auth && <>
                   <div className="grid grid-cols-2 mt-3">
+                    
                     <DateTimeInput
                       name="startTime"
                       value={values.startTime}
@@ -335,11 +334,7 @@ const handleSignIn = async () => {
                     />
 
                   </div>
-</>}
-
-                  {auth && 
-                  <>
-                      <div className="border-b border-b-border py-[6px] items-center">
+                    <div className="border-b border-b-border py-[6px] items-center">
                       <label className="inline text-sm font-medium text-text-gray-100 mr-2">Participants</label>
                       <ul>
                         {toEmail?.map((item, index) =>
@@ -348,8 +343,8 @@ const handleSignIn = async () => {
                               <img src={avatar} alt="" className="mr-2" />
                               <span className='overflow-hidden'>{item}</span>
                             </div>
-                            <IoIosClose size={28} className="text-text-gray-100 cursor-pointer" 
-                            onClick={() => removeToEmail(index)} 
+                            <IoIosClose size={28} className="text-text-gray-100 cursor-pointer"
+                              onClick={() => removeToEmail(index)}
                             />
                           </li>
                         )}
@@ -364,67 +359,25 @@ const handleSignIn = async () => {
                         placeholder="Enter email"
                       />
                     </div>
-                                      <div className="text-end mt-8">
-                                      <XButton
-                                        text={"Cancel"}
-                                        onClick={onClose}
-                                        disabled={isSubmitting}
-                                        className="bg-card-300 text-sm text-primary2 py-[10px] px-6 rounded-[100px]"
-                                      />
-                                      <XButton
-                                        type="submit"
-                                        text={"Create"}
-                                        disabled={isSubmitting}
-                                        className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px] ml-4"
-                                      />
-                                    </div>
-                                    </>
-}
+                    <div className="text-end mt-8">
+                      <XButton
+                        text={"Cancel"}
+                        onClick={onClose}
+                        disabled={isSubmitting}
+                        className="bg-card-300 text-sm text-primary2 py-[10px] px-6 rounded-[100px]"
+                      />
+                      <XButton
+                        type="submit"
+                        text={"Create"}
+                        disabled={isSubmitting}
+                        className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px] ml-4"
+                      />
+                    </div>
+                  </>
+                }
               </form>
             )}
           </Formik>
-
-          {/* <h1>Google Calendar API Integration</h1>
-          <div className="flex justify-between items-center mb-6">
-            <div className="grid gap-2">
-              <XButton
-                text="Sign In"
-                icon={<FiPlus className="text-base mr-2 inline-block" />}
-                className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium ml-4"
-                onClick={handleSignIn}
-              />
-              <XButton
-                text="Sign Out"
-                icon={<FiPlus className="text-base mr-2 inline-block" />}
-                className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium ml-4"
-                onClick={handleSignOut}
-              />
-              <XButton
-                text="Fetch Events"
-                icon={<FiPlus className="text-base mr-2 inline-block" />}
-                className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium ml-4"
-                onClick={handleFetchEvents}
-              />
-              <XButton
-                text="Create Event"
-                icon={<FiPlus className="text-base mr-2 inline-block" />}
-                className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium ml-4"
-                onClick={handleCreateEvent}
-              />
-            </div>
-          </div> */}
-
-
-          {/* <h2>Upcoming Events:</h2>
-          <ul>
-            {events.map((event) => (
-              <li key={event.id}>
-                <strong>{event.summary}</strong> - {event.start.dateTime || event.start.date}
-              </li>
-            ))}
-          </ul> */}
-
-
         </div>
       </Modal.Body>
     </Modal>

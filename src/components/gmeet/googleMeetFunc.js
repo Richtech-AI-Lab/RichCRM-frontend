@@ -26,11 +26,32 @@ const SCOPES = "https://www.googleapis.com/auth/calendar.events";
 
 // // Sign out of Google
 // export const signOutFromGoogle = () => {
-//   const authInstance = gapi.auth2.getAuthInstance();
-//   authInstance.signOut();
-// };
-
-// Fetch upcoming events
+  //   const authInstance = gapi.auth2.getAuthInstance();
+  //   authInstance.signOut();
+  // };
+  
+  export const initializeGapiClient = () => {
+    return new Promise((resolve, reject) => {
+      gapi.load("client:auth2", async () => {
+        try {
+          await gapi.client.init({
+            apiKey: API_KEY,
+            clientId: CLIENT_ID,
+            discoveryDocs: DISCOVERY_DOCS,
+            scope: SCOPES,
+          });
+  
+          const authInstance = gapi.auth2.getAuthInstance();
+          const isSignedIn = authInstance.isSignedIn.get();
+          resolve(isSignedIn);
+        } catch (error) {
+          console.error("Error initializing GAPI client: ", error);
+          reject(error);
+        }
+      });
+    });
+  };
+  // Fetch upcoming events
 export const fetchUpcomingEvents = async () => {
   try {
     const response = await gapi?.client?.calendar?.events?.list({
@@ -64,27 +85,6 @@ export const createCalendarEvent = async (event) => {
   };
 
 
-  export const initializeGapiClient = () => {
-    return new Promise((resolve, reject) => {
-      gapi.load("client:auth2", async () => {
-        try {
-          await gapi.client.init({
-            apiKey: API_KEY,
-            clientId: CLIENT_ID,
-            discoveryDocs: DISCOVERY_DOCS,
-            scope: SCOPES,
-          });
-  
-          const authInstance = gapi.auth2.getAuthInstance();
-          const isSignedIn = authInstance.isSignedIn.get();
-          resolve(isSignedIn);
-        } catch (error) {
-          console.error("Error initializing GAPI client: ", error);
-          reject(error);
-        }
-      });
-    });
-  };
   
   // Get the current authentication instance
   export const getAuthInstance = () => gapi.auth2.getAuthInstance();
@@ -92,8 +92,8 @@ export const createCalendarEvent = async (event) => {
   // Sign in to Google
   export const signInToGoogle = async () => {
     try {
-      const authInstance = gapi.auth2.getAuthInstance();
-      await authInstance.signIn();
+      const authInstance = gapi?.auth2?.getAuthInstance();
+      await authInstance?.signIn();
       localStorage.setItem("googleAuth", "true"); // Save login state
     } catch (error) {
       console.error("Error signing in: ", error);
@@ -106,4 +106,15 @@ export const createCalendarEvent = async (event) => {
     const authInstance = gapi.auth2.getAuthInstance();
     authInstance.signOut();
     localStorage.removeItem("googleAuth"); // Clear login state
+  };
+
+  export const checkGoogleSignInStatus = async () => {
+    try {
+      const authInstance = gapi?.auth2?.getAuthInstance();
+      // console.log(getAuthInstance(),"gapi?.auth2?.getAuthInstance()")
+      return authInstance?.isSignedIn?.get(); // Returns true if user is signed in
+    } catch (error) {
+      console.error("Error checking sign-in status:", error);
+      return false; // Default to not signed in on error
+    }
   };
