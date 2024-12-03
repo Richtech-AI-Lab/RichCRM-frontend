@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { IMAGES } from '../../constants/imagePath';
 
 const Search = ({ searchResults, onNavigation }) => {
-    console.log(searchResults)
+    // console.log(searchResults)
     // Sample data for case and contact tabs
     const caseData = [
         { id: 1, firstName: 'James', lastName: 'Wilson', address: '456 Oakwood Avenue' },

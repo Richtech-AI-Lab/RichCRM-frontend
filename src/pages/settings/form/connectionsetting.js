@@ -26,7 +26,7 @@ export const ConnectionSetting = ({ title }) => {
     const onSave = () => {
         if (openaiAPIKeyInput && openaiAPIKeyInput.length > 0 && openaiAPIKeyInput.trim().length > 0) {
             setOpenaiAPIKey(openaiAPIKeyInput);
-            console.log('API Key set:', openaiAPIKeyInput);
+            // console.log('API Key set:', openaiAPIKeyInput);
         } else {
             console.error('API Key is empty');
         }
@@ -41,7 +41,7 @@ export const ConnectionSetting = ({ title }) => {
                 uploadFolderName: uploadFolderUrlInput
             };
             dispatch(updateUserRequest(payload))
-            console.log('Folder Key set:', uploadFolderUrlInput);
+            // console.log('Folder Key set:', uploadFolderUrlInput);
         } else {
             console.error('Folder Key is empty');
         }

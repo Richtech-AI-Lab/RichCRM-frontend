@@ -8,7 +8,7 @@ import { IMAGES } from "../../../constants/imagePath";
 const AddFromContactListing = ({ active }) => {
   const navigate = useNavigate();
   const [selectedUsers, setSelectedUsers] = useState([]);
-  console.log(selectedUsers, "what is selected user");
+  // console.log(selectedUsers, "what is selected user");
   const header = ["Name", "Position", "Company"];
 
   // Handle navigation

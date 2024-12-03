@@ -155,7 +155,7 @@ const handleSignIn = async () => {
   const handleFetchEvents = async () => {
     try {
       const fetchedEvents = await fetchUpcomingEvents(); // Ensure this returns an array of events
-      console.log("Fetched Events:", fetchedEvents); // Debug log
+      // console.log("Fetched Events:", fetchedEvents); // Debug log
       setEvents(fetchedEvents);
     } catch (error) {
       console.error("Failed to fetch events:", error);
@@ -194,7 +194,7 @@ const handleSignIn = async () => {
         const createdEvent = await createCalendarEvent(newEvent);
 
         if (createdEvent.conferenceData) {
-          console.log(createdEvent, "createdEvent")
+          // console.log(createdEvent, "createdEvent")
           const { htmlLink } = createdEvent; // Extract the Google Calendar event link
 
           // Open the Google Calendar event in a new tab

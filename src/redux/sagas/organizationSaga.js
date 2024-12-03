@@ -81,7 +81,7 @@ function* fetchOrganizationsByIds(action) {
     
     // Map over responses to extract the relevant data
     const organizations = organizationResponses.map(response => response?.data?.data[0]);
-    console.log(organizations, "addressResponses")
+    // console.log(organizations, "addressResponses")
     
     // const addressResponses = yield all(
     //   organizations.map(org =>

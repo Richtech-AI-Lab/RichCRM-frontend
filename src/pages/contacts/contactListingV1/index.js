@@ -77,7 +77,7 @@ const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) 
   
   const onPageChange = (page) => setCurrentPage(page);
   const handleDeleteClick = (contact) => {
-    console.log(contact,"--------")
+    // console.log(contact,"--------")
     setContactToDelete(contact);
     setShowDeleteModal(true); // Open modal
   };
@@ -224,7 +224,7 @@ const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) 
                   >
                     <Table.Cell width={width[0]} className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                       <div className="flex items-center">
-                        <img src={IMAGES.contact_avtar} alt="Profile" className="mr-3 rounded-full" />
+                        <img src={`https://ui-avatars.com/api/?name=${user.firstName}+${user.lastName}`} alt="Profile" className="mr-3 rounded-full w-8 h-8" />
                         <span className="left-txt font-medium text-secondary-800">
                           {user.firstName} {user.lastName}
                         </span>
@@ -264,7 +264,9 @@ const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) 
                   >
                     <Table.Cell width={width[0]} className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                       <div className="flex items-center">
-                        <img src={IMAGES.contact_avtar} alt="Profile" className="mr-3 rounded-full" />
+                      <img src={`https://ui-avatars.com/api/?name=${org?.organizationName}`} alt="Profile" className="mr-3 rounded-full w-8 h-8" />
+                       
+                        {/* <img src={IMAGES.contact_avtar} alt="Profile" className="mr-3 rounded-full" /> */}
                         <span className="left-txt font-medium text-secondary-800">
                           {org?.organizationName}
                         </span>

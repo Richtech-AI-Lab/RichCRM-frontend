@@ -68,7 +68,7 @@ const Calendar = ({ toggleAddReminderModal, filters, selectedCase, setSelectedCa
           setIsAuthenticated(true);
           const fetchedEvents = await fetchUpcomingEvents(); // Fetch events after sign-in
           setGoogleEvents(mapGoogleEvents(fetchedEvents));
-          console.log(fetchedEvents,"fetchedEvents")
+          // console.log(fetchedEvents,"fetchedEvents")
         // } else {
         //   console.error("User not authenticated.");
         // }

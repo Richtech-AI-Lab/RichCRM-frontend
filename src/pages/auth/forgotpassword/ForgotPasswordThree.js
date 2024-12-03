@@ -26,7 +26,7 @@ const ForgotPasswordThree = () => {
   });
 
   const handleSubmit = (values, { setSubmitting }) => {
-    console.log(values, "Here values");
+    // console.log(values, "Here values");
     // dispatch(forgotPasswordRequest(values));
     navigate(ROUTES.DASHBOARD);
   };

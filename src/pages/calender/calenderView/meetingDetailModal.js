@@ -4,8 +4,8 @@ import { Modal } from 'flowbite-react';
 const MeetingDetailModal = ({ onClose, eventData, title }) => {
     // console.log(eventData?.start, "eventData", title)
     function formatDateRange(start, end) {
-        console.log(start,"SSSSSSSS")
-        console.log(end,"eeee")
+        // console.log(start,"SSSSSSSS")
+        // console.log(end,"eeee")
         const options = { weekday: 'long', month: 'long', day: 'numeric' }; // Options for date formatting
         const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: true }; // Options for time formatting
     

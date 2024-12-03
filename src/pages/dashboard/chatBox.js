@@ -151,7 +151,7 @@ const responseSchema = z.object(
       input: message,
       chat_history: chatHistory,
     });
-    console.log("Response from agent:", response);
+    // console.log("Response from agent:", response);
     let data = ParseCases(response?.output);
     setResData(data)
 
