@@ -64,7 +64,7 @@ export const createCalendarEvent = async (event) => {
 
 
 // Get the current authentication instance
-export const getAuthInstance = () => gapi.auth2.getAuthInstance();
+// export const getAuthInstance = () => gapi.auth2.getAuthInstance();
 
 // Sign in to Google
 export const signInToGoogle = async () => {
@@ -87,7 +87,8 @@ export const signOutFromGoogle = () => {
 
 export const checkGoogleSignInStatus = async () => {
   try {
-    const authInstance = gapi?.auth2?.getAuthInstance();
+    await initializeGapiClient()
+    const authInstance = await gapi?.auth2?.getAuthInstance();
     return authInstance?.isSignedIn?.get(); // Returns true if user is signed in
   } catch (error) {
     console.error("Error checking sign-in status:", error);

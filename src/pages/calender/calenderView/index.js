@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllCasesRequest } from '../../../redux/actions/caseAction';
 import { checkGoogleSignInStatus, fetchUpcomingEvents, signInToGoogle } from '../../../components/gmeet/googleMeetFunc';
 import MeetingDetailModal from './meetingDetailModal';
+import { Spinner } from 'flowbite-react';
 
 const Calendar = ({ toggleAddReminderModal, filters, selectedCase, setSelectedCase }) => {
   const dispatch = useDispatch();
@@ -14,11 +15,11 @@ const Calendar = ({ toggleAddReminderModal, filters, selectedCase, setSelectedCa
   const { cases } = useSelector((state) => state.case.casesData);
   const casesWithDates = cases.filter((caseItem) => caseItem.closingDate || caseItem.mortgageContingencyDate);
   const calendarRef = useRef(null);
-  
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // Track authentication status
+
+  const [isLoading, setIsLoading] = useState(false); // Track authentication status
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [isMeetOpen, setIsMeetOpen] = useState(false);
-  
+
   const calendarEvents = casesWithDates.flatMap((caseItem) => [
     filters.closingDue && caseItem.closingDate ? {
       id: `${caseItem.caseId}_Closing Due`,
@@ -48,6 +49,31 @@ const Calendar = ({ toggleAddReminderModal, filters, selectedCase, setSelectedCa
       },
     }));
 
+  const authenticateAndFetchEvents = async () => {
+    try {
+      setIsLoading(true)
+      const isSignedIn = await checkGoogleSignInStatus(); // Custom function to check sign-in status
+      // console.log(isSignedIn,"isSignedIn")
+      if (isSignedIn) {
+        // User is signed in, fetch events directly
+        // setIsAuthenticated(true);
+        const fetchedEvents = await fetchUpcomingEvents(); // Fetch events
+        setGoogleEvents(mapGoogleEvents(fetchedEvents));
+        setIsLoading(false)
+      } else {
+        // User is not signed in, initiate sign-in flow
+        await signInToGoogle(); // Custom function to handle Google Sign-In
+        // setIsAuthenticated(true);
+        const fetchedEvents = await fetchUpcomingEvents(); // Fetch events after sign-in
+        // console.log(fetchedEvents, "fetchedEvents")
+        setGoogleEvents(mapGoogleEvents(fetchedEvents));
+        setIsLoading(false)
+      }
+    } catch (err) {
+      setIsLoading(false)
+      console.error("Error during sign-in or fetching events:", err);
+    }
+  };
   useEffect(() => {
     const fetchAllCases = async () => {
       try {
@@ -61,27 +87,7 @@ const Calendar = ({ toggleAddReminderModal, filters, selectedCase, setSelectedCa
       }
     };
 
-    const authenticateAndFetchEvents = async () => {
-      try {
-        const isSignedIn = await checkGoogleSignInStatus(); // Custom function to check sign-in status
-        console.log(isSignedIn,"isSignedIn")
-        if (isSignedIn) {
-          // User is signed in, fetch events directly
-          setIsAuthenticated(true);
-          const fetchedEvents = await fetchUpcomingEvents(); // Fetch events
-          setGoogleEvents(mapGoogleEvents(fetchedEvents));
-        } else {
-          // User is not signed in, initiate sign-in flow
-          await signInToGoogle(); // Custom function to handle Google Sign-In
-          setIsAuthenticated(true);
-          const fetchedEvents = await fetchUpcomingEvents(); // Fetch events after sign-in
-          console.log(fetchedEvents, "fetchedEvents")
-          setGoogleEvents(mapGoogleEvents(fetchedEvents));
-        }
-      } catch (err) {
-        console.error("Error during sign-in or fetching events:", err);
-      }
-    };
+
 
     fetchAllCases();
     authenticateAndFetchEvents();
@@ -156,6 +162,17 @@ const Calendar = ({ toggleAddReminderModal, filters, selectedCase, setSelectedCa
 
   return (
     <>
+      {isLoading ? <div className="flex justify-center">
+        <Spinner
+          size="xl"
+          animation="border"
+          role="status"
+          variant="primary"
+        // className={`spinner-${size}`}
+        >
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      </div>:
       <FullCalendar
         ref={calendarRef}
         height="100%"
@@ -163,7 +180,7 @@ const Calendar = ({ toggleAddReminderModal, filters, selectedCase, setSelectedCa
         initialView="dayGridMonth"
         events={[...calendarEvents, ...googleEvents]}
         eventContent={renderEventContent}
-      />
+      />}
       {isDetailOpen && selectedCase && (
         <DetailCaseModal
           onAddReminderClick={toggleAddReminderModal}
