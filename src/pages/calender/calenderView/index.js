@@ -8,10 +8,13 @@ import { fetchAllCasesRequest } from '../../../redux/actions/caseAction';
 import { checkGoogleSignInStatus, fetchUpcomingEvents, signInToGoogle } from '../../../components/gmeet/googleMeetFunc';
 import MeetingDetailModal from './meetingDetailModal';
 import { Spinner } from 'flowbite-react';
+import detectIncognito from 'detectincognitojs';
+import { toast } from 'react-toastify';
 
 const Calendar = ({ toggleAddReminderModal, filters, selectedCase, setSelectedCase }) => {
   const dispatch = useDispatch();
   const [googleEvents, setGoogleEvents] = useState([]);
+  const [isIncognitoChecked, setIsIncognitoChecked] = useState(false); 
   const { cases } = useSelector((state) => state.case.casesData);
   const casesWithDates = cases.filter((caseItem) => caseItem.closingDate || caseItem.mortgageContingencyDate);
   const calendarRef = useRef(null);
@@ -87,11 +90,15 @@ const Calendar = ({ toggleAddReminderModal, filters, selectedCase, setSelectedCa
       }
     };
 
-
-
     fetchAllCases();
-    authenticateAndFetchEvents();
-
+    detectIncognito().then((result) => {
+      // console.log(result.browserName, result.isPrivate);
+      if (result.isPrivate) {
+        toast.info("Please use a regular browser tab to sign in and access Google Calendar.")
+      } else {
+        authenticateAndFetchEvents();
+      }
+    });
     // window.onload = authenticateAndFetchEvents(); 
   }, []);
 
