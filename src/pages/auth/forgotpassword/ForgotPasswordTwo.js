@@ -22,7 +22,7 @@ const ForgotPasswordTwo = () => {
   });
 
   const handleSubmit = (values, { setSubmitting }) => {
-    console.log(values, "Here values");
+    // console.log(values, "Here values");
     // dispatch(forgotPasswordRequest(values));
     navigate(ROUTES.FORGOT_PASSWORD_THREE);
   };

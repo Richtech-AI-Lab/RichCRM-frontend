@@ -4,7 +4,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 
 
 const ParticipantBothDetail = ({ client, organization, title }) => {
-  console.log(organization,"organizatssssion")
+  // console.log(organization,"organizatssssion")
   const [collapse, setCollapse] = useState(false);
   const findLabelByValue = (value) => {
     const result = states?.find(item => item.value === value);

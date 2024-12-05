@@ -11,7 +11,7 @@ export const ProfileSetting = ({ title }) => {
                 {title && <div className="flex justify-between items-center mb-6">
                     <span className="text-base text-secondary-800 font-medium">{title}</span>
                 </div>}
-                <div className="border-b border-badge-gray pb-3 mb-3">
+                <div className="border-badge-gray pb-3 mb-3">
                     <div className="grid grid-cols-2 gap-4">
                         <div className="mb-2 block">
                             <span className={`left-txt flex items-center`}>First Name</span>
@@ -49,7 +49,7 @@ export const ProfileSetting = ({ title }) => {
                         />
                     </div>
                 </div>
-                <div>
+                {/* <div>
                     <p className={`left-txt flex items-center mb-4 text-base text-secondary-800 font-medium`}>Profile Photo</p>
                     <div className="relative rounded-full inline-block overflow-hidden avatar-hover">
                         <img
@@ -63,7 +63,7 @@ export const ProfileSetting = ({ title }) => {
                         <input className="w-full absolute bottom-0 left-0 opacity-0" id="file_input" type="file" />
                         </div>
                     </div>
-                </div>
+                </div> */}
             </div>
             <div className="bg-white p-4 rounded-2xl mb-4 shadow-card">
                 <div className="flex justify-between items-center mb-6">

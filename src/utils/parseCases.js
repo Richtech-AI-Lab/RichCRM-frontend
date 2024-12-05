@@ -15,7 +15,7 @@ export const ParseCases = (dataString) =>{
   try {
     const introJson = JSON.parse(dataString);
     const { message, status, cases, clients, organizations } = introJson;
-    console.log("[langchain][ParseCases] introJson: ", introJson);
+    // console.log("[langchain][ParseCases] introJson: ", introJson);
     if (status === "success") {
       return { introText: message, cases, clients, organizations };
     } else if (status === "error") {

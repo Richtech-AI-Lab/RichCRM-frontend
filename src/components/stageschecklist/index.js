@@ -226,7 +226,7 @@ const StagesChecklist = () => {
         } else {
           setCurrentStep(currentStep - 1);
           setActiveTab("mortgage");
-          console.log("Stage already exists. Skipping API call.");
+          // console.log("Stage already exists. Skipping API call.");
         }
       } catch (error) {
         console.error("Error creating stage:", error.message);
@@ -273,7 +273,7 @@ const StagesChecklist = () => {
         } else {
           setCurrentStep(currentStep + 1);
           setActiveTab("mortgage");
-          console.log("Stage already exists. Skipping API call.");
+          // console.log("Stage already exists. Skipping API call.");
         }
       } catch (error) {
         console.error("Error creating stage:", error.message);
@@ -453,7 +453,7 @@ const StagesChecklist = () => {
               )
             })}
         </ul> */}
-              <ul className="mb-6 overflow-y-auto min-h-[calc(100vh-440px)] flex justify-center items-center">
+              <ul className="mb-6 overflow-y-auto min-h-[calc(100vh-440px)] flex justify-center">
                 {isLoading && <Spinner
                   size="xl"
                   animation="border"

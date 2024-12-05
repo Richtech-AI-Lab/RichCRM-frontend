@@ -12,8 +12,11 @@ import { updateTaskStatusRequest } from "../../redux/actions/taskActions";
 import { updateStageStatusRequest } from "../../redux/actions/stagesActions";
 import UploadFileModal from "../caseModal/uploadFileModal";
 import GoogleMeetModal from "../gmeet/googleMeetModal";
+import { detectIncognito } from "detectincognitojs";
+import { toast } from "react-toastify";
 
 const ChecklistItem = ({ item, stageName, key, icon, label, status, action, actionInfo, optionsValue, checkboxId, currentStep, templates, stageId }) => {
+
   const dispatch = useDispatch();
   const [isCompose, setIsCompose] = useState(false);
   const [isUploadFileModalOpen, setIsUploadFileModalOpen] = useState(false);
@@ -159,19 +162,26 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
     return { label, badgeClass: displayColor };
   }
 
-  const handleOption = (option) => {
+  const handleOption = async (option) => {
     // console.log(item?.name)
     // console.log(item?.status)
     // console.log(localStorage.getItem("c_id"))
-    let fname=`${caseObj?.clientName}-${caseObj?.premisesName}-${item?.name}`
+    let fname = `${caseObj?.clientName}-${caseObj?.premisesName}-${item?.name}`
     // console.log(fname)
     setFileName(fname)
     if (option == "compose message") {
       setIsCompose(true)
     } else if (option == "upload") {
       toggleUploadFileModal();
-    }  else if (option == "addmeet") {
-      toggleGMeetModal();
+    } else if (option == "addmeet") {
+      detectIncognito().then((result) => {
+        // console.log(result.browserName, result.isPrivate);
+        if (result.isPrivate) {
+          toast.info("Please use a regular browser tab to sign in and access Google Calendar.")
+        } else {
+          toggleGMeetModal();
+        }
+      });
     }
     // if (option == "upload") {
     //   setIsUploadFileModalOpen(true)
@@ -273,7 +283,7 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
       return 2; // All tasks completed
     } else if (waitingCount > 0) { // if there is any task in waiting
       return 1; // No tasks completed
-    }else if (completedCount === 0) { // dont have any completed task
+    } else if (completedCount === 0) { // dont have any completed task
       return 0; // No tasks completed
     } else {
       return 1; // Some tasks completed
@@ -284,6 +294,7 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
   const displayOption = getOptionsByAction(status);
   const disabled = isOptionDisable(action);
   const taskStatusColor = getTaskLabelAndColor(ACTIONTYPELABEL[action], status);
+
 
   // console.log(taskStatusColor?.badgeClass,"displayOption");
   return (
@@ -329,7 +340,7 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
       </div>
       {isUploadFileModalOpen && <UploadFileModal fileName={fileName} taskName={item?.name} generalUpload={false} onUpload={(value) => handleChangeTaskStatus(value)} onClose={toggleUploadFileModal} />}
       {isCompose ? <ComposeEmail taskItem={item} templates={templates} onClose={toggleComposeModal} onSendEmail={(value) => handleChangeTaskStatus(value)} /> : ""}
-      {isGmeetModalOpen && <GoogleMeetModal onClose={toggleGMeetModal} />}
+      {isGmeetModalOpen && <GoogleMeetModal title={`${caseObj?.clientName}-${caseObj?.premisesName}-${item?.name}`} onClose={toggleGMeetModal} />}
     </>
   );
 };
