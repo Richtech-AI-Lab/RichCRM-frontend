@@ -3,8 +3,8 @@ import { gapi } from "gapi-script";
 // Replace with your credentials
 const CLIENT_ID = process.env.REACT_APP_GOOGLE_CALENDAR_CLIENT_ID;
 const API_KEY = process.env.REACT_APP_GOOGLE_CALENDAR_API_KEY;
-const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
-const SCOPES = "https://www.googleapis.com/auth/calendar.events";
+const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest", "https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest"];
+const SCOPES = "https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/gmail.readonly";
 
 
 export const initializeGapiClient = () => {
@@ -95,3 +95,16 @@ export const checkGoogleSignInStatus = async () => {
     return false; // Default to not signed in on error
   }
 };
+
+export const fetchAccessToken = async () => {
+  try {
+    await initializeGapiClient();
+    const authInstance = await gapi?.auth2?.getAuthInstance();
+    const user = authInstance.currentUser.get();
+    const authResponse = user.getAuthResponse();
+    return authResponse.access_token;
+  } catch (error) {
+    console.error("Error fetching access token: ", error);
+    throw error;
+  }
+}

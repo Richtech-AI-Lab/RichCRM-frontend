@@ -11,6 +11,7 @@ import { useMsal } from "@azure/msal-react";
 import XSpinnerLoader from "../spinnerLoader/XSpinnerLoader";
 import { DataStoreContext } from "../../pages/settings/form/dataStoreContext";
 import { useSelector } from "react-redux";
+import { fetchAccessToken } from "../gmeet/googleMeetFunc";
 
 const ROOT_FOLDER_PATH = "https://graph.microsoft.com/v1.0/drive/root";
 const fileTypeOptions = [
@@ -224,8 +225,17 @@ const handleFileDrop = async (event) => {
       window.open(link, "_blank");
 
       try {
+        console.log("Downloading file from the link:", link);
         // Fetch the file from the link
-        const response = await fetch(link);
+        const access_token = await fetchAccessToken();
+        console.log("Access token:", access_token);
+
+        const response = await fetch(link, {
+          mode: 'no-cors',
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        });
         if (!response.ok) {
           throw new Error(`Failed to fetch the file. Status: ${response.status}`);
         }
