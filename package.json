@@ -2,6 +2,7 @@
   "name": "rich-crm",
   "version": "0.0.3.dev",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@azure/msal-browser": "^3.21.0",
     "@azure/msal-react": "^2.1.0",
