@@ -3,19 +3,19 @@
 const oAuthServiceProviderProd = "https://account.docusign.com"; // prod
 const oAuthServiceProviderDemo = "https://account-d.docusign.com";
 const oAuthServiceProviderStage = "https://account-s.docusign.com";
-let oAuthServiceProvider = oAuthServiceProviderDemo; // prod
+export const oAuthServiceProvider = oAuthServiceProviderDemo; // prod
 const implicitGrantPath = "/oauth/auth";
-const userInfoPath = "/oauth/userinfo";
+export const userInfoPath = "/oauth/userinfo";
 
 const oAuthClientID = process.env.REACT_APP_DS_INTENGRATION_KEY;
 const oAuthScopes = "signature cors";
 const eSignBase = "/restapi/v2.1";
 const oAuthReturnUrl =
-  "http://localhost:3000/rich-crm/docusign"; // This is the URL that DocuSign will redirect to after the user authenticates
+  "https://docusign.github.io/jsfiddleImplicitGrantReturn.html"
 const logLevel = 9; // 0 is terse; 9 is verbose
 
 
-class ImplicitGrant {
+export class ImplicitGrant {
   constructor(args) {
     this.oAuthServiceProvider = oAuthServiceProvider;
     this.implicitGrantPath = implicitGrantPath;
@@ -57,7 +57,7 @@ class ImplicitGrant {
         `&client_id=${this.oAuthClientID}` +
         `&redirect_uri=${this.oAuthReturnUrl}` +
         `&state=${this._nonce}`;
-    this._loginWindow = window.open(url, "_blank");
+    this._loginWindow = window.open(url, "oauthPopup", "width=600,height=600"); 
     const newTab = this._loginWindow;
     if (!newTab || newTab.closed || typeof newTab.closed=='undefined') {
         // POPUP BLOCKED
@@ -140,8 +140,13 @@ class ImplicitGrant {
       this.accessToken &&
       this.accessTokenExpires &&
       Date.now() + bufferTime < this.accessTokenExpires.getTime();
+    if (!ok) {
+      this.login();
+    }
     return ok;
   }
-}
 
-export default ImplicitGrant;
+  getAccessToken() {
+    return this.accessToken;
+  }
+}

@@ -1,17 +1,107 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import queryString from "query-string";
+import { XButton } from "../../components";
+import { oAuthServiceProvider, userInfoPath, ImplicitGrant } from "../../components/docusign/oauth";
+
+class UserInfo {
+  constructor() {
+    this.accessToken = null;
+    this.expiresIn = null;
+    this.name = null;
+    this.userId = null;
+    this.email = null;
+    this.accounts = null;
+  }
+
+  setAccessToken(accessToken) {
+    this.accessToken = accessToken;
+  }
+
+  setExpiresIn(expiresIn) {
+    this.expiresIn = expiresIn;
+  }
+
+  async fetchUserInfo() {
+    try {
+      const userInfoResponse = await fetch(`${oAuthServiceProvider}${userInfoPath}`, {
+        mode: "cors",
+        headers: new Headers({
+            Authorization: `Bearer ${this.accessToken}`,
+            Accept: `application/json`,
+            "X-DocuSign-SDK": "CodePen"
+        })
+      });
+      if (userInfoResponse && userInfoResponse.ok) {
+        const userInfo = await userInfoResponse.json();
+        this.name = userInfo.name;
+        this.userId = userInfo.sub;
+        this.email = userInfo.email;
+        this.accounts = userInfo.accounts.map(a => {
+          return {
+            accountId: a.account_id,
+            accountName: a.account_name,
+            accountIsDefault: a.is_default,
+          }
+        })
+      }
+    } catch (error) {
+      console.error("Error fetching user info: ", error);
+      throw error;
+    }
+  }
+}
 
 const Docusign = () => {
+  const [userInfo, setUserInfo] = useState(new UserInfo());
+  const docusign = new ImplicitGrant({
+    workingUpdateF: (working) => {
+      console.log("working", working);
+    },
+  });
+  
+  const messageListener = async (event) => {
+    console.log(event);
+
+    if (!event.data) return;
+
+    console.log("event.data", event.data);
+    const source = event.data.source;
+    if (source === "oauthResponse") {
+      implicitGrantMsg(event.data);
+    }
+  };
+
+  const implicitGrantMsg = async (eventData) => {
+    const oAuthResponse = docusign.handleMessage(eventData);
+    if (oAuthResponse == "ok") {
+      userInfo.setAccessToken(docusign.accessToken);
+      userInfo.setExpiresIn(docusign.accessTokenExpires);
+      await userInfo.fetchUserInfo();
+      setUserInfo({ ...userInfo });
+      console.log("oAuthResponse", oAuthResponse);
+    } else if (oAuthResponse == "error") {
+      console.log("oAuthResponse", oAuthResponse);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("message", messageListener);
+    return () => {
+      window.removeEventListener("message", messageListener);
+    };
+  }, []);
+
+  const handleLogin = async () => {
+    await docusign.login();
+  };
+
   const [selectedFile, setSelectedFile] = useState(null);
   const [envelopeId, setEnvelopeId] = useState("");
   const [envelopeData, setEnvelopeData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const hash = useLocation().hash;
-  const { access_token, type, state } = queryString.parse(hash);
-  const authToken = access_token;
   const apiAccountId = process.env.REACT_APP_DS_API_ACCOUNT_ID; // Replace with your account ID
 
   // Handle file selection
@@ -22,10 +112,14 @@ const Docusign = () => {
     }
   };
 
+
+  const [signerEmail, setSignerEmail] = useState("");
+  const [signerName, setSignerName] = useState("");
+
   // Send envelope with the selected file
   const sendSignatureRequest = async () => {
-    if (!authToken) {
-      alert("Please log in first.");
+    if (!userInfo.accessToken) {
+      docusign.login();
       return;
     }
 
@@ -57,8 +151,8 @@ const Docusign = () => {
         recipients: {
           signers: [
             {
-              email: "eden.wu@richtech-ai-lab.org", // Replace with actual signer email
-              name: "RichtechAILab", // Replace with actual signer name
+              email: signerEmail, // Replace with actual signer email
+              name: signerName, // Replace with actual signer name
               recipientId: "1",
               tabs: {
                 signHereTabs: [
@@ -80,7 +174,7 @@ const Docusign = () => {
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${authToken}`,
+          Authorization: `Bearer ${userInfo.accessToken}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(envelopeDefinition),
@@ -104,7 +198,7 @@ const Docusign = () => {
 
   // Fetch envelope details by ID
   const handleFetchEnvelope = async () => {
-    if (!authToken) {
+    if (!userInfo.accessToken) {
       alert("Please log in first.");
       return;
     }
@@ -123,7 +217,7 @@ const Docusign = () => {
       const response = await fetch(apiUrl, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${authToken}`,
+          Authorization: `Bearer ${userInfo.accessToken}`,
           "Content-Type": "application/json",
         },
       });
@@ -144,7 +238,7 @@ const Docusign = () => {
 
   // Fetch and view document
   const handleViewDocument = async () => {
-    if (!authToken) {
+    if (!userInfo.accessToken) {
       alert("Please log in first.");
       return;
     }
@@ -163,7 +257,7 @@ const Docusign = () => {
       const docListResponse = await fetch(docListUrl, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${authToken}`,
+          Authorization: `Bearer ${userInfo.accessToken}`,
         },
       });
 
@@ -181,7 +275,7 @@ const Docusign = () => {
         const documentResponse = await fetch(documentUrl, {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${authToken}`,
+            Authorization: `Bearer ${userInfo.accessToken}`,
           },
         });
 
@@ -207,18 +301,80 @@ const Docusign = () => {
 
   return (
     <div style={{ padding: "20px" }}>
-      <h1>Docusign</h1>
-      <p>Access Token: {access_token}</p>
-      <p>Type: {type}</p>
-      <p>State: {state}</p>
+      <div className="flex justify-end">
+        <XButton
+          text="Connect to Docusign"
+          onClick={handleLogin}
+          className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium"
+        />
+      </div>
+      {/* User Info Card */}
+      {userInfo.name && (
+        <div style={{ marginTop: "20px", border: "1px solid #ccc", padding: "10px", borderRadius: "8px", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}>
+          <h3>User Information</h3>
+          <p>
+        <strong>Name:</strong> {userInfo.name}
+          </p>
+          <p>
+        <strong>Email:</strong> {userInfo.email}
+          </p>
+          <p>
+        <strong>User ID:</strong> {userInfo.userId}
+          </p>
+          <h4>Accounts</h4>
+          {userInfo.accounts && userInfo.accounts.map((account, index) => (
+        <div key={index} style={{ marginBottom: "10px" }}>
+          <p>
+            <strong>Account Name:</strong> {account.accountName}
+          </p>
+          <p>
+            <strong>Account ID:</strong> {account.accountId}
+          </p>
+          <p>
+            <strong>Default:</strong> {account.accountIsDefault ? "Yes" : "No"}
+          </p>
+        </div>
+          ))}
+        </div>
+      )}
 
-      {/* File Upload */}
-      <div>
+      {/* Upload Card */}
+      <div style={{ marginTop: "20px", border: "1px solid #ccc", padding: "20px", borderRadius: "8px", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}>
         <h3>Send Envelope</h3>
-        <input type="file" accept=".pdf" onChange={handleFileChange} />
-        <button onClick={sendSignatureRequest} disabled={loading}>
-          {loading ? "Sending..." : "Send for Signature"}
-        </button>
+        <div style={{ marginBottom: "10px" }}>
+          <label>
+        Signer Email:
+        <input
+          type="email"
+          value={signerEmail}
+          onChange={(e) => setSignerEmail(e.target.value)}
+          style={{ padding: "10px", fontSize: "16px", marginLeft: "10px", width: "300px" }}
+        />
+          </label>
+        </div>
+        <div style={{ marginBottom: "10px" }}>
+          <label>
+        Signer Name:
+        <input
+          type="text"
+          value={signerName}
+          onChange={(e) => setSignerName(e.target.value)}
+          style={{ padding: "10px", fontSize: "16px", marginLeft: "10px", width: "300px" }}
+        />
+          </label>
+        </div>
+        <div style={{ marginBottom: "10px" }}>
+          <label>
+        Upload File:
+        <input type="file" accept=".pdf" onChange={handleFileChange} style={{ marginLeft: "10px" }} />
+          </label>
+        </div>
+        <XButton
+          text={loading ? "Sending..." : "Send for Signature"}
+          onClick={sendSignatureRequest}
+          disabled={loading}
+          className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium"
+        />
       </div>
 
       {/* Fetch Envelope */}
@@ -236,12 +392,19 @@ const Docusign = () => {
             width: "300px",
           }}
         />
-        <button onClick={handleFetchEnvelope} disabled={loading}>
-          {loading ? "Fetching..." : "Fetch Envelope"}
-        </button>
-        <button onClick={handleViewDocument} disabled={loading} style={{ marginLeft: "10px" }}>
-          {loading ? "Loading Document..." : "View Document"}
-        </button>
+        <XButton
+          text={loading ? "Fetching..." : "Fetch Envelope"}
+          onClick={handleFetchEnvelope}
+          disabled={loading}
+          className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium"
+        />
+        <XButton
+          text={loading ? "Loading Document..." : "View Document"}
+          onClick={handleViewDocument}
+          disabled={loading}
+          className="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[10px] px-6 rounded-[100px] font-medium"
+          style={{ marginLeft: "10px" }}
+        />
       </div>
 
       {/* Display Envelope Data */}
