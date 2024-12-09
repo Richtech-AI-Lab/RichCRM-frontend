@@ -104,6 +104,8 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
   const validationSchema = Yup.object({
     email: Yup.string().email('Invalid email format'),
     cellNumber: Yup.string().matches(/^[0-9]+$/, 'Cell number must be a number'),
+    firstName: Yup.string().required("First name is required"),
+    lastName: Yup.string().required("Last name is required"),
     // addressLine1: Yup.string().required("Address is required"),
     // // addressLine2: Yup.string('Address Line 2 is required'),
     // city: Yup.string().required("City is required"),
