@@ -41,13 +41,15 @@ const ContactOrganizationDetail = ({ organization, address }) => {
         <>
             <div className="bg-white rounded-2xl mb-5 p-4">
                 <div className="flex">
+                <img src={`https://ui-avatars.com/api/?name=${organization?.organizationName}`} alt="Profile" className="mr-3 rounded-full w-[150px] h-[150px]" />
+{/*                     
                     <img
                         src={IMAGES.avatarpic}
                         alt="Profile"
                         className="rounded-full"
                         style={{ height: '150px', width: '150px' }}
                     // className="mt-2"
-                    />
+                    /> */}
                     <div className="ml-6">
                         <div className="mb-16">
                             <p className="text-[22px] font-medium text-secondary-800">{organization?.organizationName}</p>
@@ -77,13 +79,14 @@ const ContactOrganizationDetail = ({ organization, address }) => {
                 <ul className="card-details">
                     <li>
                         <div className="flex">
-                            <img
+                        <img src={`https://ui-avatars.com/api/?name=${organization?.organizationName}`} alt="Profile" className="mr-3 rounded-full w-[50px] h-[50px]" />
+                            {/* <img
                                 src={IMAGES.avatarpic}
                                 alt="Profile"
                                 className="rounded-full"
                                 style={{ height: '50px', width: '50px' }}
                             // className="mt-2"
-                            />
+                            /> */}
                             <div className="ml-6">
                                 <div className="">
                                     <p className="text-[18px] font-medium text-secondary-800">{organization?.organizationName}</p>

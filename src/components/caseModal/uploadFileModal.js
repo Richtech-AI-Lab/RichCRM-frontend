@@ -38,7 +38,7 @@ const UploadFileModal = ({ onClose, fileName = "", generalUpload, taskName = "",
   const [path, setPath] = useState("/me/drive/root");
   const fileInputRef = useRef(null);
   const [uploadedFiles, setUploadedFiles] = useState([]);
-  const {data} = useSelector((state)=>state.auth.user)
+  const { data } = useSelector((state) => state.auth.user)
   const initialValues = {};
 
 
@@ -99,10 +99,10 @@ const UploadFileModal = ({ onClose, fileName = "", generalUpload, taskName = "",
     const encodedFilePath = encodeURIComponent(customFileName);
     let folderUrl;
     let uploadUrl;
-    if(data[0]?.uploadFolderName){
+    if (data[0]?.uploadFolderName) {
       folderUrl = `${ROOT_FOLDER_PATH}:/${data[0]?.uploadFolderName}/${encodedFolderPath}:`;
       uploadUrl = `${ROOT_FOLDER_PATH}:/${data[0]?.uploadFolderName}/${encodedFolderPath}/${encodedFilePath}:/content?@microsoft.graph.conflictBehavior=rename`;
-    }else{
+    } else {
       folderUrl = `${ROOT_FOLDER_PATH}:/${encodedFolderPath}:`;
       uploadUrl = `${ROOT_FOLDER_PATH}:/${encodedFolderPath}/${encodedFilePath}:/content?@microsoft.graph.conflictBehavior=rename`;
     }
@@ -123,10 +123,10 @@ const UploadFileModal = ({ onClose, fileName = "", generalUpload, taskName = "",
       // If folder doesn't exist, create the folder
       if (!folderResponse.ok) {
         let createFolderUrl;
-        if(data[0]?.uploadFolderName){
+        if (data[0]?.uploadFolderName) {
           createFolderUrl = `${ROOT_FOLDER_PATH}:/${data[0]?.uploadFolderName}:/children`;
-        }else{
-          createFolderUrl= `${ROOT_FOLDER_PATH}/children`;
+        } else {
+          createFolderUrl = `${ROOT_FOLDER_PATH}/children`;
         }
         const createResponse = await fetch(createFolderUrl, {
           method: "POST",
@@ -174,6 +174,101 @@ const UploadFileModal = ({ onClose, fileName = "", generalUpload, taskName = "",
     }
   };
 
+  const handleDragOver = (event) => {
+    // console.log("Dragging over...");
+    event.preventDefault(); // Allow the drop
+    event.dataTransfer.dropEffect = "copy"; // Show a copy cursor
+  };
+  
+  // const handleFileDrop = (event) => {
+  //   console.log("File dropped");
+  //   event.preventDefault();
+  
+  //   const dataTransfer = event.dataTransfer;
+  
+  //   if (dataTransfer.files && dataTransfer.files.length > 0) {
+  //     const droppedFiles = Array.from(dataTransfer.files).map((file) => ({
+  //       file,
+  //       fileType: "",
+  //     }));
+  //     setUploadedFiles((prevFiles) => [...prevFiles, ...droppedFiles]);
+  //     console.log("Dropped files:", droppedFiles);
+  //   } else {
+  //     const link = dataTransfer.getData("text/uri-list") || dataTransfer.getData("text/plain");
+  //     if (link) {
+  //       console.log("Dropped link:", link);
+  //       toast.info("Link uploads are not supported. Please drop files only.");
+  //     }
+  //   }
+  // };
+const handleFileDrop = async (event) => {
+  // console.log("File dropped");
+  event.preventDefault();
+
+  const dataTransfer = event.dataTransfer;
+
+  if (dataTransfer.files && dataTransfer.files.length > 0) {
+    // Handle dropped files
+    const droppedFiles = Array.from(dataTransfer.files).map((file) => ({
+      file,
+      fileType: "",
+    }));
+    setUploadedFiles((prevFiles) => [...prevFiles, ...droppedFiles]);
+    // console.log("Dropped files:", droppedFiles);
+  } else {
+    // Handle dropped links (resource URL)
+    const link = dataTransfer.getData("text/uri-list") || dataTransfer.getData("text/plain");
+    if (link) {
+      // console.log("Dropped link:", link);
+      // handleLinkFetch(link);
+      window.open(link, "_blank");
+
+      try {
+        // Fetch the file from the link
+        const response = await fetch(link);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch the file. Status: ${response.status}`);
+        }
+
+        const blob = await response.blob();
+        const fileType = getFileTypeFromMimeType(blob.type); // Extract file type from MIME type
+        const fileName = link.split("/").pop() || "downloaded_file";
+
+        // Create a File object
+        const downloadedFile = new File([blob], fileName, {
+          type: blob.type,
+        });
+
+        // Add the downloaded file to the uploaded files list
+        setUploadedFiles((prevFiles) => [
+          ...prevFiles,
+          { file: downloadedFile, fileType },
+        ]);
+        // console.log("Downloaded and added file:", downloadedFile);
+
+        // Call your upload file functionality here
+        // console.log(downloadedFile, "-----");
+
+        // Optionally, you can trigger any upload function here
+        // For example: handleUploadFile(downloadedFile);
+
+      } catch (error) {
+        // console.error("Error downloading the file:", error);
+        toast.error("Failed to download the file from the link.");
+      }
+    } else {
+      toast.info("Link uploads are not supported. Please drop files only.");
+    }
+  }
+};
+
+  const handleLinkFetch = (link) => {
+    const a = document.createElement("a");
+    a.href = link;
+    a.download = link.split("/").pop(); // Set the filename from the URL
+    a.click();
+    // console.log("Downloading file:", link);
+  };
   function getFileTypeFromMimeType(mimeType) {
     let parts = mimeType.split('/');
     return parts.length > 1 ? parts[1] : ''; // Return the file type after '/' or an empty string
@@ -245,6 +340,7 @@ const UploadFileModal = ({ onClose, fileName = "", generalUpload, taskName = "",
       )
     );
   };
+
   // console.log(uploadedFiles, "_____")
   return (
     <>
@@ -270,7 +366,11 @@ const UploadFileModal = ({ onClose, fileName = "", generalUpload, taskName = "",
                 {/* {console.log("isSubmitting:", isSubmitting)} */}
                 <form onSubmit={handleSubmit} className="">
                   <div>
-                    <div className="text-center mt-4 border-dashed border-2 border-border-line-100 p-6 rounded-md">
+                    <div className="text-center mt-4 border-dashed border-2 border-border-line-100 p-6 rounded-md"
+                    onDragOver={(e)=>handleDragOver(e)}
+                      onDrop={(e)=>handleFileDrop(e)}
+                    >
+                      
                       <FiUpload className="text-base mr-2 inline-block" />
                       <div className="text-primary text-6xl">
                         <i className="fas fa-cloud-upload-alt"></i>

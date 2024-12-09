@@ -368,7 +368,6 @@ const OneDriveManager = () => {
                     {!loader ? (
                         <>
                             <Table>
-                                {console.log(files, "files")}
                                 {files?.length > 0 ? (
                                     <>
                                         <Table.Body className="divide-y">
@@ -402,7 +401,6 @@ const OneDriveManager = () => {
                                                     :
                                                     <Table.Row key={file.id} className="bg-white dark:border-gray-700 dark:bg-gray-800 cursor-pointer"
                                                     >
-                                                        {console.log(file, "fffff")}
                                                         <Table.Cell
                                                             onClick={() => openFilePreview(file.id)}
                                                             width={width[0]}

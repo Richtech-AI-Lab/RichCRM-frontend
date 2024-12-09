@@ -17,7 +17,7 @@ import cross from "../assets/images/cross.png"
 import folder from "../assets/images/folder.svg";
 import file from "../assets/images/file.svg";
 import image from "../assets/images/image.svg";
-
+import edit from "../assets/images/edit.svg";
 
 export const IMAGES = {
   profile: avatarImage,
@@ -38,5 +38,6 @@ export const IMAGES = {
   cross:cross,
   folderIcon:folder,
   fileIcon:file,
-  galleryIcon: image
+  galleryIcon: image,
+  editTag: edit
 };

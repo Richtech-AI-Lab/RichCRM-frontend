@@ -9,7 +9,7 @@ import XButton from "../button/XButton";
 const TagModal = ({ onSubmit, onClose }) => {
     const tagDetails = useSelector((state) => state.tag.tag);
     const handleNewContact = async (values) => { 
-        console.log(values, "values")
+        // console.log(values, "values")
     };
     const handleTagChange = (tags, handleChange) => {
         handleChange({ target: { name: 'tags', value: tags } });

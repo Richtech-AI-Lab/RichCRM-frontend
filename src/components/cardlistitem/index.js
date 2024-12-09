@@ -125,7 +125,7 @@ const CardListItem = ({
         );
 
       case "inputdropdown":
-        console.log(name)
+        // console.log(name)
         return (
           <>
             <span className={`${optional === true ? "cursor-pointer" : ""} left-txt flex items-center`}>

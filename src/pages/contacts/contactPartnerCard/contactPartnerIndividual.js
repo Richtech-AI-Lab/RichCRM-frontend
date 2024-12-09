@@ -104,6 +104,8 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
   const validationSchema = Yup.object({
     email: Yup.string().email('Invalid email format'),
     cellNumber: Yup.string().matches(/^[0-9]+$/, 'Cell number must be a number'),
+    firstName: Yup.string().required("First name is required"),
+    lastName: Yup.string().required("Last name is required"),
     // addressLine1: Yup.string().required("Address is required"),
     // // addressLine2: Yup.string('Address Line 2 is required'),
     // city: Yup.string().required("City is required"),
@@ -224,13 +226,15 @@ const CustomOption = (props) => {
                   <form onSubmit={handleSubmit}>
                     <div className="bg-white rounded-2xl mb-5 p-4">
                       <div className="flex">
-                        <img
+                      <img src={`https://ui-avatars.com/api/?name=${initialValues?.firstName}+${initialValues?.lastName}`} alt="Profile" className="mr-3 rounded-full w-[150px] h-[150px]" />
+                 
+                        {/* <img
                           src={IMAGES.avatarpic}
                           alt="Profile"
                           className="rounded-full"
                           style={{ height: '150px', width: '150px' }}
                         // className="mt-2"
-                        />
+                        /> */}
                         <div className="ml-6">
                           <div className="mb-16">
                             <p className="text-[22px] font-medium text-secondary-800">{initialValues?.firstName} {initialValues?.lastName}</p>

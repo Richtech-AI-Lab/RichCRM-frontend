@@ -209,7 +209,7 @@ const Header = ({ toggleDrawer, title }) => {
         </div>)}
         <Dropdown
           arrowIcon={false}
-          label={<img src={IMAGES.profile} className="cursor-pointer ml-6" />}
+          label={<img src={IMAGES.avatarpic} className="cursor-pointer ml-6 w-[50px] h-[50px]" />}
           inline={true}
           dismissOnClick={false}
           className="shadow-none border-neutral-border"

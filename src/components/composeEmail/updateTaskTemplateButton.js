@@ -30,7 +30,7 @@ export const UpdateTaskTemplateButton = ({ templateTitle, editorState, taskItem,
         });
 
         if (updateTaskRes?.data?.status === "success") {
-          console.log("Task template updated successfully");
+          // console.log("Task template updated successfully");
           toast.success("Task template updated successfully");
         } else {
           console.error("Error updating task template: ", updateTaskRes?.data?.message);

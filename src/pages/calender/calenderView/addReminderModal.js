@@ -83,7 +83,7 @@ const AddReminderModal = ({ onClose, reminderData }) => {
     // emailReminder: false
   };
   const handleNewCaseInfo = async (values) => {
-    console.log(values)
+    // console.log(values)
     let mainDate;
     let duedatetype = parseInt(values.dueDateType);
 
@@ -176,7 +176,7 @@ const AddReminderModal = ({ onClose, reminderData }) => {
             }) => (
              
               <form onSubmit={handleSubmit} className="">
-                 {console.log(errors)}
+                 {/* {console.log(errors)} */}
                 <div className="block">
                   <Label htmlFor="Case" value="Case" />
                   <div className="grid grid-col">

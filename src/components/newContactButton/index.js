@@ -14,7 +14,7 @@ const ContactButtonWithModal = ({ buttonClass, modalClass, modalContent }) => {
     <div>
       <XButton
         text="New Contact"
-        icon={<FiPlus className="text-base mr-2 inline-block" />}
+        icon={<FiPlus className="text-base mr-2 w-[18px] h-[18px] inline-block" />}
         className={buttonClass}
         onClick={toggleModal}
       />
