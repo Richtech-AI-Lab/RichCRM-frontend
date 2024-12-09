@@ -312,6 +312,18 @@ const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) 
                     {header.includes("Website") && <Table.Cell width={width[2]}>{org?.website}</Table.Cell>}
                     {header.includes("Email") && <Table.Cell width={width[3]}>{org?.email}</Table.Cell>}
                     {header.includes("Cell Phone") && <Table.Cell width={width[4]}>{org?.cellNumber}</Table.Cell>}
+                    <Table.Cell width={width[6]} onClick={(e) => {
+                      e.stopPropagation();
+                      // handleDeleteClick(user);
+                    }}>
+                      <div className="ml-auto">
+                        <MenuPopup
+                          handleOptionSubmit={(label) => handleOptionSubmit(label, org)}
+                          dropdownItems={menuOption.map((option) => option.label)}
+                          icon={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />}
+                        />
+                      </div>
+                    </Table.Cell>
                     {/* <Table.Cell width={width[5]}>
                     <button
                       className="text-red-500 hover:text-red-700"

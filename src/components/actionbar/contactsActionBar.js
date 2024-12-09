@@ -167,9 +167,15 @@ const ContactsActionbar = ({ active = "", setActive = "", activeFilterOrg = "", 
             </div>
             :
             <div className="flex">
-              <div className={`items-dropdown single-select ${activeFilterOrg == "0" ? 'sort-by-filter' : 'sort-by-filter'} mr-4`}>
+              <div className={`items-dropdown single-select mr-4`}>
                 <Dropdown
-                  label={OrganizationOptions.find((option) => option.value === activeFilterOrg)?.label}
+                label={
+                    <>
+                      <IoFilter size={20} className="mr-2"/> Filter
+                      {/* {formattedOptions.find((option) => option.value === activeFilterTag)?.label || 'Default Label'} */}
+                    </>
+                  }
+                  // label={OrganizationOptions.find((option) => option.value === activeFilterOrg)?.label}
                   // value={"0"}
                   inline
                   className="rounded-2xl w-64 shadow-shadow-light-2"
