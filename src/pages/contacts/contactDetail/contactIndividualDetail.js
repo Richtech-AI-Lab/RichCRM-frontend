@@ -36,7 +36,19 @@ const ContactIndividualDetail = ({ contact, address }) => {
                     </div>
                 </div>
             </div>
+            <div className="bg-white p-4 rounded-2xl mb-5">
 
+                <ul className="card-details">
+                    <li>
+                        <span className="left-txt flex items-center" >First Name</span>
+                        <span className="left-txt flex items-center" >{contact?.firstName}</span>
+                    </li>
+                    <li>
+                        <span className="left-txt flex items-center" >Last Name</span>
+                        <span className="left-txt flex items-center" >{contact?.lastName}</span>
+                    </li>
+                </ul>
+            </div>
             <div className="bg-white p-4 rounded-2xl mb-5">
 
                 <ul className="card-details">
