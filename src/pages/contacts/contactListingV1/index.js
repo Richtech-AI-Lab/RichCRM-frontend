@@ -10,7 +10,7 @@ import XSpinnerLoader from "../../../components/spinnerLoader/XSpinnerLoader";
 import ContactButtonWithModal from "../../../components/newContactButton";
 import NewIndividualContactModalV1 from "../../../components/contactModal/newIndividualContactModalV1";
 import NewOrganizationContactModalV1 from "../../../components/contactModal/newOrganizationContactModalV1";
-import { fetchOrganizationByTypeRequest, setSelectedOrganization } from "../../../redux/actions/organizationActions";
+import { deleteOrganizationRequest, fetchOrganizationByTypeRequest, setSelectedOrganization } from "../../../redux/actions/organizationActions";
 import { fetchAllTagsRequest } from "../../../redux/actions/tagActions";
 import { NewBadge } from "../../../components";
 import DeleteModal from "../../../components/deleteModal";
@@ -84,13 +84,16 @@ const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) 
 
   const onPageChange = (page) => setCurrentPage(page);
   const handleDeleteClick = (contact) => {
-    // console.log(contact,"--------")
     setContactToDelete(contact);
     setShowDeleteModal(true); // Open modal
   };
 
   const confirmDelete = () => {
-    dispatch(deleteContactRequest(contactToDelete?.contactId)); // Dispatch delete action
+    if(contactToDelete?.organizationId){
+      dispatch(deleteOrganizationRequest(contactToDelete?.organizationId));
+    }else{
+      dispatch(deleteContactRequest(contactToDelete?.contactId)); // Dispatch delete action
+    }
     setShowDeleteModal(false);
   };
   const handleNavigation = (item) => {

@@ -1,4 +1,4 @@
-import { CREATE_ORG_REQUEST, FETCH_ADDITIONAL_ORG_BY_IDS_REQUEST, FETCH_ORG_BY_ID_REQUEST, FETCH_ORG_BY_TYPE_REQUEST, REGISTER_ORG_REQUEST, UPDATE_ADD_ORG_BY_ID_REQUEST, UPDATE_ORG_BY_ID_REQUEST } from "../type";
+import { CREATE_ORG_REQUEST, DELETE_ORG_REQUEST, FETCH_ADDITIONAL_ORG_BY_IDS_REQUEST, FETCH_ORG_BY_ID_REQUEST, FETCH_ORG_BY_TYPE_REQUEST, REGISTER_ORG_REQUEST, UPDATE_ADD_ORG_BY_ID_REQUEST, UPDATE_ORG_BY_ID_REQUEST } from "../type";
 import { API_ENDPOINTS, ROUTES } from "../../constants/api";
 import { getRequest, postRequest } from "../../axios/interceptor";
 import { call, put } from "redux-saga/effects";
@@ -7,7 +7,7 @@ import { all } from "redux-saga/effects";
 import { toast } from "react-toastify";
 import { takeLatest } from "redux-saga/effects";
 import { registerAddressRequest } from "../actions/utilsActions";
-import { fetchAdditionalOrganizationByIdsFailure, fetchAdditionalOrganizationByIdsSuccess, fetchOrganizationByIdFailure, fetchOrganizationByIdSuccess, fetchOrganizationByTypeFailure, fetchOrganizationByTypeSuccess, setSelectedOrganization, updateAddOrganizationByIdFailure, updateAddOrganizationByIdSuccess, updateOrganizationByIdFailure, updateOrganizationByIdSuccess } from "../actions/organizationActions";
+import { deleteOrganizationFailure, deleteOrganizationSuccess, fetchAdditionalOrganizationByIdsFailure, fetchAdditionalOrganizationByIdsSuccess, fetchOrganizationByIdFailure, fetchOrganizationByIdSuccess, fetchOrganizationByTypeFailure, fetchOrganizationByTypeSuccess, setSelectedOrganization, updateAddOrganizationByIdFailure, updateAddOrganizationByIdSuccess, updateOrganizationByIdFailure, updateOrganizationByIdSuccess } from "../actions/organizationActions";
 import { updateClientByIdSuccess } from "../actions/clientActions";
 import { takeEvery } from "redux-saga/effects";
 
@@ -183,6 +183,20 @@ function* updateAddOrganizationById(action) {
     yield put(updateAddOrganizationByIdFailure(error.response?.data || error));
   }
 }
+
+function* deleteOrganizationById(action) {
+  try {
+    const { payload } = action;
+    const response = yield call(() =>
+      postRequest(API_ENDPOINTS.DELETE_ORGANIZATION,{organizationId: payload})
+    );
+    yield put(deleteOrganizationSuccess(payload));
+    toast.success("Organization deleted!");
+  } catch (error) {
+    handleError(error)
+    yield put(deleteOrganizationFailure(error.response?.data || error));
+  }
+}
 export function* organizationSaga() {
   yield takeLatest(REGISTER_ORG_REQUEST, registerOrganization); // created organization or list then address 
   yield takeLatest(FETCH_ORG_BY_ID_REQUEST, fetchOrganizationById);
@@ -191,4 +205,5 @@ export function* organizationSaga() {
   yield takeEvery(UPDATE_ADD_ORG_BY_ID_REQUEST, updateAddOrganizationById);
   yield takeLatest(FETCH_ORG_BY_TYPE_REQUEST, fetchOrganizationByType);
   yield takeLatest(CREATE_ORG_REQUEST, createOrganization);
+  yield takeLatest(DELETE_ORG_REQUEST, deleteOrganizationById);
 }

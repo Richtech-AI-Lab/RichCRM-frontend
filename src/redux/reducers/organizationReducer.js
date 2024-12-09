@@ -1,6 +1,7 @@
 import {
   CLEAN_ADDITIONAL_CLIENT,
   CLEAR_ORGANIZATION_DATA,
+  DELETE_ORG_REQUEST,
   FETCH_ADDITIONAL_CLIENTS_BY_IDS_FAILURE,
   FETCH_ADDITIONAL_CLIENTS_BY_IDS_REQUEST,
   FETCH_ADDITIONAL_CLIENTS_BY_IDS_SUCCESS,
@@ -53,12 +54,8 @@ const organizationReducer = (state = initialState, action) => {
       return { ...state, loading: false, organization: action.payload, error: null };
     case UPDATE_ORG_BY_ID_FAILURE:
       return { ...state, loading: false, error: action.payload };
-    // case REGISTER_CLIENT_REQUEST:
-    //   return { ...state, loading: true };
-    // case REGISTER_CLIENT_SUCCESS:
-    //   return { ...state, loading: false, organization: action.payload, error: null };
-    // case REGISTER_CLIENT_FAILURE:
-    //   return { ...state, loading: false, error: action.payload };
+    case DELETE_ORG_REQUEST:
+      return { ...state, loading: false, organization: state.organization.filter(item => item.organizationId !== action.payload), error: null };
     case FETCH_ADDITIONAL_ORG_BY_IDS_REQUEST:
       return { ...state, loading: true, error: null };
     case FETCH_ADDITIONAL_ORG_BY_IDS_SUCCESS:
