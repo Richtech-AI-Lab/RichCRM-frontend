@@ -16,6 +16,8 @@ import { NewBadge } from "../../../components";
 import DeleteModal from "../../../components/deleteModal";
 import { LuUpload } from "react-icons/lu";
 import { MdDeleteForever } from "react-icons/md";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import MenuPopup from "../../../components/menupopup";
 
 const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) => {
   const dispatch = useDispatch();
@@ -45,36 +47,41 @@ const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) 
 
   const headers = {
     [addFromContactV1Tab.individuals]: [
-      "Name", 
-      "Tag", 
-      "Organization", 
-      "Position", 
-      "Email", 
+      "Name",
+      "Tag",
+      "Organization",
+      "Position",
+      "Email",
       "Cell Phone",
       "" // Added empty column
     ],
     [addFromContactV1Tab.organizations]: [
-      "Name", 
-      "Tag", 
-      "Website", 
-      "Email", 
+      "Name",
+      "Tag",
+      "Website",
+      "Email",
       "Cell Phone",
     ]
   };
-  
+
   const widthTabs = {
     [addFromContactV1Tab.individuals]: [
       "18.17%", // Adjusted to accommodate the extra column
-      "14.17%", 
-      "18.17%", 
-      "14.17%", 
-      "18.17%", 
-      "14.17%", 
+      "14.17%",
+      "18.17%",
+      "14.17%",
+      "18.17%",
+      "14.17%",
       "3%" // Width for the empty column
     ],
     [addFromContactV1Tab.organizations]: ["22%", "10%", "29%", "22%", "17%"]
   };
-  
+  const menuOption = [
+    { id: 0, label: "View Details" },
+    { id: 1, label: "Edit Information" },
+    { id: 2, label: "Remove" },
+  ];
+
   const onPageChange = (page) => setCurrentPage(page);
   const handleDeleteClick = (contact) => {
     // console.log(contact,"--------")
@@ -200,6 +207,17 @@ const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) 
     }
 
   }
+  const handleOptionSubmit = (label, user) => {
+    if (label == 0) {
+      handleNavigation(user)
+    } else if (label == 1) {
+      handleNavigation(user)
+    } else if (label == 2) {
+      handleDeleteClick(user);
+    } else {
+
+    }
+  };
   return (
     <>
       <div className={`mb-2 ${parent === 'dashboard' ? '' : 'contacts-table'}`}>
@@ -240,7 +258,19 @@ const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) 
                     {header.includes("Position") && <Table.Cell width={width[3]}>{user.position}</Table.Cell>}
                     {header.includes("Email") && <Table.Cell width={width[4]}>{user.email}</Table.Cell>}
                     {header.includes("Cell Phone") && <Table.Cell width={width[5]}>{user.cellNumber}</Table.Cell>}
-                    <Table.Cell width={width[6]}>
+                    <Table.Cell width={width[6]} onClick={(e) => {
+                      e.stopPropagation();
+                      // handleDeleteClick(user);
+                    }}>
+                      <div className="ml-auto">
+                        <MenuPopup
+                          handleOptionSubmit={(label) => handleOptionSubmit(label, user)}
+                          dropdownItems={menuOption.map((option) => option.label)}
+                          icon={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />}
+                        />
+                      </div>
+                    </Table.Cell>
+                    {/* <Table.Cell width={width[6]}>
                     <button
                       className="text-red-500 hover:text-red-700"
                       onClick={(e) => {
@@ -250,7 +280,7 @@ const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) 
                       >
                       <MdDeleteForever style={{fontSize:'25px'}}/>
                     </button>
-                  </Table.Cell>
+                  </Table.Cell> */}
                   </Table.Row>
                 ))}
               </Table.Body>
@@ -264,8 +294,8 @@ const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) 
                   >
                     <Table.Cell width={width[0]} className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                       <div className="flex items-center">
-                      <img src={`https://ui-avatars.com/api/?name=${org?.organizationName}`} alt="Profile" className="mr-3 rounded-full w-8 h-8" />
-                       
+                        <img src={`https://ui-avatars.com/api/?name=${org?.organizationName}`} alt="Profile" className="mr-3 rounded-full w-8 h-8" />
+
                         {/* <img src={IMAGES.contact_avtar} alt="Profile" className="mr-3 rounded-full" /> */}
                         <span className="left-txt font-medium text-secondary-800">
                           {org?.organizationName}
