@@ -191,6 +191,7 @@ function* deleteContact(action) {
       postRequest(API_ENDPOINTS.DELETE_CONTACT,{contactId: payload})
     );
     yield put(deleteContactSuccess(payload));
+    toast.success("Contact deleted!");
   } catch (error) {
     handleError(error)
     yield put(deleteContactFailure(error.response?.data || error));

@@ -13,7 +13,7 @@ import ContactButtonWithModal from "../newContactButton";
 import NewIndividualContactModalV1 from "../contactModal/newIndividualContactModalV1";
 import NewOrganizationContactModalV1 from "../contactModal/newOrganizationContactModalV1";
 import { Dropdown } from "flowbite-react";
-import { IoCheckmarkSharp } from "react-icons/io5";
+import { IoCheckmarkSharp, IoFilter } from "react-icons/io5";
 import TagButtonWithModal from "../tagModal/newTagButton";
 import TagModal from "../tagModal/tagModal";
 import { useSelector } from "react-redux";
@@ -126,8 +126,12 @@ const ContactsActionbar = ({ active = "", setActive = "", activeFilterOrg = "", 
             <div className="flex">
               <div className={`items-dropdown single-select mr-4`}>
                 <Dropdown
-                  label={formattedOptions.find((option) => option.value === activeFilterTag)?.label}
-                  // value={"0"}
+                  label={
+                    <>
+                      <IoFilter size={20} className="mr-2"/> Filter
+                      {/* {formattedOptions.find((option) => option.value === activeFilterTag)?.label || 'Default Label'} */}
+                    </>
+                  }
                   inline
                   className="rounded-2xl w-64 shadow-shadow-light-2"
                   dismissOnClick={true}
@@ -144,14 +148,14 @@ const ContactsActionbar = ({ active = "", setActive = "", activeFilterOrg = "", 
                         <IoCheckmarkSharp size={20} className={`inline-block mr-1 ${activeFilterTag == option.value ? "" : "opacity-0"
                           }`} />
 
-                       <NewBadge label={option.label}  />
+                        <NewBadge label={option.label} />
                       </div>
                     </Dropdown.Item>
                   ))}
                 </Dropdown>
               </div>
               <TagButtonWithModal
-                buttonClass="bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[11px] px-7 rounded-[100px] font-medium mr-4"
+                buttonClass="flex justify-center item-center bg-active-blue shadow-shadow-light text-sm text-active-blue-text py-[11px] px-7 rounded-[100px] font-medium mr-4"
                 // modalClass=""  
                 modalContent={<TagModal />}
               />
@@ -163,9 +167,15 @@ const ContactsActionbar = ({ active = "", setActive = "", activeFilterOrg = "", 
             </div>
             :
             <div className="flex">
-              <div className={`items-dropdown single-select ${activeFilterOrg == "0" ? 'sort-by-filter' : 'sort-by-filter'} mr-4`}>
+              <div className={`items-dropdown single-select mr-4`}>
                 <Dropdown
-                  label={OrganizationOptions.find((option) => option.value === activeFilterOrg)?.label}
+                label={
+                    <>
+                      <IoFilter size={20} className="mr-2"/> Filter
+                      {/* {formattedOptions.find((option) => option.value === activeFilterTag)?.label || 'Default Label'} */}
+                    </>
+                  }
+                  // label={OrganizationOptions.find((option) => option.value === activeFilterOrg)?.label}
                   // value={"0"}
                   inline
                   className="rounded-2xl w-64 shadow-shadow-light-2"
