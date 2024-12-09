@@ -1,5 +1,5 @@
 import axios from "axios";
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from 'jwt-decode'
 
 const axiosInstance = axios.create({
   baseURL:process.env.REACT_APP_BASE_URL,
@@ -8,7 +8,9 @@ const axiosInstance = axios.create({
   },
 });
 
-const isTokenExpired = (token) => { try { return jwtDecode(token).exp * 1000 < Date.now(); } catch { return true; } };
+const isTokenExpired = (token) => { 
+  try { return jwtDecode(token).exp * 1000 < Date.now(); } catch { return true; } 
+};
 
 axiosInstance.interceptors.request.use(
   async (request) => {
