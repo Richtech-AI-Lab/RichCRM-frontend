@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import queryString from "query-string";
 import { XButton } from "../../components";
 import { oAuthServiceProvider, userInfoPath, ImplicitGrant } from "../../components/docusign/oauth";
 
