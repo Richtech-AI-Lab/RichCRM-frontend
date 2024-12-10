@@ -1,7 +1,7 @@
 import { Spinner, Table, Textarea, TextInput } from "flowbite-react";
 import React, { useCallback, useEffect, useState } from "react";
 import * as Yup from "yup";
-import Select, {components} from 'react-select';
+import Select, { components } from 'react-select';
 import dummyData from "../../../utils/dummyData.json";
 import { ROUTES } from "../../../constants/api";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -9,7 +9,7 @@ import ContactsActionbar from "../../../components/actionbar/contactsActionBar";
 import CardItem from "../../../components/carditem";
 import FormButton from "../../../components/formButton";
 import { contactItemFirst, contactItems, contactItemSecond, sellerItems } from "../../../utils/formItem";
-import { CaseCardDetails, SelectInput } from "../../../components";
+import { CaseCardDetails, SelectInput, XButton } from "../../../components";
 import { Field, Formik } from "formik";
 import { IMAGES } from "../../../constants/imagePath";
 import { CASETYPE } from "../../../constants/constants";
@@ -19,9 +19,11 @@ import { useDispatch, useSelector } from "react-redux";
 import ContactIndividualDetail from "../contactDetail/contactIndividualDetail";
 import ContactIndividualEditForm from "../contactEdit/contactIndividualEditForm";
 import { getCaseByContactRequest, updateContactRequest } from "../../../redux/actions/contactActions";
+import TagModal from "../../../components/tagModal/tagModal";
 
 const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
   const dispatch = useDispatch();
+  const [showEditTagsModal, setShowEditTagsModal] = useState(false)
   const { cases, loading } = useSelector((state) => state?.contact);
   const tagDetails = useSelector((state) => state.tag.tag);
   // console.log(cases[0], "-")
@@ -61,7 +63,7 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
       contactId: contactdetails?.contactId,
       firstName: values?.firstName,
       lastName: values?.lastName,
-      tags:  values?.tags,
+      tags: values?.tags,
       // contactType: contactdetails?.contactType,
       position: values?.position,
       company: values?.company,
@@ -120,7 +122,7 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
     lastName: contactdetails?.lastName || '',
     company: contactdetails?.company || '',
     position: contactdetails?.position || '',
-    ...(contactdetails && contactdetails.cellNumber && { cellNumber:  contactdetails?.cellNumber }),
+    ...(contactdetails && contactdetails.cellNumber && { cellNumber: contactdetails?.cellNumber }),
     email: contactdetails?.email || '',
     mailingAddress: contactdetails?.mailingAddress || '',
     wechatAccount: contactdetails?.wechatAccount || '',
@@ -145,97 +147,130 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
   const formattedOptions = tagDetails.map(option => ({
     ...option,
     value: option.label, // Convert label to a suitable value format
-}));
+  }));
 
-const customStyles = {
-  control: (styles) => ({ ...styles, backgroundColor: 'white', border:'none' }),
-  // option: (styles, { data, isDisabled, isFocused, isSelected }) => ({
-  //   ...styles,
-  //   color: isDisabled ? '#ccc' : isSelected ? 'white' : data.color,
-  //   cursor: isDisabled ? 'not-allowed' : 'default',
-  // }),
+  const customStyles = {
+    control: (styles) => ({ ...styles, backgroundColor: 'white', border: 'none' }),
+    // option: (styles, { data, isDisabled, isFocused, isSelected }) => ({
+    //   ...styles,
+    //   color: isDisabled ? '#ccc' : isSelected ? 'white' : data.color,
+    //   cursor: isDisabled ? 'not-allowed' : 'default',
+    // }),
 
-  multiValue: (styles, { data }) => ({
-    ...styles,
-    borderRadius: '50px',
-    backgroundColor: data.color1,
-    color: data.color2,
-    fontSize: '15px', /* Equivalent to text-sm */
-    fontWeight: '600',    /* Equivalent to font-semibold */
-    // padding: '0.25rem 0.75rem', /* Equivalent to py-1 px-3 */
-  }),
-  multiValueLabel: (styles, { data }) => ({
-    ...styles,
-    color: data.color2,
-  }),
-  multiValueRemove: (styles, { data }) => ({
-    ...styles,
-    color: data.color2,
-    ':hover': {
-      backgroundColor: data.color1,
+    multiValue: (styles, { data }) => ({
+      ...styles,
       borderRadius: '50px',
-    },
-  }),
-};
+      backgroundColor: data.color1,
+      color: data.color2,
+      fontSize: '15px', /* Equivalent to text-sm */
+      fontWeight: '600',    /* Equivalent to font-semibold */
+      // padding: '0.25rem 0.75rem', /* Equivalent to py-1 px-3 */
+    }),
+    multiValueLabel: (styles, { data }) => ({
+      ...styles,
+      color: data.color2,
+    }),
+    multiValueRemove: (styles, { data }) => ({
+      ...styles,
+      color: data.color2,
+      ':hover': {
+        backgroundColor: data.color1,
+        borderRadius: '50px',
+      },
+    }),
+  };
 
+  const handleEditTags = () => {
+    setShowEditTagsModal(true);
+  };
 
-
-// const customStyles = {
-//     multiValue: (styles) => ({
-//         ...styles,
-//         backgroundColor: "#e0e7ff", // Light blue background
-//         borderRadius: "12px",
-//         padding: "3px 8px",
-//         margin: "2px",
-//         color: "#1e3a8a", // Dark blue text
-//     }),
-//     multiValueLabel: (styles) => ({
-//         ...styles,
-//         color: "#1e3a8a", // Adjust color to your liking
-//     }),
-//     multiValueRemove: (styles) => ({
-//         ...styles,
-//         // color: "#1e3a8a",
-//         cursor: "pointer",
-//         // ":hover": {
-//         //     color: "#1e40af", // Darker blue on hover
-//         // },
-//     }),
-// };
-// const CustomMultiValue = (props) => {
-//     const { data } = props;
-//     return (
-//         <components.MultiValue {...props}>
-//             <span
-//                 className="text-sm font-semibold py-1 px-3 rounded-full inline-block"
-//                 style={{
-//                     backgroundColor: data.color1, // Background color from tag data
-//                     color: data.color2, // Text color from tag data
-//                 }}
-//             >
-//                 {data.label}
-//             </span>
-//         </components.MultiValue>
-//     );
-// };
-const CustomOption = (props) => {
+  // const customStyles = {
+  //     multiValue: (styles) => ({
+  //         ...styles,
+  //         backgroundColor: "#e0e7ff", // Light blue background
+  //         borderRadius: "12px",
+  //         padding: "3px 8px",
+  //         margin: "2px",
+  //         color: "#1e3a8a", // Dark blue text
+  //     }),
+  //     multiValueLabel: (styles) => ({
+  //         ...styles,
+  //         color: "#1e3a8a", // Adjust color to your liking
+  //     }),
+  //     multiValueRemove: (styles) => ({
+  //         ...styles,
+  //         // color: "#1e3a8a",
+  //         cursor: "pointer",
+  //         // ":hover": {
+  //         //     color: "#1e40af", // Darker blue on hover
+  //         // },
+  //     }),
+  // };
+  // const CustomMultiValue = (props) => {
+  //     const { data } = props;
+  //     return (
+  //         <components.MultiValue {...props}>
+  //             <span
+  //                 className="text-sm font-semibold py-1 px-3 rounded-full inline-block"
+  //                 style={{
+  //                     backgroundColor: data.color1, // Background color from tag data
+  //                     color: data.color2, // Text color from tag data
+  //                 }}
+  //             >
+  //                 {data.label}
+  //             </span>
+  //         </components.MultiValue>
+  //     );
+  // };
+  const CustomOption = (props) => {
     const { data, innerRef, innerProps } = props;
-    return (
-        <div ref={innerRef} {...innerProps} className="m-3">
-            <span
-                className="text-sm font-semibold py-1 px-3 rounded-full inline-block cursor-pointer"
-                style={{
-                    backgroundColor: data.color1, // Background color for each option
-                    color: data.color2, // Text color for each option
-                    display: 'inline-block',
-                
-                }}
-            >
-                {data.label}
-            </span>
+
+    // Check if this is the "Edit Tags" special option
+    if (data.isSpecial) {
+      return (
+        <div
+          ref={innerRef}
+          {...innerProps}
+          className="m-3 cursor-pointer"
+          style={{
+            borderTop: '2px solid #E5E7EB',
+            fontSize: '15px',
+            fontWeight: '600',
+            color: '#366093', // Highlight "Edit Tags" option
+          }}
+          onClick={() => handleEditTags()} // Trigger edit tags logic
+        >
+          <XButton
+            text="Edit Tag"
+            icon={<img
+              src={IMAGES.editTagBlue}
+              alt="icon"
+              className='w-[14px] h-[14px] mr-2 mt-1  inline-block '
+            />}
+          // icon={<FiPlus className="text-base mr-2 inline-block" />}
+          // className={buttonClass}
+          // onClick={toggleModal}
+          />
+          {/* {data.label} */}
         </div>
+      );
+    }
+
+    // Regular option rendering
+    return (
+      <div ref={innerRef} {...innerProps} className="m-3">
+        <span
+          className="text-sm font-semibold py-1 px-3 rounded-full inline-block cursor-pointer"
+          style={{
+            backgroundColor: data.color1, // Background color for each option
+            color: data.color2, // Text color for each option
+          }}
+        >
+          {data.label}
+        </span>
+      </div>
     );
-};
+  };
   return (
     <>
       <div className="grid grid-cols-12 gap-6">
@@ -259,8 +294,8 @@ const CustomOption = (props) => {
                   <form onSubmit={handleSubmit}>
                     <div className="bg-white rounded-2xl mb-5 p-4">
                       <div className="flex">
-                      <img src={`https://ui-avatars.com/api/?name=${initialValues?.firstName}+${initialValues?.lastName}`} alt="Profile" className="mr-3 rounded-full w-[150px] h-[150px]" />
-                 
+                        <img src={`https://ui-avatars.com/api/?name=${initialValues?.firstName}+${initialValues?.lastName}`} alt="Profile" className="mr-3 rounded-full w-[150px] h-[150px]" />
+
                         {/* <img
                           src={IMAGES.avatarpic}
                           alt="Profile"
@@ -281,16 +316,22 @@ const CustomOption = (props) => {
                                 Option: CustomOption,
                                 // MultiValue: CustomMultiValue, // Use the custom badge component
                               }}
-                              options={formattedOptions}
+                              options={[...formattedOptions, { label: "Edit Tags", value: "edit-tags", isSpecial: true }]}
                               value={formattedOptions.filter(option =>
                                 values.tags.includes(option.value)
                               )}
-                              onChange={(selectedOptions) =>
+                              onChange={(selectedOptions) => {
+                                // Check if "Edit Tags" is clicked
+                                if (selectedOptions && selectedOptions.some(option => option.value === "edit-tags")) {
+                                  handleEditTags(); // Call the edit tags functionality
+                                  return; // Prevent adding "Edit Tags" to the selected options
+                                }
+
                                 setFieldValue(
                                   "tags",
                                   selectedOptions ? selectedOptions.map(option => option.value) : []
-                                )
-                              }
+                                );
+                              }}
                             />
                           </div>
                           <p className="text-secondary-300 text-sm">ID xxxx</p>
@@ -418,7 +459,7 @@ const CustomOption = (props) => {
             </div>
           </>
         }
-
+        {showEditTagsModal && <TagModal onClose={() => setShowEditTagsModal(!showEditTagsModal)} />}
       </div>
 
     </>

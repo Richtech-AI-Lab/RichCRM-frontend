@@ -18,6 +18,7 @@ import folder from "../assets/images/folder.svg";
 import file from "../assets/images/file.svg";
 import image from "../assets/images/image.svg";
 import edit from "../assets/images/edit.svg";
+import editTagBlue from "../assets/images/editBlue.svg";
 
 export const IMAGES = {
   profile: avatarImage,
@@ -39,5 +40,6 @@ export const IMAGES = {
   folderIcon:folder,
   fileIcon:file,
   galleryIcon: image,
-  editTag: edit
+  editTag: edit,
+  editTagBlue: editTagBlue
 };
