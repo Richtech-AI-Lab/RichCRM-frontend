@@ -124,9 +124,11 @@ function* fetchClientsByIds(action) {
 
     // Fetch addresses for each client by their addressId
     const addressResponses = yield all(
-      clients.map(client => 
-        call(postRequest, API_ENDPOINTS.FETCH_ADDRESS_BY_QUERY_ID, { addressId: client.addressId })
-      )
+      clients.map(client => {
+        if (client?.addressId && client?.addressId !== "") {
+          return call(postRequest, API_ENDPOINTS.FETCH_ADDRESS_BY_QUERY_ID, { addressId: client.addressId });
+        }
+      })
     );
 
     // Merge address data into the respective clients
