@@ -148,43 +148,76 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
 }));
 
 const customStyles = {
-    multiValue: (styles) => ({
-        ...styles,
-        backgroundColor: "#e0e7ff", // Light blue background
-        borderRadius: "12px",
-        padding: "3px 8px",
-        margin: "2px",
-        color: "#1e3a8a", // Dark blue text
-    }),
-    multiValueLabel: (styles) => ({
-        ...styles,
-        color: "#1e3a8a", // Adjust color to your liking
-    }),
-    multiValueRemove: (styles) => ({
-        ...styles,
-        color: "#1e3a8a",
-        cursor: "pointer",
-        ":hover": {
-            color: "#1e40af", // Darker blue on hover
-        },
-    }),
+  control: (styles) => ({ ...styles, backgroundColor: 'white', border:'none' }),
+  // option: (styles, { data, isDisabled, isFocused, isSelected }) => ({
+  //   ...styles,
+  //   color: isDisabled ? '#ccc' : isSelected ? 'white' : data.color,
+  //   cursor: isDisabled ? 'not-allowed' : 'default',
+  // }),
+
+  multiValue: (styles, { data }) => ({
+    ...styles,
+    borderRadius: '50px',
+    backgroundColor: data.color1,
+    color: data.color2,
+    fontSize: '15px', /* Equivalent to text-sm */
+    fontWeight: '600',    /* Equivalent to font-semibold */
+    // padding: '0.25rem 0.75rem', /* Equivalent to py-1 px-3 */
+  }),
+  multiValueLabel: (styles, { data }) => ({
+    ...styles,
+    color: data.color2,
+  }),
+  multiValueRemove: (styles, { data }) => ({
+    ...styles,
+    color: data.color2,
+    ':hover': {
+      backgroundColor: data.color1,
+      borderRadius: '50px',
+    },
+  }),
 };
-const CustomMultiValue = (props) => {
-    const { data } = props;
-    return (
-        <components.MultiValue {...props}>
-            <span
-                className="text-sm font-semibold py-1 px-3 rounded-full inline-block"
-                style={{
-                    backgroundColor: data.color1, // Background color from tag data
-                    color: data.color2, // Text color from tag data
-                }}
-            >
-                {data.label}
-            </span>
-        </components.MultiValue>
-    );
-};
+
+
+
+// const customStyles = {
+//     multiValue: (styles) => ({
+//         ...styles,
+//         backgroundColor: "#e0e7ff", // Light blue background
+//         borderRadius: "12px",
+//         padding: "3px 8px",
+//         margin: "2px",
+//         color: "#1e3a8a", // Dark blue text
+//     }),
+//     multiValueLabel: (styles) => ({
+//         ...styles,
+//         color: "#1e3a8a", // Adjust color to your liking
+//     }),
+//     multiValueRemove: (styles) => ({
+//         ...styles,
+//         // color: "#1e3a8a",
+//         cursor: "pointer",
+//         // ":hover": {
+//         //     color: "#1e40af", // Darker blue on hover
+//         // },
+//     }),
+// };
+// const CustomMultiValue = (props) => {
+//     const { data } = props;
+//     return (
+//         <components.MultiValue {...props}>
+//             <span
+//                 className="text-sm font-semibold py-1 px-3 rounded-full inline-block"
+//                 style={{
+//                     backgroundColor: data.color1, // Background color from tag data
+//                     color: data.color2, // Text color from tag data
+//                 }}
+//             >
+//                 {data.label}
+//             </span>
+//         </components.MultiValue>
+//     );
+// };
 const CustomOption = (props) => {
     const { data, innerRef, innerProps } = props;
     return (
@@ -243,10 +276,10 @@ const CustomOption = (props) => {
                               as={Select}
                               isMulti
                               name="tags"
-                              // styles={customStyles}
+                              styles={customStyles}
                               components={{
                                 Option: CustomOption,
-                                MultiValue: CustomMultiValue, // Use the custom badge component
+                                // MultiValue: CustomMultiValue, // Use the custom badge component
                               }}
                               options={formattedOptions}
                               value={formattedOptions.filter(option =>
