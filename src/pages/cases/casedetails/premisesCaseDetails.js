@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { CaseCardDetails, XButton } from "../../../components";
 import { Formik } from "formik";
 import { inspectionItems, lowerSectionItems, premisesComposition, termitesInspectionItems } from "../../../utils/formItem";
@@ -245,6 +245,25 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit, setDirtyFormnik }) => {
   //   premisesTermites: Yup.boolean().required('Termites inspection status is required'),
   });
 
+  useEffect(() => {
+    const formik = formikRef.current;
+    if (formik) {
+      if (formik.values.needInspection == 1) {
+        formik.setFieldValue('needTermitesInspection', 1);
+      }
+    }
+  }, [formikRef.current?.values.needInspection]);
+
+  // useEffect(() => {
+  //   const formik = formikRef.current;
+  //   if (formik) {
+  //     if (formik.values.maintenanceFeePer == 1) {
+  //       let amt= formik.values.maintenanceFee * 12
+  //       formik.setFieldValue('maintenanceFee',amt );
+  //     }
+  //   }
+  // }, [formikRef.current?.values.maintenanceFeePer]);
+
   return (
     <>
       {isEdit ?
@@ -252,7 +271,8 @@ const PremisesCaseDetails = ({ isEdit, setIsEdit, setDirtyFormnik }) => {
           <Formik initialValues={initialPremisesValues} 
           validationSchema={validationSchema} 
           innerRef={formikRef}
-          onSubmit={handleSubmit} >
+          onSubmit={handleSubmit} 
+          enableReinitialize>
             {({
               handleChange,
               handleSubmit,
