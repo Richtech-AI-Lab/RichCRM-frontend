@@ -7,7 +7,7 @@ import { format } from "date-fns";
 const CardItem = ({
   badgeColor,
   badgeText,
-  item={},
+  item = {},
   caseDetails,
   caseTitle,
   caseCount,
@@ -59,25 +59,27 @@ const CardItem = ({
       style={{ cursor: "pointer" }}
     >
       <div className="flex items-center justify-between">
-        {showLabel(caseStatus)}
+        {closedCases?.length >= 0 ? "" : showLabel(caseStatus)}
         {caseCount && (
           <span className="ml-2 text-secondary-800 text-sm font-medium">
             {caseCount}
           </span>
         )}
       </div>
+
+      {closedCases?.length >= 0 && <p className="text-sm text-secondary-800 font-medium mt-1 " style={{opacity:'0.4'}}>Closed on {item?.closingDate && format(item?.closingDate, 'MMM dd, yyyy')}</p>  }
+
       {caseTitle && (
         <p className={`text-base text-secondary-800 font-semibold ${closedCases ? 'mt-0' : 'mt-2'}`}>
           {caseTitle}
         </p>
       )}
 
-{closedCases?.length >= 0 ?  <p className="text-sm text-secondary-800 font-medium mt-1">{item?.closingDate && format(item?.closingDate, 'MMMM dd, yyyy')}</p>:
+      {closedCases?.length >= 0 ? <p className="text-sm text-secondary-800 font-medium mt-1" >{item?.premisesName}</p> :
+        <p className="text-sm text-secondary-800 font-medium mt-1">{caseDetails}</p>
+      }
 
-      <p className="text-sm text-secondary-800 font-medium mt-1">{caseDetails}</p>
-}
-
-      <span className={`text-xs ${closedCases ? 'text-secondary-800' : 'text-secondary-700'}`}>{caseTypeLabel}</span>
+      <span className={`text-xs ${closedCases ? 'text-secondary-800' : 'text-secondary-700'}`} style={{opacity:closedCases?.length >= 0 ? '0.4' : '',}}>{caseTypeLabel}</span>
     </div>
   );
 };
