@@ -317,33 +317,38 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
               </div>
             </li>
             <li>
-              <div className="flex justify-between items-center w-full">
                 <span className="left-txt w-full">Parking Space</span>
-                <div className="flex justify-end items-center w-full gap-7">
-                  <div className="grid gap-3">
-                    <Field
-                      as={SelectInput}
-                      defaultLabel={`Select Parking space`}
-                      inputClassName="bg-input-surface py-[6px] px-4 rounded-full border-0 text-sm leading-5 font-semibold text-label"
-                      labelClassName="ext-label mr-3"
-                      name="parkingSpaces"
-                      value={values.parkingSpaces}
-                      options={[
-                        { id: 0, label: "0" },
-                        { id: 1, label: "1" },
-                        { id: 2, label: "2" },
-                        { id: 3, label: "3" },
-                        { id: 4, label: "4" },
-                        { id: 5, label: "5" },
-                        { id: 6, label: "6" },
-                      ].map((option) => ({
-                        value: option.id,
-                        label: option.label,
-                      }))}
-                    />
-                  </div>
+                <div className="dub-input flex gap-4">
+                  {/* <input
+                    className="text-left p-0 border-none focus:ring-transparent w-[150px]"
+                    name="maintenanceFee"
+                    placeholder="fee"
+                    type="text"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.maintenanceFee}
+                  /> */}
+                  <Field
+                    as={SelectInput}
+                    defaultLabel={`Select Parking space`}
+                    inputClassName="bg-input-surface py-[6px] px-4 rounded-full border-0 text-sm leading-5  w-[150px] font-semibold text-label"
+                    labelClassName="ext-label mr-3"
+                    name="parkingSpaces"
+                    value={values.parkingSpaces}
+                    options={[
+                      { id: 0, label: "0" },
+                      { id: 1, label: "1" },
+                      { id: 2, label: "2" },
+                      { id: 3, label: "3" },
+                      { id: 4, label: "4" },
+                      { id: 5, label: "5" },
+                      { id: 6, label: "6" },
+                    ].map((option) => ({
+                      value: option.id,
+                      label: option.label,
+                    }))}
+                  />
                 </div>
-              </div>
             </li>
             {/* <li>
             <div className="flex justify-between items-center w-full">
@@ -389,9 +394,9 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
                 name="maintenanceFeePer"
                 value={values.maintenanceFeePer}
                 options={[
-                  { id: 0, label: "Month" },
-                  { id: 1, label: "Quarter" },
-                  { id: 2, label: "Year" },
+                  { id: 0, label: "Monthly" },
+                  { id: 1, label: "Yearly" },
+                  // { id: 2, label: "Year" },
 
                 ].map((option) => ({
                   value: option.id,
