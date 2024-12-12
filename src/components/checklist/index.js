@@ -14,9 +14,12 @@ import UploadFileModal from "../caseModal/uploadFileModal";
 import GoogleMeetModal from "../gmeet/googleMeetModal";
 import { detectIncognito } from "detectincognitojs";
 import { toast } from "react-toastify";
+import { useMsal } from "@azure/msal-react";
 
+const ROOT_FOLDER_PATH = "https://graph.microsoft.com/v1.0/drive/root";
 const ChecklistItem = ({ item, stageName, key, icon, label, status, action, actionInfo, optionsValue, checkboxId, currentStep, templates, stageId }) => {
-
+  const { instance, accounts, inProgress } = useMsal();
+  const [account, setAccount] = useState(instance.getActiveAccount());
   const dispatch = useDispatch();
   const [isCompose, setIsCompose] = useState(false);
   const [isUploadFileModalOpen, setIsUploadFileModalOpen] = useState(false);
@@ -26,6 +29,7 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
   const { casesData } = useSelector((state) => state.case);
   const caseObj = casesData?.cases?.find(item => item.caseId === localStorage.getItem('c_id'));
   const taskData = useSelector((state) => state.task);
+  const { data } = useSelector((state) => state.auth.user)
   const toggleUploadFileModal = () => {
     setIsUploadFileModalOpen(!isUploadFileModalOpen);
   };
@@ -163,9 +167,6 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
   }
 
   const handleOption = async (option) => {
-    // console.log(item?.name)
-    // console.log(item?.status)
-    // console.log(localStorage.getItem("c_id"))
     let fname = `${caseObj?.clientName}-${caseObj?.premisesName}-${item?.name}`
     // console.log(fname)
     setFileName(fname)
@@ -190,8 +191,107 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
   useEffect(() => {
     setTaskStatus(status);
   }, [status]);
+  async function login(e) {
+    // e.preventDefault();
+    const loginRequest = {
+      scopes: ["User.ReadWrite"],
+    };
 
-  const handleChangeTaskStatus = (value) => {
+    instance
+      .loginPopup(loginRequest)
+      .then((loginResponse) => {
+        instance.setActiveAccount(loginResponse.account);
+        setAccount(loginResponse.account);
+        console.log("User signed in!");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  async function getToken() {
+    if (!accounts || accounts.length === 0) {
+      return null;
+    }
+
+    const request = {
+      scopes: ["User.Read", "Files.ReadWrite"],
+      account: account,
+    };
+
+    const authResult = await instance.acquireTokenSilent(request).catch(() => instance.acquireTokenPopup(request));
+    return authResult.accessToken;
+  }
+  const fetchAndPreviewFile = async (folderName, fileName) => {
+    if (!folderName || !fileName) {
+      toast.error("Folder name or file name is missing");
+      return;
+    }
+  
+    try {
+      const token = await getToken();
+      if (!token) {
+        toast.error("Failed to fetch authentication token");
+        return;
+      }
+  
+      const encodedFolderPath = encodeURIComponent(folderName);
+      const encodedFileName = encodeURIComponent(`${fileName}.pdf`);
+  
+      let fileUrl = `${ROOT_FOLDER_PATH}:/${encodedFolderPath}/${encodedFileName}`;
+      if (data[0]?.uploadFolderName) {
+        // Adjust file URL if uploadFolderName exists
+        fileUrl = `${ROOT_FOLDER_PATH}:/${data[0]?.uploadFolderName}/${encodedFolderPath}/${encodedFileName}`;
+      }
+  
+      const fileResponse = await fetch(fileUrl, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (fileResponse.ok) {
+        const fileData = await fileResponse.json();
+        const downloadUrl = fileData?.id
+        openFilePreview(downloadUrl)
+      }
+    } catch (error) {
+      console.error("Error fetching or previewing file:", error);
+      toast.error(`Failed to fetch file: ${error.message}`);
+    }
+  };
+  
+  const openFilePreview = async (fileId) => {
+    const authToken = await getToken();
+    try {
+        const response = await fetch(
+            `https://graph.microsoft.com/v1.0/me/drive/items/${fileId}/preview`,
+            {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${authToken}`,
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+
+        if (response.ok) {
+            const data = await response.json();
+            const previewUrl = data.getUrl; // The URL to preview the file
+
+            if (previewUrl) {
+                window.open(previewUrl, "_blank"); // Open the preview URL in a new tab
+            } else {
+                alert("Unable to retrieve file preview URL.");
+            }
+        } else {
+            console.error("Error fetching preview URL:", response.statusText);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+    }
+
+};
+  const handleChangeTaskStatus = async (value) => {
     let newStatus;
 
     if (value) {
@@ -226,6 +326,22 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
     };
     dispatch(updateTaskStatusRequest(updatedStatusTask));
     dispatch(updateStageStatusRequest(updatedStatusStage));
+  }
+  const handleFileView = async () => {
+    if (item.taskType == 2 && item.status == 2) {
+      if (!account) {
+        await login();
+        setAccount(instance.getActiveAccount());
+        toast.info("Please login and then try again.");
+      }else if(instance.getActiveAccount()) {
+        const folderName = `${caseObj?.clientName}-${caseObj?.premisesName}-${localStorage.getItem("c_id").split('-')[0]}`;
+        const fileName = `${caseObj?.clientName}-${caseObj?.premisesName}-${item?.name}`;
+
+        fetchAndPreviewFile(folderName, fileName)
+      } else {
+        toast.info("something went wrong.");
+      }
+    }
   }
 
 
@@ -303,11 +419,14 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
         <li className="flex justify-between items-center mb-3 task-checklist mt-3">
           <div className="flex items-center gap-2 custom-radio">
             <Checkbox id={checkboxId} checked={taskStatus === 2} className="mr-6" onChange={() => handleChangeTaskStatus()} />
-            <Label htmlFor={checkboxId} className="flex items-center lg:text-base xl:text-base text-secondary-800 font-medium">
+              <div onClick={() => handleFileView()}>
+              <Label  className="flex items-center lg:text-base xl:text-base text-secondary-800 font-medium" >
               {displayIcon && <span className="mr-2 text-3xl">{displayIcon}</span>}
               {/* {stageId }: */}
               {actionInfo}
             </Label>
+              </div>
+          
           </div>
           <div>
             <p className="text-end mb-2">
