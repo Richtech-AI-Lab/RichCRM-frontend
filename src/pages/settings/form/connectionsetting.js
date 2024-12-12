@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { postRequest } from '../../../axios/interceptor';
 import { updateUserRequest } from '../../../redux/actions/authActions';
+import { DefaultPathSetting } from '../../../components/defaultPathSetting';
 
 export const ConnectionSetting = ({ title }) => {
     const dispatch = useDispatch();
@@ -80,7 +81,7 @@ export const ConnectionSetting = ({ title }) => {
                     </div>
             </div>
 
-            <div className="bg-white p-4 rounded-2xl mb-5 shadow-card">
+            {/* <div className="bg-white p-4 rounded-2xl mb-5 shadow-card">
                 {title && <div className="flex justify-between items-center mb-2">
                     <span className="text-base text-secondary-800 font-medium">Upload Folder URL</span>
                 </div>}
@@ -122,7 +123,8 @@ export const ConnectionSetting = ({ title }) => {
                             />
                         </div>
                     </div>
-            </div>
+            </div> */}
+            <DefaultPathSetting />
         </>
     )
 }
