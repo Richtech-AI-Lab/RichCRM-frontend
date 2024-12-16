@@ -19,6 +19,7 @@ import file from "../assets/images/file.svg";
 import image from "../assets/images/image.svg";
 import edit from "../assets/images/edit.svg";
 import editTagBlue from "../assets/images/editBlue.svg";
+import richAiLogo from "../assets/images/RichAiLogo.png";
 
 export const IMAGES = {
   profile: avatarImage,
@@ -41,5 +42,7 @@ export const IMAGES = {
   fileIcon:file,
   galleryIcon: image,
   editTag: edit,
-  editTagBlue: editTagBlue
+  editTagBlue: editTagBlue,
+  richAiLogo: richAiLogo
+
 };
