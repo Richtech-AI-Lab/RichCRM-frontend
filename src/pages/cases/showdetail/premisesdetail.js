@@ -120,13 +120,13 @@ const PremisesDetail = ({ premises, address }) => {
                     {
                       premises[0]?.maintenanceFee === undefined || premises[0]?.maintenanceFee === ""
                         ? ""
-                        : `${premises[0].maintenanceFee} ${premises[0]?.maintenanceFeePer == 0
+                        : `$${premises[0].maintenanceFee} ${premises[0]?.maintenanceFeePer == 0
                           ? 'per month'
                           : premises[0]?.maintenanceFeePer == 1
-                            ? 'per quarter'
-                            : premises[0]?.maintenanceFeePer == 2
-                              ? 'per year'
-                              : ''
+                            ? 'per year' : ''
+                        // : premises[0]?.maintenanceFeePer == 2
+                        //   ? 'per year'
+                        //   : ''
                         }`
                     }
                   </span>
@@ -137,7 +137,7 @@ const PremisesDetail = ({ premises, address }) => {
                     {
                       premises[0]?.assessments === undefined || premises[0]?.assessments === ""
                         ? ""
-                        : `${premises[0]?.assessments} ${premises[0]?.assessmentsPer == 0
+                        : `$${premises[0]?.assessments} ${premises[0]?.assessmentsPer == 0
                           ? 'per month'
                           : premises[0]?.assessmentsPer == 1
                             ? 'per quarter'
@@ -155,9 +155,9 @@ const PremisesDetail = ({ premises, address }) => {
                 </li>
 
                 <li>
-                <span className="left-txt flex items-center" >Annual Property Tax</span>
-                <span className="left-txt flex items-center" >{premises[0]?.annualPropertyTax && "$"}{premises[0]?.annualPropertyTax}  </span>
-              </li>
+                  <span className="left-txt flex items-center" >Annual Property Tax</span>
+                  <span className="left-txt flex items-center" >{premises[0]?.annualPropertyTax && "$"}{premises[0]?.annualPropertyTax}  </span>
+                </li>
               </ul> : ""}
           </div>
         </div>}
@@ -206,45 +206,45 @@ const PremisesDetail = ({ premises, address }) => {
         {premises[0].tenant?.length > 0 &&
           <div className="bg-white p-4 rounded-2xl mb-5">
             {collapseTenant ?
-             <div className="flex justify-between items-center mb-5">
-              <span className="text-base text-secondary-800 font-medium">Tenant</span>
-              <div className="flex items-center gap-2">
-                <button className="rotate-180 active" onClick={() => { setCollapseTenant(false) }}><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" aria-hidden="true" class="h-6 w-6 shrink-0" data-testid="flowbite-accordion-arrow" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></button>
-              </div>
-            </div>: 
-            <>
-            <div className="flex justify-between items-center mb-5">
-              <span className="text-base text-secondary-800 font-medium">Tenant</span>
-              <div className="flex items-center gap-2">
-                <button className="rotate-180 active" onClick={() => { setCollapseTenant(true) }}><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" aria-hidden="true" class="h-6 w-6 shrink-0 rotate-180" data-testid="flowbite-accordion-arrow" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></button>
-              </div>
-            </div>
-            {premises[0].tenant?.length > 0 && (
-              <ul className="card-details">
-                {premises[0].tenant?.map((tenant, index) => (
-                  <>
-                    <li key={index}>
-                      <span className="left-txt flex items-center">Tenant Name</span>
-                      <span className="left-txt flex items-center">{`${tenant.firstName} ${tenant.lastName}`}</span>
-                    </li>
-                    <li>
-                      <span className="left-txt flex items-center">Rent</span>
-                      <span className="left-txt flex items-center">NA</span>
-                    </li>
-                    <li>
-                      <span className="left-txt flex items-center">Sec.</span>
-                      <span className="left-txt flex items-center">NA</span>
-                    </li>
-                    <li>
-                      <span className="left-txt flex items-center">Lease</span>
-                      <span className="left-txt flex items-center">NA</span>
-                    </li>
-                  </>
-                ))}
+              <div className="flex justify-between items-center mb-5">
+                <span className="text-base text-secondary-800 font-medium">Tenant</span>
+                <div className="flex items-center gap-2">
+                  <button className="rotate-180 active" onClick={() => { setCollapseTenant(false) }}><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" aria-hidden="true" class="h-6 w-6 shrink-0" data-testid="flowbite-accordion-arrow" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></button>
+                </div>
+              </div> :
+              <>
+                <div className="flex justify-between items-center mb-5">
+                  <span className="text-base text-secondary-800 font-medium">Tenant</span>
+                  <div className="flex items-center gap-2">
+                    <button className="rotate-180 active" onClick={() => { setCollapseTenant(true) }}><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" aria-hidden="true" class="h-6 w-6 shrink-0 rotate-180" data-testid="flowbite-accordion-arrow" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></button>
+                  </div>
+                </div>
+                {premises[0].tenant?.length > 0 && (
+                  <ul className="card-details">
+                    {premises[0].tenant?.map((tenant, index) => (
+                      <>
+                        <li key={index}>
+                          <span className="left-txt flex items-center">Tenant Name</span>
+                          <span className="left-txt flex items-center">{`${tenant.firstName} ${tenant.lastName}`}</span>
+                        </li>
+                        <li>
+                          <span className="left-txt flex items-center">Rent</span>
+                          <span className="left-txt flex items-center">NA</span>
+                        </li>
+                        <li>
+                          <span className="left-txt flex items-center">Sec.</span>
+                          <span className="left-txt flex items-center">NA</span>
+                        </li>
+                        <li>
+                          <span className="left-txt flex items-center">Lease</span>
+                          <span className="left-txt flex items-center">NA</span>
+                        </li>
+                      </>
+                    ))}
 
-              </ul>
-            )}
-            </>}
+                  </ul>
+                )}
+              </>}
           </div>}
       </div>
 
