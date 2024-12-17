@@ -20,6 +20,9 @@ import image from "../assets/images/image.svg";
 import edit from "../assets/images/edit.svg";
 import editTagBlue from "../assets/images/editBlue.svg";
 import richAiLogo from "../assets/images/RichAiLogo.png";
+import attachmentlogo from "../assets/images/attachment.svg";
+import calendarGray from "../assets/images/calendargray.svg";
+import casesGray from "../assets/images/casesgray.svg";
 
 export const IMAGES = {
   profile: avatarImage,
@@ -43,6 +46,9 @@ export const IMAGES = {
   galleryIcon: image,
   editTag: edit,
   editTagBlue: editTagBlue,
-  richAiLogo: richAiLogo
+  richAiLogo: richAiLogo,
+  attachment: attachmentlogo,
+  calendarGray: calendarGray,
+  casesGray: casesGray,
 
 };
