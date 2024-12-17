@@ -29,26 +29,26 @@ const MeetingDetailModal = ({ onClose, eventData, title}) => {
     };
 
     return (
-        <Modal show={true} size="md" onClose={onClose} className="new-case-modal calendar-modal">
-            <Modal.Header className="border-b">
+        <Modal show={true} size="md" onClose={onClose} className="new-case-modal calendar-modal ">
+            <Modal.Header className="border-b-2 border-black-10 ">
                 <h2 className="text-4 font-medium text-secondary-800">Google Meet Link</h2>
             </Modal.Header>
             <Modal.Body className="p-0 m-0">
                 <ul className="">
-                    <li className='flex justify-start items-center gap-4 p-3'>
+                    <li className='flex justify-start items-center gap-4 p-5 border-b-2 border-black-10  '>
                         <img src={IMAGES?.casesGray} alt="logo" className="" />
                         <div style={{ color: "#366093" }}>
                             <p>{caseName[0]}</p>
                             <p>{caseName[1]}</p>
                         </div>
                     </li>
-                    <li className='flex justify-start items-center gap-4 p-3'>
+                    <li className='flex justify-start items-center gap-4 p-5 border-b-2 border-black-10 '>
                         <img src={IMAGES?.calendarGray} alt="logo" className="" />
                         <div >
                             <p>{formatDateRange(eventData?.start, eventData?.end)}</p>
                         </div>
                     </li>
-                    <li className='flex justify-start items-center gap-4 p-3'>
+                    <li className='flex justify-start items-center gap-4 p-5 '>
                         <img src={IMAGES?.attachment} alt="logo" className="" />
                         <div style={{ color: "#366093" }}>
                             <a
@@ -62,7 +62,7 @@ const MeetingDetailModal = ({ onClose, eventData, title}) => {
 
 
                     </li>
-                    <div className="flex justify-end p-3">
+                    <div className="flex justify-end px-5 mb-3">
                         <XButton text="Edit" className="bg-badge-gray text-base text-primary2 py-[10px] px-6 rounded-[100px] w-1/2" />
                         <XButton text="Start Meeting" onClick={handleStartClick} className="bg-primary2 text-white text-base py-[10px] px-6 rounded-[100px] ml-4 w-1/2" />
                     </div>
