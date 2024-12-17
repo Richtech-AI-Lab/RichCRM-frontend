@@ -95,3 +95,26 @@ export const checkGoogleSignInStatus = async () => {
     return false; // Default to not signed in on error
   }
 };
+
+export const getCurrentUserProfile = () => {
+  try {
+    const authInstance = gapi?.auth2?.getAuthInstance();
+    const user = authInstance?.currentUser?.get();
+
+    if (user) {
+      const profile = user.getBasicProfile();
+      const userProfile = {
+        name: profile.getName(),          // User's full name
+        email: profile.getEmail(),        // User's email
+        profilePic: profile.getImageUrl() // Profile picture URL
+      };
+      return userProfile;
+    } else {
+      console.warn("No user is currently signed in.");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching user profile: ", error);
+    return null;
+  }
+};
