@@ -236,35 +236,30 @@ export const EmailSetting = ({ title }) => {
                         </div>
                     </div>
 
-                    <div className="grid gap-5 bg-gray chat-box rounded p-4">
-                        <span className={`left-txt flex items-center`}><img src={IMAGES.richAiLogo} width={'50px'} height={'50px'}></img></span>
-                        <p >
-                            Rich CRM
-                        </p>
-                        <p >
-                            Jessica Lee
-                        </p>
-                        <p >
-                            MANAGER
-                        </p>
-                        <div>Phone:
-                            929-988-3993
-                            Mobile:
-                            929-988-3993
-
-
+                    <div className="grid gap-1 bg-gray chat-box rounded-2xl p-4">
+                        <div className="mb-4">
+                            <span className={`left-txt flex items-center mb-2`}><img src={IMAGES.richAiLogo} width={'50px'} height={'50px'}></img></span>
+                            <p className="text-secondary-800 text-base font-semibold mb-1">
+                                Rich CRM
+                            </p>
+                            <p className="text-secondary-800 text-xl font-semibold mb-1">
+                                Jessica Lee
+                            </p>
+                            <p className="text-text-gray-100 text-sm font-semibold">
+                                MANAGER
+                            </p>
                         </div>
                         <div>
-                        Email:
-                            jessicalee@gmail.com
-                            Website:
-                            jlee.com
+                            <div className="flex gap-4 mb-1">
+                                <p className="text-secondary-800 text-sm"><strong>Phone: </strong>929-988-3993</p>
+                                <p className="text-secondary-800 text-sm"><strong>Mobile: </strong>929-988-3993</p>
+                            </div>
+                            <div className="flex gap-4 mb-1">
+                                <p className="text-secondary-800 text-sm"><strong>Email: </strong>jessicalee@gmail.com</p>
+                                <p className="text-secondary-800 text-sm"><strong>Website: </strong>jlee.com</p>
+                            </div>
+                            <p className="text-secondary-800 text-sm"><strong>Address: </strong>1234 Main St, Flushing, NY 11354</p>
                         </div>
-                        <div>
-                        Address:
-                            1234 Main St, Flushing, NY 11354
-                        </div>
-
                     </div>
                 </div>
             </div>
