@@ -214,12 +214,14 @@ const CaseCardData = () => {
     }
   };
   const handleUpcomingEvent = () => {
-    if(eventList){
+    setIsLoading(true)
+    if (eventList) {
       setEventList(false)
-    }else{
-      authenticateAndFetchEvents()
+    } else {
+       authenticateAndFetchEvents()
       setEventList(true)
     }
+    setIsLoading(false)
   };
   return (
     <div>
@@ -227,13 +229,15 @@ const CaseCardData = () => {
       <PageHeader items={headerItems} />
       <div className="flex justify-end justify-content:flex-end mb-6">
         <div className="grid gap-4 grid-cols-3 ">
-          <XButton
-            text="Upcoming Event"
-            onClick={() => handleUpcomingEvent()}
-            icon={eventList ? <IoIosArrowUp className="text-base mr-2 inline-block font-medium" />:<IoIosArrowDown className="text-base mr-2 inline-block font-medium" />}
-            className="bg-white shadow-shadow-light text-secondary-800 py-3 px-6 rounded-full font-medium"
-          />
-          { eventList && <EventList />}
+          <div>
+            <XButton
+              text={'Upcoming Event'}
+              onClick={() => handleUpcomingEvent()} // Disable click if loading
+              icon={eventList ? <IoIosArrowUp className="text-base mr-2 inline-block font-medium" /> : <IoIosArrowDown className="text-base mr-2 inline-block font-medium" />}
+              className="bg-white shadow-shadow-light text-secondary-800 py-3 px-6 rounded-full font-medium"
+            />
+            {eventList && <EventList googleEvent={googleEvents}/>}
+          </div>
           <XButton
             text="One Drive"
             onClick={() => handleNav()}
