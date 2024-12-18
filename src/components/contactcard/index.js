@@ -35,7 +35,7 @@ const ContactCard = ({
   const { additionalClient } = useSelector((state) => state.client);
   const { additionalOrganization } = useSelector((state) => state.organization);
   const attorneyDetails = useSelector((state) => state.contact.attorney);
-
+ 
   useEffect(() => {
     if(casedetails?.clientType ==0){
       dispatch(fetchAdditionalClientByIdsRequest(casedetails?.additionalClients));
@@ -45,6 +45,7 @@ const ContactCard = ({
   //  return () => {
   //   dispatch(cleanupAdditionalClientRequest()); 
   // };    
+  // console.log(additionalOrganization,additionalClient, attorneyDetails)
   }, []);
 
   useEffect(() => {

@@ -15,6 +15,11 @@ import { EditorState, convertToRaw, ContentState, convertFromHTML } from 'draft-
 import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 import UpdateTaskTemplateButton from './updateTaskTemplateButton';
+import { useCallback } from 'react';
+import { debounce } from 'lodash';
+import { IMAGES } from '../../constants/imagePath';
+import SearchListEmail from './searchListEmail';
+import ParticipantListEmail from './participantListEmail';
 
 const ComposeEmail = ({ taskItem, onClose, templates, onSendEmail }) => {
   const dispatch = useDispatch();
@@ -34,6 +39,8 @@ const ComposeEmail = ({ taskItem, onClose, templates, onSendEmail }) => {
   const [loader, setLoader] = useState();
   const [isModalOpen, setIsModalOpen] = useState();
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const [showParticipant, setShowParticipant] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
   const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
@@ -149,10 +156,43 @@ const ComposeEmail = ({ taskItem, onClose, templates, onSendEmail }) => {
     }
   };
 
+  const debouncedFunction = useCallback(
+    debounce(async (value, index) => {
+      if (value != "" || value.length > 0) {
+        const contactResponse = await postRequest(
+          API_ENDPOINTS.GET_CONTACT_BY_KEYWORD,
+          {
+            keyword: value,
+          }
+        );
+        const contactResults = contactResponse?.data?.data;
+        // Combine orgabiRe and contactResults
+        // const combinedContacts = [...contactResults, ...orgabiRe];
+
+        // remove already selected toEmail in input box 
+        console.log(toEmail, "toEmail")
+        const filteredResults = contactResults.filter(
+          (item) => !toEmail.some((email) => email === item.email)
+        );
+
+        setSearchResults(filteredResults);
+        // console.log(contactResults);
+      } else {
+        setSearchResults([]);
+      }
+    }, 100),
+    []
+  );
   // For To Email 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
+    if (e.target.value != "") {
+      debouncedFunction(e.target.value);
+    } else {
+      setSearchResults([]);
+    }
   };
+
   // For To Email 
   const handleInputBlur = () => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -234,10 +274,10 @@ const ComposeEmail = ({ taskItem, onClose, templates, onSendEmail }) => {
           }) => (
 
             <form onSubmit={handleSubmit} className="">
-                      <div className="flex justify-between items-center p-4">
-          <h3 className="text-base text-secondary-800 font-medium">Compose Message</h3>
-          <IoIosClose size={28} onClick={onClose} className="text-text-gray-100 cursor-pointer" />
-        </div>
+              <div className="flex justify-between items-center p-4">
+                <h3 className="text-base text-secondary-800 font-medium">Compose Message</h3>
+                <IoIosClose size={28} onClick={onClose} className="text-text-gray-100 cursor-pointer" />
+              </div>
               <div className="mx-4">
                 <div className="border-b border-b-border py-[6px] flex items-center">
                   <label className="inline text-sm font-medium text-text-gray-100 mr-2">To</label>
@@ -245,22 +285,34 @@ const ComposeEmail = ({ taskItem, onClose, templates, onSendEmail }) => {
                     {toEmail?.map((item, index) =>
                       <li className="flex items-center justify-between p-2 bg-bg-gray-300 rounded-full">
                         <div className='flex items-center'>
-                        <img src={avatar} alt="" className="mr-2" />
-                        <span className='overflow-hidden'>{item}</span>
+                          <img src={avatar} alt="" className="mr-2" />
+                          <span className='overflow-hidden'>{item}</span>
                         </div>
                         <IoIosClose size={28} className="text-text-gray-100 cursor-pointer" onClick={() => removeToEmail(index)} />
                       </li>
                     )}
 
                   </ul>
-                  <input
-                    type="text"
-                    className="inline border-0 focus:ring-transparent w-full"
-                    value={inputValue}
-                    onChange={handleInputChange}
-                    onBlur={handleInputBlur} // or use onKeyDown to detect 'Enter' key
-                    placeholder="Enter email"
-                  />
+                  <div>
+                    <input
+                      type="text"
+                      className="inline border-0 focus:ring-transparent w-full"
+                      value={inputValue}
+                      onChange={handleInputChange}
+                      onBlur={handleInputBlur} // or use onKeyDown to detect 'Enter' key
+                      placeholder="Enter email"
+                    />
+                    {showParticipant && <ParticipantListEmail setToEmail={setToEmail} toEmail={toEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
+                    {searchResults?.length > 0 && <SearchListEmail setInputValue={setInputValue} searchResults={searchResults} setSearchResults={setSearchResults} setToEmail={setToEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
+                  </div>
+                  {!showParticipant ?
+                  <span className="icon mr-2 cursor-pointer" onClick={() => setShowParticipant(true)}>
+                    <img src={IMAGES.addIcon} alt="icon" />
+                  </span>:
+                  <span className="icon mr-2 cursor-pointer" onClick={() => setShowParticipant(false)}>
+                    <img src={IMAGES.removeIcon} alt="icon" />
+                  </span>}
+                  {/* <IoIosClose size={28} onClick={() => setShowParticipant(true)} className="text-text-gray-100 cursor-pointer" /> */}
                 </div>
                 <div className="flex justify-between items-center border-b border-b-border py-[6px] ">
                   <label className="inline text-sm font-medium text-text-gray-100 mr-2 ">Subject</label>
@@ -389,6 +441,8 @@ const ComposeEmail = ({ taskItem, onClose, templates, onSendEmail }) => {
         </Formik>
       </div>
       {isModalOpen && <AttachFileModal setUploadedFiles={setUploadedFiles} uploadedFiles={uploadedFiles} onClose={() => setIsModalOpen(prevState => !prevState)} />}
+
+
     </>
   );
 };

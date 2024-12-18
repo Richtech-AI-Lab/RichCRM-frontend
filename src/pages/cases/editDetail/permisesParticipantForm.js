@@ -381,11 +381,13 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
               <input
                 className="text-left p-0 border-none focus:ring-transparent w-[150px]"
                 name="maintenanceFee"
-                placeholder="fee"
+                placeholder="Fee"
                 type="text"
-                onChange={handleChange}
+                // onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.maintenanceFee}
+                // value={values.maintenanceFee}
+                value={formatCurrency(values.maintenanceFee)}
+                onChange={(e) => handleCurrencyChange(e, 'maintenanceFee')}
               /> <Field
                 as={SelectInput}
                 defaultLabel={`per`}
@@ -411,9 +413,11 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
                 name="assessments"
                 placeholder="Assessment"
                 type="text"
-                onChange={handleChange}
+                // onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.assessments}
+                // value={values.assessments}
+                value={formatCurrency(values.assessments)}
+                onChange={(e) => handleCurrencyChange(e, 'assessments')}
               /> 
               <Field
                 as={SelectInput}

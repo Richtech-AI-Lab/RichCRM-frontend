@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useMsal } from "@azure/msal-react";
-import { Button, Modal, Spinner, Table } from "flowbite-react";
+import { Modal, Spinner, Table } from "flowbite-react";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import ContactTabs from "../actionbar/contactTabs";
 // import { FiPlus } from "react-icons/fi";
-import { IoArrowBackCircle } from "react-icons/io5";
 import { IoMdLogIn } from "react-icons/io";
 import { IoMdLogOut } from "react-icons/io";
 import XButton from "../button/XButton";
 import { addFromContactV1Tab, formatFileSize } from "../../constants/constants";
 import { SlArrowRight } from "react-icons/sl";
-import { IoCloudDownload } from "react-icons/io5";
 import { toast } from "react-toastify";
 import TextInput from "../TextInput";
 import MenuPopup from "../menupopup";
@@ -19,7 +16,7 @@ import { IMAGES } from "../../constants/imagePath";
 import { format } from "date-fns";
 import { FiPlus } from "react-icons/fi";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
-import OneDriveSearch from "./search";
+import FileFilter from "./fileFilter";
 
 const OneDriveManager = () => {
     const { instance, accounts, inProgress } = useMsal();
@@ -38,6 +35,41 @@ const OneDriveManager = () => {
         { id: 0, label: "Download" },
         { id: 1, label: "Delete" },
     ];
+
+    const [filteredFiles, setFilteredFiles] = useState(files);
+    const [filter, setFilter] = useState("all");
+
+    const applyFilter = (filter) => {
+        setFilter(filter);
+
+        if (filter === "all") {
+            setFilteredFiles(files);
+        } else if (filter === "folder") {
+            setFilteredFiles(files.filter((file) => file.folder));
+        } else if (filter === "document") {
+            setFilteredFiles(
+                files.filter((file) =>
+                    [".docx", ".txt", ".xls", ".xlsx"].includes(file.name.slice(-4))
+                )
+            );
+        } else if (filter === "images") {
+            setFilteredFiles(
+                files.filter((file) =>
+                    [".jpg", ".jpeg", ".png", ".gif"].includes(file.name.slice(-4))
+                )
+            );
+        } else if (filter === "pdf") {
+            setFilteredFiles(files.filter((file) => file.name.endsWith(".pdf")));
+        }
+    };
+
+    useEffect(() => {
+        // if(files.length > 0 ){
+        // console.log(filter, "filter", files)
+        // setFilteredFiles(files)
+        applyFilter(filter);
+        // }
+    }, [files, filter]);
 
     const handleCloseCreateModal = () => {
         setShowCreateFolderModal(false);
@@ -123,6 +155,7 @@ const OneDriveManager = () => {
 
     const handleFolderClick = (folderId, folderName) => {
         // alert(folderId, folderName)
+        setFiles([])
         const newPath = `/me/drive/items/${folderId}`;
         setPath(newPath);
         setPathHistory([...pathHistory, { name: folderName, path: newPath }]); // Update history with the new path
@@ -265,31 +298,31 @@ const OneDriveManager = () => {
         return (
             <div>
                 <div className="flex items-center mb-2">
-                {pathHistory.length > 1 && (
-                            <div
-                                style={{
-                                    display: "flex",
-                                    flexShrink: "0",
-                                    opacity: 0.5,
-                                    marginRight: '10px'
-                                }}
+                    {pathHistory.length > 1 && (
+                        <div
+                            style={{
+                                display: "flex",
+                                flexShrink: "0",
+                                opacity: 0.5,
+                                marginRight: '10px'
+                            }}
 
-                            >
-                                <span style={{ display: "flex", gap: "8px", alignItems: "center", cursor: "pointer" }} onClick={handleBackClick}>
+                        >
+                            <span style={{ display: "flex", gap: "8px", alignItems: "center", cursor: "pointer" }} onClick={handleBackClick}>
 
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                                        <path
-                                            d="M14.25 9H3.75M3.75 9L9 14.25M3.75 9L9 3.75"
-                                            stroke="#1A1C1F"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        />
-                                    </svg>
-                                    <span style={{ color: "#1A1C1F", fontSize: "14px" }}>Back</span>
-                                </span>
-                            </div>
-                        )}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                    <path
+                                        d="M14.25 9H3.75M3.75 9L9 14.25M3.75 9L9 3.75"
+                                        stroke="#1A1C1F"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
+                                <span style={{ color: "#1A1C1F", fontSize: "14px" }}>Back</span>
+                            </span>
+                        </div>
+                    )}
                     <div className={"bg-bg-gray-100 px-4 py-2 rounded-full cursor-pointer"}>
                         <span className="text-base font-medium text-secondary-800">
                             OneDrive
@@ -329,6 +362,8 @@ const OneDriveManager = () => {
 
                     </div>
                     <div className="flex justify-between items-center">
+                        <FileFilter onFilterChange={applyFilter} />
+
                         <XButton
                             text="New Folder"
                             icon={<FiPlus className="text-base mr-2 inline-block" />}
@@ -368,10 +403,10 @@ const OneDriveManager = () => {
                     {!loader ? (
                         <>
                             <Table>
-                                {files?.length > 0 ? (
+                                {filteredFiles?.length > 0 ? (
                                     <>
                                         <Table.Body className="divide-y">
-                                            {files?.map((file) => (
+                                            {filteredFiles?.map((file) => (
                                                 file.folder ?
                                                     <Table.Row key={file.id} className="bg-white dark:border-gray-700 dark:bg-gray-800 cursor-pointer"
                                                     >
