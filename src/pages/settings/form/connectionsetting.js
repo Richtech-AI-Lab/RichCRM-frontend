@@ -21,9 +21,9 @@ export const ConnectionSetting = ({ title }) => {
     const [loader, setLoader] = useState(false);
     const { data } = useSelector((state) => state.auth.user);
 
-    useEffect(()=>{
+    useEffect(() => {
         setUploadFolderUrlInput(data[0]?.uploadFolderName)
-    },[data])
+    }, [data])
 
     const onSave = () => {
         if (openaiAPIKeyInput && openaiAPIKeyInput.length > 0 && openaiAPIKeyInput.trim().length > 0) {
@@ -48,41 +48,41 @@ export const ConnectionSetting = ({ title }) => {
             console.error('Folder Key is empty');
         }
     }
-    
+
     return (
         <>
-            <div className="bg-white p-4 rounded-2xl mb-5 shadow-card">
-                {title && <div className="flex justify-between items-center mb-2">
-                    <span className="text-base text-secondary-800 font-medium">ChatGPT Connection</span>
+            <DefaultPathSetting />
+            <GoogleSetting />
+            <div className="bg-white rounded-2xl shadow-card">
+                {title && <div className="flex flex-col p-4 justify-center items-start gap-2 self-stretch">
+                    <span className="text-base font-bold">ChatGPT Connection</span>
+                    <p className="text-sm font-normal">Mattis amet eu velit viverra aliquet porta at a. Auctor lectus tincidunt facilisis pellentesque maecenas enim sed dolor adipiscing.</p>
                 </div>}
-                <p className="mb-6">Mattis amet eu velit viverra aliquet porta at a. Auctor lectus tincidunt facilisis pellentesque maecenas enim sed dolor adipiscing.</p>
-                <div>
-                        <span className={`left-txt flex items-center`}>API Key</span>
-                        <div className="flex items-center">
-                            <div className="mb-2 flex-1 mr-4">
-                                <TextInput
-                                    name="API"
-                                    type="text"
-                                    placeholder="Enter API Key"
-                                    value={openaiAPIKeyInput}
-                                    onChange={(e) => {
-                                        setOpenaiAPIKeyInput(e.target.value);
-                                    }}
-                                    
-                                />
-                            </div>
-                            
-                            <XButton
-                                type="submit"
-                                text="Link"
-                                onClick={()=>{onSave()}}
-                                className="bg-active-blue text-base text-active-blue-text py-[10px] px-6 rounded-[100px]"
+                <div className='flex flex-col border-b border-badge-gray px-4 py-3'>
+                    <div className={`left-txt flex items-center text-base font-medium`}>API Key</div>
+                    <div className="flex items-center">
+                        <div className="mb-2 flex-1 mr-4">
+                            <TextInput
+                                name="API"
+                                type="text"
+                                placeholder="Enter API Key"
+                                value={openaiAPIKeyInput}
+                                onChange={(e) => {
+                                    setOpenaiAPIKeyInput(e.target.value);
+                                }}
+
                             />
                         </div>
+
+                        <XButton
+                            type="submit"
+                            text="Link"
+                            onClick={() => { onSave() }}
+                            className="bg-active-blue text-base text-active-blue-text py-[10px] px-6 rounded-[100px]"
+                        />
                     </div>
+                </div>
             </div>
-            <GoogleSetting />       
-            <DefaultPathSetting />
         </>
     )
 }
