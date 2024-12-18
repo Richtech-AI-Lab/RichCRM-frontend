@@ -70,7 +70,9 @@ export const createCalendarEvent = async (event) => {
 export const signInToGoogle = async () => {
   try {
     const authInstance = gapi?.auth2?.getAuthInstance();
-    await authInstance?.signIn();
+    await authInstance?.signIn({
+      prompt: "select_account", // Forces the account selection dialog
+    });
     localStorage.setItem("googleAuth", "true"); // Save login state
   } catch (error) {
     console.error("Error signing in: ", error);
