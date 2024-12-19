@@ -50,13 +50,16 @@ export const SecuritySetting = ({ title }) => {
     return (
         <>
             <XSpinnerLoader loading={loader} size="lg" />
-            {!isOpen && <div className="bg-white p-4 rounded-2xl mb-5 shadow-card">
-                {title && <div className="flex justify-between items-center mb-2">
-                    <span className="text-base text-secondary-800 font-medium">Password</span>
-                </div>}
-                <p className="mb-6">Change the password whenever you log in</p>
+            {!isOpen && <div className="bg-white rounded-2xl mb-5 shadow-card">
+                {true && (
+                    <div className="flex flex-col p-4 justify-center items-start gap-2 self-stretch">
+                        <span className="text-base font-bold">Password</span>
+                        <p className="text-sm font-normal">Change the password whenever you log in</p>
+                    </div>
+                )}
+                {/* <p className="mb-6">Change the password whenever you log in</p> */}
 
-                <div>
+                <div className='flex items-center px-4 py-3 self-stretch'>
                     <XButton
                         type="submit"
                         text="Change Password"
@@ -85,75 +88,81 @@ export const SecuritySetting = ({ title }) => {
                     }) => {
                         // setDirtyFormnik(dirty);
                         return (
-                            <form onSubmit={handleSubmit} className="premises-form bg-white p-4 rounded-2xl mb-5 shadow-card">
-                                {title && (
-                                    <div className="flex justify-between items-center mb-2">
-                                        <span className="text-base text-secondary-800 font-medium">Password</span>
+                            <form onSubmit={handleSubmit} className="premises-form bg-white rounded-2xl mb-5 shadow-card">
+                                {true && (
+                                    <div className="flex flex-col p-4 justify-center items-start gap-2 self-stretch">
+                                        <span className="text-base font-bold">Password</span>
+                                        <p className="text-sm font-normal">Create a new password that is at least 8 characters long.</p>
                                     </div>
                                 )}
-                                <p className="mb-6">Create a new password that is at least 8 characters long.</p>
+                                <div className='flex flex-col px-4 py-3 justify-center items-start gap-10 self-stretch'>
+                                    <div className='flex flex-col items-start gap-4 self-stretch'>
 
-                                <div className="mb-5">
-                                    <span className="left-txt flex items-center">Type your current password*</span>
-                                    <div className="flex items-center">
-                                        <div className="mb-2 flex-1 mr-4">
-                                            <TextInput
-                                                name="currentPassword"
-                                                type="password"
-                                                placeholder="Current password"
-                                                value={values.currentPassword}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                field={{ name: "currentPassword" }}
-                                                form={{ errors, touched }}
-                                            />
 
+                                        <div className="flex flex-col">
+                                            <span className="left-txt flex items-center text-base font-medium">Type your current password*</span>
+                                            <div className="flex items-center">
+                                                <div className="mb-2 flex-1 mr-4">
+                                                    <TextInput
+                                                        name="currentPassword"
+                                                        type="password"
+                                                        placeholder="Current password"
+                                                        value={values.currentPassword}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        field={{ name: "currentPassword" }}
+                                                        form={{ errors, touched }}
+                                                    />
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex flex-col">
+                                            <span className="left-txt flex items-center text-base font-medium">Type your new password*</span>
+                                            <div className="flex items-center">
+                                                <div className="mb-2 flex-1 mr-4">
+                                                    <TextInput
+                                                        name="newPassword"
+                                                        type="password"
+                                                        placeholder="New password"
+                                                        value={values.newPassword}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        field={{ name: "newPassword" }}
+                                                        form={{ errors, touched }}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex flex-col">
+                                            <span className="left-txt flex items-center text-base font-medium">Retype your new password*</span>
+                                            <div className="flex items-center">
+                                                <div className="mb-2 flex-1 mr-4">
+                                                    <TextInput
+                                                        name="confirmPassword"
+                                                        type="password"
+                                                        placeholder="Confirm password"
+                                                        value={values.confirmPassword}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        field={{ name: "confirmPassword" }}
+                                                        form={{ errors, touched }}
+                                                    />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div className="mb-5">
-                                    <span className="left-txt flex items-center">Type your new password*</span>
-                                    <div className="flex items-center">
-                                        <div className="mb-2 flex-1 mr-4">
-                                            <TextInput
-                                                name="newPassword"
-                                                type="password"
-                                                placeholder="New password"
-                                                value={values.newPassword}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                field={{ name: "newPassword" }}
-                                                form={{ errors, touched }}
-                                            />
-                                        </div>
+
+                                    <div>
+                                        <XButton
+                                            type="submit"
+                                            text="Update Password"
+                                            className="bg-active-blue text-base text-active-blue-text py-[10px] px-6 rounded-[100px]"
+                                        />
                                     </div>
-                                </div>
-
-                                <div className="mb-5">
-                                    <span className="left-txt flex items-center">Retype your new password*</span>
-                                    <div className="flex items-center">
-                                        <div className="mb-2 flex-1 mr-4">
-                                            <TextInput
-                                                name="confirmPassword"
-                                                type="password"
-                                                placeholder="Confirm password"
-                                                value={values.confirmPassword}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                field={{ name: "confirmPassword" }}
-                                                form={{ errors, touched }}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <XButton
-                                        type="submit"
-                                        text="Update Password"
-                                        className="bg-active-blue text-base text-active-blue-text py-[10px] px-6 rounded-[100px]"
-                                    />
                                 </div>
                             </form>
                         );

@@ -6,6 +6,7 @@ import { ProfileSetting } from "./form/profilesetting";
 import { GeneralSetting } from "./form/generalsetting";
 import { SecuritySetting } from "./form/securitysetting";
 import { ConnectionSetting } from "./form/connectionsetting";
+import { EmailSetting } from "./form/emailsetting";
 
 const Setting = () => {
   const dispatch = useDispatch();
@@ -27,6 +28,8 @@ const Setting = () => {
         return <SecuritySetting title={getTitleByActiveTab(activeTab)} isEdit={isEdit} setIsEdit={setIsEdit} />;
       case settingTab.CONNECTION:
         return <ConnectionSetting title={getTitleByActiveTab(activeTab)} isEdit={isEdit} setIsEdit={setIsEdit} />;
+      case settingTab.EMAIL:
+        return <EmailSetting title={getTitleByActiveTab(activeTab)} isEdit={isEdit} setIsEdit={setIsEdit} />;
       default:
         return <ProfileSetting title={getTitleByActiveTab(activeTab)} isEdit={isEdit} setIsEdit={setIsEdit} />;
     }
