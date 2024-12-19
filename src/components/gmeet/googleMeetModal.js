@@ -19,6 +19,7 @@ import avatar from '../../assets/images/contact_avtar.png'
 import { IMAGES } from "../../constants/imagePath";
 import NewCaseDropdown from "../newcasedropdown";
 import language from "../../constants/language.json";
+import ParticipantListEmail from "../composeEmail/participantListEmail";
 
 const GoogleMeetModal = ({ onClose, title }) => {
   const { casesData } = useSelector((state) => state.case);
@@ -205,6 +206,8 @@ const GoogleMeetModal = ({ onClose, title }) => {
         toast.error("Something went wrong!");
         console.error("Failed to create event:", error);
       }
+    }else{
+      toast.error("Start time & End time must be filled")
     }
   };
 
@@ -268,10 +271,10 @@ const GoogleMeetModal = ({ onClose, title }) => {
                   {auth && <>
                     <div className="flex flex-col items-start gap-4 self-stretch">
                       <label className="text-base font-medium leading-6 tracking-wide">Participants</label>
-                      <div className="flex items-start justify-between gap-4 self-stretch bg-bg-gray-200 rounded-full px-1 py-1">
-                        <ul className="flex items-center">
+                      <div className="flex items-start justify-between gap-4 self-stretch bg-bg-gray-200 rounded  px-1 py-1">
+                        <ul className="flex flex-col justify-between gap-2">
                           {toEmail?.map((item, index) =>
-                            <li className="flex items-center justify-between p-2 bg-white rounded-full">
+                            <li className="flex items-start justify-between p-2 bg-white rounded-full ">
                               <div className='flex items-center'>
                                 <img src={avatar} alt="" className="mr-2" />
                                 <span className='overflow-hidden'>{item}</span>
@@ -283,14 +286,14 @@ const GoogleMeetModal = ({ onClose, title }) => {
                           )}
 
                         </ul>
-                        <input
+                        {/* <input
                           type="text"
                           className="inline border-0 focus:ring-transparent bg-bg-gray-200"
                           value={inputValue}
                           onChange={handleInputChange}
                           onBlur={handleInputBlur} // or use onKeyDown to detect 'Enter' key
                           placeholder="Enter email"
-                        />
+                        /> */}
                         {!showParticipant ?
                           <span className="flex w-10 h-10 flex-col justify-center items-center gap-2.5 cursor-pointer" onClick={() => setShowParticipant(true)}>
                             <img src={IMAGES.addIcon} alt="icon" />
@@ -300,8 +303,8 @@ const GoogleMeetModal = ({ onClose, title }) => {
                           </span>}
                       </div>
 
-                      {/* {showParticipant && <ParticipantListEmail setToEmail={setToEmail} toEmail={toEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
-                    {searchResults?.length > 0 && <SearchListEmail setInputValue={setInputValue} searchResults={searchResults} setSearchResults={setSearchResults} setToEmail={setToEmail} onClose={() => setShowParticipant(prevState => !prevState)} />} */}
+                      {showParticipant && <ParticipantListEmail meetModal={true} setToEmail={setToEmail} toEmail={toEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
+                    {/* {searchResults?.length > 0 && <SearchListEmail setInputValue={setInputValue} searchResults={searchResults} setSearchResults={setSearchResults} setToEmail={setToEmail} onClose={() => setShowParticipant(prevState => !prevState)} />} */}
 
                     </div>
                     <div className='flex flex-col gap-4 self-stretch'>
