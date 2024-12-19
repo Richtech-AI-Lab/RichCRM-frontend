@@ -43,6 +43,8 @@ const CaseCardData = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [eventList, setEventList] = useState(false);
   const [googleEvents, setGoogleEvents] = useState([]);
+  const { cases } = useSelector((state) => state.case.casesData);
+  const casesWithDates = cases.filter((caseItem) => caseItem.closingDate || caseItem.mortgageContingencyDate);
 
   const handleCaseDetails = () => {
     navigate(ROUTES.CASES_DETAILS)
@@ -218,7 +220,7 @@ const CaseCardData = () => {
     if (eventList) {
       setEventList(false)
     } else {
-       authenticateAndFetchEvents()
+      authenticateAndFetchEvents()
       setEventList(true)
     }
     setIsLoading(false)
@@ -236,7 +238,7 @@ const CaseCardData = () => {
               icon={eventList ? <IoIosArrowUp className="text-base mr-2 inline-block font-medium" /> : <IoIosArrowDown className="text-base mr-2 inline-block font-medium" />}
               className="bg-white shadow-shadow-light text-secondary-800 py-3 px-6 rounded-full font-medium"
             />
-            {eventList && <EventList googleEvent={googleEvents}/>}
+            {eventList && <EventList googleEvent={googleEvents} casesEvent={casesWithDates} />}
           </div>
           <XButton
             text="One Drive"

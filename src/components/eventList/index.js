@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import { Spinner } from "flowbite-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const EventCard = ({ title, date, time, color = "bg-green-200", textColor = "text-green-800", borderColor = "border-green-600", }) => {
     return (
@@ -15,15 +15,43 @@ const EventCard = ({ title, date, time, color = "bg-green-200", textColor = "tex
     );
 };
 
-const EventList = ({ googleEvent }) => {
-    // googleEvent.map((event) => {
-    //     console.log(event?.id)
-    //     console.log(event?.summary)
-    //     console.log(event.start.dateTime)
-    //     console.log(event.end.dateTime)
-    //     console.log(event.attendees)
-    //     console.log(event.conferenceData?.entryPoints?.find((entry) => entry.entryPointType === "video")?.uri || "", "");
-    // })
+const EventList = ({ googleEvent, casesEvent }) => {
+    const [data, setData] = useState([]);
+    useEffect(() => {
+        const mapGoogleEvents = googleEvent.map((event) => ({
+            id: event.id,
+            title: event.summary?.split("-")?.[2] || "Google Meet Event",
+            start: format(event.start.dateTime, 'MMM dd, yyyy'),
+            time: format(event.start.dateTime, 'hh:mm aaa'),
+            type: "meet",
+            // extendedProps: {
+            //     description: event.description || "",
+            //     attendees: event.attendees || [],
+            //     meetLink: event.conferenceData?.entryPoints?.find((entry) => entry.entryPointType === "video")?.uri || "",
+            //     type: "googleMeet",
+            // },
+        }));
+
+        const calendarEvents = casesEvent.flatMap((caseItem) => [
+            caseItem.closingDate ? {
+                id: `${caseItem.caseId}_Closing Due`,
+                title: `Closing Deadline`,
+                start: caseItem.closingDate,
+                type: "case",
+                //   ...caseItem
+                // extendedProps: { caseItem, type: "case" }
+            } : null,
+            caseItem.mortgageContingencyDate ? {
+                id: `${caseItem.caseId}_Mortgage Due`,
+                title: `Mortgage Deadline`,
+                start: caseItem.mortgageContingencyDate,
+                type: "case",
+                //   ...caseItem
+                // extendedProps: { caseItem, type: "case" }
+            } : null
+        ]).filter(event => event !== null);
+        setData([...calendarEvents, ...mapGoogleEvents])
+    }, [googleEvent, casesEvent])
     return (
         <div
             className="card absolute shadow-shadow-light-2 flex flex-col p-[12px] justify-center items-start gap-4 self-stretch"
@@ -32,16 +60,14 @@ const EventList = ({ googleEvent }) => {
                 zIndex: "9",
             }}
         >
-            {googleEvent.length > 0 ? (
-                googleEvent?.map((event) => {
-                    const title = event?.summary.split("-") || "Untitled Event";
-                    const date = event?.start?.dateTime;
+            {data.length > 0 && googleEvent.length > 0 ? (
+                data?.map((event) => {
                     return (
                         <EventCard
                             key={event?.id}  // It's a good practice to add a key to each child in a list.
-                            title={title[2]}
-                            date={format(date, 'MMM dd, yyyy')}
-                            time={format(date, 'hh:mm aaa')}
+                            title={event?.title}
+                            date={format(event?.start, 'MMM dd, yyyy')}
+                            {...(event?.type === "meet" && { time: format(event?.start, 'hh:mm aaa') })}
                             color="bg-[#EDE0D4]"
                             textColor="text-gray-700"
                         />
