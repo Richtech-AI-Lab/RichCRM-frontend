@@ -6,7 +6,7 @@ import {
   fetchUpcomingEvents,
   createCalendarEvent,
 } from "./googleMeetFunc";
-import { Label, Modal, Spinner } from 'flowbite-react';
+import { Checkbox, Label, Modal, Spinner } from 'flowbite-react';
 import XButton from "../button/XButton";
 import { FiPlus } from "react-icons/fi";
 import { Formik } from "formik";
@@ -20,6 +20,8 @@ import { IMAGES } from "../../constants/imagePath";
 import NewCaseDropdown from "../newcasedropdown";
 import language from "../../constants/language.json";
 import ParticipantListEmail from "../composeEmail/participantListEmail";
+import { format } from "date-fns";
+import DateInput from "../datePicker";
 
 const GoogleMeetModal = ({ onClose, title }) => {
   const { casesData } = useSelector((state) => state.case);
@@ -34,6 +36,7 @@ const GoogleMeetModal = ({ onClose, title }) => {
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showParticipant, setShowParticipant] = useState(false);
+  const [allDay, setAllDay] = useState(false);
 
   // Initialize GAPI client on component mount
   useEffect(() => {
@@ -135,7 +138,6 @@ const GoogleMeetModal = ({ onClose, title }) => {
     }
   };
 
-
   const handleFetchEvents = async () => {
     try {
       const fetchedEvents = await fetchUpcomingEvents(); // Ensure this returns an array of events
@@ -146,20 +148,19 @@ const GoogleMeetModal = ({ onClose, title }) => {
     }
   };
 
-  // Create a new event
-  const handleCreateEvent = async (values, { resetForm }) => {
+  const handleCreateEvents = async (values, { resetForm }) => {
     if (values.title && values.endTime && values.startTime) {
+      const isAllDay = allDay; // A flag in your form to determine if it's an all-day event
+
       const newEvent = {
         summary: values.title,
         description: values.description,
-        start: {
-          dateTime: values.startTime,
-          // timeZone: "America/Los_Angeles",
-        },
-        end: {
-          dateTime: values.endTime,
-          // timeZone: "America/Los_Angeles",
-        },
+        start: isAllDay
+          ? { date: format(values.startTime, "yyyy-MM-dd") }
+          : { dateTime: values.startTime },
+        end: isAllDay
+          ? { date: format(values.endTime, "yyyy-MM-dd") }
+          : { dateTime: values.endTime },
         attendees: toEmail?.map(email => ({ email })),
         conferenceData: {
           createRequest: {
@@ -178,38 +179,21 @@ const GoogleMeetModal = ({ onClose, title }) => {
         const createdEvent = await createCalendarEvent(newEvent);
 
         if (createdEvent.conferenceData) {
-          // console.log(createdEvent, "createdEvent")
           const { htmlLink } = createdEvent; // Extract the Google Calendar event link
-
-          // Open the Google Calendar event in a new tab
           window.open(htmlLink, '_blank');
-
-          // const { summary, start, end, description, location } = createdEvent;
-
-          // const startDate = new Date(start).toISOString().replace(/-|:|\.\d+/g, '');
-          // const endDate = new Date(end).toISOString().replace(/-|:|\.\d+/g, '');
-
-          // const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
-          //   summary
-          // )}&dates=${startDate}/${endDate}&details=${encodeURIComponent(
-          //   description
-          // )}&location=${encodeURIComponent(location)}`;
-
-          // // Open in new tab
-          // window.open(googleCalendarUrl, '_blank');
           toast.success("Meeting created!");
-          resetForm()
-          onClose()
-          // alert(`Google Meet Link: ${createdEvent.conferenceData.entryPoints[0].uri}`);
+          resetForm();
+          onClose();
         }
       } catch (error) {
         toast.error("Something went wrong!");
         console.error("Failed to create event:", error);
       }
-    }else{
-      toast.error("Start time & End time must be filled")
+    } else {
+      toast.error("Start time & End time must be filled");
     }
   };
+
 
   const initialValues = {
     title: title,
@@ -251,7 +235,8 @@ const GoogleMeetModal = ({ onClose, title }) => {
             </div> : <Formik
               initialValues={initialValues}
               // validationSchema={validationSchema}
-              onSubmit={handleCreateEvent}
+              // onSubmit={handleCreateEvent}
+              onSubmit={handleCreateEvents}
               enableReinitialize
             >
               {({
@@ -304,7 +289,7 @@ const GoogleMeetModal = ({ onClose, title }) => {
                       </div>
 
                       {showParticipant && <ParticipantListEmail meetModal={true} setToEmail={setToEmail} toEmail={toEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
-                    {/* {searchResults?.length > 0 && <SearchListEmail setInputValue={setInputValue} searchResults={searchResults} setSearchResults={setSearchResults} setToEmail={setToEmail} onClose={() => setShowParticipant(prevState => !prevState)} />} */}
+                      {/* {searchResults?.length > 0 && <SearchListEmail setInputValue={setInputValue} searchResults={searchResults} setSearchResults={setSearchResults} setToEmail={setToEmail} onClose={() => setShowParticipant(prevState => !prevState)} />} */}
 
                     </div>
                     <div className='flex flex-col gap-4 self-stretch'>
@@ -349,13 +334,13 @@ const GoogleMeetModal = ({ onClose, title }) => {
 
                     <div className="flex flex-col gap-4 self-stretch">
                       <div className={`text-base font-medium leading-6 tracking-wide`}>Time</div>
+                      {!allDay ?
                       <div className="flex flex-row justify-around">
                         <DateTimeInput
                           name="startTime"
                           value={values.startTime}
                           placeHolder="Select Start Time"
                           onSelectedDateChanged={(date) => setFieldValue("startTime", date)}
-
                         />
                         <DateTimeInput
                           name="endTime"
@@ -364,9 +349,33 @@ const GoogleMeetModal = ({ onClose, title }) => {
                           onSelectedDateChanged={(date) => setFieldValue("endTime", date)}
 
                         />
-
+                      </div>:
+                      <div className="flex flex-row justify-around">
+                        <DateInput
+                          name="startTime"
+                          value={values.startTime}
+                          onSelectedDateChanged={(date) => setFieldValue("startTime", date)}
+                          placeHolder="Select Start Time"
+                        />
+                       <DateInput
+                          name="endTime"
+                          value={values.endTime}
+                          onSelectedDateChanged={(date) => setFieldValue("endTime", date)}
+                          placeHolder="Select End Time"
+                        />
+                      </div>}
+                      <div className="flex flex-row justify-start">
+                        <div className="flex items-start gap-2">
+                          <Checkbox checked={allDay}
+                            onClick={() => setAllDay(!allDay)} />
+                          <Label className="text-secondary-800">
+                            All Day
+                          </Label>
+                        </div>
                       </div>
                     </div>
+
+
 
 
                     <div className="flex gap-4 justify-end">
