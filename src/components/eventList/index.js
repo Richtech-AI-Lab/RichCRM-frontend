@@ -78,7 +78,7 @@ const EventList = ({ googleEvent, casesEvent , isLoading }) => {
                         key={event?.id}
                         title={event?.title}
                         date={format(event?.start, 'MMM dd, yyyy')}
-                        {...(event?.type === "meet" && { time: format(event?.start, 'hh:mm aaa') })}
+                        {...(event?.type === "meet" && { time: event?.time })}
                         color="bg-[#EDE0D4]"
                         textColor="text-gray-700"
                     />
