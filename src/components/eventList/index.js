@@ -1,10 +1,16 @@
 import { format } from "date-fns";
 import { Spinner } from "flowbite-react";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../constants/api";
 
 const EventCard = ({ title, date, time, color = "bg-green-200", textColor = "text-green-800", borderColor = "border-green-600", }) => {
+    const navigate = useNavigate();
+    const handleOnClick = () =>{
+        navigate(ROUTES.CALENDAR);
+    }
     return (
-        <div className={`flex w-72 items-center rounded-md ${color} border-l-8 ${borderColor}`}>
+        <div onClick={handleOnClick} className={`flex w-72 items-center rounded-md ${color} border-l-8 ${borderColor} cursor-pointer`}>
             <div className="w-2 h-full rounded-l-md" style={{ backgroundColor: color }}></div>
             <div className="ml-2">
                 <p className={`text-xs font-bold ${textColor}`}>{title}</p>
@@ -78,9 +84,9 @@ const EventList = ({ googleEvent, casesEvent , isLoading }) => {
                         key={event?.id}
                         title={event?.title}
                         date={format(event?.start, 'MMM dd, yyyy')}
-                        {...(event?.type === "meet" && { time: event?.time })}
-                        color="bg-[#EDE0D4]"
-                        textColor="text-gray-700"
+                        {...(event?.type === "meet" && { time: event?.time ,  color:"bg-[#EDE0D4]",  textColor:"text-gray-700" })}
+                        {...(event?.type != "meet" && {color:"bg-green-200",  textColor:"text-green-800" })}
+
                     />
                 ))
             ) : (
