@@ -238,7 +238,7 @@ const CaseCardData = () => {
               icon={eventList ? <IoIosArrowUp className="text-base mr-2 inline-block font-medium" /> : <IoIosArrowDown className="text-base mr-2 inline-block font-medium" />}
               className="bg-white shadow-shadow-light text-secondary-800 py-3 px-6 rounded-full font-medium"
             />
-            {eventList && <EventList googleEvent={googleEvents} casesEvent={casesWithDates} />}
+            {eventList && <EventList googleEvent={googleEvents} casesEvent={casesWithDates} isLoading={isLoading}/>}
           </div>
           <XButton
             text="One Drive"

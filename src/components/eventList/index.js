@@ -15,7 +15,7 @@ const EventCard = ({ title, date, time, color = "bg-green-200", textColor = "tex
     );
 };
 
-const EventList = ({ googleEvent, casesEvent }) => {
+const EventList = ({ googleEvent, casesEvent , isLoading }) => {
     const [data, setData] = useState([]);
     useEffect(() => {
         const mapGoogleEvents = googleEvent.map((event) => ({
@@ -52,6 +52,7 @@ const EventList = ({ googleEvent, casesEvent }) => {
         ]).filter(event => event !== null);
         setData([...calendarEvents, ...mapGoogleEvents])
     }, [googleEvent, casesEvent])
+    
     return (
         <div
             className="card absolute shadow-shadow-light-2 flex flex-col p-[12px] justify-center items-start gap-4 self-stretch"
@@ -60,26 +61,8 @@ const EventList = ({ googleEvent, casesEvent }) => {
                 zIndex: "9",
             }}
         >
-            {data.length > 0 && googleEvent.length > 0 ? (
-                data?.map((event) => {
-                    return (
-                        <EventCard
-                            key={event?.id}  // It's a good practice to add a key to each child in a list.
-                            title={event?.title}
-                            date={format(event?.start, 'MMM dd, yyyy')}
-                            {...(event?.type === "meet" && { time: format(event?.start, 'hh:mm aaa') })}
-                            color="bg-[#EDE0D4]"
-                            textColor="text-gray-700"
-                        />
-                    );
-                })
-
-            ) : (
-                <div className="flex justify-center" style={{
-                    background: "#fff",
-                    zIndex: "9",
-                    width: '321px'
-                }}>
+            {isLoading ? (
+                <div className="flex justify-center" style={{ width: '321px' }}>
                     <Spinner
                         size="xl"
                         animation="border"
@@ -89,10 +72,24 @@ const EventList = ({ googleEvent, casesEvent }) => {
                         <span className="visually-hidden">Loading...</span>
                     </Spinner>
                 </div>
+            ) : data.length > 0 ? (
+                data.map((event) => (
+                    <EventCard
+                        key={event?.id}
+                        title={event?.title}
+                        date={format(event?.start, 'MMM dd, yyyy')}
+                        {...(event?.type === "meet" && { time: format(event?.start, 'hh:mm aaa') })}
+                        color="bg-[#EDE0D4]"
+                        textColor="text-gray-700"
+                    />
+                ))
+            ) : (
+                <div className="flex justify-center w-full text-gray-600 text-sm">
+                    No events exist
+                </div>
             )}
-
-
         </div>
+
     );
 };
 
