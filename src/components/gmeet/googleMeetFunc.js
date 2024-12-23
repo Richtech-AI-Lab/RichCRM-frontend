@@ -70,7 +70,9 @@ export const createCalendarEvent = async (event) => {
 export const signInToGoogle = async () => {
   try {
     const authInstance = gapi?.auth2?.getAuthInstance();
-    await authInstance?.signIn();
+    await authInstance?.signIn({
+      prompt: "select_account", // Forces the account selection dialog
+    });
     localStorage.setItem("googleAuth", "true"); // Save login state
   } catch (error) {
     console.error("Error signing in: ", error);
@@ -93,5 +95,28 @@ export const checkGoogleSignInStatus = async () => {
   } catch (error) {
     console.error("Error checking sign-in status:", error);
     return false; // Default to not signed in on error
+  }
+};
+
+export const getCurrentUserProfile = () => {
+  try {
+    const authInstance = gapi?.auth2?.getAuthInstance();
+    const user = authInstance?.currentUser?.get();
+
+    if (user) {
+      const profile = user.getBasicProfile();
+      const userProfile = {
+        name: profile.getName(),          // User's full name
+        email: profile.getEmail(),        // User's email
+        profilePic: profile.getImageUrl() // Profile picture URL
+      };
+      return userProfile;
+    } else {
+      console.warn("No user is currently signed in.");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching user profile: ", error);
+    return null;
   }
 };

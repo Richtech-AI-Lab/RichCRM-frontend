@@ -671,12 +671,14 @@ export const settingTab = {
   GENERAL: 2,
   SECURITY: 3,
   CONNECTION: 4,
+  EMAIL: 5
 };
 export const settingTabLabel = [
-  { id: settingTab.PROFILE, label: "Profile" },
   { id: settingTab.GENERAL, label: "General" },
+  { id: settingTab.PROFILE, label: "Profile" },
+  { id: settingTab.EMAIL, label: "Email" },
   { id: settingTab.SECURITY, label: "Security" },
-  { id: settingTab.CONNECTION, label: "Connections" }
+  { id: settingTab.CONNECTION, label: "Connections" },
 ];
 
 export const ORGANIZATION_TYPE = {
