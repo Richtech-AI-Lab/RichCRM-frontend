@@ -7,6 +7,7 @@ export const API_ENDPOINTS = {
   CREATE_CASE: "/case/create",
   READ_CASE: "/case",
   CLOSE_CASE: "/case/close",
+  REOPEN_CASE: "/case/reopen",
   GET_CASE_BY_CLIENT: "/case/query/client",
   GET_CASE_BY_CONTACT: "/case/query/contact",
   UPDATE_CASE: "/case/update",

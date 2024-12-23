@@ -24,7 +24,8 @@ import {
     UPDATE_CASE_DATE_SUCCESS,
     UPDATE_CASE_CONTACT_REQUEST,
     UPDATE_CASE_CONTACT_SUCCESS,
-    CLEAR_CASES_DATA
+    CLEAR_CASES_DATA,
+    REOPEN_CASE
 } from "../type";
 
 
@@ -127,6 +128,7 @@ export const getCaseByClientRequest = (payload) => ({
 //     type: READ_CASE_BY_CONTACT,
 //     payload,
 // });
+
 //close case
 export const closeCaseRequest = (payload,navigate) => ({
     type: CLOSE_CASE,
@@ -166,4 +168,10 @@ export const updateCaseContactSuccess = (payload) => ({
 
 export const clearCasesData = () => ({
     type: CLEAR_CASES_DATA
+});
+
+export const reOpenCaseRequest = (payload,navigate) => ({
+    type: REOPEN_CASE,
+    payload,
+    navigate
 });
