@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   initializeGapiClient,
   signInToGoogle,
@@ -22,6 +22,10 @@ import language from "../../constants/language.json";
 import ParticipantListEmail from "../composeEmail/participantListEmail";
 import { format } from "date-fns";
 import DateInput from "../datePicker";
+import { API_ENDPOINTS } from "../../constants/api";
+import { debounce } from "lodash";
+import { postRequest } from "../../axios/interceptor";
+import SearchListEmail from "../composeEmail/searchListEmail";
 
 const GoogleMeetModal = ({ onClose, title }) => {
   const { casesData } = useSelector((state) => state.case);
@@ -36,6 +40,7 @@ const GoogleMeetModal = ({ onClose, title }) => {
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showParticipant, setShowParticipant] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
   const [allDay, setAllDay] = useState(false);
 
   // Initialize GAPI client on component mount
@@ -43,10 +48,42 @@ const GoogleMeetModal = ({ onClose, title }) => {
     initializeGapiClient();
   }, []);
 
+  const debouncedFunction = useCallback(
+    debounce(async (value, index) => {
+      if (value != "" || value.length > 0) {
+        const contactResponse = await postRequest(
+          API_ENDPOINTS.GET_CONTACT_BY_KEYWORD,
+          {
+            keyword: value,
+          }
+        );
+        const contactResults = contactResponse?.data?.data;
+        // Combine orgabiRe and contactResults
+        // const combinedContacts = [...contactResults, ...orgabiRe];
+
+        // remove already selected toEmail in input box 
+        console.log(toEmail, "toEmail")
+        const filteredResults = contactResults.filter(
+          (item) => !toEmail.some((email) => email === item.email)
+        );
+
+        setSearchResults(filteredResults);
+        // console.log(contactResults);
+      } else {
+        setSearchResults([]);
+      }
+    }, 100),
+    []
+  );
+
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
+    if (e.target.value != "") {
+      debouncedFunction(e.target.value);
+    } else {
+      setSearchResults([]);
+    }
   };
-
   const handleInputBlur = () => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (emailPattern.test(inputValue)) {
@@ -271,14 +308,14 @@ const GoogleMeetModal = ({ onClose, title }) => {
                           )}
 
                         </ul>
-                        {/* <input
+                        <input
                           type="text"
                           className="inline border-0 focus:ring-transparent bg-bg-gray-200"
                           value={inputValue}
                           onChange={handleInputChange}
                           onBlur={handleInputBlur} // or use onKeyDown to detect 'Enter' key
                           placeholder="Enter email"
-                        /> */}
+                        />
                         {!showParticipant ?
                           <span className="flex w-10 h-10 flex-col justify-center items-center gap-2.5 cursor-pointer" onClick={() => setShowParticipant(true)}>
                             <img src={IMAGES.addIcon} alt="icon" />
@@ -289,7 +326,7 @@ const GoogleMeetModal = ({ onClose, title }) => {
                       </div>
 
                       {showParticipant && <ParticipantListEmail meetModal={true} setToEmail={setToEmail} toEmail={toEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
-                      {/* {searchResults?.length > 0 && <SearchListEmail setInputValue={setInputValue} searchResults={searchResults} setSearchResults={setSearchResults} setToEmail={setToEmail} onClose={() => setShowParticipant(prevState => !prevState)} />} */}
+                      {searchResults?.length > 0 && <SearchListEmail setInputValue={setInputValue} searchResults={searchResults} setSearchResults={setSearchResults} setToEmail={setToEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
 
                     </div>
                     <div className='flex flex-col gap-4 self-stretch'>
@@ -335,41 +372,41 @@ const GoogleMeetModal = ({ onClose, title }) => {
                     <div className="flex flex-col gap-4 self-stretch">
                       <div className={`text-base font-medium leading-6 tracking-wide`}>Time</div>
                       {!allDay ?
-                      <div className="flex flex-row justify-around">
-                        <DateTimeInput
-                          name="startTime"
-                          value={values.startTime}
-                          placeHolder="Select Start Time"
-                          onSelectedDateChanged={(date) => {
-                            setFieldValue("startTime", date);
-                            if (date) {
-                              const endTime = new Date(date.getTime() + 60 * 60 * 1000); // Add 1 hour
-                              setFieldValue("endTime", endTime);
-                            }
-                          }}
-                        />
-                        <DateTimeInput
-                          name="endTime"
-                          value={values.endTime}
-                          placeHolder="Select End Time"
-                          onSelectedDateChanged={(date) => setFieldValue("endTime", date)}
+                        <div className="flex flex-row justify-around">
+                          <DateTimeInput
+                            name="startTime"
+                            value={values.startTime}
+                            placeHolder="Select Start Time"
+                            onSelectedDateChanged={(date) => {
+                              setFieldValue("startTime", date);
+                              if (date) {
+                                const endTime = new Date(date.getTime() + 60 * 60 * 1000); // Add 1 hour
+                                setFieldValue("endTime", endTime);
+                              }
+                            }}
+                          />
+                          <DateTimeInput
+                            name="endTime"
+                            value={values.endTime}
+                            placeHolder="Select End Time"
+                            onSelectedDateChanged={(date) => setFieldValue("endTime", date)}
 
-                        />
-                      </div>:
-                      <div className="flex flex-row justify-around">
-                        <DateInput
-                          name="startTime"
-                          value={values.startTime}
-                          onSelectedDateChanged={(date) => setFieldValue("startTime", date)}
-                          placeHolder="Select Start Time"
-                        />
-                       <DateInput
-                          name="endTime"
-                          value={values.endTime}
-                          onSelectedDateChanged={(date) => setFieldValue("endTime", date)}
-                          placeHolder="Select End Time"
-                        />
-                      </div>}
+                          />
+                        </div> :
+                        <div className="flex flex-row justify-around">
+                          <DateInput
+                            name="startTime"
+                            value={values.startTime}
+                            onSelectedDateChanged={(date) => setFieldValue("startTime", date)}
+                            placeHolder="Select Start Time"
+                          />
+                          <DateInput
+                            name="endTime"
+                            value={values.endTime}
+                            onSelectedDateChanged={(date) => setFieldValue("endTime", date)}
+                            placeHolder="Select End Time"
+                          />
+                        </div>}
                       <div className="flex flex-row justify-start">
                         <div className="flex items-start gap-2">
                           <Checkbox checked={allDay}
