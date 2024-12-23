@@ -340,7 +340,13 @@ const GoogleMeetModal = ({ onClose, title }) => {
                           name="startTime"
                           value={values.startTime}
                           placeHolder="Select Start Time"
-                          onSelectedDateChanged={(date) => setFieldValue("startTime", date)}
+                          onSelectedDateChanged={(date) => {
+                            setFieldValue("startTime", date);
+                            if (date) {
+                              const endTime = new Date(date.getTime() + 60 * 60 * 1000); // Add 1 hour
+                              setFieldValue("endTime", endTime);
+                            }
+                          }}
                         />
                         <DateTimeInput
                           name="endTime"
