@@ -227,34 +227,21 @@ const CaseCardData = () => {
     setIsLoading(false)
   };
 
-  const handleReopenCase = () => {
-    setIsLoading(true)
-    try {
-      const reOpenCasePayload = {
-        caseId: localStorage.getItem('c_id'),
-      };
-      dispatch(reOpenCaseRequest(reOpenCasePayload, navigate))
-    } catch (error) {
-      console.error("Error open case:", error.message);
-    }
-    setIsLoading(false)
-  };
-
 
   return (
     <div>
       <XSpinnerLoader loading={loading} size="lg" />
       <PageHeader items={headerItems} />
       <div className="flex justify-end justify-content:flex-end mb-6">
-        <div className="grid gap-4 grid-cols-4 ">
-          <div>
+        <div className="grid gap-3 grid-cols-3">
+          {/* <div>
             <XButton
               text={'Open case'}
               onClick={() => handleReopenCase()} // Disable click if loading
               // icon={eventList ? <IoIosArrowUp className="text-base mr-2 inline-block font-medium" /> : <IoIosArrowDown className="text-base mr-2 inline-block font-medium" />}
               className="bg-white shadow-shadow-light text-secondary-800 py-3 px-6 rounded-full font-medium"
             />
-          </div>
+          </div> */}
           <div>
             <XButton
               text={'Upcoming Event'}
@@ -285,6 +272,7 @@ const CaseCardData = () => {
             clientName={casedetails?.clientName}
             caseType={caseTypeLabel}
             premisesType={premisesTypeLabel}
+            closeAt={casedetails?.closeAt}
             // address="1500 Skyline Avenue Apt 2503 New York, NY 10019"
             address={premisesDetails?.addressId
             }

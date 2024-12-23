@@ -267,7 +267,7 @@ function* reOpenCaseId(action) {
             // yield put(clearStageData());
             // yield put(clearCasesData());
             toast.success("Case Reopen Success!");
-            // navigate(ROUTES.CASES);
+            navigate(ROUTES.CASES);
         }
     } catch (error) {
         handleError(error)
