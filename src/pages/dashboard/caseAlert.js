@@ -2,6 +2,7 @@ import React from "react";
 import { Card } from "../../components"; // Assuming you have a Card component
 import { useSelector } from "react-redux";
 import { daysLeft } from "../../utils";
+import { XButton } from "../../components";
 
 const CaseAlert = () => {
   const { cases } = useSelector((state) => state?.case?.casesData);
@@ -20,7 +21,7 @@ const CaseAlert = () => {
   .filter((caseItem) => caseItem.dueInDays <= 7);
   return (
     <div className="remders rounded-[32px]">
-       <p class="text-[18px] text-secondary-800 font-medium leading-[30px] mb-[18px]"><span>Reminders</span></p>
+      <p class="text-[18px] text-secondary-800 font-medium leading-[30px] mb-[18px]"><span>Reminders</span></p>
       <div className="col-span-12 md">
         <div className="flex flex-col">
           {filteredCases?.map((data, index) => (
