@@ -25,6 +25,9 @@ import calendarGray from "../assets/images/calendargray.svg";
 import casesGray from "../assets/images/casesgray.svg";
 import RichCRM_Logo_Lg from "../assets/images/RichCRM_Logo_w_Text_256.png";
 import RichCRM_Logo_Sm from "../assets/images/RichCRM_Logo_w_Text_72.png";
+import R_Logo_Sm from "../assets/images/RichCRM_Logo_72x72.png";
+import R_Logo_Lg from "../assets/images/RichCRM_Logo_256x256.png";
+
 
 export const IMAGES = {
   profile: avatarImage,
@@ -54,5 +57,6 @@ export const IMAGES = {
   casesGray: casesGray,
   RichCRM_Logo_Lg : RichCRM_Logo_Lg,
   RichCRM_Logo_Sm :RichCRM_Logo_Sm,
-
+  R_Logo_Lg :R_Logo_Lg,
+  R_Logo_Sm :R_Logo_Sm,
 };
