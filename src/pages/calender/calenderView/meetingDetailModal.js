@@ -2,9 +2,25 @@ import React from 'react';
 import { Modal } from 'flowbite-react';
 import { IMAGES } from '../../../constants/imagePath';
 import XButton from '../../../components/button/XButton';
+import { useSelector } from 'react-redux';
+import { ROUTES } from '../../../constants/api';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const MeetingDetailModal = ({ onClose, eventData, title}) => {
+    const navigate = useNavigate();
+    const { cases } = useSelector((state) => state.case.casesData);
+    // const casesData = cases.filter((caseItem) => caseItem.caseId == localStorage.getItem("c_id"));
     let caseName = title?.split("-")
+
+
+    const filteredGoogleEvents = cases.filter((event) => {
+        return (
+            event?.clientName ===  caseName[0] &&
+            event?.premisesName === caseName[1]
+        );
+    });
+
     function formatDateRange(start, end) {
         // console.log(start,"SSSSSSSS")
         // console.log(end,"eeee")
@@ -28,6 +44,15 @@ const MeetingDetailModal = ({ onClose, eventData, title}) => {
         window.open(eventData?.extendedProps?.meetLink, "_blank");
     };
 
+    const handleMeetCardClick = () => {
+        if(filteredGoogleEvents?.length == 1){
+            localStorage.setItem("c_id", filteredGoogleEvents[0]?.caseId)
+            navigate(ROUTES.CASES_DATA, { state: { casedetails : filteredGoogleEvents[0] } });
+        }else{
+            toast.error("Case not exist!")
+        }
+      };
+
     return (
         <Modal show={true} size="md" onClose={onClose} className="new-case-modal calendar-modal ">
             <Modal.Header className="border-b-2 border-black-10 ">
@@ -35,12 +60,13 @@ const MeetingDetailModal = ({ onClose, eventData, title}) => {
             </Modal.Header>
             <Modal.Body className="p-0 m-0">
                 <ul className="">
-                    <li className='flex justify-start items-center gap-4 p-5 border-b-2 border-black-10  '>
+                    <li className='flex justify-start items-center gap-4 p-5 border-b-2 border-black-10 cursor-pointer' onClick={handleMeetCardClick}>
                         <img src={IMAGES?.casesGray} alt="logo" className="" />
                         <div style={{ color: "#366093" }}>
                             <p>{caseName[0]}</p>
                             <p>{caseName[1]}</p>
                         </div>
+                        <img src={IMAGES?.arrowRight} alt="logo" className="ml-auto" />
                     </li>
                     <li className='flex justify-start items-center gap-4 p-5 border-b-2 border-black-10 '>
                         <img src={IMAGES?.calendarGray} alt="logo" className="" />
