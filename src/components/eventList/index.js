@@ -51,7 +51,15 @@ const EventList = ({ googleEvent, casesEvent , isLoading }) => {
             // },
         }));
 
-        const calendarEvents = casesEvent.flatMap((caseItem) => [
+        const filteredCasesEvents = casesEvent.filter((caseItem) => {
+            // const summaryParts = caseItem.clientName?.split("-");
+            return (
+                caseItem?.clientName === casesData[0]?.clientName?.trim() &&
+                caseItem?.premisesName === casesData[0]?.premisesName?.trim()
+            );
+        });
+
+        const calendarEvents = filteredCasesEvents.flatMap((caseItem) => [
             caseItem.closingDate ? {
                 id: `${caseItem.caseId}_Closing Due`,
                 title: `Closing Deadline`,

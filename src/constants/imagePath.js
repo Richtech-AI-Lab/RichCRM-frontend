@@ -28,6 +28,7 @@ import RichCRM_Logo_Sm from "../assets/images/RichCRM_Logo_w_Text_72.png";
 import R_Logo_Sm from "../assets/images/RichCRM_Logo_72x72.png";
 import R_Logo_Lg from "../assets/images/RichCRM_Logo_256x256.png";
 
+import arrowRight from "../assets/images/chevron-right.png";
 
 export const IMAGES = {
   profile: avatarImage,
@@ -59,4 +60,5 @@ export const IMAGES = {
   RichCRM_Logo_Sm :RichCRM_Logo_Sm,
   R_Logo_Lg :R_Logo_Lg,
   R_Logo_Sm :R_Logo_Sm,
+  arrowRight: arrowRight,
 };
