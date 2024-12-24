@@ -3,6 +3,7 @@ import { Spinner } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../constants/api";
+import { useSelector } from "react-redux";
 
 const EventCard = ({ title, date, time, color = "bg-green-200", textColor = "text-green-800", borderColor = "border-green-600", }) => {
     const navigate = useNavigate();
@@ -22,11 +23,23 @@ const EventCard = ({ title, date, time, color = "bg-green-200", textColor = "tex
 };
 
 const EventList = ({ googleEvent, casesEvent , isLoading }) => {
+    const { cases } = useSelector((state) => state.case.casesData);
+    const casesData = cases.filter((caseItem) => caseItem.caseId == localStorage.getItem("c_id"));
+
     const [data, setData] = useState([]);
+
     useEffect(() => {
-        const mapGoogleEvents = googleEvent.map((event) => ({
+        const filteredGoogleEvents = googleEvent.filter((event) => {
+            const summaryParts = event.summary?.split("-");
+            return (
+                summaryParts?.[0]?.trim() === casesData[0]?.clientName?.trim() &&
+                summaryParts?.[1]?.trim() === casesData[0]?.premisesName?.trim()
+            );
+        });
+        
+        const mapGoogleEvents = filteredGoogleEvents.map((event) => ({
             id: event.id,
-            title: event.summary?.split("-")?.[2] || "Google Meet Event",
+            title: event.summary?.split("-")?.[2]  || "Google Meet Event",
             start: format(event.start.dateTime, 'MMM dd, yyyy'),
             time: format(event.start.dateTime, 'hh:mm aaa'),
             type: "meet",
