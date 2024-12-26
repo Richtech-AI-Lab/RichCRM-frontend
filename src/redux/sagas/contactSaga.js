@@ -1,12 +1,13 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { API_ENDPOINTS, ROUTES } from "../../constants/api";
-import { CREATE_ATTORNEY_REQUEST, CREATE_BROKER_REQUEST, CREATE_CONTACT_REQUEST, CREATE_REALTOR_REQUEST, DELETE_ATTORNEY_REQUEST, DELETE_BROKER_REQUEST, DELETE_CONTACT_REQUEST, DELETE_CONTACT_SUCCESS, DELETE_REALTOR_REQUEST, FETCH_ATTORNEY_BY_ID_REQUEST, FETCH_BROKER_BY_ID_REQUEST, FETCH_REALTOR_BY_ID_REQUEST, GET_CONTACT_BY_KEYWORD_REQUEST, GET_CONTACT_BY_TYPE_REQUEST, GET_CONTACT_REQUEST, READ_CASE_BY_CONTACT_REQ, UPDATE_CONTACT_REQUEST } from "../type";
+import { CREATE_ATTORNEY_REQUEST, CREATE_BROKER_REQUEST, CREATE_CONTACT_REQUEST, CREATE_REALTOR_REQUEST, DELETE_ATTORNEY_REQUEST, DELETE_BROKER_REQUEST, DELETE_CONTACT_REQUEST, DELETE_CONTACT_SUCCESS, DELETE_REALTOR_REQUEST, FETCH_ATTORNEY_BY_ID_REQUEST, FETCH_BROKER_BY_ID_REQUEST, FETCH_REALTOR_BY_ID_REQUEST, GET_CONTACT_BY_KEYWORD_REQUEST, GET_CONTACT_BY_TYPE_REQUEST, GET_CONTACT_REQUEST, GET_MULTIPLE_CONTACT_BY_TYPE_REQUEST, READ_CASE_BY_CONTACT_REQ, UPDATE_CONTACT_REQUEST } from "../type";
 import { getRequest, postRequest } from "../../axios/interceptor";
 import { toast } from "react-toastify";
 import { handleError } from "../../utils/eventHandler";
-import { createAttorneySuccess, createBrokerFailure, createBrokerSuccess, createRealtorFailure, createRealtorSuccess, deleteAttorneySuccess, deleteBrokerFailure, deleteBrokerSuccess, deleteContactFailure, deleteContactSuccess, deleteRealtorFailure, deleteRealtorSuccess, fetchAttorneyByIdsFailure, fetchAttorneyByIdsSuccess, fetchBrokerByIdsFailure, fetchBrokerByIdsSuccess, fetchRealtorByIdsFailure, fetchRealtorByIdsSuccess, getCaseByContactFailure, getCaseByContactSuccess, getContactFailure, getContactSuccess, setSelectedContact, updateContactFailure, updateContactSuccess } from "../actions/contactActions";
+import { createAttorneySuccess, createBrokerFailure, createBrokerSuccess, createRealtorFailure, createRealtorSuccess, deleteAttorneySuccess, deleteBrokerFailure, deleteBrokerSuccess, deleteContactFailure, deleteContactSuccess, deleteRealtorFailure, deleteRealtorSuccess, fetchAttorneyByIdsFailure, fetchAttorneyByIdsSuccess, fetchBrokerByIdsFailure, fetchBrokerByIdsSuccess, fetchRealtorByIdsFailure, fetchRealtorByIdsSuccess, getCaseByContactFailure, getCaseByContactSuccess, getContactFailure, getContactSuccess, getMultipleTagsContactFailure, getMultipleTagsContactSuccess, setSelectedContact, updateContactFailure, updateContactSuccess } from "../actions/contactActions";
 import { all } from "redux-saga/effects";
 import { updateCaseContactRequest } from "../actions/caseAction";
+import { takeEvery } from "redux-saga/effects";
 
 function* getContactByType(action) {
   try {
@@ -230,6 +231,26 @@ function* getCaseByContact(action) {
   }
 }
 
+function* getMultipleContactByTag(action) {
+  try {
+    const contactType = action.payload.tag;
+    const contactResponses = yield all(
+      contactType.map(tagName =>
+        call(postRequest, `${API_ENDPOINTS.GET_CONTACT_BY_TAG}` , {tag:tagName})
+      )
+    );
+    const contacts = contactResponses
+      .map(response => response?.data?.data || [])
+      .flat();
+
+    yield put(getMultipleTagsContactSuccess(contacts));
+  } catch (error) {
+    console.log(error,"err")
+    handleError(error)
+    yield put(getMultipleTagsContactFailure(error.response.data || error));
+  }
+}
+
 export function* contactSaga() {
   yield takeLatest(READ_CASE_BY_CONTACT_REQ, getCaseByContact);
   // yield takeLatest(GET_CONTACT_BY_TYPE_REQUEST, getContactByType);
@@ -245,4 +266,5 @@ export function* contactSaga() {
   yield takeLatest(CREATE_BROKER_REQUEST, createBroker);
   yield takeLatest(DELETE_BROKER_REQUEST, deleteBroker);
   yield takeLatest(DELETE_CONTACT_REQUEST, deleteContact);
+  yield takeLatest(GET_MULTIPLE_CONTACT_BY_TYPE_REQUEST, getMultipleContactByTag);
 }
