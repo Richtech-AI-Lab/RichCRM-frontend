@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import { useEffect } from "react";
-import { ForgotPasswordOne, ForgotPasswordThree, ForgotPasswordTwo, Layout, Login, Signup } from "../pages";
+import { ForgotPasswordOne, ForgotPasswordThree, ForgotPasswordTwo, Layout, Login, Signup, EmailVerification } from "../pages";
 import { ROUTES } from "../constants/api";
 
 const Routing = () => {
@@ -13,6 +13,7 @@ const Routing = () => {
       <Route path={ROUTES.FORGOT_PASSWORD_ONE} element={<ForgotPasswordOne />} />
       <Route path={ROUTES.FORGOT_PASSWORD_TWO} element={<ForgotPasswordTwo />} />
       <Route path={ROUTES.FORGOT_PASSWORD_THREE} element={<ForgotPasswordThree />} />
+      <Route path={ROUTES.EMAIL_VERIFICATION} element={<EmailVerification />} />
 
       <Route element={<ProtectedRoute />}>
         <Route path="/rich-crm/*" element={<Layout />} />
