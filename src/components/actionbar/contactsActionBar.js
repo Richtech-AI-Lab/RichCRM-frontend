@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import XButton from "../button/XButton";
-import { addFromContactTab, addFromContactTabs, addFromContactV1Tabs, contactTab, ORGANIZATION_TYPE, SORT_OPTIONS } from "../../constants/constants";
+import { addFromContactTab, addFromContactTabs, addFromContactV1Tabs, ORGANIZATION_TYPE, } from "../../constants/constants";
 import { FiEdit3, FiPlus } from "react-icons/fi";
 import { RiDownloadLine } from "react-icons/ri";
 import CaseExportModal from "../caseExportModal";
