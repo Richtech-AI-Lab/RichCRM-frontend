@@ -302,8 +302,8 @@ const ComposeEmail = ({ taskItem, onClose, templates, onSendEmail }) => {
                       onBlur={handleInputBlur} // or use onKeyDown to detect 'Enter' key
                       placeholder="Enter email"
                     />
-                    {showParticipant && <ParticipantListEmail setToEmail={setToEmail} toEmail={toEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
-                    {searchResults?.length > 0 && <SearchListEmail setInputValue={setInputValue} searchResults={searchResults} setSearchResults={setSearchResults} setToEmail={setToEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
+                    {showParticipant && <ParticipantListEmail meetModal={true} setToEmail={setToEmail} toEmail={toEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
+                    {searchResults?.length > 0 && <SearchListEmail meetModal={true} setInputValue={setInputValue} searchResults={searchResults} setSearchResults={setSearchResults} setToEmail={setToEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
                   </div>
                   {!showParticipant ?
                   <span className="icon mr-2 cursor-pointer" onClick={() => setShowParticipant(true)}>

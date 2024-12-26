@@ -19,6 +19,11 @@ import file from "../assets/images/file.svg";
 import image from "../assets/images/image.svg";
 import edit from "../assets/images/edit.svg";
 import editTagBlue from "../assets/images/editBlue.svg";
+import richAiLogo from "../assets/images/RichAiLogo.png";
+import attachmentlogo from "../assets/images/attachment.svg";
+import calendarGray from "../assets/images/calendargray.svg";
+import casesGray from "../assets/images/casesgray.svg";
+import arrowRight from "../assets/images/chevron-right.png";
 
 export const IMAGES = {
   profile: avatarImage,
@@ -41,5 +46,10 @@ export const IMAGES = {
   fileIcon:file,
   galleryIcon: image,
   editTag: edit,
-  editTagBlue: editTagBlue
+  editTagBlue: editTagBlue,
+  richAiLogo: richAiLogo,
+  attachment: attachmentlogo,
+  calendarGray: calendarGray,
+  casesGray: casesGray,
+  arrowRight: arrowRight,
 };

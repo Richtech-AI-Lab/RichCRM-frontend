@@ -5,7 +5,7 @@ import { Checkbox } from "flowbite-react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
-const ParticipantListEmail = ({ onClose, setToEmail, toEmail }) => {
+const ParticipantListEmail = ({ onClose, setToEmail, toEmail, meetModal ="" }) => {
   const { client, additionalClient } = useSelector((state) => state.client);
   const { organization, additionalOrganization } = useSelector(
     (state) => state.organization
@@ -111,15 +111,13 @@ const ParticipantListEmail = ({ onClose, setToEmail, toEmail }) => {
 
   return (
     <>
-      <div
-        className="card absolute w-full max-w-md shadow-shadow-light-2"
-        style={{
-          background: "#fff",
-          zIndex: "9",
-          right: "25px",
-          maxWidth: "249px",
-        }}
-      >
+<div
+  className={`card absolute w-full max-w-md shadow-shadow-light-2 ${meetModal ? 'right-[50px] top-[20vh] max-w-[249px]' : 'right-[25px] max-w-[249px]'}`}
+  style={{
+    background: "#fff",
+    zIndex: "9",
+  }}
+>
         <div className="">
           <ul className="z-9999 overflow-hidden">
             {allResult?.length > 0 ? (

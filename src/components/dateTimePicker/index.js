@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 
 const DateTimeInput = ({ name, value, onSelectedDateChanged , placeHolder}) => {
@@ -11,6 +11,10 @@ const DateTimeInput = ({ name, value, onSelectedDateChanged , placeHolder}) => {
     onSelectedDateChanged(date);
     // }
   };
+  useEffect(() => {
+    setStartDate(value ? new Date(value) : null);
+  }, [value]);
+
   const customtheme = {
     "popup": {
       "root": {

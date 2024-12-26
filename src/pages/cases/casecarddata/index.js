@@ -22,6 +22,10 @@ import { fetchClientByIdRequest } from "../../../redux/actions/clientActions";
 import { fetchAddressByIdRequest } from "../../../redux/actions/utilsActions";
 import { fetchOrganizationByIdRequest } from "../../../redux/actions/organizationActions";
 import { fetchAttorneyByIdsRequest, fetchBrokerByIdsRequest, fetchRealtorByIdsRequest } from "../../../redux/actions/contactActions";
+import { checkGoogleSignInStatus, fetchUpcomingEvents, signInToGoogle } from "../../../components/gmeet/googleMeetFunc";
+import EventList from "../../../components/eventList";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { reOpenCaseRequest } from "../../../redux/actions/caseAction";
 
 const CaseCardData = () => {
   const navigate = useNavigate();
@@ -37,6 +41,11 @@ const CaseCardData = () => {
   const organizationDetails = organization?.data?.length > 0 ? organization?.data : null;
   const premisesDetails = premises?.data?.length > 0 ? premises?.data[0] : null;
   const premisesTypeLabel = premisesTypes?.find(option => option.value == premisesDetails?.propertyType)?.label || "Unknown";
+  const [isLoading, setIsLoading] = useState(false);
+  const [eventList, setEventList] = useState(false);
+  const [googleEvents, setGoogleEvents] = useState([]);
+  const { cases } = useSelector((state) => state.case.casesData);
+  const casesWithDates = cases.filter((caseItem) => caseItem.closingDate || caseItem.mortgageContingencyDate);
 
   const handleCaseDetails = () => {
     navigate(ROUTES.CASES_DETAILS)
@@ -76,7 +85,7 @@ const CaseCardData = () => {
       try {
         const payload = {
           caseId: localStorage.getItem('c_id'),
-          tag:"Attorney"
+          tag: "Attorney"
         };
         dispatch(fetchAttorneyByIdsRequest(payload));
       } catch (error) {
@@ -87,7 +96,7 @@ const CaseCardData = () => {
       try {
         const payload = {
           caseId: localStorage.getItem('c_id'),
-          tag:"Realtor"
+          tag: "Realtor"
         };
         dispatch(fetchRealtorByIdsRequest(payload));
       } catch (error) {
@@ -98,7 +107,7 @@ const CaseCardData = () => {
       try {
         const payload = {
           caseId: localStorage.getItem('c_id'),
-          tag:"Broker"
+          tag: "Broker"
         };
         dispatch(fetchBrokerByIdsRequest(payload));
       } catch (error) {
@@ -182,12 +191,66 @@ const CaseCardData = () => {
   const handleNav = () => {
     navigate(ROUTES.DOCUMENTS)
   };
+  const authenticateAndFetchEvents = async () => {
+    try {
+      setIsLoading(true)
+      const isSignedIn = await checkGoogleSignInStatus(); // Custom function to check sign-in status
+      // console.log(isSignedIn,"isSignedIn")
+      if (isSignedIn) {
+        // User is signed in, fetch events directly
+        // setIsAuthenticated(true);
+        const fetchedEvents = await fetchUpcomingEvents(); // Fetch events
+        setGoogleEvents(fetchedEvents);
+        setIsLoading(false)
+      } else {
+        // User is not signed in, initiate sign-in flow
+        await signInToGoogle(); // Custom function to handle Google Sign-In
+        // setIsAuthenticated(true);
+        const fetchedEvents = await fetchUpcomingEvents(); // Fetch events after sign-in
+        // console.log(fetchedEvents, "fetchedEvents")
+        setGoogleEvents(fetchedEvents);
+        setIsLoading(false)
+      }
+    } catch (err) {
+      setIsLoading(false)
+      console.error("Error during sign-in or fetching events:", err);
+    }
+  };
+  const handleUpcomingEvent = () => {
+    setIsLoading(true)
+    if (eventList) {
+      setEventList(false)
+    } else {
+      authenticateAndFetchEvents()
+      setEventList(true)
+    }
+    setIsLoading(false)
+  };
+
+
   return (
     <div>
       <XSpinnerLoader loading={loading} size="lg" />
       <PageHeader items={headerItems} />
       <div className="flex justify-end justify-content:flex-end mb-6">
-        <div className="grid gap-4 grid-cols-2 ">
+        <div className="grid gap-3 grid-cols-3">
+          {/* <div>
+            <XButton
+              text={'Open case'}
+              onClick={() => handleReopenCase()} // Disable click if loading
+              // icon={eventList ? <IoIosArrowUp className="text-base mr-2 inline-block font-medium" /> : <IoIosArrowDown className="text-base mr-2 inline-block font-medium" />}
+              className="bg-white shadow-shadow-light text-secondary-800 py-3 px-6 rounded-full font-medium"
+            />
+          </div> */}
+          <div>
+            <XButton
+              text={'Upcoming Event'}
+              onClick={() => handleUpcomingEvent()} // Disable click if loading
+              icon={eventList ? <IoIosArrowUp className="text-base mr-2 inline-block font-medium" /> : <IoIosArrowDown className="text-base mr-2 inline-block font-medium" />}
+              className="bg-white shadow-shadow-light text-secondary-800 py-3 px-6 rounded-full font-medium"
+            />
+            {eventList && <EventList googleEvent={googleEvents} casesEvent={casesWithDates} isLoading={isLoading} />}
+          </div>
           <XButton
             text="One Drive"
             onClick={() => handleNav()}
@@ -209,6 +272,7 @@ const CaseCardData = () => {
             clientName={casedetails?.clientName}
             caseType={caseTypeLabel}
             premisesType={premisesTypeLabel}
+            closeAt={casedetails?.closeAt}
             // address="1500 Skyline Avenue Apt 2503 New York, NY 10019"
             address={premisesDetails?.addressId
             }

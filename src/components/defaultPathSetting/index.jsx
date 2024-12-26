@@ -38,33 +38,22 @@ export const DefaultPathSetting = ({ title }) => {
 
   return (
     <>
-      <div className="bg-white p-4 rounded-2xl mb-5 shadow-card">
-        {title && (
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-base text-secondary-800 font-medium">
-              Upload Folder URL
-            </span>
+      <div className="bg-white rounded-2xl mb-5 shadow-card">
+        {true && (
+          <div className="flex flex-col p-4 justify-center items-start gap-2 self-stretch">
+            <span className="text-base font-bold">OneDrive</span>
+            {/* <p className="text-sm font-normal">Mattis amet eu velit viverra aliquet porta at a. Auctor lectus tincidunt facilisis pellentesque maecenas enim sed dolor adipiscing.</p> */}
           </div>
         )}
-        <p className="mb-6">
-          Please specify the folder name in which you want to save your data.
-        </p>
-
-        <div>
-          <span className={`left-txt flex items-center`}>Default Path</span>
-          <div className="flex items-center">
-            <div className="mb-2 flex-1 mr-4">
-              <TextInput
-                disabled
-                type="text"
-                value={"https://graph.microsoft.com/v1.0/drive/root/"}
-              />
-            </div>
+        <div className="flex flex-col px-4 py-3 items-start gap-4 self-stretch">
+          <div className="flex flex-col items-start gap-2 self-stretch">
+            <span className="text-base font-medium">Default Storage Path</span>
+            <p className="text-sm font-normal">
+              Set a default OneDrive storage path to automatically save new
+              files uploaded via the CRM platform.
+            </p>
           </div>
-        </div>
-        <div>
-          <span className={`left-txt flex items-center`}>Folder Name</span>
-          <div className="flex items-center">
+          <div className="flex items-center gap-2 self-stretch">
             <div className="mb-2 flex-1 mr-4">
               <TextInput
                 name="Path"
@@ -93,6 +82,19 @@ export const DefaultPathSetting = ({ title }) => {
             />
           </div>
         </div>
+
+        {/* <div>
+          <span className={`left-txt flex items-center`}>Default Path</span>
+          <div className="flex items-center">
+            <div className="mb-2 flex-1 mr-4">
+              <TextInput
+                disabled
+                type="text"
+                value={"https://graph.microsoft.com/v1.0/drive/root/"}
+              />
+            </div>
+          </div>
+        </div> */}
       </div>
       {showOneDriveModal && (
         <OneDrivePathModal
