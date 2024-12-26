@@ -15,6 +15,7 @@ import GoogleMeetModal from "../gmeet/googleMeetModal";
 import { detectIncognito } from "detectincognitojs";
 import { toast } from "react-toastify";
 import { useMsal } from "@azure/msal-react";
+import SignFileModal from "../signFile";
 
 const ROOT_FOLDER_PATH = "https://graph.microsoft.com/v1.0/drive/root";
 const ChecklistItem = ({ item, stageName, key, icon, label, status, action, actionInfo, optionsValue, checkboxId, currentStep, templates, stageId }) => {
@@ -22,6 +23,7 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
   const [account, setAccount] = useState(instance.getActiveAccount());
   const dispatch = useDispatch();
   const [isCompose, setIsCompose] = useState(false);
+  const [isSignUpload, setIsSignUpload] = useState(false);
   const [isUploadFileModalOpen, setIsUploadFileModalOpen] = useState(false);
   const [isGmeetModalOpen, setIsGmeetModalOpen] = useState(false);
   const [taskStatus, setTaskStatus] = useState(status);
@@ -53,10 +55,12 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
         if (option === 0) {
           return [
             { value: "compose message", label: "Compose Message" },
+            { value: "request signature", label: "Request For Signature" },
           ];
         } else if (option === 1) {
           return [
             { value: "compose message", label: "Compose Message" },
+            { value: "request signature", label: "Request For Signature" },
           ];
           // return [
           //   { value: "reupload", label: "Resend Message" },
@@ -70,6 +74,7 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
         } else if (option === 2) {
           return [
             { value: "compose message", label: "Compose Message" },
+            { value: "request signature", label: "Request For Signature" },
           ];
         } else {
           return [
@@ -170,7 +175,9 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
     let fname = `${caseObj?.clientName}-${caseObj?.premisesName}-${item?.name}`
     // console.log(fname)
     setFileName(fname)
-    if (option == "compose message") {
+    if (option == "request signature") {
+      setIsSignUpload(true)
+    } else if (option == "compose message") {
       setIsCompose(true)
     } else if (option == "upload") {
       toggleUploadFileModal();
@@ -457,6 +464,7 @@ const ChecklistItem = ({ item, stageName, key, icon, label, status, action, acti
           </div>
         </li>
       </div>
+      {isSignUpload && <SignFileModal fileName={fileName} taskName={item?.name} generalUpload={false} onUpload={(value) => handleChangeTaskStatus(value)} onClose={()=>setIsSignUpload(!isSignUpload)} />}
       {isUploadFileModalOpen && <UploadFileModal fileName={fileName} taskName={item?.name} generalUpload={false} onUpload={(value) => handleChangeTaskStatus(value)} onClose={toggleUploadFileModal} />}
       {isCompose ? <ComposeEmail taskItem={item} templates={templates} onClose={toggleComposeModal} onSendEmail={(value) => handleChangeTaskStatus(value)} /> : ""}
       {isGmeetModalOpen && <GoogleMeetModal title={`${caseObj?.clientName}-${caseObj?.premisesName}-${item?.name}`} onClose={toggleGMeetModal} />}
