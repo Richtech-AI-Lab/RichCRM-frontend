@@ -25,6 +25,7 @@ import { fetchAttorneyByIdsRequest, fetchBrokerByIdsRequest, fetchRealtorByIdsRe
 import { checkGoogleSignInStatus, fetchUpcomingEvents, signInToGoogle } from "../../../components/gmeet/googleMeetFunc";
 import EventList from "../../../components/eventList";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { reOpenCaseRequest } from "../../../redux/actions/caseAction";
 
 const CaseCardData = () => {
   const navigate = useNavigate();
@@ -225,12 +226,22 @@ const CaseCardData = () => {
     }
     setIsLoading(false)
   };
+
+
   return (
     <div>
       <XSpinnerLoader loading={loading} size="lg" />
       <PageHeader items={headerItems} />
       <div className="flex justify-end justify-content:flex-end mb-6">
-        <div className="grid gap-4 grid-cols-3 ">
+        <div className="grid gap-3 grid-cols-3">
+          {/* <div>
+            <XButton
+              text={'Open case'}
+              onClick={() => handleReopenCase()} // Disable click if loading
+              // icon={eventList ? <IoIosArrowUp className="text-base mr-2 inline-block font-medium" /> : <IoIosArrowDown className="text-base mr-2 inline-block font-medium" />}
+              className="bg-white shadow-shadow-light text-secondary-800 py-3 px-6 rounded-full font-medium"
+            />
+          </div> */}
           <div>
             <XButton
               text={'Upcoming Event'}
@@ -238,7 +249,7 @@ const CaseCardData = () => {
               icon={eventList ? <IoIosArrowUp className="text-base mr-2 inline-block font-medium" /> : <IoIosArrowDown className="text-base mr-2 inline-block font-medium" />}
               className="bg-white shadow-shadow-light text-secondary-800 py-3 px-6 rounded-full font-medium"
             />
-            {eventList && <EventList googleEvent={googleEvents} casesEvent={casesWithDates} isLoading={isLoading}/>}
+            {eventList && <EventList googleEvent={googleEvents} casesEvent={casesWithDates} isLoading={isLoading} />}
           </div>
           <XButton
             text="One Drive"
@@ -261,6 +272,7 @@ const CaseCardData = () => {
             clientName={casedetails?.clientName}
             caseType={caseTypeLabel}
             premisesType={premisesTypeLabel}
+            closeAt={casedetails?.closeAt}
             // address="1500 Skyline Avenue Apt 2503 New York, NY 10019"
             address={premisesDetails?.addressId
             }

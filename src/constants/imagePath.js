@@ -23,6 +23,7 @@ import richAiLogo from "../assets/images/RichAiLogo.png";
 import attachmentlogo from "../assets/images/attachment.svg";
 import calendarGray from "../assets/images/calendargray.svg";
 import casesGray from "../assets/images/casesgray.svg";
+import arrowRight from "../assets/images/chevron-right.png";
 
 export const IMAGES = {
   profile: avatarImage,
@@ -50,5 +51,5 @@ export const IMAGES = {
   attachment: attachmentlogo,
   calendarGray: calendarGray,
   casesGray: casesGray,
-
+  arrowRight: arrowRight,
 };

@@ -5,7 +5,7 @@ import SelectInput from "../selectinput";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import MenuPopup from "../menupopup";
 import DeleteModal from "../deleteModal";
-import { deleteCaseRequest } from "../../redux/actions/caseAction";
+import { deleteCaseRequest, reOpenCaseRequest } from "../../redux/actions/caseAction";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -15,19 +15,36 @@ const CaseDetailsCard = ({
   caseType,
   premisesType,
   address,
+  closeAt
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showDeletePopup, setShowDeletePopup] = useState(false);
 
-  const menuOption = [
+  const menuOption = closeAt ? [
+    'Edit', 'Share case', 'Delete case', "Re-Open case"
+  ]:[
     'Edit', 'Share case', 'Delete case'
   ];
 
-
+  const handleReopenCase = () => {
+    // setIsLoading(true)
+    try {
+      const reOpenCasePayload = {
+        caseId: localStorage.getItem('c_id'),
+      };
+      dispatch(reOpenCaseRequest(reOpenCasePayload, navigate))
+    } catch (error) {
+      console.error("Error open case:", error.message);
+    }
+    // setIsLoading(false)
+  };
   const handleOptionSubmit = (id, label) => {
     if (label === "Delete case") {
       setShowDeletePopup(true)
+    }
+    if (label === "Re-Open case") {
+      handleReopenCase()
     }
   };
 
