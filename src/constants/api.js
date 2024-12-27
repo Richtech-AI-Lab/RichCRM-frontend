@@ -4,6 +4,7 @@ export const API_ENDPOINTS = {
   LOGIN: '/auth/login',
   FORGOT_PASSWORD: "/forgot-password",
   DELETE_USER: "/auth/delete",
+  ACCOUNT_VERIFICATION: "/auth/account-verification",
   CREATE_CASE: "/case/create",
   READ_CASE: "/case",
   CLOSE_CASE: "/case/close",
@@ -78,5 +79,6 @@ export const ROUTES = {
   SETTINGS: "/rich-crm/settings",
   FORGOT_PASSWORD_ONE: "/forgot-password-one",
   FORGOT_PASSWORD_TWO: "/forgot-password-two",
-  FORGOT_PASSWORD_THREE: "/forgot-password-three"
+  FORGOT_PASSWORD_THREE: "/forgot-password-three",
+  EMAIL_VERIFICATION: "/email-verification",
 };
