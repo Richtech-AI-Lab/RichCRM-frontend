@@ -23,6 +23,7 @@ const ContactsActionbar = ({ active = "", setActive = "", activeFilterOrg = "", 
   const location = useLocation();
   const tagDetails = useSelector((state) => state.tag.tag);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeFilterLocal, setActiveFilterLocal] = useState(activeFilterTag?.length > 0 ? activeFilterTag : []);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -40,6 +41,18 @@ const ContactsActionbar = ({ active = "", setActive = "", activeFilterOrg = "", 
     const pathsToShow = [routePath];
     return pathsToShow.includes(location.pathname);
   };
+
+  const onReset = () =>{
+    setActiveFilterTag([])
+    setActiveFilterLocal([])
+  }
+
+  const onApply = ()=>{
+      if (activeFilterLocal?.length > 0) {
+        // Remove the value if it's already selected
+        setActiveFilterTag(activeFilterLocal);
+      } 
+  }
 
   const IndividualOptions = [
     { value: 0, label: "Realtor" },
@@ -146,19 +159,19 @@ const ContactsActionbar = ({ active = "", setActive = "", activeFilterOrg = "", 
                           <Checkbox
                             className="mr-6"
                             id={index}
-                            checked={activeFilterTag?.includes(option.value)} // Check if the value is in the array
+                            checked={activeFilterLocal?.includes(option.value)} // Check if the value is in the array
                             onChange={() => {
-                              if (activeFilterTag?.includes(option.value)) {
+                              if (activeFilterLocal?.includes(option.value)) {
                                 // Remove the value if it's already selected
-                                setActiveFilterTag(activeFilterTag?.filter((tag) => tag !== option.value));
+                                setActiveFilterLocal(activeFilterLocal?.filter((tag) => tag !== option.value));
                               } else {
                                 // Add the value if it's not selected
-                                setActiveFilterTag([...activeFilterTag, option.value]);
+                                setActiveFilterLocal([...activeFilterLocal, option.value]);
                               }
                             }}
                           />
                           <div>
-                          <NewBadge label={option.label} />
+                            <NewBadge label={option.label} />
                             {/* <p className="text-base text-secondary-800">{option.label}</p> */}
                           </div>
                         </div>
@@ -182,6 +195,19 @@ const ContactsActionbar = ({ active = "", setActive = "", activeFilterOrg = "", 
                       </div>
                     </Dropdown.Item>
                   ))} */}
+                  <div className="text-center py-3">
+                    <XButton
+                      text={"Reset"}
+                      className="bg-card-300 text-sm text-secondary-800 py-[10px] px-8 rounded-[100px]"
+                      onClick={onReset}
+                    />
+                    <XButton
+                      type="submit"
+                      text={"Apply"}
+                      className="bg-primary text-sm text-white py-[10px] px-8 rounded-[100px] ml-3"
+                    onClick={onApply}
+                    />
+                  </div>
                 </Dropdown>
               </div>
               <TagButtonWithModal
