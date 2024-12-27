@@ -17,6 +17,7 @@ import { debounce } from "lodash";
 import { postRequest } from "../../axios/interceptor";
 import { API_ENDPOINTS } from "../../constants/api";
 import avatar from '../../assets/images/contact_avtar.png';
+import { ReqSignParticipantCss, ReqSignSeacrhCss } from "../../constants/constants";
 
 const fileTypeOptions = [
     { value: "Engineer Inspection", label: "Engineer Inspection" },
@@ -330,8 +331,8 @@ const SignFileModal = ({ onClose, fileName = "", generalUpload, taskName = "", o
                                         </span>}
                                 </div>
 
-                                {showParticipant && <ParticipantListEmail meetModal={true} setToEmail={setToEmail} toEmail={toEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
-                                {searchResults?.length > 0 && <SearchListEmail setInputValue={setInputValue} searchResults={searchResults} setSearchResults={setSearchResults} setToEmail={setToEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
+                                {showParticipant && <ParticipantListEmail placeCss={ReqSignParticipantCss} meetModal={true} setToEmail={setToEmail} toEmail={toEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
+                                {searchResults?.length > 0 && <SearchListEmail placeCss={ReqSignSeacrhCss} setInputValue={setInputValue} searchResults={searchResults} setSearchResults={setSearchResults} setToEmail={setToEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
 
                             </div>
                         </div>

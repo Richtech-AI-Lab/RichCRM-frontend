@@ -727,3 +727,50 @@ export const formatFileSize = (bytes) => {
 
   return `${size.toFixed(2)} ${units[unitIndex]}`;
 }
+
+export const EmailParticipantCss = {
+  background: "#fff",
+  zIndex: "9",
+  right: "25px",
+  maxWidth: "249px",
+}
+export const EmailSearchCss= {
+  background: "#fff",
+  zIndex: "9",
+  right: "25px",
+  maxWidth: "249px",
+  overflowY: 'scroll', maxHeight: '50vh'
+}
+
+export const CreateEventParticipantCss = {
+  background: "#fff",
+  zIndex: "9",
+  right: "70px",
+  top: '179px',
+  maxWidth: "249px",
+}
+export const CreateEventSeacrhCss= {
+  background: "#fff",
+  zIndex: "9",
+  right: "79px",
+  top:"180px",
+  maxWidth: "249px",
+  overflowY: 'scroll', maxHeight: '50vh'
+}
+
+
+export const ReqSignParticipantCss = {
+  background: "#fff",
+  zIndex: "9",
+  right: "70px",
+  top: '179px',
+  maxWidth: "249px",
+}
+export const ReqSignSeacrhCss= {
+  background: "#fff",
+  zIndex: "9",
+  right: "99px",
+  top:"233px",
+  maxWidth: "249px",
+  overflowY: 'scroll', maxHeight: '40vh'
+}
