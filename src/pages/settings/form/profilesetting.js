@@ -8,8 +8,8 @@ export const ProfileSetting = ({ title }) => {
         <>
 
             <div className="bg-white p-4 rounded-2xl mb-4 shadow-card">
-                {title && <div className="flex justify-between items-center mb-6">
-                    <span className="text-base text-secondary-800 font-medium">{title}</span>
+                {title && <div className="flex flex-col justify-center items-start gap-2 self-stretch mb-6">
+                    <span className="text-base font-bold">{title}</span>
                 </div>}
                 <div className="border-badge-gray pb-3 mb-3">
                     <div className="grid grid-cols-2 gap-4">
@@ -66,8 +66,8 @@ export const ProfileSetting = ({ title }) => {
                 </div> */}
             </div>
             <div className="bg-white p-4 rounded-2xl mb-4 shadow-card">
-                <div className="flex justify-between items-center mb-6">
-                    <span className="text-base text-secondary-800 font-medium">Contact</span>
+                 <div className="flex flex-col justify-center items-start gap-2 self-stretch mb-6">
+                    <span className="text-base font-bold">Contact</span>
                 </div>
                     <div className="border-b border-badge-gray pb-3 mb-3">
                         <span className={`left-txt flex items-center`}>Email Address</span>
