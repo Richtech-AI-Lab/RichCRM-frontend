@@ -54,7 +54,15 @@ const AddReminderModal = ({ onClose, reminderData }) => {
   const [toEmail, setToEmail] = useState([]);
   const [searchParticipantResults, setSearchParticipantResults] = useState([]);
   const [allDay, setAllDay] = useState(false);
-  const [type , setType] = useState()
+  const [type, setType] = useState()
+
+
+  useEffect(() => {
+    // set type of event in case of edit, handle form submit
+    if (reminderData?.caseId) {
+      setType(1)
+    }
+  }, [reminderData])
 
   const debouncedCaseNameFunction = useCallback(
     debounce(async (value) => {
@@ -112,7 +120,7 @@ const AddReminderModal = ({ onClose, reminderData }) => {
     // popupReminder: false,
     // emailReminder: false
     eventType: "",
-    
+
     eventTitle: "",
     description: "",
     startTime: null,
@@ -257,7 +265,7 @@ const AddReminderModal = ({ onClose, reminderData }) => {
   const validationMeetSchema = Yup.object({
     caseId: Yup.string().required('Case is required'),
     eventType: Yup.string().required('Event Type is required'),
-    eventTitle : Yup.string().required('Event Title is required'),
+    eventTitle: Yup.string().required('Event Title is required'),
   });
 
   const dynamicValidationSchema = Yup.lazy((values) => {
@@ -389,11 +397,11 @@ const AddReminderModal = ({ onClose, reminderData }) => {
                       />
                     </div>
                   </div>
-
-                  <div className='flex flex-col gap-4 self-stretch'>
+                  {!reminderData?.caseId && <div className='flex flex-col gap-4 self-stretch'>
                     <Label value="Event Type" className="mt-4" />
                     <div className={`items-dropdown single-select gray-btn `}  >
                       <NewCaseDropdown
+                        disabled={reminderData?.caseId ? true : false}
                         defaultLabel="Event Type"
                         name="eventType"
                         value={values?.eventType}
@@ -408,12 +416,13 @@ const AddReminderModal = ({ onClose, reminderData }) => {
                         form={{ errors, touched }}
                       />
                       {touched?.eventType && errors?.eventType ? (
-                              <div className="text-red-500 text-sm">
-                                {errors.eventType}
-                              </div>
-                            ) : null}
+                        <div className="text-red-500 text-sm">
+                          {errors.eventType}
+                        </div>
+                      ) : null}
                     </div>
-                  </div>
+                  </div>}
+
 
                   {type === 0 ?
                     <>
