@@ -769,8 +769,9 @@ export const ReqSignParticipantCss = {
 export const ReqSignSeacrhCss= {
   background: "#fff",
   zIndex: "9",
-  right: "99px",
-  top:"233px",
+  // right: "99px",
+  top:"50px",
+  left: "0px",
   maxWidth: "249px",
   overflowY: 'scroll', maxHeight: '40vh'
 }

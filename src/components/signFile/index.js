@@ -276,8 +276,8 @@ const SignFileModal = ({ onClose, fileName = "", generalUpload, taskName = "", o
                                             text={"Upload"}
                                             disable={uploadedFiles?.length == 0}
                                             className={`text-sm py-[10px] px-6 rounded-[100px] ml-4 ${uploadedFiles?.length == 0
-                                                    ? "bg-gray-400 text-gray-200 cursor-not-allowed"
-                                                    : "bg-primary text-white"
+                                                ? "bg-gray-400 text-gray-200 cursor-not-allowed"
+                                                : "bg-primary text-white"
                                                 }`}
                                         />
                                     </div>
@@ -318,14 +318,18 @@ const SignFileModal = ({ onClose, fileName = "", generalUpload, taskName = "", o
                                             )}
 
                                         </ul>
-                                        <input
-                                            type="text"
-                                            className="flex-1 inline border-0 focus:ring-transparent bg-bg-gray-200 w-100"
-                                            value={inputValue}
-                                            onChange={handleInputChange}
-                                            onBlur={handleInputBlur} // or use onKeyDown to detect 'Enter' key
-                                            placeholder="Enter email"
-                                        />
+                                        <div className="flex-1 relative">
+
+                                            <input
+                                                type="text"
+                                                className="inline border-0 focus:ring-transparent bg-bg-gray-200 w-100"
+                                                value={inputValue}
+                                                onChange={handleInputChange}
+                                                onBlur={handleInputBlur} // or use onKeyDown to detect 'Enter' key
+                                                placeholder="Enter email"
+                                            />
+                                            {searchResults?.length > 0 && <SearchListEmail placeCss={ReqSignSeacrhCss} setInputValue={setInputValue} searchResults={searchResults} setSearchResults={setSearchResults} setToEmail={setToEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
+                                        </div>
                                         {!showParticipant ?
                                             <span className="flex w-10 h-10 flex-col justify-center items-center gap-2.5 cursor-pointer" onClick={() => setShowParticipant(true)}>
                                                 <img src={IMAGES.addIcon} alt="icon" />
@@ -334,11 +338,10 @@ const SignFileModal = ({ onClose, fileName = "", generalUpload, taskName = "", o
                                                 <img src={IMAGES.removeIcon} alt="icon" />
                                             </span>}
                                     </div>
+
                                     {showParticipant && <ParticipantListEmail placeCss={ReqSignParticipantCss} meetModal={true} setToEmail={setToEmail} toEmail={toEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
 
-
                                 </div>
-                                {searchResults?.length > 0 && <SearchListEmail placeCss={ReqSignSeacrhCss} setInputValue={setInputValue} searchResults={searchResults} setSearchResults={setSearchResults} setToEmail={setToEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
 
                             </div>
                         </div>
