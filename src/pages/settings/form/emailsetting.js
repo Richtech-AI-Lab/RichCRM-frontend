@@ -9,7 +9,7 @@ import { API_ENDPOINTS } from '../../../constants/api';
 import { toast } from 'react-toastify';
 import { postRequest } from '../../../axios/interceptor';
 import { useSelector } from 'react-redux';
-import { Spinner, ToggleSwitch } from 'flowbite-react';
+import { Spinner, Textarea, ToggleSwitch } from 'flowbite-react';
 import { FiUpload } from 'react-icons/fi';
 import { IMAGES } from '../../../constants/imagePath';
 
@@ -20,8 +20,8 @@ export const EmailSetting = ({ title }) => {
         <>
 
             <div className="bg-white p-4 rounded-2xl mb-5 shadow-card">
-                {title && <div className="flex justify-between items-center mb-2">
-                    <span className="text-base text-secondary-800 font-medium">Email Signature</span>
+                {title && <div className="flex flex-col justify-center items-start gap-2 self-stretch">
+                    <span className="text-base font-bold">Email Signature</span>
                 </div>}
                 {/* <p className="mb-6">Mattis amet eu velit viverra aliquet porta at a. Auctor lectus tincidunt facilisis pellentesque maecenas enim sed dolor adipiscing.</p> */}
                 <div className='grid gap-5 mt-5'>
@@ -259,6 +259,30 @@ export const EmailSetting = ({ title }) => {
                                 <p className="text-secondary-800 text-sm"><strong>Website: </strong>jlee.com</p>
                             </div>
                             <p className="text-secondary-800 text-sm"><strong>Address: </strong>1234 Main St, Flushing, NY 11354</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div className="bg-white p-4 rounded-2xl mb-5 shadow-card">
+                {title && <div className="flex flex-col justify-center items-start gap-2 self-stretch">
+                    <span className="text-base font-bold">Notes & Terms</span>
+                </div>}
+                <p className="mb-6">By entering Notes or Terms, this content will be displayed in every email.</p>
+                <div className='grid gap-5 mt-5'>
+                    <div className="grid gap-1 bg-gray chat-box rounded-2xl p-4">
+                        <div className="bg-white rounded-2xl mb-5">
+                            <Textarea
+                                name="note"
+                                type="text"
+                                placeholder="Add a note for "
+                                className="bg-white resize-none border-none h-60 py-3 px-4"
+                            // value={values?.note}
+                            // onChange={handleChange}
+                            // onBlur={handleBlur}
+
+                            />
                         </div>
                     </div>
                 </div>

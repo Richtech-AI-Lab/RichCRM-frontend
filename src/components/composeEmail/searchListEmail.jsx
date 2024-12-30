@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { IMAGES } from "../../constants/imagePath";
 import { toast } from "react-toastify";
 
-const SearchListEmail = ({ searchResults , setSearchResults, setToEmail, setInputValue}) => {
+const SearchListEmail = ({ searchResults , setSearchResults, setToEmail, setInputValue, placeCss}) => {
     const handleItemClick = async (item) => {
         if(item?.email){
           setToEmail((prevEmails) => {
@@ -21,13 +21,7 @@ const SearchListEmail = ({ searchResults , setSearchResults, setToEmail, setInpu
   return (
         <div
           className="card absolute w-full max-w-md shadow-shadow-light-2 over"
-          style={{
-            background: "#fff",
-            zIndex: "9",
-            right: "25px",
-            maxWidth: "249px",
-            overflowY: 'scroll', maxHeight: '50vh'
-          }}
+          style={placeCss}
         >
           <div className="">
             <ul className="z-9999 overflow-hidden">

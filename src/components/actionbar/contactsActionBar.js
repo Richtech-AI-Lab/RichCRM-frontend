@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import XButton from "../button/XButton";
-import { addFromContactTab, addFromContactTabs, addFromContactV1Tabs, contactTab, ORGANIZATION_TYPE, SORT_OPTIONS } from "../../constants/constants";
+import { addFromContactTab, addFromContactTabs, addFromContactV1Tabs, ORGANIZATION_TYPE, } from "../../constants/constants";
 import { FiEdit3, FiPlus } from "react-icons/fi";
 import { RiDownloadLine } from "react-icons/ri";
 import CaseExportModal from "../caseExportModal";
@@ -12,7 +12,7 @@ import { AiOutlineLink } from "react-icons/ai";
 import ContactButtonWithModal from "../newContactButton";
 import NewIndividualContactModalV1 from "../contactModal/newIndividualContactModalV1";
 import NewOrganizationContactModalV1 from "../contactModal/newOrganizationContactModalV1";
-import { Dropdown } from "flowbite-react";
+import { Checkbox, Dropdown } from "flowbite-react";
 import { IoCheckmarkSharp, IoFilter } from "react-icons/io5";
 import TagButtonWithModal from "../tagModal/newTagButton";
 import TagModal from "../tagModal/tagModal";
@@ -23,6 +23,7 @@ const ContactsActionbar = ({ active = "", setActive = "", activeFilterOrg = "", 
   const location = useLocation();
   const tagDetails = useSelector((state) => state.tag.tag);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeFilterLocal, setActiveFilterLocal] = useState(activeFilterTag?.length > 0 ? activeFilterTag : []);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -40,6 +41,18 @@ const ContactsActionbar = ({ active = "", setActive = "", activeFilterOrg = "", 
     const pathsToShow = [routePath];
     return pathsToShow.includes(location.pathname);
   };
+
+  const onReset = () =>{
+    setActiveFilterTag([])
+    setActiveFilterLocal([])
+  }
+
+  const onApply = ()=>{
+      if (activeFilterLocal?.length > 0) {
+        // Remove the value if it's already selected
+        setActiveFilterTag(activeFilterLocal);
+      } 
+  }
 
   const IndividualOptions = [
     { value: 0, label: "Realtor" },
@@ -128,7 +141,7 @@ const ContactsActionbar = ({ active = "", setActive = "", activeFilterOrg = "", 
                 <Dropdown
                   label={
                     <>
-                      <IoFilter size={20} className="mr-2"/> Filter
+                      <IoFilter size={20} className="mr-2" /> Filter
                       {/* {formattedOptions.find((option) => option.value === activeFilterTag)?.label || 'Default Label'} */}
                     </>
                   }
@@ -136,22 +149,65 @@ const ContactsActionbar = ({ active = "", setActive = "", activeFilterOrg = "", 
                   className="rounded-2xl w-64 shadow-shadow-light-2"
                   dismissOnClick={true}
                 >
+                  {formattedOptions?.length > 0 ? (
+                    formattedOptions.map((option, index) => (
+                      <li
+                        className="px-2 py-2 hover:bg-input-surface flex justify-between items-center"
+                        key={option.value}
+                      >
+                        <div className="flex items-center cursor-pointer">
+                          <Checkbox
+                            className="mr-6"
+                            id={index}
+                            checked={activeFilterLocal?.includes(option.value)} // Check if the value is in the array
+                            onChange={() => {
+                              if (activeFilterLocal?.includes(option.value)) {
+                                // Remove the value if it's already selected
+                                setActiveFilterLocal(activeFilterLocal?.filter((tag) => tag !== option.value));
+                              } else {
+                                // Add the value if it's not selected
+                                setActiveFilterLocal([...activeFilterLocal, option.value]);
+                              }
+                            }}
+                          />
+                          <div>
+                            <NewBadge label={option.label} />
+                            {/* <p className="text-base text-secondary-800">{option.label}</p> */}
+                          </div>
+                        </div>
+                      </li>
+                    ))
+                  ) : (
+                    <p className="text-sm text-text-gray-100">No options available</p>
+                  )}
 
-                  {formattedOptions.map((option) => (
+                  {/* {formattedOptions.map((option) => (
                     <Dropdown.Item
                       key={option.value}
                       className="py-3"
                       onClick={() => setActiveFilterTag(option.value)}
                     >
                       <div className="flex items-center gap-2">
-                        {/* {sortBy === option.value && ( */}
                         <IoCheckmarkSharp size={20} className={`inline-block mr-1 ${activeFilterTag == option.value ? "" : "opacity-0"
                           }`} />
 
                         <NewBadge label={option.label} />
                       </div>
                     </Dropdown.Item>
-                  ))}
+                  ))} */}
+                  <div className="text-center py-3">
+                    <XButton
+                      text={"Reset"}
+                      className="bg-card-300 text-sm text-secondary-800 py-[10px] px-8 rounded-[100px]"
+                      onClick={onReset}
+                    />
+                    <XButton
+                      type="submit"
+                      text={"Apply"}
+                      className="bg-primary text-sm text-white py-[10px] px-8 rounded-[100px] ml-3"
+                    onClick={onApply}
+                    />
+                  </div>
                 </Dropdown>
               </div>
               <TagButtonWithModal
@@ -169,9 +225,9 @@ const ContactsActionbar = ({ active = "", setActive = "", activeFilterOrg = "", 
             <div className="flex">
               <div className={`items-dropdown single-select mr-4`}>
                 <Dropdown
-                label={
+                  label={
                     <>
-                      <IoFilter size={20} className="mr-2"/> Filter
+                      <IoFilter size={20} className="mr-2" /> Filter
                       {/* {formattedOptions.find((option) => option.value === activeFilterTag)?.label || 'Default Label'} */}
                     </>
                   }

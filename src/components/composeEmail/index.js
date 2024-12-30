@@ -20,6 +20,7 @@ import { debounce } from 'lodash';
 import { IMAGES } from '../../constants/imagePath';
 import SearchListEmail from './searchListEmail';
 import ParticipantListEmail from './participantListEmail';
+import { EmailParticipantCss, EmailSearchCss } from '../../constants/constants';
 
 const ComposeEmail = ({ taskItem, onClose, templates, onSendEmail }) => {
   const dispatch = useDispatch();
@@ -302,16 +303,16 @@ const ComposeEmail = ({ taskItem, onClose, templates, onSendEmail }) => {
                       onBlur={handleInputBlur} // or use onKeyDown to detect 'Enter' key
                       placeholder="Enter email"
                     />
-                    {showParticipant && <ParticipantListEmail meetModal={true} setToEmail={setToEmail} toEmail={toEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
-                    {searchResults?.length > 0 && <SearchListEmail meetModal={true} setInputValue={setInputValue} searchResults={searchResults} setSearchResults={setSearchResults} setToEmail={setToEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
+                    {showParticipant && <ParticipantListEmail placeCss={EmailParticipantCss} meetModal={true} setToEmail={setToEmail} toEmail={toEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
+                    {searchResults?.length > 0 && <SearchListEmail placeCss={EmailSearchCss}  meetModal={true} setInputValue={setInputValue} searchResults={searchResults} setSearchResults={setSearchResults} setToEmail={setToEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
                   </div>
                   {!showParticipant ?
-                  <span className="icon mr-2 cursor-pointer" onClick={() => setShowParticipant(true)}>
-                    <img src={IMAGES.addIcon} alt="icon" />
-                  </span>:
-                  <span className="icon mr-2 cursor-pointer" onClick={() => setShowParticipant(false)}>
-                    <img src={IMAGES.removeIcon} alt="icon" />
-                  </span>}
+                    <span className="icon mr-2 cursor-pointer" onClick={() => setShowParticipant(true)}>
+                      <img src={IMAGES.addIcon} alt="icon" />
+                    </span> :
+                    <span className="icon mr-2 cursor-pointer" onClick={() => setShowParticipant(false)}>
+                      <img src={IMAGES.removeIcon} alt="icon" />
+                    </span>}
                   {/* <IoIosClose size={28} onClick={() => setShowParticipant(true)} className="text-text-gray-100 cursor-pointer" /> */}
                 </div>
                 <div className="flex justify-between items-center border-b border-b-border py-[6px] ">

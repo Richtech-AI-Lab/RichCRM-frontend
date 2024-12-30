@@ -26,6 +26,7 @@ import { API_ENDPOINTS } from "../../constants/api";
 import { debounce } from "lodash";
 import { postRequest } from "../../axios/interceptor";
 import SearchListEmail from "../composeEmail/searchListEmail";
+import { CreateEventParticipantCss, CreateEventSeacrhCss } from "../../constants/constants";
 
 const GoogleMeetModal = ({ onClose, title }) => {
   const { casesData } = useSelector((state) => state.case);
@@ -325,8 +326,8 @@ const GoogleMeetModal = ({ onClose, title }) => {
                           </span>}
                       </div>
 
-                      {showParticipant && <ParticipantListEmail meetModal={true} setToEmail={setToEmail} toEmail={toEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
-                      {searchResults?.length > 0 && <SearchListEmail setInputValue={setInputValue} searchResults={searchResults} setSearchResults={setSearchResults} setToEmail={setToEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
+                      {showParticipant && <ParticipantListEmail placeCss={CreateEventParticipantCss}  meetModal={true} setToEmail={setToEmail} toEmail={toEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
+                      {searchResults?.length > 0 && <SearchListEmail placeCss={CreateEventSeacrhCss} setInputValue={setInputValue} searchResults={searchResults} setSearchResults={setSearchResults} setToEmail={setToEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
 
                     </div>
                     <div className='flex flex-col gap-4 self-stretch'>

@@ -5,7 +5,13 @@ import { Checkbox } from "flowbite-react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
-const ParticipantListEmail = ({ onClose, setToEmail, toEmail, meetModal ="" }) => {
+const ParticipantListEmail = ({
+  onClose,
+  setToEmail,
+  toEmail,
+  meetModal = "",
+  placeCss={}
+}) => {
   const { client, additionalClient } = useSelector((state) => state.client);
   const { organization, additionalOrganization } = useSelector(
     (state) => state.organization
@@ -86,11 +92,11 @@ const ParticipantListEmail = ({ onClose, setToEmail, toEmail, meetModal ="" }) =
   };
 
   const handleAddButton = async () => {
-    if(allResult.length === 0){
+    if (allResult.length === 0) {
       onClose();
       return;
     }
-    if (selectedParticipant.length === 0 ) {
+    if (selectedParticipant.length === 0) {
       toast.error("No participants selected to add!");
       return;
     }
@@ -111,13 +117,10 @@ const ParticipantListEmail = ({ onClose, setToEmail, toEmail, meetModal ="" }) =
 
   return (
     <>
-<div
-  className={`card absolute w-full max-w-md shadow-shadow-light-2 ${meetModal ? 'right-[50px] top-[20vh] max-w-[249px]' : 'right-[25px] max-w-[249px]'}`}
-  style={{
-    background: "#fff",
-    zIndex: "9",
-  }}
->
+      <div
+        className={`card absolute w-full max-w-md shadow-shadow-light-2`}
+        style={placeCss}
+      >
         <div className="">
           <ul className="z-9999 overflow-hidden">
             {allResult?.length > 0 ? (
@@ -167,7 +170,7 @@ const ParticipantListEmail = ({ onClose, setToEmail, toEmail, meetModal ="" }) =
           <div className="flex justify-center items-center">
             <XButton
               type="button"
-              text={`${allResult.length === 0 ? "Close" :"Add"}`}
+              text={`${allResult.length === 0 ? "Close" : "Add"}`}
               onClick={() => handleAddButton()}
               className="flex bg-primary text-sm text-white py-[10px] px-[70px] rounded-[100px] mt-2"
             />
