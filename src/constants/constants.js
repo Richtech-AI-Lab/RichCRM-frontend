@@ -762,8 +762,8 @@ export const CreateEventSeacrhCss= {
 export const ReqSignParticipantCss = {
   background: "#fff",
   zIndex: "9",
-  right: "70px",
-  top: '179px',
+  right: "0px",
+  top: '50px',
   maxWidth: "249px",
 }
 export const ReqSignSeacrhCss= {

@@ -275,11 +275,10 @@ const SignFileModal = ({ onClose, fileName = "", generalUpload, taskName = "", o
                                             type="submit"
                                             text={"Upload"}
                                             disable={uploadedFiles?.length == 0}
-                                            className={`text-sm py-[10px] px-6 rounded-[100px] ml-4 ${
-                                                uploadedFiles?.length == 0
+                                            className={`text-sm py-[10px] px-6 rounded-[100px] ml-4 ${uploadedFiles?.length == 0
                                                     ? "bg-gray-400 text-gray-200 cursor-not-allowed"
                                                     : "bg-primary text-white"
-                                            }`}
+                                                }`}
                                         />
                                     </div>
                                 </form>
@@ -298,44 +297,47 @@ const SignFileModal = ({ onClose, fileName = "", generalUpload, taskName = "", o
                             <p className="text-sm font-normal leading-[1.42857] tracking-[0.25px]">Confirm the participants for signing, who will be synced to DocuSign for further setup.</p>
                         </div>
                     </Modal.Header>
-                    <Modal.Body className="p-3 px-4">
+                    <Modal.Body className="p-3 px-4 overflow-visible">
 
-                        <div className="flex items-center self-stretch">
-                            <div className="flex flex-col items-start gap-4 self-stretch">
+                        <div className="flex items-center ">
+                            <div className="flex flex-col items-start gap-4 w-full">
                                 <label className="text-base font-medium leading-6 tracking-wide">Participants</label>
-                                <div className="flex items-start justify-between gap-4 self-stretch bg-bg-gray-200 rounded  px-1 py-1">
-                                    <ul className="flex flex-col justify-between gap-2">
-                                        {toEmail?.map((item, index) =>
-                                            <li className="flex items-start justify-between p-2 bg-white rounded-full ">
-                                                <div className='flex items-center'>
-                                                    <img src={avatar} alt="" className="mr-2" />
-                                                    <span className='overflow-hidden'>{item}</span>
-                                                </div>
-                                                <IoIosClose size={28} className="text-text-gray-100 cursor-pointer"
-                                                    onClick={() => removeToEmail(index)}
-                                                />
-                                            </li>
-                                        )}
+                                <div className="relative w-full">
+                                    <div className="flex items-start gap-4  bg-bg-gray-200 rounded  px-1 py-1">
+                                        <ul className="flex flex-col justify-between gap-2">
+                                            {toEmail?.map((item, index) =>
+                                                <li className="flex items-start justify-between p-2 bg-white rounded-full ">
+                                                    <div className='flex items-center'>
+                                                        <img src={avatar} alt="" className="mr-2" />
+                                                        <span className='overflow-hidden'>{item}</span>
+                                                    </div>
+                                                    <IoIosClose size={28} className="text-text-gray-100 cursor-pointer"
+                                                        onClick={() => removeToEmail(index)}
+                                                    />
+                                                </li>
+                                            )}
 
-                                    </ul>
-                                    <input
-                                        type="text"
-                                        className="inline border-0 focus:ring-transparent bg-bg-gray-200 w-100"
-                                        value={inputValue}
-                                        onChange={handleInputChange}
-                                        onBlur={handleInputBlur} // or use onKeyDown to detect 'Enter' key
-                                        placeholder="Enter email"
-                                    />
-                                    {!showParticipant ?
-                                        <span className="flex w-10 h-10 flex-col justify-center items-center gap-2.5 cursor-pointer" onClick={() => setShowParticipant(true)}>
-                                            <img src={IMAGES.addIcon} alt="icon" />
-                                        </span> :
-                                        <span className="flex w-10 h-10 flex-col justify-center items-center gap-2.5 cursor-pointer" onClick={() => setShowParticipant(false)}>
-                                            <img src={IMAGES.removeIcon} alt="icon" />
-                                        </span>}
+                                        </ul>
+                                        <input
+                                            type="text"
+                                            className="flex-1 inline border-0 focus:ring-transparent bg-bg-gray-200 w-100"
+                                            value={inputValue}
+                                            onChange={handleInputChange}
+                                            onBlur={handleInputBlur} // or use onKeyDown to detect 'Enter' key
+                                            placeholder="Enter email"
+                                        />
+                                        {!showParticipant ?
+                                            <span className="flex w-10 h-10 flex-col justify-center items-center gap-2.5 cursor-pointer" onClick={() => setShowParticipant(true)}>
+                                                <img src={IMAGES.addIcon} alt="icon" />
+                                            </span> :
+                                            <span className="flex w-10 h-10 flex-col justify-center items-center gap-2.5 cursor-pointer" onClick={() => setShowParticipant(false)}>
+                                                <img src={IMAGES.removeIcon} alt="icon" />
+                                            </span>}
+                                    </div>
+                                    {showParticipant && <ParticipantListEmail placeCss={ReqSignParticipantCss} meetModal={true} setToEmail={setToEmail} toEmail={toEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
+
+
                                 </div>
-
-                                {showParticipant && <ParticipantListEmail placeCss={ReqSignParticipantCss} meetModal={true} setToEmail={setToEmail} toEmail={toEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
                                 {searchResults?.length > 0 && <SearchListEmail placeCss={ReqSignSeacrhCss} setInputValue={setInputValue} searchResults={searchResults} setSearchResults={setSearchResults} setToEmail={setToEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
 
                             </div>
