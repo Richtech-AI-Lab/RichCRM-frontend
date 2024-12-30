@@ -1,6 +1,7 @@
 import React from 'react';
 import XButton from '../../../components/button/XButton';
 import { FiPlus } from 'react-icons/fi';
+import { IoCalendarClearOutline } from "react-icons/io5";
 import { Checkbox, Label } from 'flowbite-react';
 
 const Sidebar = ({ onAddReminderClick, filters, onFilterChange, setSelectedCase }) => {
@@ -10,11 +11,11 @@ const Sidebar = ({ onAddReminderClick, filters, onFilterChange, setSelectedCase 
   };
   return (
     <div className="sidebar p-4">
-
+      
       <XButton
-        icon={<FiPlus className="text-base mr-2 inline-block" />}
+        icon={<IoCalendarClearOutline className="text-base mr-2 inline-block" />}
         onClick={setNullCallReminderModal}
-        text="Add a reminder"
+        text="Create an event"
         type="button"
         // onClick={onCancel} 
         className="bg-primary text-base text-white py-[10px] px-6 rounded-[100px] ml-4"

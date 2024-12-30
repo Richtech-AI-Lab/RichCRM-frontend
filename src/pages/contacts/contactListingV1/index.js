@@ -4,7 +4,7 @@ import { ROUTES } from "../../../constants/api";
 import { useNavigate } from "react-router-dom";
 import { IMAGES } from "../../../constants/imagePath";
 import { addFromContactTab, addFromContactV1Tab, CONTACT_TYPE, ORGANIZATION_TYPE } from "../../../constants/constants";
-import { deleteContactRequest, getContactRequest, setSelectedContact } from "../../../redux/actions/contactActions";
+import { deleteContactRequest, getContactRequest, getMultipleTagsContactRequest, setSelectedContact } from "../../../redux/actions/contactActions";
 import { useDispatch, useSelector } from "react-redux";
 import XSpinnerLoader from "../../../components/spinnerLoader/XSpinnerLoader";
 import ContactButtonWithModal from "../../../components/newContactButton";
@@ -129,7 +129,9 @@ const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) 
           tag: activeFilterTag,
           // caseId: localStorage.getItem("c_id")
         }
-        dispatch(getContactRequest(payload));
+        // dispatch(getContactRequest(payload));
+        // console.log(activeFilterTag,"activeFilterTag")
+        dispatch(getMultipleTagsContactRequest(payload))
       } catch (error) {
         console.error("Error fetching conatct:", error);
       }

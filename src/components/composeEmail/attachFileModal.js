@@ -13,9 +13,9 @@ import XSpinnerLoader from "../spinnerLoader/XSpinnerLoader";
 const MAX_FILE_SIZE_MB = 40; // 40 MB
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 
-const AttachFileModal = ({ onClose, uploadedFiles, setUploadedFiles}) => {
+const AttachFileModal = ({ onClose, uploadedFiles, setUploadedFiles }) => {
   const [loader, setLoader] = useState(false)
-//   const [uploadedFiles, setUploadedFiles] = useState([]);
+  //   const [uploadedFiles, setUploadedFiles] = useState([]);
   const initialValues = {};
   const fileInputRef = useRef(null);
 
@@ -68,7 +68,7 @@ const AttachFileModal = ({ onClose, uploadedFiles, setUploadedFiles}) => {
     );
   };
 
-  
+
   const handleSubmit = () => {
 
   };
@@ -130,8 +130,8 @@ const AttachFileModal = ({ onClose, uploadedFiles, setUploadedFiles}) => {
                                 {fileItem.file.name}
                               </p>
                               <p className="text-sm text-text-gray-100">
-                              {(fileItem.file.size / (1024 * 1024)).toFixed(2)} MB
-                            </p>
+                                {(fileItem.file.size / (1024 * 1024)).toFixed(2)} MB
+                              </p>
                             </div>
                             <IoIosCloseCircleOutline
                               className="text-xl text-text-gray-100 cursor-pointer"
@@ -150,9 +150,12 @@ const AttachFileModal = ({ onClose, uploadedFiles, setUploadedFiles}) => {
                     <XButton
                       text={"Upload"}
                       onClick={onClose}
-                      disabled={isSubmitting}
-                      className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px] ml-4"
-                      // className="bg-card-300 text-sm text-primary2 py-[10px] px-6 rounded-[100px]"
+                      disable={uploadedFiles?.length == 0}
+                      className={`text-sm py-[10px] px-6 rounded-[100px] ml-4 ${uploadedFiles?.length == 0
+                          ? "bg-gray-400 text-gray-200 cursor-not-allowed"
+                          : "bg-primary text-white"
+                        }`}
+                    // className="bg-card-300 text-sm text-primary2 py-[10px] px-6 rounded-[100px]"
                     />
                     {/* <XButton
                       type="submit"

@@ -439,14 +439,18 @@ const handleFileDrop = async (event) => {
                     <XButton
                       text={"Cancel"}
                       onClick={onClose}
-                      disabled={isSubmitting}
+                      // disabled={isSubmitting}
                       className="bg-card-300 text-sm text-primary2 py-[10px] px-6 rounded-[100px]"
                     />
                     <XButton
                       type="submit"
                       text={"Upload"}
-                      disabled={isSubmitting}
-                      className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px] ml-4"
+                      disable={uploadedFiles?.length == 0}
+                      className={`text-sm py-[10px] px-6 rounded-[100px] ml-4 ${
+                        uploadedFiles?.length == 0
+                            ? "bg-gray-400 text-gray-200 cursor-not-allowed"
+                            : "bg-primary text-white"
+                    }`}
                     />
                   </div>
                 </form>
