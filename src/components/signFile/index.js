@@ -272,7 +272,7 @@ const SignFileModal = ({ onClose, fileName = "", generalUpload, taskName = "", o
                                             className="bg-card-300 text-sm text-primary2 py-[10px] px-6 rounded-[100px]"
                                         />
                                         <XButton
-                                            type="button"
+                                            type="submit"
                                             text={"Upload"}
                                             disable={uploadedFiles?.length == 0}
                                             className={`text-sm py-[10px] px-6 rounded-[100px] ml-4 ${
