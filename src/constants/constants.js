@@ -775,3 +775,9 @@ export const ReqSignSeacrhCss= {
   maxWidth: "249px",
   overflowY: 'scroll', maxHeight: '40vh'
 }
+
+
+export const EventTypeOptions = [
+  { value: 0, label: "Online Meeting (Google Meet)" },
+  { value: 1, label: "Due Date" },
+];
