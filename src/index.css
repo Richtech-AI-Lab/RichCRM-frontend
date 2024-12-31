@@ -365,6 +365,16 @@
 	padding: 12px;
 	overflow-y: scroll;
 }
+
+.scroller-remove{
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.scroller-remove::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, and Edge */
+}
+
 .chat-box {
   background-color:#f3f3f8;
 }
