@@ -11,7 +11,7 @@ import { Spinner } from 'flowbite-react';
 import detectIncognito from 'detectincognitojs';
 import { toast } from 'react-toastify';
 
-const Calendar = ({ toggleAddReminderModal, filters, selectedCase, setSelectedCase }) => {
+const Calendar = ({ toggleAddReminderModal, isAddReminderOpen, filters, selectedCase, setSelectedCase }) => {
   const dispatch = useDispatch();
   const [googleEvents, setGoogleEvents] = useState([]);
   const [isIncognitoChecked, setIsIncognitoChecked] = useState(false); 
@@ -51,6 +51,19 @@ const Calendar = ({ toggleAddReminderModal, filters, selectedCase, setSelectedCa
         type: "googleMeet",
       },
     }));
+
+    useEffect(()=>{
+      if(isAddReminderOpen!= true){
+        detectIncognito().then((result) => {
+          // console.log(result.browserName, result.isPrivate);
+          if (result.isPrivate) {
+            toast.info("Please use a regular browser tab to sign in and access Google Calendar.")
+          } else {
+            authenticateAndFetchEvents();
+          }
+        });
+      }
+    },[isAddReminderOpen])
 
   const authenticateAndFetchEvents = async () => {
     try {
