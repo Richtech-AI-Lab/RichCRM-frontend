@@ -22,6 +22,20 @@ const MeetingDetailModal = ({ onClose, eventData, title }) => {
     });
 
     function formatDateRange(start, end) {
+        const options = { weekday: 'long', month: 'long', day: 'numeric' }; // Options for date formatting
+    
+        const startDate = new Date(start);
+        const endDate = new Date(end);
+    
+        // Format the main date part (e.g., Friday, November 29)
+        const formattedStartDate = startDate.toLocaleDateString('en-US', options);
+        const formattedEndDate = endDate.toLocaleDateString('en-US', options);
+    
+        // Return the formatted date range
+        return `${formattedStartDate} - (All Day)`;
+    }
+
+    function formatDateTimeRange(start, end) {
         // console.log(start,"SSSSSSSS")
         // console.log(end,"eeee")
         const options = { weekday: 'long', month: 'long', day: 'numeric' }; // Options for date formatting
@@ -70,7 +84,7 @@ const MeetingDetailModal = ({ onClose, eventData, title }) => {
                     <li className='flex justify-start items-center gap-4 p-5 border-b-2 border-black-10 '>
                         <img src={IMAGES?.calendarGray} alt="logo" className="" />
                         <div >
-                            <p>{formatDateRange(eventData?.start, eventData?.end)}</p>
+                            <p>{eventData.allDay ? formatDateRange(eventData?.start, eventData?.end) : formatDateTimeRange(eventData?.start, eventData?.end)}</p>
                         </div>
                     </li>
                     <li className='flex justify-start items-center gap-4 p-5 '>
@@ -88,7 +102,7 @@ const MeetingDetailModal = ({ onClose, eventData, title }) => {
 
                     </li>
                     <div className="flex justify-end px-5 mb-3">
-                        <XButton text="Edit" className="bg-badge-gray text-base text-primary2 py-[10px] px-6 rounded-[100px] w-1/2" />
+                        <XButton text="Edit"  className="bg-badge-gray text-base text-primary2 py-[10px] px-6 rounded-[100px] w-1/2" />
                         <XButton text="Start Meeting" onClick={handleStartClick} className="bg-primary2 text-white text-base py-[10px] px-6 rounded-[100px] ml-4 w-1/2" />
                     </div>
                 </ul>

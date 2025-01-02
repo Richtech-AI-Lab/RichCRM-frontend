@@ -42,8 +42,9 @@ const Calendar = ({ toggleAddReminderModal, isAddReminderOpen, filters, selected
     events.map((event) => ({
       id: event.id,
       title: event.summary || "Google Meet Event",
-      start: event.start.dateTime,
-      end: event.end.dateTime,
+      start: event.start.dateTime ? event.start.dateTime : event.start.date,
+      end: event.end.dateTime ? event.end.dateTime  : event.end.date,
+      allDay: event.start.date ? true : false,
       extendedProps: {
         description: event.description || "",
         attendees: event.attendees || [],
