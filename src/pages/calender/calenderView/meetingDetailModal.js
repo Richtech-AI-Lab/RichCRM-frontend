@@ -7,7 +7,7 @@ import { ROUTES } from '../../../constants/api';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-const MeetingDetailModal = ({ onClose, eventData, title}) => {
+const MeetingDetailModal = ({ onClose, eventData, title }) => {
     const navigate = useNavigate();
     const { cases } = useSelector((state) => state.case.casesData);
     // const casesData = cases.filter((caseItem) => caseItem.caseId == localStorage.getItem("c_id"));
@@ -16,7 +16,7 @@ const MeetingDetailModal = ({ onClose, eventData, title}) => {
 
     const filteredGoogleEvents = cases.filter((event) => {
         return (
-            event?.clientName ===  caseName[0] &&
+            event?.clientName === caseName[0] &&
             event?.premisesName === caseName[1]
         );
     });
@@ -45,18 +45,17 @@ const MeetingDetailModal = ({ onClose, eventData, title}) => {
     };
 
     const handleMeetCardClick = () => {
-        if(filteredGoogleEvents?.length == 1){
+        if (filteredGoogleEvents?.length == 1) {
             localStorage.setItem("c_id", filteredGoogleEvents[0]?.caseId)
-            navigate(ROUTES.CASES_DATA, { state: { casedetails : filteredGoogleEvents[0] } });
-        }else{
+            navigate(ROUTES.CASES_DATA, { state: { casedetails: filteredGoogleEvents[0] } });
+        } else {
             toast.error("Case not exist!")
         }
-      };
-
+    };
     return (
         <Modal show={true} size="md" onClose={onClose} className="new-case-modal calendar-modal ">
             <Modal.Header className="border-b-2 border-black-10 ">
-                <h2 className="text-4 font-medium text-secondary-800">Google Meet Link</h2>
+                <h2 className="text-4 font-medium text-secondary-800">{title ? title : "Google Meet Link"}</h2>
             </Modal.Header>
             <Modal.Body className="p-0 m-0">
                 <ul className="">
