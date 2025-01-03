@@ -189,12 +189,11 @@ const AddReminderModal = ({ onClose, reminderData }) => {
   };
 
   const createMeetEvent = async (values) => {
-    // console.log(values.eventTitle,  values.endTime , values.startTime)
     if (values.eventTitle && values.endTime && values.startTime) {
       const isAllDay = allDay; // A flag in your form to determine if it's an all-day event
 
       const newEvent = {
-        summary: values.eventTitle,
+        summary: `${values?.caseName}-${values?.eventTitle}`,
         description: values.description,
         start: isAllDay
           ? { date: format(values.startTime, "yyyy-MM-dd") }
