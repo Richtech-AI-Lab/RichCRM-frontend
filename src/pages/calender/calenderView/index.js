@@ -14,7 +14,7 @@ import { toast } from 'react-toastify';
 const Calendar = ({ toggleAddReminderModal, isAddReminderOpen, filters, selectedCase, setSelectedCase }) => {
   const dispatch = useDispatch();
   const [googleEvents, setGoogleEvents] = useState([]);
-  const [isIncognitoChecked, setIsIncognitoChecked] = useState(false); 
+  const [isIncognitoChecked, setIsIncognitoChecked] = useState(false);
   const { cases } = useSelector((state) => state.case.casesData);
   const casesWithDates = cases.filter((caseItem) => caseItem.closingDate || caseItem.mortgageContingencyDate);
   const calendarRef = useRef(null);
@@ -43,7 +43,7 @@ const Calendar = ({ toggleAddReminderModal, isAddReminderOpen, filters, selected
       id: event.id,
       title: event.summary || "Google Meet Event",
       start: event.start.dateTime ? event.start.dateTime : event.start.date,
-      end: event.end.dateTime ? event.end.dateTime  : event.end.date,
+      end: event.end.dateTime ? event.end.dateTime : event.end.date,
       allDay: event.start.date ? true : false,
       extendedProps: {
         description: event.description || "",
@@ -53,18 +53,18 @@ const Calendar = ({ toggleAddReminderModal, isAddReminderOpen, filters, selected
       },
     }));
 
-    useEffect(()=>{
-      if(isAddReminderOpen!= true){
-        detectIncognito().then((result) => {
-          // console.log(result.browserName, result.isPrivate);
-          if (result.isPrivate) {
-            toast.info("Please use a regular browser tab to sign in and access Google Calendar.")
-          } else {
-            authenticateAndFetchEvents();
-          }
-        });
-      }
-    },[isAddReminderOpen])
+  useEffect(() => {
+    if (isAddReminderOpen != true) {
+      detectIncognito().then((result) => {
+        // console.log(result.browserName, result.isPrivate);
+        if (result.isPrivate) {
+          toast.info("Please use a regular browser tab to sign in and access Google Calendar.")
+        } else {
+          authenticateAndFetchEvents();
+        }
+      });
+    }
+  }, [isAddReminderOpen])
 
   const authenticateAndFetchEvents = async () => {
     try {
@@ -75,6 +75,7 @@ const Calendar = ({ toggleAddReminderModal, isAddReminderOpen, filters, selected
         // User is signed in, fetch events directly
         // setIsAuthenticated(true);
         const fetchedEvents = await fetchUpcomingEvents(); // Fetch events
+        // console.log(fetchedEvents)
         setGoogleEvents(mapGoogleEvents(fetchedEvents));
         setIsLoading(false)
       } else {
@@ -140,13 +141,14 @@ const Calendar = ({ toggleAddReminderModal, isAddReminderOpen, filters, selected
   };
 
   const renderEventContent = (eventInfo) => {
-    const { title, extendedProps } = eventInfo.event;
+    const { title, extendedProps, id } = eventInfo.event;
     const { type } = extendedProps;
 
     const handleEventClick = () => {
       setSelectedCase({
         ...extendedProps.caseItem,
         title,
+        id
       });
       setIsDetailOpen(true);
     };
@@ -193,15 +195,15 @@ const Calendar = ({ toggleAddReminderModal, isAddReminderOpen, filters, selected
         >
           <span className="visually-hidden">Loading...</span>
         </Spinner>
-      </div>:
-      <FullCalendar
-        ref={calendarRef}
-        height="100%"
-        plugins={[dayGridPlugin, interactionPlugin]}
-        initialView="dayGridMonth"
-        events={[...calendarEvents, ...googleEvents]}
-        eventContent={renderEventContent}
-      />}
+      </div> :
+        <FullCalendar
+          ref={calendarRef}
+          height="100%"
+          plugins={[dayGridPlugin, interactionPlugin]}
+          initialView="dayGridMonth"
+          events={[...calendarEvents, ...googleEvents]}
+          eventContent={renderEventContent}
+        />}
       {isDetailOpen && selectedCase && (
         <DetailCaseModal
           onAddReminderClick={toggleAddReminderModal}
@@ -214,6 +216,7 @@ const Calendar = ({ toggleAddReminderModal, isAddReminderOpen, filters, selected
       )}
       {isMeetOpen && (
         <MeetingDetailModal
+          onAddReminderClick={toggleAddReminderModal}
           onClose={toggleMeetModal}
           eventData={selectedCase}
           title={selectedCase?.title}

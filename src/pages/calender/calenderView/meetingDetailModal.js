@@ -7,7 +7,7 @@ import { ROUTES } from '../../../constants/api';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-const MeetingDetailModal = ({ onClose, eventData, title }) => {
+const MeetingDetailModal = ({onAddReminderClick, onClose, eventData, title }) => {
     const navigate = useNavigate();
     const { cases } = useSelector((state) => state.case.casesData);
     // const casesData = cases.filter((caseItem) => caseItem.caseId == localStorage.getItem("c_id"));
@@ -23,14 +23,14 @@ const MeetingDetailModal = ({ onClose, eventData, title }) => {
 
     function formatDateRange(start, end) {
         const options = { weekday: 'long', month: 'long', day: 'numeric' }; // Options for date formatting
-    
+
         const startDate = new Date(start);
         const endDate = new Date(end);
-    
+
         // Format the main date part (e.g., Friday, November 29)
         const formattedStartDate = startDate.toLocaleDateString('en-US', options);
         const formattedEndDate = endDate.toLocaleDateString('en-US', options);
-    
+
         // Return the formatted date range
         return `${formattedStartDate} - (All Day)`;
     }
@@ -65,6 +65,11 @@ const MeetingDetailModal = ({ onClose, eventData, title }) => {
         } else {
             toast.error("Case not exist!")
         }
+    };
+
+    const toggleDetailModalOpenAdd = () => {
+        onAddReminderClick()
+        onClose()
     };
     return (
         <Modal show={true} size="md" onClose={onClose} className="new-case-modal calendar-modal ">
@@ -102,7 +107,7 @@ const MeetingDetailModal = ({ onClose, eventData, title }) => {
 
                     </li>
                     <div className="flex justify-end px-5 mb-3">
-                        <XButton text="Edit"  className="bg-badge-gray text-base text-primary2 py-[10px] px-6 rounded-[100px] w-1/2" />
+                        <XButton text="Edit" onClick={toggleDetailModalOpenAdd} className="bg-badge-gray text-base text-primary2 py-[10px] px-6 rounded-[100px] w-1/2" />
                         <XButton text="Start Meeting" onClick={handleStartClick} className="bg-primary2 text-white text-base py-[10px] px-6 rounded-[100px] ml-4 w-1/2" />
                     </div>
                 </ul>

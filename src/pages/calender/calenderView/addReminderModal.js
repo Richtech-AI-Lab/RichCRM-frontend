@@ -9,7 +9,7 @@ import { postRequest } from "../../../axios/interceptor";
 import NewCaseDropdown from "../../../components/newcasedropdown";
 import XButton from "../../../components/button/XButton";
 import { getDateAfterDays, isValidDate, makeDate } from "../../../utils";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateCaseDateRequest } from "../../../redux/actions/caseAction";
 import { dayOption, monthOption, yearOption, CreateEventParticipantCss, CreateEventSeacrhCss, EventTypeOptions, ReqSignParticipantCss, ReqSignSeacrhCss } from "../../../constants/constants";
 import { toast } from "react-toastify";
@@ -21,7 +21,7 @@ import avatar from '../../../assets/images/contact_avtar.png'
 import DateTimeInput from "../../../components/dateTimePicker";
 import DateInput from "../../../components/datePicker";
 import { format } from "date-fns";
-import { createCalendarEvent } from "../../../components/gmeet/googleMeetFunc";
+import { createCalendarEvent, updateCalendarEvent } from "../../../components/gmeet/googleMeetFunc";
 
 
 const ReminderTypeOptions = [
@@ -44,8 +44,6 @@ const ReminderTimeOptions = [
   { value: 30, label: "30 Days Before" },
 ];
 
-
-
 const AddReminderModal = ({ onClose, reminderData }) => {
   const dispatch = useDispatch();
   const [searchResults, setSearchResults] = useState([]);
@@ -55,12 +53,30 @@ const AddReminderModal = ({ onClose, reminderData }) => {
   const [searchParticipantResults, setSearchParticipantResults] = useState([]);
   const [allDay, setAllDay] = useState(false);
   const [type, setType] = useState()
-
+  const [filterData, setFilteredData] = useState({});
+  const { cases } = useSelector((state) => state.case.casesData);
 
   useEffect(() => {
-    // set type of event in case of edit, handle form submit
-    if (reminderData?.caseId) {
+    if(reminderData === null){ // create case - new event create
+      return 
+    }else if (reminderData?.caseId) { //  - Edit case - edit case of due date
       setType(1)
+    } else { // //  - Edit case - edit case of meeting event
+      setType(0)
+      let caseName = reminderData?.title?.split("-")
+
+      // catch current case by the meeting title and set into the filterData and set to email
+      const filteredCase = cases.filter((event) => {
+        return (
+          event?.clientName === caseName[0] &&
+          event?.premisesName === caseName[1]
+        );
+      });
+      const existingEmails = reminderData.extendedProps?.attendees?.map(item => item.email);
+      if (existingEmails?.length > 0) {
+        setToEmail(existingEmails)
+      }
+      setFilteredData(filteredCase[0])
     }
   }, [reminderData])
 
@@ -127,9 +143,10 @@ const AddReminderModal = ({ onClose, reminderData }) => {
     endTime: null
   };
 
-  const initialEditValues = {
+  const initialEditDueValues = {
     caseId: reminderData?.caseId,
     caseName: `${reminderData?.clientName}-${reminderData?.premisesName}`,
+    eventType: 1,
     reminderType: reminderData?.title == "Mortgage Due" ? 0 : 1,
     dueDate: "",
     day: null,
@@ -141,13 +158,26 @@ const AddReminderModal = ({ onClose, reminderData }) => {
     // emailReminder: false
   };
 
+  const initialEditMeetValues = {
+    caseId: filterData?.caseId,
+    caseName: `${filterData?.clientName}-${filterData?.premisesName}`,
+    eventType: 0,
+    eventTitle: reminderData?.title?.split("-")?.[2],
+    description: "",
+    startTime: null,
+    endTime: null
+  };
 
   const handleNewEventInfo = async (values) => {
-    // console.log(values,"0000")
+    // console.log(values)
     if (type == 1) {
       await createDueEvent(values)
     } else {
-      await createMeetEvent(values)
+      if(reminderData ===null){
+        await createMeetEvent(values)
+      }else{
+        await updateMeetEvent(values)
+      }
     }
   };
 
@@ -187,7 +217,6 @@ const AddReminderModal = ({ onClose, reminderData }) => {
     dispatch(updateCaseDateRequest(payload))
     onClose()
   };
-
   const createMeetEvent = async (values) => {
     if (values.eventTitle && values.endTime && values.startTime) {
       const isAllDay = allDay; // A flag in your form to determine if it's an all-day event
@@ -217,6 +246,51 @@ const AddReminderModal = ({ onClose, reminderData }) => {
 
       try {
         const createdEvent = await createCalendarEvent(newEvent);
+
+        if (createdEvent.conferenceData) {
+          const { htmlLink } = createdEvent; // Extract the Google Calendar event link
+          window.open(htmlLink, '_blank');
+          toast.success("Meeting created!");
+          onClose();
+        }
+      } catch (error) {
+        toast.error("Something went wrong!");
+        console.error("Failed to create event:", error);
+      }
+    } else {
+      toast.error("Start time & End time must be filled");
+    }
+  };
+
+  const updateMeetEvent = async (values) => {
+    if (values.eventTitle && values.endTime && values.startTime) {
+      const isAllDay = allDay; // A flag in your form to determine if it's an all-day event
+
+      const newEvent = {
+        summary: `${values?.caseName}-${values?.eventTitle}`,
+        description: values.description,
+        start: isAllDay
+          ? { date: format(values.startTime, "yyyy-MM-dd") }
+          : { dateTime: values.startTime },
+        end: isAllDay
+          ? { date: format(values.endTime, "yyyy-MM-dd") }
+          : { dateTime: values.endTime },
+        attendees: toEmail?.map(email => ({ email })),
+        conferenceData: {
+          createRequest: {
+            requestId: "sample123", // Unique ID to avoid duplication
+            conferenceSolutionKey: {
+              type: "hangoutsMeet", // Type of conference (Google Meet)
+            },
+            status: {
+              statusCode: "success",
+            },
+          },
+        },
+      };
+
+      try {
+        const createdEvent = await updateCalendarEvent(reminderData?.id, newEvent);
 
         if (createdEvent.conferenceData) {
           const { htmlLink } = createdEvent; // Extract the Google Calendar event link
@@ -268,6 +342,7 @@ const AddReminderModal = ({ onClose, reminderData }) => {
   });
 
   const dynamicValidationSchema = Yup.lazy((values) => {
+    console.log(values.eventType)
     if (values.eventType == '0') {
       // If eventType is 0, use validationMeetSchema
       return validationMeetSchema;
@@ -313,7 +388,14 @@ const AddReminderModal = ({ onClose, reminderData }) => {
         <Modal.Body >
           {/* <AuthFormContainer title="New Case" subtitle="Create a new case by filling the basic information."> */}
           <Formik
-            initialValues={reminderData === null ? initialValues : initialEditValues}
+            enableReinitialize
+            initialValues={
+              reminderData === null
+                ? initialValues
+                : reminderData?.caseId
+                  ? initialEditDueValues
+                  : initialEditMeetValues
+            }
             validationSchema={dynamicValidationSchema}
             onSubmit={handleNewEventInfo}
           >
@@ -396,7 +478,7 @@ const AddReminderModal = ({ onClose, reminderData }) => {
                       />
                     </div>
                   </div>
-                  {!reminderData?.caseId && <div className='flex flex-col gap-4 self-stretch'>
+                  {reminderData ==null && <div className='flex flex-col gap-4 self-stretch'>
                     <Label value="Event Type" className="mt-4" />
                     <div className={`items-dropdown single-select gray-btn `}  >
                       <NewCaseDropdown
@@ -450,41 +532,41 @@ const AddReminderModal = ({ onClose, reminderData }) => {
                       <div className="flex flex-col items-start gap-4 self-stretch mt-4">
                         <Label value="Participants" />
                         <div className="relative w-full">
-                        <div className="flex items-start justify-between gap-4 self-stretch bg-bg-gray-200 rounded  px-1 py-1">
-                          <ul className="flex flex-col justify-between gap-2">
-                            {toEmail?.map((item, index) =>
-                              <li className="flex items-start justify-between p-2 bg-white rounded-full ">
-                                <div className='flex items-center'>
-                                  <img src={avatar} alt="" className="mr-2" />
-                                  <span className='overflow-hidden'>{item}</span>
-                                </div>
-                                <IoIosClose size={28} className="text-text-gray-100 cursor-pointer"
-                                  onClick={() => removeToEmail(index)}
-                                />
-                              </li>
-                            )}
+                          <div className="flex items-start justify-between gap-4 self-stretch bg-bg-gray-200 rounded  px-1 py-1">
+                            <ul className="flex flex-col justify-between gap-2">
+                              {toEmail?.map((item, index) =>
+                                <li className="flex items-start justify-between p-2 bg-white rounded-full ">
+                                  <div className='flex items-center'>
+                                    <img src={avatar} alt="" className="mr-2" />
+                                    <span className='overflow-hidden'>{item}</span>
+                                  </div>
+                                  <IoIosClose size={28} className="text-text-gray-100 cursor-pointer"
+                                    onClick={() => removeToEmail(index)}
+                                  />
+                                </li>
+                              )}
 
-                          </ul>
-                          <div className="flex-1 relative">
-                          <input
-                            type="text"
-                            className="inline border-0 focus:ring-transparent bg-bg-gray-200 w-100"
-                            value={inputValue}
-                            onChange={handleInputChange}
-                            onBlur={handleInputBlur} // or use onKeyDown to detect 'Enter' key
-                            placeholder="Enter email"
-                          />
-                          {searchParticipantResults?.length > 0 && <SearchListEmail placeCss={ReqSignSeacrhCss} setInputValue={setInputValue} searchResults={searchParticipantResults} setSearchResults={setSearchParticipantResults} setToEmail={setToEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
+                            </ul>
+                            <div className="flex-1 relative">
+                              <input
+                                type="text"
+                                className="inline border-0 focus:ring-transparent bg-bg-gray-200 w-100"
+                                value={inputValue}
+                                onChange={handleInputChange}
+                                onBlur={handleInputBlur} // or use onKeyDown to detect 'Enter' key
+                                placeholder="Enter email"
+                              />
+                              {searchParticipantResults?.length > 0 && <SearchListEmail placeCss={ReqSignSeacrhCss} setInputValue={setInputValue} searchResults={searchParticipantResults} setSearchResults={setSearchParticipantResults} setToEmail={setToEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
+                            </div>
+                            {!showParticipant ?
+                              <span className="flex w-10 h-10 flex-col justify-center items-center gap-2.5 cursor-pointer" onClick={() => setShowParticipant(true)}>
+                                <img src={IMAGES.addIcon} alt="icon" />
+                              </span> :
+                              <span className="flex w-10 h-10 flex-col justify-center items-center gap-2.5 cursor-pointer" onClick={() => setShowParticipant(false)}>
+                                <img src={IMAGES.removeIcon} alt="icon" />
+                              </span>}
                           </div>
-                          {!showParticipant ?
-                            <span className="flex w-10 h-10 flex-col justify-center items-center gap-2.5 cursor-pointer" onClick={() => setShowParticipant(true)}>
-                              <img src={IMAGES.addIcon} alt="icon" />
-                            </span> :
-                            <span className="flex w-10 h-10 flex-col justify-center items-center gap-2.5 cursor-pointer" onClick={() => setShowParticipant(false)}>
-                              <img src={IMAGES.removeIcon} alt="icon" />
-                            </span>}
-                        </div>
-                        {showParticipant && <ParticipantListEmail placeCss={ReqSignParticipantCss} meetModal={true} setToEmail={setToEmail} toEmail={toEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
+                          {showParticipant && <ParticipantListEmail placeCss={ReqSignParticipantCss} meetModal={true} setToEmail={setToEmail} toEmail={toEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
                         </div>
 
 
@@ -703,57 +785,6 @@ const AddReminderModal = ({ onClose, reminderData }) => {
                       </div>
 
                     </>}
-
-
-
-
-
-                  {/* <div className="flex flex-col gap-4 p-5">
-                    <div className="flex items-start gap-2">
-                      <Checkbox
-                        id="popupReminder"
-                        name="popupReminder"
-                        checked={values.popupReminder}
-                        onChange={(e) => {
-                          handleChange(e);
-
-                          handleChange({
-                            target: {
-                              name: e.target.name,
-                              value: e.target.checked
-                            }
-                          });
-                        }}
-                        onBlur={handleBlur} // Update Formik state when the checkbox is checked/unchecked
-                        className="form-checkbox" // Optional: Apply custom Tailwind styling
-                      />
-                      <Label className="text-secondary-800">
-                        Popup Window Reminder
-                      </Label>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <Checkbox
-                        id="emailReminder"
-                        name="emailReminder"
-                        checked={values.emailReminder}
-                        onChange={(e) => {
-                          handleChange(e);
-
-                          handleChange({
-                            target: {
-                              name: e.target.name,
-                              value: e.target.checked
-                            }
-                          });
-                        }}
-                        onBlur={handleBlur}
-                        className="form-checkbox"
-                      />
-                      <Label className="text-secondary-800">
-                        Email Reminder
-                      </Label>
-                    </div>
-                  </div> */}
                 </div>
 
                 <div className="text-end mt-8">
