@@ -126,7 +126,7 @@ const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) 
     const fetchContactByType = async () => {
       try {
         const payload = {
-          tag: activeFilterTag,
+          tags: activeFilterTag,
           // caseId: localStorage.getItem("c_id")
         }
         // dispatch(getContactRequest(payload));
