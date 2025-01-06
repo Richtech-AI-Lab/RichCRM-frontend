@@ -33,7 +33,7 @@ const CalendarPage = () => {
     <div className="calendar-page-container" style={{ display: 'flex', height: '100vh' }}>
      
       <div className="calendar-container" style={{ width: '80%' , borderRight: '1px solid #ddd'}}>
-        <Calendar toggleAddReminderModal={toggleAddReminderModal} filters={filters} selectedCase={selectedCase} setSelectedCase={setSelectedCase}/>
+        <Calendar toggleAddReminderModal={toggleAddReminderModal} isAddReminderOpen={isAddReminderOpen} filters={filters} selectedCase={selectedCase} setSelectedCase={setSelectedCase}/>
       </div>
       <div className="sidebar-container" style={{ width: '20%' }}>
         <Sidebar onAddReminderClick={toggleAddReminderModal}   filters={filters} onFilterChange={handleFilterChange} setSelectedCase={setSelectedCase}/>

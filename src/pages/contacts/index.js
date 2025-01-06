@@ -15,9 +15,7 @@ const Contacts = () => {
   //   tagDetails && tagDetails.length > 0 ? tagDetails[0]?.label : ''
   // );
   const [activeFilterTag, setActiveFilterTag] = useState(
-    tagDetails && tagDetails.length > 0
-      ? tagDetails.map(tag => tag.label)
-      : []
+[]
   );
 
   // console.log(activeFilterTag,"activeFilterTag", tagDetails)

@@ -11,7 +11,7 @@ import XButton from "../../../components/button/XButton";
 import { getDateAfterDays, isValidDate, makeDate } from "../../../utils";
 import { useDispatch } from "react-redux";
 import { updateCaseDateRequest } from "../../../redux/actions/caseAction";
-import { dayOption, monthOption, yearOption, CreateEventParticipantCss, CreateEventSeacrhCss, EventTypeOptions } from "../../../constants/constants";
+import { dayOption, monthOption, yearOption, CreateEventParticipantCss, CreateEventSeacrhCss, EventTypeOptions, ReqSignParticipantCss, ReqSignSeacrhCss } from "../../../constants/constants";
 import { toast } from "react-toastify";
 import ParticipantListEmail from "../../../components/composeEmail/participantListEmail";
 import SearchListEmail from "../../../components/composeEmail/searchListEmail";
@@ -450,6 +450,7 @@ const AddReminderModal = ({ onClose, reminderData }) => {
                       </div>
                       <div className="flex flex-col items-start gap-4 self-stretch mt-4">
                         <Label value="Participants" />
+                        <div className="relative w-full">
                         <div className="flex items-start justify-between gap-4 self-stretch bg-bg-gray-200 rounded  px-1 py-1">
                           <ul className="flex flex-col justify-between gap-2">
                             {toEmail?.map((item, index) =>
@@ -465,14 +466,17 @@ const AddReminderModal = ({ onClose, reminderData }) => {
                             )}
 
                           </ul>
+                          <div className="flex-1 relative">
                           <input
                             type="text"
-                            className="inline border-0 focus:ring-transparent bg-bg-gray-200"
+                            className="inline border-0 focus:ring-transparent bg-bg-gray-200 w-100"
                             value={inputValue}
                             onChange={handleInputChange}
                             onBlur={handleInputBlur} // or use onKeyDown to detect 'Enter' key
                             placeholder="Enter email"
                           />
+                          {searchParticipantResults?.length > 0 && <SearchListEmail placeCss={ReqSignSeacrhCss} setInputValue={setInputValue} searchResults={searchParticipantResults} setSearchResults={setSearchParticipantResults} setToEmail={setToEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
+                          </div>
                           {!showParticipant ?
                             <span className="flex w-10 h-10 flex-col justify-center items-center gap-2.5 cursor-pointer" onClick={() => setShowParticipant(true)}>
                               <img src={IMAGES.addIcon} alt="icon" />
@@ -481,9 +485,10 @@ const AddReminderModal = ({ onClose, reminderData }) => {
                               <img src={IMAGES.removeIcon} alt="icon" />
                             </span>}
                         </div>
+                        {showParticipant && <ParticipantListEmail placeCss={ReqSignParticipantCss} meetModal={true} setToEmail={setToEmail} toEmail={toEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
+                        </div>
 
-                        {showParticipant && <ParticipantListEmail placeCss={CreateEventParticipantCss} meetModal={true} setToEmail={setToEmail} toEmail={toEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
-                        {searchParticipantResults?.length > 0 && <SearchListEmail placeCss={CreateEventSeacrhCss} setInputValue={setInputValue} searchResults={searchParticipantResults} setSearchResults={setSearchParticipantResults} setToEmail={setToEmail} onClose={() => setShowParticipant(prevState => !prevState)} />}
+
 
                       </div>
 

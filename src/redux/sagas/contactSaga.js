@@ -233,17 +233,11 @@ function* getCaseByContact(action) {
 
 function* getMultipleContactByTag(action) {
   try {
-    const contactType = action.payload.tag;
-    const contactResponses = yield all(
-      contactType.map(tagName =>
-        call(postRequest, `${API_ENDPOINTS.GET_CONTACT_BY_TAG}` , {tag:tagName})
-      )
+    const contactType = action.payload;
+    const response = yield call(() =>
+      postRequest(API_ENDPOINTS.GET_CONTACT_BY_TAGS, contactType)
     );
-    const contacts = contactResponses
-      .map(response => response?.data?.data || [])
-      .flat();
-
-    yield put(getMultipleTagsContactSuccess(contacts));
+    yield put(getMultipleTagsContactSuccess(response?.data?.data));
   } catch (error) {
     console.log(error,"err")
     handleError(error)

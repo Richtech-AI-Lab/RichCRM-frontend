@@ -1,8 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import { TextInput, XButton, XSpinnerLoader } from "../../components";
-import { LangchainContext } from "../../pages/dashboard/langchainContext";
-import { useDispatch, useSelector } from "react-redux";
+import { HiOutlineLogout } from "react-icons/hi";
 import { IMAGES } from "../../constants/imagePath";
 import detectIncognito from "detectincognitojs";
 import { toast } from "react-toastify";
@@ -127,6 +126,7 @@ export const GoogleSetting = ({ title }) => {
 
             {auth ? (
               <XButton
+              icon={<HiOutlineLogout className="text-base mr-2 inline-block" />}
                 type="button"
                 text="Sign Out"
                 onClick={() => {
