@@ -58,8 +58,6 @@ export const API_ENDPOINTS = {
   UPDATE_TAG: "/tag/update",
   CHANGE_PASSWORD: "/auth/change-password",
   UPDATE_USER: "/auth/update",
-  CREATE_TASK_TEMPLATE: "/task-template/create",
-  CREATE_TASK_TEMPLATE_WITH_TEMPLATE_OBJECTS: "/task-template/create/template",
   DELETE_CLIENT: "/client/delete",
   DELETE_ORGANIZATION: "/organization/delete",
 };
