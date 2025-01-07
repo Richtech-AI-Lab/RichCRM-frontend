@@ -3,11 +3,15 @@ import { MdModeEdit } from "react-icons/md";
 import DetailItem from "../detailitem";
 import SelectInput from "../selectinput";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { LiaClipboardListSolid } from "react-icons/lia";
 import MenuPopup from "../menupopup";
 import DeleteModal from "../deleteModal";
 import { deleteCaseRequest, reOpenCaseRequest } from "../../redux/actions/caseAction";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import XButton from "../button/XButton";
+import { ROUTES } from "../../constants/api";
+import { LuClipboardList } from "react-icons/lu";
 
 const CaseDetailsCard = ({
   title,
@@ -20,10 +24,12 @@ const CaseDetailsCard = ({
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showDeletePopup, setShowDeletePopup] = useState(false);
-
+  const handleCaseDetails = () => {
+    navigate(ROUTES.CASES_DETAILS)
+  }
   const menuOption = closeAt ? [
     'Edit', 'Share case', 'Delete case', "Re-Open case"
-  ]:[
+  ] : [
     'Edit', 'Share case', 'Delete case'
   ];
 
@@ -57,7 +63,7 @@ const CaseDetailsCard = ({
       dispatch(deleteCaseRequest(data, navigate))
       setShowDeletePopup(false);
     }
-    
+
   };
   return (
     <div className="bg-white p-4 rounded-2xl mb-5">
@@ -72,7 +78,7 @@ const CaseDetailsCard = ({
           dropdownItems={menuOption}
           icon={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />} />
       </div>
-      <ul className="card-details">
+      <ul className="card-details mb-5">
         <DetailItem label="Case Type" value={caseType} />
         <DetailItem label="Client Name" value={clientName} />
         <DetailItem label="Premises Type" value={premisesType} />
@@ -105,6 +111,23 @@ const CaseDetailsCard = ({
         />
       </li> */}
       </ul>
+      {/* {utilData?.loading ?
+        <XButton
+          text="Case Details"
+          // icon={<FaRegEdit className="text-base mr-2 inline-block" />}
+          className="bg-badge-gray text-secondary-800  rounded-full text-sm font-medium w-full py-3 px-3 mb-7 flex items-center justify-center"
+        // onClick={handleCaseDetails}
+        />
+        : */}
+        <XButton
+          text="Case Details"
+          icon={<LuClipboardList className="flex items-center justify-center text-[20px] mr-2 inline-block" />}
+          // className="bg-active-blue text-active-blue-text shadow-shadow-light rounded-full text-sm font-medium py-[10px] px-6" 
+
+          className="bg-active-blue text-active-blue-text rounded-full text-sm font-medium w-full py-3 px-3 flex items-center justify-center"
+          onClick={handleCaseDetails}
+        />
+      {/* } */}
       <DeleteModal
         isOpen={showDeletePopup}
         onConfirm={() => handleDelete()}

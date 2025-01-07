@@ -499,7 +499,7 @@ const StagesChecklist = () => {
                 />
                 <XButton
                   text={currentStep === progressItems?.length - 1 ? "Close Case" : "Move to next stage"}
-                  className="bg-active-blue text-active-blue-text shadow-shadow-light rounded-full text-sm font-medium py-[10px] px-6" 
+                  className="bg-active-blue text-active-blue-text rounded-full text-sm font-medium py-[10px] px-6" 
                   onClick={CheckAndMoveStage} />
               </div>
             </div></>}
