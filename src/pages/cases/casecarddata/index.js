@@ -278,21 +278,7 @@ const CaseCardData = () => {
             }
           />
           {/* } */}
-          {utilData?.loading ?
-            <XButton
-              text="Case Details"
-              // icon={<FaRegEdit className="text-base mr-2 inline-block" />}
-              className="bg-badge-gray text-secondary-800  rounded-full text-sm font-medium w-full py-3 px-3 mb-7 flex items-center justify-center"
-            // onClick={handleCaseDetails}
-            />
-            :
-            <XButton
-              text="Case Details"
-              // icon={<FaRegEdit className="text-base mr-2 inline-block" />}
-              className="bg-badge-gray text-secondary-800  rounded-full text-sm font-medium w-full py-3 px-3 mb-7 flex items-center justify-center"
-              onClick={handleCaseDetails}
-            />
-          }
+
           <ContactCard
             clientDetails={casedetails?.clientType == 0 ? clientDetails : organizationDetails}
             casedetails={casedetails}

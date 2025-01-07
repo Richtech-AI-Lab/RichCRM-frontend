@@ -28,7 +28,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
       <div className="col-span-6">
         <div className="bg-white p-4 rounded-2xl mb-5">
           {title && <div className="flex justify-between items-center mb-5">
-            <span className="text-base text-2Fary-800 font-medium">{title}</span>
+            <span className="text-base text-secondary-800 font-bold">{title}</span>
             <div className="flex items-center gap-2">
               <BsThreeDotsVertical className="text-lg opacity-40" />
             </div>
@@ -90,8 +90,8 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
             <li>
               <span className={`left-txt flex items-center`}>Street Name</span>
               {form?.errors["addressLine1"] && form?.touched["addressLine1"] && (
-              <span className="text-sm text-red-500">{form.errors["addressLine1"]}</span>
-            )}
+                <span className="text-sm text-red-500">{form.errors["addressLine1"]}</span>
+              )}
               <input
                 className=" p-0 border-none focus:ring-transparent"
                 name="addressLine1"
@@ -115,8 +115,8 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
             <li>
               <span className={`left-txt flex items-center`}>City</span>
               {form?.errors["city"] && form?.touched["city"] && (
-              <span className="text-sm text-red-500">{form.errors["city"]}</span>
-            )}
+                <span className="text-sm text-red-500">{form.errors["city"]}</span>
+              )}
               <input
                 className=" p-0 border-none focus:ring-transparent"
                 name="city"
@@ -130,8 +130,8 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
               <div className="flex justify-between items-center w-full">
                 <span className="left-txt w-full">State</span>
                 {form?.errors["state"] && form?.touched["state"] && (
-              <span className="text-sm text-red-500 w-full">{form.errors["state"]}</span>
-            )}
+                  <span className="text-sm text-red-500 w-full">{form.errors["state"]}</span>
+                )}
                 <div className="flex justify-end items-center w-full gap-7">
                   <div className="grid gap-3">
                     <Field
@@ -153,8 +153,8 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
             <li>
               <span className={`left-txt flex items-center`}>Zip Code</span>
               {form?.errors["zipCode"] && form?.touched["zipCode"] && (
-              <span className="text-sm text-red-500">{form.errors["zipCode"]}</span>
-            )}
+                <span className="text-sm text-red-500">{form.errors["zipCode"]}</span>
+              )}
               <input
                 className=" p-0 border-none focus:ring-transparent"
                 name="zipCode"
@@ -317,9 +317,9 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
               </div>
             </li>
             <li>
-                <span className="left-txt w-full">Parking Space</span>
-                <div className="dub-input flex gap-4">
-                  {/* <input
+              <span className="left-txt w-full">Parking Space</span>
+              <div className="dub-input flex gap-4">
+                {/* <input
                     className="text-left p-0 border-none focus:ring-transparent w-[150px]"
                     name="maintenanceFee"
                     placeholder="fee"
@@ -328,27 +328,27 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
                     onBlur={handleBlur}
                     value={values.maintenanceFee}
                   /> */}
-                  <Field
-                    as={SelectInput}
-                    defaultLabel={`Select Parking space`}
-                    inputClassName="bg-input-surface py-[6px] px-4 rounded-full border-0 text-sm leading-5  w-[150px] font-semibold text-label"
-                    labelClassName="ext-label mr-3"
-                    name="parkingSpaces"
-                    value={values.parkingSpaces}
-                    options={[
-                      { id: 0, label: "0" },
-                      { id: 1, label: "1" },
-                      { id: 2, label: "2" },
-                      { id: 3, label: "3" },
-                      { id: 4, label: "4" },
-                      { id: 5, label: "5" },
-                      { id: 6, label: "6" },
-                    ].map((option) => ({
-                      value: option.id,
-                      label: option.label,
-                    }))}
-                  />
-                </div>
+                <Field
+                  as={SelectInput}
+                  defaultLabel={`Select Parking space`}
+                  inputClassName="bg-input-surface py-[6px] px-4 rounded-full border-0 text-sm leading-5  w-[150px] font-semibold text-label"
+                  labelClassName="ext-label mr-3"
+                  name="parkingSpaces"
+                  value={values.parkingSpaces}
+                  options={[
+                    { id: 0, label: "0" },
+                    { id: 1, label: "1" },
+                    { id: 2, label: "2" },
+                    { id: 3, label: "3" },
+                    { id: 4, label: "4" },
+                    { id: 5, label: "5" },
+                    { id: 6, label: "6" },
+                  ].map((option) => ({
+                    value: option.id,
+                    label: option.label,
+                  }))}
+                />
+              </div>
             </li>
             {/* <li>
             <div className="flex justify-between items-center w-full">
@@ -378,64 +378,64 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
             <li>
               <span className={`left-txt flex items-center`}>Maintenance fee</span>
               <div className="dub-input flex gap-4">
-              <input
-                className="text-left p-0 border-none focus:ring-transparent w-[150px]"
-                name="maintenanceFee"
-                placeholder="Fee"
-                type="text"
-                // onChange={handleChange}
-                onBlur={handleBlur}
-                // value={values.maintenanceFee}
-                value={formatCurrency(values.maintenanceFee)}
-                onChange={(e) => handleCurrencyChange(e, 'maintenanceFee')}
-              /> <Field
-                as={SelectInput}
-                defaultLabel={`per`}
-                inputClassName="bg-input-surface py-[6px] px-4 rounded-full border-0 text-sm leading-5 font-semibold text-label"
-                labelClassName="ext-label mr-3"
-                name="maintenanceFeePer"
-                value={values.maintenanceFeePer}
-                options={[
-                  { id: 0, label: "Monthly" },
-                  { id: 1, label: "Yearly" },
-                  // { id: 2, label: "Year" },
+                <input
+                  className="text-left p-0 border-none focus:ring-transparent w-[150px]"
+                  name="maintenanceFee"
+                  placeholder="Fee"
+                  type="text"
+                  // onChange={handleChange}
+                  onBlur={handleBlur}
+                  // value={values.maintenanceFee}
+                  value={formatCurrency(values.maintenanceFee)}
+                  onChange={(e) => handleCurrencyChange(e, 'maintenanceFee')}
+                /> <Field
+                  as={SelectInput}
+                  defaultLabel={`per`}
+                  inputClassName="bg-input-surface py-[6px] px-4 rounded-full border-0 text-sm leading-5 font-semibold text-label"
+                  labelClassName="ext-label mr-3"
+                  name="maintenanceFeePer"
+                  value={values.maintenanceFeePer}
+                  options={[
+                    { id: 0, label: "Monthly" },
+                    { id: 1, label: "Yearly" },
+                    // { id: 2, label: "Year" },
 
-                ].map((option) => ({
-                  value: option.id,
-                  label: option.label,
-                }))}
-              /></div></li>
-              <li>
+                  ].map((option) => ({
+                    value: option.id,
+                    label: option.label,
+                  }))}
+                /></div></li>
+            <li>
               <span className={`left-txt flex items-center`}>Assessments</span>
               <div className="dub-input flex gap-4">
-              <input
-                className="text-left p-0 border-none focus:ring-transparent"
-                name="assessments"
-                placeholder="Assessment"
-                type="text"
-                // onChange={handleChange}
-                onBlur={handleBlur}
-                // value={values.assessments}
-                value={formatCurrency(values.assessments)}
-                onChange={(e) => handleCurrencyChange(e, 'assessments')}
-              /> 
-              <Field
-                as={SelectInput}
-                defaultLabel={`per`}
-                inputClassName="bg-input-surface py-[6px] px-4 rounded-full border-0 text-sm leading-5 font-semibold text-label"
-                labelClassName="ext-label mr-3"
-                name="assessmentsPer"
-                value={values.assessmentsPer}
-                options={[
-                  { id: 0, label: "Month" },
-                  { id: 1, label: "Quarter" },
-                  { id: 2, label: "Year" },
+                <input
+                  className="text-left p-0 border-none focus:ring-transparent"
+                  name="assessments"
+                  placeholder="Assessment"
+                  type="text"
+                  // onChange={handleChange}
+                  onBlur={handleBlur}
+                  // value={values.assessments}
+                  value={formatCurrency(values.assessments)}
+                  onChange={(e) => handleCurrencyChange(e, 'assessments')}
+                />
+                <Field
+                  as={SelectInput}
+                  defaultLabel={`per`}
+                  inputClassName="bg-input-surface py-[6px] px-4 rounded-full border-0 text-sm leading-5 font-semibold text-label"
+                  labelClassName="ext-label mr-3"
+                  name="assessmentsPer"
+                  value={values.assessmentsPer}
+                  options={[
+                    { id: 0, label: "Month" },
+                    { id: 1, label: "Quarter" },
+                    { id: 2, label: "Year" },
 
-                ].map((option) => ({
-                  value: option.id,
-                  label: option.label,
-                }))}
-              /></div></li>
+                  ].map((option) => ({
+                    value: option.id,
+                    label: option.label,
+                  }))}
+                /></div></li>
             {/* <li>
               <span className={`left-txt flex items-center`}>Assessments</span>
               <input
@@ -466,7 +466,7 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
                 onBlur={handleBlur}
                 value={values.managingCompany}
               /></li>
-              <li>
+            <li>
               <span className="left-txt flex items-center" >Annual Property Tax</span>
               <input
                 className="text-left p-0 border-none focus:ring-transparent"
@@ -484,12 +484,12 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
       </div>
       <div className="col-span-6">
         <div className="bg-white p-4 rounded-2xl mb-5">
-          {<div className="flex justify-between items-center mb-5">
-            <span className="text-base text-2Fary-800 font-medium">Engineer Inspection</span>
+          <div className="flex justify-between items-center mb-5">
+            <span className="text-base text-secondary-800 font-bold">Engineer Inspection</span>
             {/* <div className="flex items-center gap-2">
-          <BsThreeDotsVertical className="text-lg opacity-40" />
-        </div> */}
-          </div>}
+                      <BsThreeDotsVertical className="text-lg opacity-40" />
+                    </div> */}
+          </div>
 
           <ul className="card-details">
             <li>
@@ -549,12 +549,12 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
           </ul>
         </div>
         <div className="bg-white p-4 rounded-2xl mb-5">
-          {<div className="flex justify-between items-center mb-5">
-            <span className="text-base text-2Fary-800 font-medium">Termites Inspection</span>
+          <div className="flex justify-between items-center mb-5">
+            <span className="text-base text-secondary-800 font-bold">Termites Inspection</span>
             {/* <div className="flex items-center gap-2">
-          <BsThreeDotsVertical className="text-lg opacity-40" />
-        </div> */}
-          </div>}
+                      <BsThreeDotsVertical className="text-lg opacity-40" />
+                    </div> */}
+          </div>
 
           <ul className="card-details">
             <li>
@@ -590,20 +590,20 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
           </ul>
         </div>
         <div className="bg-white p-4 rounded-2xl mb-5">
-          {<div className="flex justify-between items-center mb-5">
-            <span className="text-base text-2Fary-800 font-medium">Tenant</span>
+          <div className="flex justify-between items-center mb-5">
+            <span className="text-base text-secondary-800 font-bold">Tenant</span>
             {/* <div className="flex items-center gap-2">
-          <BsThreeDotsVertical className="text-lg opacity-40" />
-        </div> */}
-          </div>}
+                      <BsThreeDotsVertical className="text-lg opacity-40" />
+                    </div> */}
+          </div>
 
           <ul className="card-details">
-          <li>
+            <li>
               <div className="flex justify-between items-center w-full">
                 <span className="left-txt w-full">Is Two Family</span>
                 {form?.errors['isTwoFamily'] && form?.touched['isTwoFamily'] && (
-                <span className="text-sm text-red-500">{form.errors['isTwoFamily']}</span>
-              )}
+                  <span className="text-sm text-red-500">{form.errors['isTwoFamily']}</span>
+                )}
                 <div className="flex justify-end items-center w-full gap-7">
                   <div className="grid grid-cols-2 gap-x-12">
                     {[
@@ -635,78 +635,78 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
 
             {values.isTwoFamily == 1 && (
               <>
- 
-            <li>
-              <span className="left-txt flex items-center" >{values.isTwoFamily == 1 && "1F"} First Name</span>
-              {form?.errors['fname1f'] && form?.touched['fname1f'] && (
-                <span className="text-sm text-red-500">{form.errors['fname1f']}</span>
-              )}
-              <input
-                className="p-0 border-none focus:ring-transparent"
-                name="fname1f"
-                type="text"
-                value={values.fname1f}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              // value={values.}
-              />
-            </li>
-            <li>
-              <span className="left-txt flex items-center" >{values.isTwoFamily == 1 && "1F"} Last Name</span>
-              {form?.errors['lname1f'] && form?.touched['lname1f'] && (
-                <span className="text-sm text-red-500">{form.errors['lname1f']}</span>
-              )}
-              <input
-                className="p-0 border-none focus:ring-transparent"
-                name="lname1f"
-                value={values.lname1f}
-                type="text"
-                onChange={handleChange}
-                onBlur={handleBlur}
-              // value={values.}
-              />
-            </li>
-            <li>
-              <span className="left-txt flex items-center" >{values.isTwoFamily == 1 && "1F Tenant"} Rent</span>
-              <input
-                className="p-0 border-none focus:ring-transparent"
-                name="rent1f"
-                type="text"
-                value={values.rent1f}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              // value={values.addressLine1}
-              />
-            </li>
-            <li>
-              <span className="left-txt flex items-center" >{values.isTwoFamily == 1 && "1F Tenant"} Sec.</span>
-              <input
-                className="p-0 border-none focus:ring-transparent"
-                name="sec1f"
-                type="text"
-                value={values.sec1f}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              // value={values.addressLine1}
-              />
-            </li>
-            <li>
-              <span className="left-txt flex items-center" >{values.isTwoFamily == 1 && "1F Tenant"} Lease</span>
-              <input
-                className="p-0 border-none focus:ring-transparent"
-                name="lease1f"
-                type="text"
-                value={values.lease1f}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              // value={values.addressLine1}
-              />
-            </li>
+
+                <li>
+                  <span className="left-txt flex items-center" >{values.isTwoFamily == 1 && "1F"} First Name</span>
+                  {form?.errors['fname1f'] && form?.touched['fname1f'] && (
+                    <span className="text-sm text-red-500">{form.errors['fname1f']}</span>
+                  )}
+                  <input
+                    className="p-0 border-none focus:ring-transparent"
+                    name="fname1f"
+                    type="text"
+                    value={values.fname1f}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  // value={values.}
+                  />
+                </li>
+                <li>
+                  <span className="left-txt flex items-center" >{values.isTwoFamily == 1 && "1F"} Last Name</span>
+                  {form?.errors['lname1f'] && form?.touched['lname1f'] && (
+                    <span className="text-sm text-red-500">{form.errors['lname1f']}</span>
+                  )}
+                  <input
+                    className="p-0 border-none focus:ring-transparent"
+                    name="lname1f"
+                    value={values.lname1f}
+                    type="text"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  // value={values.}
+                  />
+                </li>
+                <li>
+                  <span className="left-txt flex items-center" >{values.isTwoFamily == 1 && "1F Tenant"} Rent</span>
+                  <input
+                    className="p-0 border-none focus:ring-transparent"
+                    name="rent1f"
+                    type="text"
+                    value={values.rent1f}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  // value={values.addressLine1}
+                  />
+                </li>
+                <li>
+                  <span className="left-txt flex items-center" >{values.isTwoFamily == 1 && "1F Tenant"} Sec.</span>
+                  <input
+                    className="p-0 border-none focus:ring-transparent"
+                    name="sec1f"
+                    type="text"
+                    value={values.sec1f}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  // value={values.addressLine1}
+                  />
+                </li>
+                <li>
+                  <span className="left-txt flex items-center" >{values.isTwoFamily == 1 && "1F Tenant"} Lease</span>
+                  <input
+                    className="p-0 border-none focus:ring-transparent"
+                    name="lease1f"
+                    type="text"
+                    value={values.lease1f}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  // value={values.addressLine1}
+                  />
+                </li>
                 <li>
                   <span className="left-txt flex items-center">2F Tenant First Name</span>
                   {form?.errors['fname2f'] && form?.touched['fname2f'] && (
-                <span className="text-sm text-red-500">{form.errors['fname2f']}</span>
-              )}
+                    <span className="text-sm text-red-500">{form.errors['fname2f']}</span>
+                  )}
                   <input
                     className="p-0 border-none focus:ring-transparent"
                     name="fname2f"
@@ -719,8 +719,8 @@ const PremisesForm = ({ title, values, handleChange, handleBlur, setFieldValue, 
                 <li>
                   <span className="left-txt flex items-center">2F Tenant Last Name</span>
                   {form?.errors['lname2f'] && form?.touched['lname2f'] && (
-                <span className="text-sm text-red-500">{form.errors['lname2f']}</span>
-              )}
+                    <span className="text-sm text-red-500">{form.errors['lname2f']}</span>
+                  )}
                   <input
                     className="p-0 border-none focus:ring-transparent"
                     name="lname2f"

@@ -35,22 +35,23 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
 
     const addAttorneyItem = (push) => {
         if (newAttorney.company && newAttorney.firstName && newAttorney.lastName) {
-            let payload={
+            let payload = {
                 // contactType: 1,
-                tags:["Attorney"],
+                tags: ["Attorney"],
                 company: newAttorney.company,
                 firstName: newAttorney.firstName,
                 lastName: newAttorney.lastName,
-                ...(newAttorney.email && newAttorney.email.trim() !== "" && { email: newAttorney.email }), 
+                ...(newAttorney.email && newAttorney.email.trim() !== "" && { email: newAttorney.email }),
                 cellNumber: newAttorney.cellNumber
             }
-           if(newAttorney?.contactId){
-            dispatch(createAttorneySuccess({...payload,
-                contactId:newAttorney?.contactId
-            }))
-           }else{
-            dispatch(createAttorneyRequest(payload))
-           }
+            if (newAttorney?.contactId) {
+                dispatch(createAttorneySuccess({
+                    ...payload,
+                    contactId: newAttorney?.contactId
+                }))
+            } else {
+                dispatch(createAttorneyRequest(payload))
+            }
             // dispatch(createAttorneyRequest(payload))
             // push({
             //     contactId: `new${Date.now()}`, // Changed key to contactId
@@ -66,7 +67,7 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
         }
     };
     const deleteAttorneyItem = (contactId, index) => {
-        const updatedAttorneys = attorneys.filter((_, i) => i !== index); 
+        const updatedAttorneys = attorneys.filter((_, i) => i !== index);
         setAttorneys(updatedAttorneys); // Update the local state
         dispatch(deleteAttorneyRequest(contactId)); // Dispatch delete action
     };
@@ -92,12 +93,14 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
         <div className="bg-white p-4 rounded-2xl mb-5">
             {title &&
                 <div className="flex justify-between items-center mb-5">
-                    <span className="text-base text-secondary-800 font-medium">{title}</span>
+                    <span className="text-base text-secondary-800 font-bold">{title}</span>
                     <div className="flex items-center gap-2">
-                        <BsThreeDotsVertical className="text-lg" />
+                        <BsThreeDotsVertical className="text-lg opacity-40" />
                     </div>
                 </div>
             }
+
+
 
             <FieldArray
                 name="attorneys"
@@ -108,7 +111,7 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
                                 <li key={item.contactId} className="flex justify-between">
                                     <span className="left-txt flex items-center">
                                         <span className="icon mr-2 cursor-pointer" /* onClick={() => remove(index)} */
-                                        onClick={() => deleteAttorneyItem(item.contactId, index)}>
+                                            onClick={() => deleteAttorneyItem(item.contactId, index)}>
                                             <img src={IMAGES.removeIcon} alt="icon" />
                                         </span>
                                         {item?.company} - {item?.lastName}, {item?.firstName}
@@ -175,7 +178,7 @@ const CaseAttorneyItems = ({ title, attorneys, setAttorneys, attorneyDetails, er
                                                         key={index} // Adding a key for each list item for better performance
                                                         className={'px-4 py-2 hover:bg-input-surface'}
                                                         onClick={() => {
-                                                            setNewAttorney({ ...newAttorney, company: item?.company, contactId:item?.contactId, firstName: item?.firstName, lastName: item?.lastName, email: item?.email, cellNumber: item?.cellNumber });
+                                                            setNewAttorney({ ...newAttorney, company: item?.company, contactId: item?.contactId, firstName: item?.firstName, lastName: item?.lastName, email: item?.email, cellNumber: item?.cellNumber });
                                                             setSearchResults([]);
                                                         }}
                                                     >
