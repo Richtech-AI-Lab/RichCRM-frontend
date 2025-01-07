@@ -89,11 +89,11 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
           </ul>
         </div> */}
         <div className="bg-white p-4 rounded-2xl mb-5">
-          {title && <div className="flex justify-between items-center mb-5">
-            <span className="text-base text-2Fary-800 font-medium">{"Prices"}</span>
-            <div className="flex items-center gap-2">
-              {/* <BsThreeDotsVertical className="text-lg opacity-40" /> */}
-            </div>
+          {<div className="flex justify-between items-center mb-5">
+            <span className="text-base text-secondary-800 font-bold">Prices</span>
+            {/* <div className="flex items-center gap-2">
+                      <BsThreeDotsVertical className="text-lg opacity-40" />
+                    </div> */}
           </div>}
           <ul className="card-details">
             {/* <li>
@@ -176,8 +176,11 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
           </ul>
         </div>
         <div className="bg-white p-4 rounded-2xl mb-5">
-          {<div className="flex justify-between items-center mb-5">
-            <span className="text-base text-2Fary-800 font-medium">Mortgage</span>
+        {<div className="flex justify-between items-center mb-5">
+            <span className="text-base text-secondary-800 font-bold">Mortgage</span>
+            {/* <div className="flex items-center gap-2">
+                      <BsThreeDotsVertical className="text-lg opacity-40" />
+                    </div> */}
           </div>}
 
           <ul className="card-details">
@@ -230,8 +233,11 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
       </div>
       <div className="col-span-6">
         <div className="bg-white p-4 rounded-2xl mb-5">
-          {<div className="flex justify-between items-center mb-5">
-            <span className="text-base text-2Fary-800 font-medium">Closing</span>
+        {<div className="flex justify-between items-center mb-5">
+            <span className="text-base text-secondary-800 font-bold">Closing</span>
+            {/* <div className="flex items-center gap-2">
+                      <BsThreeDotsVertical className="text-lg opacity-40" />
+                    </div> */}
           </div>}
 
           <ul className="card-details">
@@ -262,8 +268,11 @@ const OtherForm = ({ title, values, handleChange, initialValues, handleBlur, set
           </ul>
         </div>
         <div className="bg-white p-4 rounded-2xl mb-5">
-          {<div className="flex justify-between items-center mb-5">
-            <span className="text-base text-2Fary-800 font-medium">Others</span>
+        {<div className="flex justify-between items-center mb-5">
+            <span className="text-base text-secondary-800 font-bold">Others</span>
+            {/* <div className="flex items-center gap-2">
+                      <BsThreeDotsVertical className="text-lg opacity-40" />
+                    </div> */}
           </div>}
 
           <ul className="card-details">
