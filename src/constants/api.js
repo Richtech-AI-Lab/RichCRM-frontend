@@ -31,6 +31,7 @@ export const API_ENDPOINTS = {
   UPDATE_CLIENT: "/client/update",
   GET_CONTACT_BY_CASETAG: "/contact/query/caseandtag",
   GET_CONTACT_BY_TAG: "/contact/query/tag",
+  GET_CONTACT_BY_TAGS : "/contact/query/tags",
   GET_CONTACT_BY_QUERY: "/contact/query/type",
   GET_CONTACT_BY_KEYWORD: "/contact/query",
   UPDATE_CONTACT: "/contact/update",
@@ -57,8 +58,6 @@ export const API_ENDPOINTS = {
   UPDATE_TAG: "/tag/update",
   CHANGE_PASSWORD: "/auth/change-password",
   UPDATE_USER: "/auth/update",
-  CREATE_TASK_TEMPLATE: "/task-template/create",
-  CREATE_TASK_TEMPLATE_WITH_TEMPLATE_OBJECTS: "/task-template/create/template",
   DELETE_CLIENT: "/client/delete",
   DELETE_ORGANIZATION: "/organization/delete",
 };

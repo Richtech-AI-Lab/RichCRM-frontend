@@ -14,7 +14,6 @@ import AttachFileModal from './attachFileModal';
 import { EditorState, convertToRaw, ContentState, convertFromHTML } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
-import UpdateTaskTemplateButton from './updateTaskTemplateButton';
 import { useCallback } from 'react';
 import { debounce } from 'lodash';
 import { IMAGES } from '../../constants/imagePath';
@@ -424,7 +423,6 @@ const ComposeEmail = ({ taskItem, onClose, templates, onSendEmail }) => {
 
 
               <div className="text-end px-4 py-3 shadow-full rounded-bl-2xl rounded-br-2xl">
-                <UpdateTaskTemplateButton templateTitle={values.templateTitle} editorState={editorState} taskItem={taskItem} setLoader={setLoader} />
                 <XButton
                   text="Attach"
                   onClick={() => { setIsModalOpen(true) }}

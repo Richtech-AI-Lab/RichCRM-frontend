@@ -182,7 +182,7 @@ const responseSchema = z.object(
           </div>
         </div>
         <div ref={scrollRef}
-          className="msg-box-cnt overflow-y-auto">
+          className="msg-box-cnt overflow-y-auto scroller-remove">
           {messages.length == 0 &&
             <div className="msgr-name flex justify-center content-center">
               <p className="text-lg text-secondary-300">Hello {user?.data[0]?.userName}</p>

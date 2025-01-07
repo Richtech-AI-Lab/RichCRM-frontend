@@ -62,6 +62,21 @@ export const createCalendarEvent = async (event) => {
 };
 
 
+// Update a event
+export const updateCalendarEvent = async (eventId, updatedEvent) => {
+  try {
+    const response = await gapi.client.calendar.events.update({
+      calendarId: "primary", // The calendar ID (e.g., 'primary' for the main calendar)
+      eventId: eventId,      // The ID of the event to update
+      resource: updatedEvent // The updated event object
+    });
+    return response.result;
+  } catch (error) {
+    console.error("Error updating event: ", error);
+    throw error;
+  }
+};
+
 
 // Get the current authentication instance
 // export const getAuthInstance = () => gapi.auth2.getAuthInstance();
