@@ -13,15 +13,17 @@ import { isEmpty } from "lodash";
 import { closeCaseRequest, updateCaseRequest } from "../../redux/actions/caseAction";
 import StageUncompleteAlert from "../../pages/cases/stagealert";
 import { useNavigate } from "react-router-dom";
+import AddTaskModal from "./AddTaskModal";
 
 const StagesChecklist = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState();
   const [isComplete, setIsComplete] = useState(true);
+  const [addTaskModal, setAddTaskModal] = useState(false)
   const [activeTab, setActiveTab] = useState('mortgage');
   const menuOption1 = ['Create a Task', 'Add a Task']
-  const menuOption2 = ['Finish all']
+  const menuOption2 = ['Add Task', 'Finish all']
   const { loading:stagesLoading, data, error } = useSelector((state) => state.stages);
   const { loading:taskLoading } = useSelector((state) => state.task);
   const taskData = useSelector((state) => state.task);
@@ -317,6 +319,10 @@ const StagesChecklist = () => {
       }
       dispatch(finishAllTaskRequest(payload))
     }
+    if(label === "Add Task"){
+      setAddTaskModal(true)
+    }
+
   };
 
   function getMortgageDueAlertInfo(casesData, currentStep) {
@@ -498,8 +504,10 @@ const StagesChecklist = () => {
               </div>
             </div></>}
 
+          
           {!isComplete && <StageUncompleteAlert onMove={handleNextStage} onClose={toggleStageModal} currentStep={currentStep} />}
       </div>
+      {addTaskModal && <AddTaskModal  onClose={()=>setAddTaskModal(false) }/>}
     </>
   );
 };
