@@ -43,7 +43,7 @@ const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) 
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-  // console.log(paginatedData, "paginatedData", active, "contact", organization)
+  // console.log(paginatedData, "paginatedData", active, "contact")
 
   const headers = {
     [addFromContactV1Tab.individuals]: [
@@ -82,16 +82,18 @@ const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) 
     { id: 2, label: "Remove" },
   ];
 
-  const onPageChange = (page) => setCurrentPage(page);
+
   const handleDeleteClick = (contact) => {
     setContactToDelete(contact);
     setShowDeleteModal(true); // Open modal
   };
 
+  const onPageChange = (page) => setCurrentPage(page);
+
   const confirmDelete = () => {
-    if(contactToDelete?.organizationId){
+    if (contactToDelete?.organizationId) {
       dispatch(deleteOrganizationRequest(contactToDelete?.organizationId));
-    }else{
+    } else {
       dispatch(deleteContactRequest(contactToDelete?.contactId)); // Dispatch delete action
     }
     setShowDeleteModal(false);
@@ -245,18 +247,16 @@ const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) 
                   <Table.Row key={index} className="bg-white dark:border-gray-700 dark:bg-gray-800 cursor-pointer"
                     onClick={() => handleNavigation(user)}
                   >
+
                     <Table.Cell width={width[0]} className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                       <div className="flex items-center">
                         <img src={`https://ui-avatars.com/api/?name=${user.firstName}+${user.lastName}`} alt="Profile" className="mr-3 rounded-full w-8 h-8" />
-                        <span className="left-txt font-medium text-secondary-800">
-                          {user.firstName} {user.lastName}
-                        </span>
-                      </div>
+                        <span className="left-txt font-medium text-secondary-800"> {user.firstName} {user.lastName}  </span> </div>
                     </Table.Cell>
+
                     {header.includes("Tag") && (
                       <Table.Cell width={width[1]}>
-                        {user?.tags.map((tag) => <NewBadge label={tag} />)}
-
+                        {user?.tags?.map((tag) => <NewBadge label={tag} />)}
                       </Table.Cell>
                     )}
                     {header.includes("Organization") && <Table.Cell width={width[2]}>{user.company}</Table.Cell>}
@@ -293,7 +293,7 @@ const ContactListingV1 = ({ active, parent, activeFilterOrg, activeFilterTag }) 
           ) : active === 1 && organization?.length > 0 ? (
             <>
               <Table.Body className="divide-y">
-                {organization?.map((org, index) => (
+                {paginatedData?.map((org, index) => (
                   <Table.Row key={index} className="bg-white dark:border-gray-700 dark:bg-gray-800 cursor-pointer"
                     onClick={() => handleNavigation(org)}
                   >

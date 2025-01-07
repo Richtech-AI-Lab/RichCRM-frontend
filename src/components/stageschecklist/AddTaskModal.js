@@ -39,8 +39,7 @@ const AddTaskModal = ({ onClose, title }) => {
                         name="title"
                         type="text"
                         placeholder="Event Name"
-                       
-                      />
+                    />
                     <div className="flex gap-4 justify-end">
                         <XButton
                             text={"Cancel"}
