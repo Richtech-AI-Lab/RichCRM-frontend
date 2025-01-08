@@ -6,12 +6,23 @@ import { getRequest, postRequest } from '../../axios/interceptor';
 import { all } from 'redux-saga/effects';
 import { STAGESNAMES } from '../../constants/constants';
 import { handleError } from '../../utils/eventHandler';
+import { toast } from 'react-toastify';
+import { LinkTaskStageRequest } from '../actions/stagesActions';
 
 function* createtaskSaga(action) {
   const { payload } = action;
   try {
     const response = yield call(() => postRequest(API_ENDPOINTS.CREATE_TASK, payload));
-    yield put(createTaskSuccess(response?.data?.data[0]));
+    if (response.status == 200) {
+      let stagePayload = {
+        stageId: payload.stageId,
+        newTask: response.data?.data[0]?.taskId,
+        stageStatus: '0',
+      }
+      console.log(stagePayload)
+      yield put(LinkTaskStageRequest(stagePayload));
+    }
+    toast.success(`Task Created successfully, Task Id - ${response?.data?.data[0]?.taskId}`);
   } catch (error) {
     handleError(error)
     yield put(createTaskFailure(error.response?.data || error));
@@ -33,10 +44,10 @@ function* updateStatusTaskSaga(action) {
   try {
     const response = yield call(() => postRequest(API_ENDPOINTS.UPDATE_TASK, payload?.taskData));
     const data = {
-      stageName:payload.currentStep,
+      stageName: payload.currentStep,
       taskData: {
         ...response.data.data[0],
-        taskId:payload?.taskData.taskId
+        taskId: payload?.taskData.taskId
       },
     };
     yield put(updateTaskStatusSuccess(data));
@@ -75,13 +86,13 @@ function* finishAllTaskSaga(action) {
   // console.log(payload,"______")
   try {
     const taskListRes = yield all(
-      payload?.taskData?.map(taskData=>
+      payload?.taskData?.map(taskData =>
         call(postRequest, API_ENDPOINTS.UPDATE_TASK, taskData)
       )
     );
     const listIds = taskListRes?.map(res => res.data.data[0]);
     const data = {
-      finishStageNo:payload?.currentStep,
+      finishStageNo: payload?.currentStep,
       finishTaskData: listIds,
     };
     yield put(finishAllTaskSuccess(data));

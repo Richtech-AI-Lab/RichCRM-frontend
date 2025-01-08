@@ -17,7 +17,7 @@ const AddFromContactModal = ({ onClose }) => {
   const initialValues = {};
 
   const handleAddFromContact = async (values) => {
-    console.log(values, "Values");
+    // console.log(values, "Values");
   };
 
   return (
