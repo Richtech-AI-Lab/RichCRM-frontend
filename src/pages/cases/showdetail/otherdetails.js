@@ -10,8 +10,8 @@ const OtherDetail = ({ dummy, caseObj }) => {
   return (
     <>
       <div className="col-span-6">
-        <div className="bg-white p-4 rounded-2xl mb-5">
-          {<div className="flex justify-between items-center mb-5">
+        <div className="bg-white p-4 rounded-2xl mb-5 shadow-shadow-light">
+          {<div className="flex justify-between items-center mb-5 ">
             <span className="text-base text-secondary-800 font-bold">Case</span>
             {/* <div className="flex items-center gap-2">
           <BsThreeDotsVertical className="text-lg opacity-40" />
@@ -62,7 +62,7 @@ const OtherDetail = ({ dummy, caseObj }) => {
               </li>              
             </ul> : ""}
         </div> */}
-                <div className="bg-white p-4 rounded-2xl mb-5">
+                <div className="bg-white p-4 rounded-2xl mb-5 shadow-shadow-light">
           {<div className="flex justify-between items-center mb-5">
             <span className="text-base text-secondary-800 font-bold">Mortgage</span>
             {/* <div className="flex items-center gap-2">
@@ -79,7 +79,7 @@ const OtherDetail = ({ dummy, caseObj }) => {
         </div>
       </div>
       <div className="col-span-6">
-        <div className="bg-white p-4 rounded-2xl mb-5">
+        <div className="bg-white p-4 rounded-2xl mb-5 shadow-shadow-light">
           {<div className="flex justify-between items-center mb-5">
             <span className="text-base text-secondary-800 font-bold">Closing</span>
             {/* <div className="flex items-center gap-2">
@@ -98,7 +98,7 @@ const OtherDetail = ({ dummy, caseObj }) => {
               </li>
             </ul>
         </div>
-        <div className="bg-white p-4 rounded-2xl mb-5">
+        <div className="bg-white p-4 rounded-2xl mb-5 shadow-shadow-light">
           {<div className="flex justify-between items-center mb-5">
             <span className="text-base text-secondary-800 font-bold">Others</span>
             {/* <div className="flex items-center gap-2">
