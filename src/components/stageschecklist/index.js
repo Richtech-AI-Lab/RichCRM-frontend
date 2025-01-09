@@ -381,8 +381,8 @@ const StagesChecklist = () => {
   // };
   return (
     <>
-      <div className="md:col-span-12 lg:col-span-8">
-        <div className="bg-white py-4 rounded-2xl mb-5">
+      <div className="md:col-span-12 lg:col-span-8 ">
+        <div className="bg-white py-4 rounded-2xl mb-5 shadow-shadow-light">
           <div className="px-4">
             <div className="mb-6">
               <span className="text-base text-secondary-800 font-medium">Stage</span>
@@ -408,7 +408,7 @@ const StagesChecklist = () => {
                 <p className="text-white text-base font-medium">The Contract is due in {closingAlertInfo.daysUntilDue} days.</p>
               </div>
             }
-            <div className="bg-white p-4 rounded-2xl mb-5">
+            <div className="bg-white p-4 rounded-2xl mb-5 shadow-shadow-light">
               <div className={`flex justify-between items-center ${currentStep === 3 ? '' : 'pb-4'}`}>
                 {/* <span className="text-base text-secondary-800 font-medium">{getHeadLabel(currentStep)}</span> */}
 
