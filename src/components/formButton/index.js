@@ -14,7 +14,7 @@ const FormButton = ({onSave, onCancel }) => {
         type="submit"
         text="Save Changes"
         onClick={onSave}
-        className="bg-primary text-base text-white py-[10px] px-6 rounded-[100px] ml-4"
+        className="bg-primary text-base text-white py-[10px] px-6 rounded-[100px] ml-4 shadow-shadow-light"
       />
     </div>
   );
