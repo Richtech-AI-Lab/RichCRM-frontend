@@ -90,7 +90,7 @@ const CaseBrokerItems = ({ title, brokers, setBrokers, brokerDetails, errors, to
     );
 
     return (
-        <div className="bg-white p-4 rounded-2xl mb-5">
+        <div className="bg-white p-4 rounded-2xl mb-5 shadow-shadow-light">
           {title &&
                   <div className="flex justify-between items-center mb-5">
                       <span className="text-base text-secondary-800 font-bold">{title}</span>
