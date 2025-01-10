@@ -520,12 +520,12 @@ const OneDriveManager = () => {
                                 <XButton
                                     text={"Cancel"}
                                     onClick={() => handleCloseCreateModal()}
-                                    className="bg-card-300 text-sm text-primary2 py-[10px] px-6 rounded-[100px]"
+                                    className="shadow-shadow-light  bg-card-300 text-sm text-primary2 py-[10px] px-6 rounded-[100px]"
                                 />
                                 <XButton
                                     text={"Create"}
                                     onClick={() => handleCreateFolder()}
-                                    className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px] ml-4"
+                                    className="shadow-shadow-light  bg-primary text-sm text-white py-[10px] px-6 rounded-[100px] ml-4"
                                 />
                             </div>
                         </div>

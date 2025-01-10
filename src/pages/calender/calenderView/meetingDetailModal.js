@@ -107,8 +107,8 @@ const MeetingDetailModal = ({onAddReminderClick, onClose, eventData, title }) =>
 
                     </li>
                     <div className="flex justify-end px-5 mb-3">
-                        <XButton text="Edit" onClick={toggleDetailModalOpenAdd} className="bg-badge-gray text-base text-primary2 py-[10px] px-6 rounded-[100px] w-1/2" />
-                        <XButton text="Start Meeting" onClick={handleStartClick} className="bg-primary2 text-white text-base py-[10px] px-6 rounded-[100px] ml-4 w-1/2" />
+                        <XButton text="Edit" onClick={toggleDetailModalOpenAdd} className="shadow-shadow-light bg-badge-gray text-base text-primary2 py-[10px] px-6 rounded-[100px] w-1/2" />
+                        <XButton text="Start Meeting" onClick={handleStartClick} className="shadow-shadow-light bg-primary2 text-white text-base py-[10px] px-6 rounded-[100px] ml-4 w-1/2" />
                     </div>
                 </ul>
 

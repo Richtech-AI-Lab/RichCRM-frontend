@@ -144,7 +144,7 @@ const ContactPartnerOrganization = ({ isEdit, toggleEdit }) => {
               <>
                 <div className="col-span-6">
                   <form onSubmit={handleSubmit}>
-                    <div className="bg-white rounded-2xl mb-5 p-4">
+                    <div className="bg-white rounded-2xl mb-5 p-4 shadow-shadow-light">
                       <div className="flex">
                       <img src={`https://ui-avatars.com/api/?name=${initialValues?.organizationName}`} alt="Profile" className="mr-3 rounded-full w-[150px] h-[150px]" />
                  
@@ -186,7 +186,7 @@ const ContactPartnerOrganization = ({ isEdit, toggleEdit }) => {
                   </form>
                 </div>
                 <div className="col-span-3">
-                  <div className="card bg-card-300 px-2 py-3">
+                  <div className="card bg-card-300 px-2 py-3 shadow-shadow-light">
                     <h1 className="px-5">Involved Open Cases</h1>
                     <div className="grid">
                       {loading ?
@@ -216,7 +216,7 @@ const ContactPartnerOrganization = ({ isEdit, toggleEdit }) => {
                   </div>
                 </div>
                 <div className="col-span-3">
-                  <div className="card bg-card-300 px-2 py-3">
+                  <div className="card bg-card-300 px-2 py-3 shadow-shadow-light">
                     <h1 className="px-5">Involved Closed Cases</h1>
                     <div className="grid">
                       {loading ?
@@ -253,7 +253,7 @@ const ContactPartnerOrganization = ({ isEdit, toggleEdit }) => {
               <ContactOrganizationDetail address={addressDetails} organization={organizationdetails} />
             </div>
             <div className="col-span-3">
-              <div className="card bg-card-300 px-2 py-3">
+              <div className="card bg-card-300 px-2 py-3 shadow-shadow-light">
                 <h1 className="px-5">Involved Open Cases</h1>
                 <div className="grid">
                   {loading ?
@@ -282,7 +282,7 @@ const ContactPartnerOrganization = ({ isEdit, toggleEdit }) => {
               </div>
             </div>
             <div className="col-span-3">
-              <div className="card bg-card-300 px-2 py-3">
+              <div className="card bg-card-300 px-2 py-3 shadow-shadow-light">
                 <h1 className="px-5">Involved Closed Cases</h1>
                 <div className="grid">
                   {

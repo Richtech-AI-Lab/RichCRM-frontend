@@ -70,7 +70,7 @@ export const DefaultPathSetting = ({ title }) => {
               // type="submit"
               text="Browse"
               onClick={() => setShowOneDriveModal(true)}
-              className="bg-active-blue text-base text-active-blue-text py-[10px] px-6 mr-2 rounded-[100px]"
+              className="shadow-shadow-light bg-active-blue text-base text-active-blue-text py-[10px] px-6 mr-2 rounded-[100px]"
             />
             <XButton
               type="submit"
@@ -78,7 +78,7 @@ export const DefaultPathSetting = ({ title }) => {
               onClick={() => {
                 onFolderSave();
               }}
-              className="bg-active-blue text-base text-active-blue-text py-[10px] px-6 rounded-[100px]"
+              className="shadow-shadow-light bg-active-blue text-base text-active-blue-text py-[10px] px-6 rounded-[100px]"
             />
           </div>
         </div>
