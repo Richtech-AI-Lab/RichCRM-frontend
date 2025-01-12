@@ -63,7 +63,7 @@ const CasesActionbar = ({ active="", setActive="", setIsEdit="" , isEdit }) => {
                   icon={
                     <RiDownloadLine className="text-base mr-2 inline-block" />
                   }
-                  className="bg-primary2 text-sm text-white py-[10px] px-6 rounded-[100px] font-medium ml-4"
+                  className="bg-primary2 text-sm text-white py-[10px] px-6 rounded-[100px] font-medium ml-4 shadow-shadow-light"
                 />
               </>
             )}

@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { CREATE_STAGE_REQUEST, GET_STAGE_REQUEST, UPDATE_STATUS_STAGE_REQUEST } from '../type';
+import { CREATE_STAGE_REQUEST, GET_STAGE_REQUEST, LINK_TASK_INTO_STAGE_REQUEST, UPDATE_STATUS_STAGE_REQUEST } from '../type';
 import { API_ENDPOINTS } from '../../constants/api';
-import { createStageFailure, createStageSuccess, startStageLoading } from '../actions/stagesActions';
+import { createStageFailure, createStageSuccess, getStageRequest, LinkTaskStageSuccess, startStageLoading } from '../actions/stagesActions';
 import { getRequest, postRequest } from '../../axios/interceptor';
 import { handleError } from '../../utils/eventHandler';
 
@@ -41,8 +41,26 @@ function* updateStatusStageSaga(action) {
   }
 }
 
+function* linkTaskStageSaga(action) {
+  const { payload } = action;
+  // console.log(payload,"______")
+  try {
+    const response = yield call(() => postRequest(API_ENDPOINTS.UPDATE_STAGE, payload));
+    let stagePayload = {
+      stageType: response?.data?.data[0]?.stageType || 0,
+      caseId: localStorage.getItem('c_id'), // we can use response case id 
+    }
+    yield put(getStageRequest(stagePayload));
+    // yield put(LinkTaskStageSuccess(response));
+  } catch (error) {
+    handleError(error)
+    // yield put(updateTaskStatusFailure(error.response?.data || error));
+  }
+}
+
 export function* stagesSaga() {
   yield takeLatest(CREATE_STAGE_REQUEST, createStageSaga);
   yield takeLatest(GET_STAGE_REQUEST, getStageSaga);
   yield takeLatest(UPDATE_STATUS_STAGE_REQUEST, updateStatusStageSaga);
+  yield takeLatest(LINK_TASK_INTO_STAGE_REQUEST, linkTaskStageSaga);
 }

@@ -15,7 +15,7 @@ const ContactIndividualDetail = ({ contact, address }) => {
     };
     return (
         <>
-            <div className="bg-white rounded-2xl mb-5 p-4">
+            <div className="bg-white rounded-2xl mb-5 p-4 shadow-shadow-light">
                 <div className="flex">
                 <img src={`https://ui-avatars.com/api/?name=${contact.firstName}+${contact.lastName}`} alt="Profile" className="mr-3 rounded-full w-[150px] h-[150px]" />
                        
@@ -36,7 +36,7 @@ const ContactIndividualDetail = ({ contact, address }) => {
                     </div>
                 </div>
             </div>
-            <div className="bg-white p-4 rounded-2xl mb-5">
+            <div className="bg-white p-4 rounded-2xl mb-5 shadow-shadow-light">
 
                 <ul className="card-details">
                     <li>
@@ -49,7 +49,7 @@ const ContactIndividualDetail = ({ contact, address }) => {
                     </li>
                 </ul>
             </div>
-            <div className="bg-white p-4 rounded-2xl mb-5">
+            <div className="bg-white p-4 rounded-2xl mb-5 shadow-shadow-light">
 
                 <ul className="card-details">
                     <li>
@@ -62,7 +62,7 @@ const ContactIndividualDetail = ({ contact, address }) => {
                     </li>
                 </ul>
             </div>
-            <div className="bg-white p-4 rounded-2xl mb-5">
+            <div className="bg-white p-4 rounded-2xl mb-5 shadow-shadow-light">
 
                 <ul className="card-details">
                     <li>
@@ -96,7 +96,7 @@ const ContactIndividualDetail = ({ contact, address }) => {
 
                 </ul>
             </div>
-            <div className="bg-white p-4 rounded-2xl mb-5">
+            <div className="bg-white p-4 rounded-2xl mb-5 shadow-shadow-light">
 
                 <ul className="card-details">
                     <li>
@@ -109,7 +109,7 @@ const ContactIndividualDetail = ({ contact, address }) => {
                     </li>
                 </ul>
             </div>
-            <div className="bg-white p-4 rounded-2xl mb-5">
+            <div className="bg-white p-4 rounded-2xl mb-5 shadow-shadow-light">
 
                 <ul className="card-details">
                     <li>

@@ -44,7 +44,7 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
     return (
         <>
 
-            <div className="bg-white p-4 rounded-2xl mb-5 cnt-edt">
+            <div className="bg-white p-4 rounded-2xl mb-5 cnt-edt shadow-shadow-light">
 
                 <ul className="card-details">
 
@@ -77,7 +77,7 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
 
                 </ul>
             </div>
-            <div className="bg-white p-4 rounded-2xl mb-5 cnt-edt">
+            <div className="bg-white p-4 rounded-2xl mb-5 cnt-edt shadow-shadow-light">
 
                 <ul className="card-details">
 
@@ -104,7 +104,7 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
 
                 </ul>
             </div>
-            <div className="bg-white p-4 rounded-2xl mb-5 cnt-edt">
+            <div className="bg-white p-4 rounded-2xl mb-5 cnt-edt shadow-shadow-light">
 
                 <ul className="card-details">
                     <li>
@@ -332,7 +332,7 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
 
                 </ul>
             </div>
-            <div className="bg-white p-4 rounded-2xl mb-5 cnt-edt">
+            <div className="bg-white p-4 rounded-2xl mb-5 cnt-edt shadow-shadow-light">
 
                 <ul className="card-details">
 
@@ -396,7 +396,7 @@ const ContactIndividualEditForm = ({ initialValues, onSubmit, values, form, setF
                 </ul>
             </div>
 
-            <div className="bg-white rounded-2xl mb-5">
+            <div className="bg-white rounded-2xl mb-5 shadow-shadow-light">
                 <Textarea
                     name="note"
                     type="text"

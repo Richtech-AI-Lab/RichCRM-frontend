@@ -45,7 +45,7 @@ export const ProfileSetting = ({ title }) => {
                             type="submit"
                             text="Save Changes"
                             // onClick={onSave}
-                            className="bg-active-blue text-base text-active-blue-text py-[10px] px-6 rounded-[100px]"
+                            className="shadow-shadow-light bg-active-blue text-base text-active-blue-text py-[10px] px-6 rounded-[100px]"
                         />
                     </div>
                 </div>
@@ -88,7 +88,7 @@ export const ProfileSetting = ({ title }) => {
                                 type="submit"
                                 text="Update"
                                 // onClick={onSave}
-                                className="bg-active-blue text-base text-active-blue-text py-[10px] px-6 rounded-[100px]"
+                                className=" shadow-shadow-light  bg-active-blue text-base text-active-blue-text py-[10px] px-6 rounded-[100px]"
                             />
                         </div>
                     </div>
@@ -111,7 +111,7 @@ export const ProfileSetting = ({ title }) => {
                                 type="submit"
                                 text="Update"
                                 // onClick={onSave}
-                                className="bg-active-blue text-base text-active-blue-text py-[10px] px-6 rounded-[100px]"
+                                className=" shadow-shadow-light bg-active-blue text-base text-active-blue-text py-[10px] px-6 rounded-[100px]"
                             />
                         </div>
                     </div>

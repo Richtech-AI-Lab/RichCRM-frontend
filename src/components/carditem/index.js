@@ -54,7 +54,7 @@ const CardItem = ({
   const caseTypeLabel = caseTypeOptions.find(option => option.value === caseType)?.label || "Unknown";
   return (
     <div
-      className={`card rounded-2xl ${closedCases ? 'mb-0 shadow-shadow-light' : 'mb-2'}  ${innerCardClass}`}
+      className={`card rounded-2xl ${closedCases ? 'mb-0 shadow-shadow-light' : 'mb-2 shadow-shadow-light'}  ${innerCardClass}`}
       onClick={onClick}
       style={{ cursor: "pointer" }}
     >

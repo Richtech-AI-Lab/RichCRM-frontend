@@ -66,7 +66,7 @@ const CaseDetailsCard = ({
 
   };
   return (
-    <div className="bg-white p-4 rounded-2xl mb-5">
+    <div className="bg-white p-4 rounded-2xl mb-5 shadow-shadow-light">
       <div className="flex justify-between items-center mb-6 ">
         <div>
           <span className="md:text-[22px] lg:text-lg block mb-2 leading-7 text-secondary-800 font-medium">{title}</span>

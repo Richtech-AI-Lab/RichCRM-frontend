@@ -10,7 +10,7 @@ const initialState = {
 const taskReducer = (state = initialState, action) => {
   switch (action.type) {
     case CREATE_TASK_REQUEST:
-      return { ...state, loading: true, error: null };
+      return { ...state, loading: false, error: null };
     case CREATE_TASK_SUCCESS:
       const { currentStep, taskRes } = action.payload;
       return {

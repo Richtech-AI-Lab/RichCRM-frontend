@@ -169,7 +169,7 @@ const Tag = ({ title, tags, setTags, tagDetails, errors, touched }) => {
                                     <div className="text-end mt-8">
                                         <XButton
                                             text={"Cancel"}
-                                            className="bg-card-300 text-sm text-secondary-800 py-[10px] px-6 rounded-[100px]"
+                                            className="shadow-shadow-light bg-card-300 text-sm text-secondary-800 py-[10px] px-6 rounded-[100px]"
                                             onClick={() => {
                                                 setNewTag({ label: '', color1: '', color2: '', tagType: '' });
                                                 closeModal()
@@ -180,7 +180,7 @@ const Tag = ({ title, tags, setTags, tagDetails, errors, touched }) => {
                                             type="submit"
                                             text={"Submit"}
                                             onClick={() => addTagItem(push)}
-                                            className="bg-primary text-sm text-white py-[10px] px-6 rounded-[100px] ml-4"
+                                            className="shadow-shadow-light bg-primary text-sm text-white py-[10px] px-6 rounded-[100px] ml-4"
                                         />
                                     </div>
                                 </div>
