@@ -60,6 +60,7 @@ export const API_ENDPOINTS = {
   UPDATE_USER: "/auth/update",
   DELETE_CLIENT: "/client/delete",
   DELETE_ORGANIZATION: "/organization/delete",
+  CREATE_TEM_TASK: "/task-template/create",
 };
 
 export const ROUTES = {

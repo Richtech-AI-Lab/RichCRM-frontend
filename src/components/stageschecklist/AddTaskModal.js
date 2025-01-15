@@ -7,9 +7,10 @@ import TextInput from "../TextInput";
 import { Formik } from "formik";
 import { useDispatch } from "react-redux";
 import { createTaskRequest } from "../../redux/actions/taskActions";
+import { createTemTaskRequest } from "../../redux/actions/templateTaskActions";
 
 
-const AddTaskModal = ({ onClose, stageId }) => {
+const AddTaskModal = ({ onClose, stageId, currentStep }) => {
     const dispatch = useDispatch();
 
     const typeOption = [
@@ -24,17 +25,26 @@ const AddTaskModal = ({ onClose, stageId }) => {
         { value: 2, label: "FINISHED" },
         { value: 3, label: "OVERDUE" }
     ];
+
     const handleNewTask = async (values) => {
         try {
-            // console.log(values, "values")
             const payload = {
-                taskType: values.taskType,
-                name: values.name,
-                status: values.status,
-                stageId: stageId,
-                // templates: ''
+                taskPayload: {
+                    taskType: values.taskType,
+                    name: values.name,
+                    status: values.status,
+                    stageId: stageId,
+                    templates: ''
+                },
+                temptaskPayload: {
+                    taskName: values.name,
+                    creatorId: localStorage.getItem("authEmail"),
+                    stage: currentStep,
+                    taskType: values.taskType
+                }
             }
-            dispatch(createTaskRequest(payload));
+            dispatch(createTemTaskRequest(payload?.temptaskPayload));
+            dispatch(createTaskRequest(payload?.taskPayload));
             onClose();
         } catch (error) {
             console.error("Error while creating new task", error);
