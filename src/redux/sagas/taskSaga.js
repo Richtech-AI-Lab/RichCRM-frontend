@@ -10,13 +10,17 @@ import { toast } from 'react-toastify';
 import { LinkTaskStageRequest } from '../actions/stagesActions';
 
 function* createtaskSaga(action) {
-  const { payload } = action;
+  const { payload , taskArr} = action;
+  let taskList= taskArr;
   try {
     const response = yield call(() => postRequest(API_ENDPOINTS.CREATE_TASK, payload));
     if (response.status == 200) {
+      const newTaskId = response.data?.data[0]?.taskId;
+      taskList = [...taskList, newTaskId];
+
       let stagePayload = {
         stageId: payload.stageId,
-        newTask: response.data?.data[0]?.taskId,
+        tasks: taskList,
         stageStatus: '0',
       }
       console.log(stagePayload)

@@ -10,7 +10,7 @@ import { createTaskRequest } from "../../redux/actions/taskActions";
 import { createTemTaskRequest } from "../../redux/actions/templateTaskActions";
 
 
-const AddTaskModal = ({ onClose, stageId, currentStep }) => {
+const AddTaskModal = ({ onClose, stageId, currentStep, taskArr=[] }) => {
     const dispatch = useDispatch();
 
     const typeOption = [
@@ -44,7 +44,7 @@ const AddTaskModal = ({ onClose, stageId, currentStep }) => {
                 }
             }
             dispatch(createTemTaskRequest(payload?.temptaskPayload));
-            dispatch(createTaskRequest(payload?.taskPayload));
+            dispatch(createTaskRequest(payload?.taskPayload, taskArr));
             onClose();
         } catch (error) {
             console.error("Error while creating new task", error);

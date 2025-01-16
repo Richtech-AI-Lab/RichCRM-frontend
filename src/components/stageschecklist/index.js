@@ -507,7 +507,7 @@ const StagesChecklist = () => {
           
           {!isComplete && <StageUncompleteAlert onMove={handleNextStage} onClose={toggleStageModal} currentStep={currentStep} />}
       </div>
-      {addTaskModal && <AddTaskModal  onClose={()=>setAddTaskModal(false) } stageId={data[STAGESNAMES[currentStep? currentStep : 0]]?.stageId} currentStep={currentStep? currentStep : 0}/>}
+      {addTaskModal && <AddTaskModal  onClose={()=>setAddTaskModal(false) } stageId={data[STAGESNAMES[currentStep? currentStep : 0]]?.stageId} currentStep={currentStep? currentStep : 0} taskArr={data[STAGESNAMES[currentStep? currentStep : 0]]?.tasks} />}
     </>
   );
 };

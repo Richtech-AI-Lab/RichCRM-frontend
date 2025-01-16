@@ -1,9 +1,10 @@
 import {CLEAR_TASK_DATA, CREATE_TASK_FAILURE, CREATE_TASK_REQUEST, CREATE_TASK_SUCCESS, FINISH_ALL_TASK_FAILURE, FINISH_ALL_TASK_REQUEST, FINISH_ALL_TASK_SUCCESS, GET_TASK_REQUEST, UPDATE_STATUS_TASK_FAILURE, UPDATE_STATUS_TASK_REQUEST, UPDATE_STATUS_TASK_SUCCESS } from "../type";
 
 
-export const createTaskRequest = (taskData) => ({
+export const createTaskRequest = (taskData, taskArr) => ({
   type: CREATE_TASK_REQUEST,
   payload: taskData,
+  taskArr: taskArr
 });
 
 export const createTaskSuccess = (response) => ({
