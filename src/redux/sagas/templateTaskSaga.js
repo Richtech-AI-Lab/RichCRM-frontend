@@ -1,5 +1,5 @@
 import { call, takeLatest } from 'redux-saga/effects';
-import { CREATE_TEM_TASK_REQUEST} from '../type';
+import { CREATE_TEM_TASK_REQUEST, INITIALIZE_TEM_TASK_REQUEST} from '../type';
 import { API_ENDPOINTS } from '../../constants/api';
 import { postRequest } from '../../axios/interceptor';
 import { handleError } from '../../utils/eventHandler';
@@ -17,6 +17,18 @@ function* createTemplateTaskSaga(action) {
   }
 }
 
+function* initializeTemplateTaskSaga(action) {
+  const { payload } = action;
+  try {
+    const response = yield call(() => postRequest(API_ENDPOINTS.INITIAL_TEM_TASK, payload));
+    if (response.status == 200) {
+      toast.success(`Task Template Id - ${response?.data?.data[0]?.ttid}`);
+    }
+  } catch (error) {
+    handleError(error)
+  }
+}
 export function* templateTaskSaga() {
   yield takeLatest(CREATE_TEM_TASK_REQUEST, createTemplateTaskSaga);
+  yield takeLatest(INITIALIZE_TEM_TASK_REQUEST,  initializeTemplateTaskSaga);
 }

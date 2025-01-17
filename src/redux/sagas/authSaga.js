@@ -42,6 +42,14 @@ function* register(action) {
   try {
     const { payload } = action;
     const response = yield call(() => postRequest(API_ENDPOINTS.REGISTER, payload));
+    const emailAddress = response?.data?.data[0]?.emailAddress;
+
+    // Step 3: Call additional API if needed
+    if (emailAddress) {
+      yield call(() =>
+        postRequest(API_ENDPOINTS.INITIAL_TEM_TASK, { creatorId: emailAddress })
+      );
+    }
     yield put(registerSuccess(response?.data));
   } catch (error) {
     handleError(error)
