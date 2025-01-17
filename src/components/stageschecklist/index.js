@@ -6,7 +6,7 @@ import StepperProgress from "../stepperProgress";
 import { Spinner } from "flowbite-react";
 import MenuPopup from "../menupopup";
 import { useDispatch, useSelector } from "react-redux";
-import { clearStageData, createStageRequest, getStageRequest } from "../../redux/actions/stagesActions";
+import { clearStageData, createStageRequest, getStageRequest, updateTaskOrderStageRequest } from "../../redux/actions/stagesActions";
 import { clearTaskData, finishAllTaskRequest, getTaskRequest } from "../../redux/actions/taskActions";
 import { STAGESNAMES } from "../../constants/constants";
 import { isEmpty } from "lodash";
@@ -406,10 +406,16 @@ const StagesChecklist = () => {
     updatedTasks.splice(destination.index, 0, movedTask);
 
     // You can now update your state with the new order
-    console.log("Updated Task Order:", updatedTasks);
+    let taskdata = updatedTasks?.map((task => task?.taskId))
 
+    let payload = {
+      "stageId": data[STAGESNAMES[currentStep ? currentStep : 0]]?.stageId,
+      "tasks": taskdata
+    }
+    console.log(data, "Updated Task Order:", updatedTasks);
     // Example: Update state with new task order
     // setTaskData({ ...taskData, data: updatedTasks });
+    dispatch(updateTaskOrderStageRequest(payload))
   };
   return (
     <>
@@ -494,12 +500,12 @@ const StagesChecklist = () => {
 
                 {!isLoading && (
                   <DragDropContext onDragEnd={handleDragEnd}>
-                    <Droppable droppableId={slicedTasks}>
+                    <Droppable droppableId={slicedTasks[0]?.taskId}>
                       {(provided) => (
                         <div
                           className="w-full"
                           ref={provided.innerRef}
-                          {...provided.droppableProps}
+                          {...provided.draggableProps}
                         >
                           {taskData.data[STAGESNAMES[currentStep ? currentStep : 0]]
                             ?.slice(
@@ -527,6 +533,8 @@ const StagesChecklist = () => {
                                     {...provided.dragHandleProps}
                                     className="cursor-move"
                                   >
+                                    {/* {console.log(slicedTasks[0]?.taskId,"slicedTasks")} */}
+                                   {/* {slicedTasks[0]?.taskId} */}
                                     <ChecklistItem
                                       item={item}
                                       stageName={currentStep ? currentStep : 0}
