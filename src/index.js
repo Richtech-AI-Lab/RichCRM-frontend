@@ -32,13 +32,11 @@ msalInstance.initialize().then(() => {
 
   const root = ReactDOM.createRoot(document.getElementById('root'));
   root.render(
-    <React.StrictMode>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <App pca={msalInstance} />
         </PersistGate>
       </Provider>
-    </React.StrictMode>
   );
 });
 

@@ -9,6 +9,7 @@ import casesReducer from "./caseReducer"
 import contactReducer from "./contactReducer";
 import organizationReducer from "./organizationReducer";
 import tagReducer from "./tagReducer";
+import templateTaskReducer from "./templateTaskReducer";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   contact:contactReducer,
   organization: organizationReducer,
   tag: tagReducer,
+  templateTask: templateTaskReducer,
 });
 
 export default rootReducer;

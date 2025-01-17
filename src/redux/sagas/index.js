@@ -10,7 +10,9 @@ import { taskSaga } from "./taskSaga";
 import { contactSaga } from "./contactSaga";
 import { organizationSaga } from "./organizationSaga";
 import { tagSaga } from "./tagSaga";
+import { template } from "lodash";
+import { templateTaskSaga } from "./templateTaskSaga";
 
 export default function* rootSaga() {
-  yield all([userSaga(), authSaga(), caseSaga(), premisesSaga(), clientSaga(), utilsSaga(), stagesSaga(),taskSaga(),contactSaga(),organizationSaga(), tagSaga()]);
+  yield all([userSaga(), authSaga(), caseSaga(), premisesSaga(), clientSaga(), utilsSaga(), stagesSaga(),taskSaga(),contactSaga(),organizationSaga(), tagSaga(), templateTaskSaga()]);
 }
