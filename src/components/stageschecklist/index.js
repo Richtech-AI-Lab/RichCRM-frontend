@@ -15,6 +15,7 @@ import StageUncompleteAlert from "../../pages/cases/stagealert";
 import { useNavigate } from "react-router-dom";
 import AddTaskModal from "./AddTaskModal";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { getTemplateByTaskRequest } from "../../redux/actions/templateTaskActions";
 
 const StagesChecklist = () => {
   const dispatch = useDispatch();
@@ -399,24 +400,38 @@ const StagesChecklist = () => {
     if (!destination || source.index === destination.index) {
       return;
     }
-
+    
     // Update the task order here
-    const updatedTasks = Array.from(slicedTasks);
-    const [movedTask] = updatedTasks.splice(source.index, 1);
-    updatedTasks.splice(destination.index, 0, movedTask);
+    const updatedTasks = Array.from(slicedTasks); // Create a copy of the tasks
+    const [movedTask] = updatedTasks.splice(source.index, 1); // Remove the dragged task
+    updatedTasks.splice(destination.index, 0, movedTask); // Insert it at the new position
+    
+    // Get previous and next items based on the destination index
+    const previousItem = destination.index > 0 ? updatedTasks[destination.index - 1] : null;
+    const nextItem =
+    destination.index < updatedTasks.length - 1
+    ? updatedTasks[destination.index + 1]
+    : null;
+  
+    // Prepare payload for dispatch
+    const taskdata = updatedTasks.map((task) => task.taskId);
+    const payload = {
+      stageId: data[STAGESNAMES[currentStep ? currentStep : 0]]?.stageId,
+      tasks: taskdata,
+    };
+  
+    console.log("Updated Task Order:", updatedTasks);
 
-    // You can now update your state with the new order
-    let taskdata = updatedTasks?.map((task => task?.taskId))
-
-    let payload = {
-      "stageId": data[STAGESNAMES[currentStep ? currentStep : 0]]?.stageId,
-      "tasks": taskdata
+    let ttidPayload={
+      taskId: movedTask?.ttid,
+      prevId : previousItem?.ttid,
+      nextId : nextItem?.ttid
     }
-    console.log(data, "Updated Task Order:", updatedTasks);
-    // Example: Update state with new task order
-    // setTaskData({ ...taskData, data: updatedTasks });
-    dispatch(updateTaskOrderStageRequest(payload))
+    dispatch(getTemplateByTaskRequest(ttidPayload))
+    dispatch(updateTaskOrderStageRequest(payload));
+    // dispatch(updateTaskOrderStageRequest(payload));
   };
+  
   return (
     <>
       <div className="md:col-span-12 lg:col-span-8 ">

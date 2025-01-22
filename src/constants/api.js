@@ -62,6 +62,8 @@ export const API_ENDPOINTS = {
   DELETE_ORGANIZATION: "/organization/delete",
   CREATE_TEM_TASK: "/task-template/create",
   INITIAL_TEM_TASK : "/task-template/create/default",
+  GET_TEM_TASK : "/task-template/read",
+  UPDATE_TEM_TASK: "/task-template/create"
 };
 
 export const ROUTES = {
