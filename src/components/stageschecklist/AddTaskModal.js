@@ -10,7 +10,7 @@ import { createTaskRequest } from "../../redux/actions/taskActions";
 import { createTemTaskRequest } from "../../redux/actions/templateTaskActions";
 
 
-const AddTaskModal = ({ onClose, stageId, currentStep, taskArr=[] }) => {
+const AddTaskModal = ({ onClose, stageId, currentStep, taskArr = [] }) => {
     const dispatch = useDispatch();
 
     const typeOption = [
@@ -41,10 +41,10 @@ const AddTaskModal = ({ onClose, stageId, currentStep, taskArr=[] }) => {
                     creatorId: localStorage.getItem("authEmail"),
                     stage: currentStep,
                     taskType: values.taskType
-                }
+                },
+                taskArr:taskArr
             }
-            dispatch(createTemTaskRequest(payload?.temptaskPayload));
-            dispatch(createTaskRequest(payload?.taskPayload, taskArr));
+            dispatch(createTemTaskRequest(payload));
             onClose();
         } catch (error) {
             console.error("Error while creating new task", error);
