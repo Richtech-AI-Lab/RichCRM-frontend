@@ -10,7 +10,7 @@ import { createTaskRequest } from "../../redux/actions/taskActions";
 import { createTemTaskRequest } from "../../redux/actions/templateTaskActions";
 
 
-const AddTaskModal = ({ onClose, stageId, currentStep, taskArr = [] }) => {
+const AddTaskModal = ({ onClose, stageId, currentStep, taskArr = [] , taskList}) => {
     const dispatch = useDispatch();
 
     const typeOption = [
@@ -27,6 +27,12 @@ const AddTaskModal = ({ onClose, stageId, currentStep, taskArr = [] }) => {
     ];
 
     const handleNewTask = async (values) => {
+          let prevTTid= null;
+          if(taskList?.length > 0){
+            let prevTask=  taskList[taskList?.length - 1];
+            prevTTid =  prevTask?.ttid;
+          }
+          
         try {
             const payload = {
                 taskPayload: {
@@ -40,7 +46,8 @@ const AddTaskModal = ({ onClose, stageId, currentStep, taskArr = [] }) => {
                     taskName: values.name,
                     creatorId: localStorage.getItem("authEmail"),
                     stage: currentStep,
-                    taskType: values.taskType
+                    taskType: values.taskType,
+                    prevTtid: prevTTid
                 },
                 taskArr:taskArr
             }
