@@ -18,7 +18,7 @@ const Sidebar = ({ onAddReminderClick, filters, onFilterChange, setSelectedCase 
         text="Create an event"
         type="button"
         // onClick={onCancel} 
-        className="bg-primary text-base text-white py-[10px] px-6 rounded-[100px] ml-4"
+        className="shadow-shadow-light bg-primary text-base text-white py-[10px] px-6 rounded-[100px] ml-4"
       />
 
       {/* <div className="p-5">

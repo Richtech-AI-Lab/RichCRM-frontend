@@ -1,5 +1,5 @@
 import { STAGESNAMES } from "../../constants/constants";
-import { CLEAR_STAGE_DATA, CREATE_STAGE_FAILURE, CREATE_STAGE_REQUEST, CREATE_STAGE_SUCCESS, START_LOADING, STOP_LOADING } from "../type";
+import { CLEAR_STAGE_DATA, CREATE_STAGE_FAILURE, CREATE_STAGE_REQUEST, CREATE_STAGE_SUCCESS, START_LOADING, STOP_LOADING, UPDATE_TASK_ORDER_STAGE_FAILURE, UPDATE_TASK_ORDER_STAGE_REQUEST, UPDATE_TASK_ORDER_STAGE_SUCCESS } from "../type";
 
 const initialState = {
   loading: false,
@@ -24,6 +24,12 @@ const stageReducer = (state = initialState, action) => {
     case START_LOADING:
       return { ...state, loading: true };
     case STOP_LOADING:
+      return { ...state, loading: false };
+    case UPDATE_TASK_ORDER_STAGE_REQUEST:
+      return { ...state, loading: true };
+    case UPDATE_TASK_ORDER_STAGE_SUCCESS:
+      return { ...state, loading: false };
+    case UPDATE_TASK_ORDER_STAGE_FAILURE:
       return { ...state, loading: false };
     case CLEAR_STAGE_DATA:
       return initialState

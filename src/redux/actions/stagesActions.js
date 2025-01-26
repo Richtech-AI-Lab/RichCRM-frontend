@@ -1,4 +1,4 @@
-import { CLEAR_STAGE_DATA, CREATE_STAGE_FAILURE, CREATE_STAGE_REQUEST, CREATE_STAGE_SUCCESS, GET_STAGE_REQUEST, START_LOADING, STOP_LOADING, UPDATE_STATUS_STAGE_REQUEST } from "../type";
+import { CLEAR_STAGE_DATA, CREATE_STAGE_FAILURE, CREATE_STAGE_REQUEST, CREATE_STAGE_SUCCESS, GET_STAGE_REQUEST, LINK_TASK_INTO_STAGE_FAILURE, LINK_TASK_INTO_STAGE_REQUEST, LINK_TASK_INTO_STAGE_SUCCESS, START_LOADING, STOP_LOADING, UPDATE_STATUS_STAGE_REQUEST, UPDATE_TASK_ORDER_STAGE_FAILURE, UPDATE_TASK_ORDER_STAGE_REQUEST, UPDATE_TASK_ORDER_STAGE_SUCCESS } from "../type";
 
 
 export const createStageRequest = (stageData) => ({
@@ -36,5 +36,36 @@ export const clearStageData = () => ({
 export const updateStageStatusRequest = (stageData) => ({
   type: UPDATE_STATUS_STAGE_REQUEST,
   payload:stageData,
+});
+
+
+export const LinkTaskStageRequest = (stageData) => ({
+  type: LINK_TASK_INTO_STAGE_REQUEST,
+  payload: stageData,
+});
+
+export const LinkTaskStageSuccess = (response) => ({
+  type: LINK_TASK_INTO_STAGE_SUCCESS,
+  payload: response,
+});
+
+export const LinkTaskStageFailure = (error) => ({
+  type: LINK_TASK_INTO_STAGE_FAILURE,
+  payload: error,
+});
+
+export const updateTaskOrderStageRequest = (stageData) => ({
+  type: UPDATE_TASK_ORDER_STAGE_REQUEST,
+  payload: stageData,
+});
+
+export const updateTaskOrderStageSuccess = (response) => ({
+  type: UPDATE_TASK_ORDER_STAGE_SUCCESS,
+  payload: response,
+});
+
+export const updateTaskOrderStageFailure = (error) => ({
+  type: UPDATE_TASK_ORDER_STAGE_FAILURE,
+  payload: error,
 });
 

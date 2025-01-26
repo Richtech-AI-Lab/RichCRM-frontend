@@ -171,7 +171,7 @@ const responseSchema = z.object(
   };
 
   return (
-    <div className="card">
+    <div className="card shadow-shadow-light">
       <div className="msg_box">
         <div className="msg-box-head flex justify-between">
           <div className="col-span-2">

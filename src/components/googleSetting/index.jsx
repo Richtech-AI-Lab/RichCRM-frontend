@@ -132,7 +132,7 @@ export const GoogleSetting = ({ title }) => {
                 onClick={() => {
                   handleSignOut();
                 }}
-                className="bg-active-blue text-base text-active-blue-text py-[10px] px-6 rounded-[100px]"
+                className="shadow-shadow-light bg-active-blue text-base text-active-blue-text py-[10px] px-6 rounded-[100px]"
               />
             ) : (
               <XButton
@@ -141,7 +141,7 @@ export const GoogleSetting = ({ title }) => {
                 onClick={() => {
                   handleSignIn();
                 }}
-                className="bg-active-blue text-base text-active-blue-text py-[10px] px-6 rounded-[100px]"
+                className="shadow-shadow-light bg-active-blue text-base text-active-blue-text py-[10px] px-6 rounded-[100px]"
               />
             )}
           </div>

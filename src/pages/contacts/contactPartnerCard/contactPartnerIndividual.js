@@ -292,7 +292,7 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
               <>
                 <div className="col-span-6">
                   <form onSubmit={handleSubmit}>
-                    <div className="bg-white rounded-2xl mb-5 p-4">
+                    <div className="bg-white rounded-2xl mb-5 p-4 shadow-shadow-light">
                       <div className="flex">
                         <img src={`https://ui-avatars.com/api/?name=${initialValues?.firstName}+${initialValues?.lastName}`} alt="Profile" className="mr-3 rounded-full w-[150px] h-[150px]" />
 
@@ -344,7 +344,7 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
                   </form>
                 </div>
                 <div className="col-span-3">
-                  <div className="card bg-card-300 px-2 py-3">
+                  <div className="card bg-card-300 px-2 py-3 shadow-shadow-light">
                     <h1 className="px-5">Involved Open Cases</h1>
                     <div className="grid">
                       {cases[0][1]?.map((item, index) => (
@@ -363,7 +363,7 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
                   </div>
                 </div>
                 <div className="col-span-3">
-                  <div className="card bg-card-300 px-2 py-3">
+                  <div className="card bg-card-300 px-2 py-3 shadow-shadow-light">
                     <h1 className="px-5">Involved Closed Cases</h1>
                     <div className="grid">
                       {cases[0][0]?.map((item, index) => (
@@ -388,8 +388,8 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
             <div className="col-span-6 pp">
               <ContactIndividualDetail address={addressDetails} contact={contactdetails} />
             </div>
-            <div className="col-span-3">
-              <div className="card bg-card-300 px-2 py-3">
+            <div className="col-span-3 ">
+              <div className="card bg-card-300 px-2 py-3 shadow-shadow-light">
                 <h1 className="px-5">Involved Open Cases</h1>
                 {loading ?
                   <div className="flex justify-center items-center">
@@ -418,7 +418,7 @@ const ContactPartnerIndividual = ({ isEdit, toggleEdit }) => {
               </div>
             </div>
             <div className="col-span-3">
-              <div className="card bg-card-300 px-2 py-3">
+              <div className="card bg-card-300 px-2 py-3 shadow-shadow-light">
                 <h1 className="px-5">Involved Closed Cases</h1>
                 <div className="grid">
                   {loading ?

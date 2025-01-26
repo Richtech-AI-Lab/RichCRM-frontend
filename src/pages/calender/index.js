@@ -32,7 +32,7 @@ const CalendarPage = () => {
   return (
     <div className="calendar-page-container" style={{ display: 'flex', height: '100vh' }}>
      
-      <div className="calendar-container" style={{ width: '80%' , borderRight: '1px solid #ddd'}}>
+      <div className="calendar-container card shadow-shadow-light" style={{ width: '80%' , borderRight: '1px solid #ddd'}}>
         <Calendar toggleAddReminderModal={toggleAddReminderModal} isAddReminderOpen={isAddReminderOpen} filters={filters} selectedCase={selectedCase} setSelectedCase={setSelectedCase}/>
       </div>
       <div className="sidebar-container" style={{ width: '20%' }}>

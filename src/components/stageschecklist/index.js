@@ -6,7 +6,7 @@ import StepperProgress from "../stepperProgress";
 import { Spinner } from "flowbite-react";
 import MenuPopup from "../menupopup";
 import { useDispatch, useSelector } from "react-redux";
-import { clearStageData, createStageRequest, getStageRequest } from "../../redux/actions/stagesActions";
+import { clearStageData, createStageRequest, getStageRequest, updateTaskOrderStageRequest } from "../../redux/actions/stagesActions";
 import { clearTaskData, finishAllTaskRequest, getTaskRequest } from "../../redux/actions/taskActions";
 import { STAGESNAMES } from "../../constants/constants";
 import { isEmpty } from "lodash";
@@ -14,6 +14,8 @@ import { closeCaseRequest, updateCaseRequest } from "../../redux/actions/caseAct
 import StageUncompleteAlert from "../../pages/cases/stagealert";
 import { useNavigate } from "react-router-dom";
 import AddTaskModal from "./AddTaskModal";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { getTemplateByTaskRequest } from "../../redux/actions/templateTaskActions";
 
 const StagesChecklist = () => {
   const dispatch = useDispatch();
@@ -24,8 +26,8 @@ const StagesChecklist = () => {
   const [activeTab, setActiveTab] = useState('mortgage');
   const menuOption1 = ['Create a Task', 'Add a Task']
   const menuOption2 = ['Add Task', 'Finish all']
-  const { loading:stagesLoading, data, error } = useSelector((state) => state.stages);
-  const { loading:taskLoading } = useSelector((state) => state.task);
+  const { loading: stagesLoading, data, error } = useSelector((state) => state.stages);
+  const { loading: taskLoading } = useSelector((state) => state.task);
   const taskData = useSelector((state) => state.task);
   const { casesData } = useSelector((state) => state.case);
 
@@ -40,7 +42,7 @@ const StagesChecklist = () => {
         caseId: localStorage.getItem('c_id'),
       }
       dispatch(getStageRequest(sagaPayload));
-      setCurrentStep( currentStep || 0)
+      setCurrentStep(currentStep || 0)
     }
   }, [data, currentStep])
 
@@ -147,12 +149,12 @@ const StagesChecklist = () => {
     // if we have a stage value is highest and current step is 0 then we need to show 
     const highestStageType = Math.max(
       ...Object.values(data).map(stage => stage.stageType)
-  );
-  if(currentStep == undefined){
-    currentstepstr = `${highestStageType}`;
-  }else{
-    currentstepstr = `${currentStep}`;
-  }
+    );
+    if (currentStep == undefined) {
+      currentstepstr = `${highestStageType}`;
+    } else {
+      currentstepstr = `${currentStep}`;
+    }
 
 
     const getTaskPayload = {
@@ -194,7 +196,7 @@ const StagesChecklist = () => {
       case 4:
         return "Closing Tasks";
       default:
-        return  "To-do Tasks";
+        return "To-do Tasks";
     }
   };
   const toggleStageModal = () => {
@@ -231,9 +233,9 @@ const StagesChecklist = () => {
   };
 
   const CheckAndMoveStage = () => {
-    if(isAllTaskDone()){
+    if (isAllTaskDone()) {
       handleNextStage()
-    }else{
+    } else {
       setIsComplete(false)
     }
   };
@@ -287,13 +289,13 @@ const StagesChecklist = () => {
       switch (task.taskType) {
         case 0:
           return task.status === 2; // 'Finished'
-  
+
         case 1:
           return task.status === 2; // 'Uploaded'
-  
+
         case 2:
           return task.status === 2; // 'Finished'
-  
+
         default:
           return false; // For unknown task types
       }
@@ -306,20 +308,20 @@ const StagesChecklist = () => {
   };
 
   const handleOptionSubmit = (id, label) => {
-    if(label === "Finish all"){
-      let data = taskData?.data[STAGESNAMES[currentStep? currentStep : 0]];
+    if (label === "Finish all") {
+      let data = taskData?.data[STAGESNAMES[currentStep ? currentStep : 0]];
       let updatedTasks = data.map(task => ({
         taskId: task?.taskId,
         stageId: task?.stageId,
         status: 2  // Set status to 2 for all tasks
       }));
-      let payload={
-        currentStep: currentStep? currentStep : 0,
+      let payload = {
+        currentStep: currentStep ? currentStep : 0,
         taskData: updatedTasks
       }
       dispatch(finishAllTaskRequest(payload))
     }
-    if(label === "Add Task"){
+    if (label === "Add Task") {
       setAddTaskModal(true)
     }
 
@@ -379,10 +381,61 @@ const StagesChecklist = () => {
   //   }
   //   return stepperItems[currentStep];
   // };
+
+
+  const stageTasks = taskData.data[STAGESNAMES[currentStep || 0]] || [];
+  const slicedTasks = stageTasks.slice(
+    currentStep === 3 ? (activeTab === "title" ? 5 : 0) : 0,
+    currentStep === 3
+      ? activeTab === "title"
+        ? 10
+        : 5
+      : stageTasks.length
+  );
+
+  const handleDragEnd = (result) => {
+    const { source, destination } = result;
+
+    // If dropped outside or no change in position
+    if (!destination || source.index === destination.index) {
+      return;
+    }
+    
+    // Update the task order here
+    const updatedTasks = Array.from(slicedTasks); // Create a copy of the tasks
+    const [movedTask] = updatedTasks.splice(source.index, 1); // Remove the dragged task
+    updatedTasks.splice(destination.index, 0, movedTask); // Insert it at the new position
+    
+    // Get previous and next items based on the destination index
+    const previousItem = destination.index > 0 ? updatedTasks[destination.index - 1] : null;
+    const nextItem =
+    destination.index < updatedTasks.length - 1
+    ? updatedTasks[destination.index + 1]
+    : null;
+  
+    // Prepare payload for dispatch
+    const taskdata = updatedTasks.map((task) => task.taskId);
+    const payload = {
+      stageId: data[STAGESNAMES[currentStep ? currentStep : 0]]?.stageId,
+      tasks: taskdata,
+    };
+  
+    console.log("Updated Task Order:", updatedTasks);
+
+    let ttidPayload={
+      taskId: movedTask?.ttid,
+      prevId : previousItem?.ttid,
+      nextId : nextItem?.ttid
+    }
+    dispatch(getTemplateByTaskRequest(ttidPayload))
+    dispatch(updateTaskOrderStageRequest(payload));
+    // dispatch(updateTaskOrderStageRequest(payload));
+  };
+  
   return (
     <>
-      <div className="md:col-span-12 lg:col-span-8">
-        <div className="bg-white py-4 rounded-2xl mb-5">
+      <div className="md:col-span-12 lg:col-span-8 ">
+        <div className="bg-white py-4 rounded-2xl mb-5 shadow-shadow-light">
           <div className="px-4">
             <div className="mb-6">
               <span className="text-base text-secondary-800 font-medium">Stage</span>
@@ -408,7 +461,7 @@ const StagesChecklist = () => {
                 <p className="text-white text-base font-medium">The Contract is due in {closingAlertInfo.daysUntilDue} days.</p>
               </div>
             }
-            <div className="bg-white p-4 rounded-2xl mb-5">
+            <div className="bg-white p-4 rounded-2xl mb-5 shadow-shadow-light">
               <div className={`flex justify-between items-center ${currentStep === 3 ? '' : 'pb-4'}`}>
                 {/* <span className="text-base text-secondary-800 font-medium">{getHeadLabel(currentStep)}</span> */}
 
@@ -417,7 +470,7 @@ const StagesChecklist = () => {
                     <span
                       className={`pb-4 cursor-pointer ${activeTab === 'mortgage' ? 'text-base text-secondary-800 font-medium border-b-[3px] border-primary' : 'text-gray-400'}`} onClick={() => setActiveTab('mortgage')}
                     >
-                      Mortgage Task ({getCompletedTasksCount( taskData.data[STAGESNAMES[currentStep]]?.slice(0, 5))}/{ taskData.data[STAGESNAMES[currentStep]]?.slice(0, 5)?.length || 0})
+                      Mortgage Task ({getCompletedTasksCount(taskData.data[STAGESNAMES[currentStep]]?.slice(0, 5))}/{taskData.data[STAGESNAMES[currentStep]]?.slice(0, 5)?.length || 0})
                     </span>
                     <span
                       className={`pb-4 cursor-pointer ${activeTab === 'title' ? 'text-base text-secondary-800 font-medium border-b-[3px] border-primary' : 'text-gray-400'}`}
@@ -449,45 +502,74 @@ const StagesChecklist = () => {
             })}
         </ul> */}
               <ul className="mb-6 overflow-y-auto min-h-[calc(100vh-440px)] flex justify-center">
-                {isLoading && <Spinner
-                  size="xl"
-                  animation="border"
-                  role="status"
-                  variant="primary"
-                // className={`spinner-${size}`}
-                >
-                  <span className="visually-hidden">Loading...</span>
-                </Spinner>}
+                {isLoading && (
+                  <Spinner
+                    size="xl"
+                    animation="border"
+                    role="status"
+                    variant="primary"
+                  >
+                    <span className="visually-hidden">Loading...</span>
+                  </Spinner>
+                )}
 
                 {!isLoading && (
-                  <div className="w-full">
-                    {taskData.data[STAGESNAMES[currentStep? currentStep : 0]]
-                      ?.slice(
-                        currentStep === 3
-                          ? activeTab === 'title'
-                            ? 5
-                            : 0
-                          : 0, // Start index for slice when currentStep is 3, otherwise start at 0
-                        currentStep === 3
-                          ? activeTab === 'title'
-                            ? 10
-                            : 5
-                          : taskData.data[STAGESNAMES[currentStep? currentStep : 0]]?.length // End index for slice when currentStep is 3, otherwise show all
-                      )
-                      .map((item, index) => (
-                        <ChecklistItem
-                          item={item}
-                          stageName={currentStep? currentStep : 0}
-                          key={index}
-                          status={item.status}
-                          action={item.taskType}
-                          actionInfo={item.name}
-                          templates={item?.templates}
-                          checkboxId={item.taskId}
-                          stageId={data[STAGESNAMES[currentStep? currentStep : 0]]?.stageId}
-                        />
-                      ))}
-                  </div>
+                  <DragDropContext onDragEnd={handleDragEnd}>
+                    <Droppable droppableId={slicedTasks[0]?.taskId}>
+                      {(provided) => (
+                        <div
+                          className="w-full"
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                        >
+                          {taskData.data[STAGESNAMES[currentStep ? currentStep : 0]]
+                            ?.slice(
+                              currentStep === 3
+                                ? activeTab === 'title'
+                                  ? 5
+                                  : 0
+                                : 0, // Start index for slice when currentStep is 3, otherwise start at 0
+                              currentStep === 3
+                                ? activeTab === 'title'
+                                  ? 10
+                                  : 5
+                                : taskData.data[STAGESNAMES[currentStep ? currentStep : 0]]?.length // End index for slice when currentStep is 3, otherwise show all
+                            )
+                            .map((item, index) => (
+                              <Draggable
+                                key={item.taskId}
+                                draggableId={item.taskId.toString()}
+                                index={index}
+                              >
+                                {(provided) => (
+                                  <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                    className="cursor-move"
+                                  >
+                                    {/* {console.log(slicedTasks[0]?.taskId,"slicedTasks")} */}
+                                   {/* {slicedTasks[0]?.taskId} */}
+                                    <ChecklistItem
+                                      item={item}
+                                      stageName={currentStep ? currentStep : 0}
+                                      key={index}
+                                      status={item.status}
+                                      action={item.taskType}
+                                      actionInfo={item.name}
+                                      templates={item?.templates}
+                                      checkboxId={item.taskId}
+                                      stageId={data[STAGESNAMES[currentStep ? currentStep : 0]]?.stageId}
+                                    />
+                                  </div>
+                                )}
+                              </Draggable>
+                            ))}
+                          {provided.placeholder}
+                        </div>
+                      )}
+                    </Droppable>
+                  </DragDropContext>
                 )}
               </ul>
               <div className="flex justify-between items-center pt-5 px-4">
@@ -499,15 +581,16 @@ const StagesChecklist = () => {
                 />
                 <XButton
                   text={currentStep === progressItems?.length - 1 ? "Close Case" : "Move to next stage"}
-                  className="bg-active-blue text-active-blue-text rounded-full text-sm font-medium py-[10px] px-6" 
+                  className="bg-active-blue text-active-blue-text rounded-full text-sm font-medium py-[10px] px-6"
                   onClick={CheckAndMoveStage} />
               </div>
             </div></>}
 
-          
-          {!isComplete && <StageUncompleteAlert onMove={handleNextStage} onClose={toggleStageModal} currentStep={currentStep} />}
+
+        {!isComplete && <StageUncompleteAlert onMove={handleNextStage} onClose={toggleStageModal} currentStep={currentStep} />}
       </div>
-      {addTaskModal && <AddTaskModal  onClose={()=>setAddTaskModal(false) }/>}
+      {console.log(taskData.data[STAGESNAMES[currentStep ? currentStep : 0]],"ss")}
+      {addTaskModal && <AddTaskModal onClose={() => setAddTaskModal(false)} stageId={data[STAGESNAMES[currentStep ? currentStep : 0]]?.stageId} currentStep={currentStep ? currentStep : 0} taskArr={data[STAGESNAMES[currentStep ? currentStep : 0]]?.tasks} taskList={taskData.data[STAGESNAMES[currentStep ? currentStep : 0]]}/>}
     </>
   );
 };

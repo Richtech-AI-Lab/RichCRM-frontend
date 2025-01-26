@@ -16,7 +16,7 @@ const PremisesDetail = ({ premises, address }) => {
     <>
       {collapse ?
         <div className="col-span-6">
-          <div className="bg-white p-4 rounded-2xl mb-5">
+          <div className="bg-white p-4 rounded-2xl mb-5 shadow-shadow-light">
             {<div className="flex justify-between items-center mb-5">
               <span className="text-base text-secondary-800 font-bold">Premises</span>
               <div className="flex items-center gap-2">
@@ -26,7 +26,7 @@ const PremisesDetail = ({ premises, address }) => {
           </div>
         </div> :
         <div className="col-span-6">
-          <div className="bg-white p-4 rounded-2xl mb-5">
+          <div className="bg-white p-4 rounded-2xl mb-5 shadow-shadow-light">
             {<div className="flex justify-between items-center mb-5">
               <span className="text-base text-secondary-800 font-bold">Premises</span>
               <div className="flex items-center gap-2">
@@ -162,7 +162,7 @@ const PremisesDetail = ({ premises, address }) => {
           </div>
         </div>}
       <div className="col-span-6">
-        <div className="bg-white p-4 rounded-2xl mb-5">
+        <div className="bg-white p-4 rounded-2xl mb-5 shadow-shadow-light">
         {<div className="flex justify-between items-center mb-5">
             <span className="text-base text-secondary-800 font-bold">Engineer Inspection</span>
             {/* <div className="flex items-center gap-2">
@@ -187,7 +187,7 @@ const PremisesDetail = ({ premises, address }) => {
 
             </ul> : ""}
         </div>
-        <div className="bg-white p-4 rounded-2xl mb-5">
+        <div className="bg-white p-4 rounded-2xl mb-5 shadow-shadow-light">
         {<div className="flex justify-between items-center mb-5">
             <span className="text-base text-secondary-800 font-bold">Termites Inspection</span>
             {/* <div className="flex items-center gap-2">
@@ -204,7 +204,7 @@ const PremisesDetail = ({ premises, address }) => {
             </ul> : ""}
         </div>
         {premises[0].tenant?.length > 0 &&
-          <div className="bg-white p-4 rounded-2xl mb-5">
+          <div className="bg-white p-4 rounded-2xl mb-5 shadow-shadow-light">
             {collapseTenant ?
             
               <div className="flex justify-between items-center mb-5">

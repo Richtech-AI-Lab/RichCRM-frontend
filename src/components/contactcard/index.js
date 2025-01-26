@@ -65,7 +65,7 @@ const ContactCard = ({
   };
   // console.log(additionalClient, "addtionalClient")
   return (
-    <div className="bg-white rounded-2xl mb-5  pt-4 pb-3">
+    <div className="bg-white rounded-2xl mb-5  pt-4 pb-3 shadow-shadow-light">
       <div className="flex justify-between  mb-4 px-4 items-center">
         <span className="text-xl text-title font-medium">Participants</span>
         {/* <Dropdown arrowIcon={false} label={<BsThreeDotsVertical className="text-secondary-800 opacity-40" />} placement="left-start" inline={true} dismissOnClick={false} >

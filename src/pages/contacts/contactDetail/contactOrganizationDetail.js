@@ -39,7 +39,7 @@ const ContactOrganizationDetail = ({ organization, address }) => {
       }
     return (
         <>
-            <div className="bg-white rounded-2xl mb-5 p-4">
+            <div className="bg-white rounded-2xl mb-5 p-4 shadow-shadow-light">
                 <div className="flex">
                 <img src={`https://ui-avatars.com/api/?name=${organization?.organizationName}`} alt="Profile" className="mr-3 rounded-full w-[150px] h-[150px]" />
 {/*                     
@@ -68,7 +68,7 @@ const ContactOrganizationDetail = ({ organization, address }) => {
                 </div>
             </div>
 
-            <div className="bg-white p-4 rounded-2xl mb-5">
+            <div className="bg-white p-4 rounded-2xl mb-5 shadow-shadow-light">
                 <div className="flex justify-between items-center mb-6 ">
                     <div>
                         <span className="md:text-[22px] lg:text-lg block mb-2 leading-7 text-secondary-800 font-medium">Individual Contact</span>
@@ -142,7 +142,7 @@ const ContactOrganizationDetail = ({ organization, address }) => {
 
                 </ul>
             </div>
-            <div className="bg-white p-4 rounded-2xl mb-5">
+            <div className="bg-white p-4 rounded-2xl mb-5 shadow-shadow-light">
 
                 <ul className="card-details">
                     <li>

@@ -78,7 +78,7 @@ export const ConnectionSetting = ({ title }) => {
                             type="submit"
                             text="Link"
                             onClick={() => { onSave() }}
-                            className="bg-active-blue text-base text-active-blue-text py-[10px] px-6 rounded-[100px]"
+                            className="shadow-shadow-light bg-active-blue text-base text-active-blue-text py-[10px] px-6 rounded-[100px]"
                         />
                     </div>
                 </div>

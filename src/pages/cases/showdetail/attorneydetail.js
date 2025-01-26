@@ -21,7 +21,7 @@ const AttorneyDetails = ({ attorneyDetails, title }) => {
     return (
         <>
             {
-                collapse ? <div className="bg-white p-4 rounded-2xl mb-5">
+                collapse ? <div className="bg-white p-4 rounded-2xl mb-5 shadow-shadow-light">
                     {
                         <div className="flex justify-between items-center mb-5">
                             <span className="text-base text-secondary-800 font-bold">{title}</span>
@@ -31,7 +31,7 @@ const AttorneyDetails = ({ attorneyDetails, title }) => {
                         </div>
                     }</div> :
 
-                    <div className="bg-white p-4 rounded-2xl mb-5">
+                    <div className="bg-white p-4 rounded-2xl mb-5 shadow-shadow-light">
                         {<div className="flex justify-between items-center mb-5">
                             <span className="text-base text-secondary-800 font-bold">{title}</span>
                             <div className="flex items-center gap-2">
