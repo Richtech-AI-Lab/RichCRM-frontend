@@ -261,8 +261,8 @@ export const EmailSetting = ({ title }) => {
                             <>
                                 <div>
                                     <div className="text-center mt-4 border-dashed border-2 border-border-line-100 p-6 rounded-md"
-                                    // onDragOver={(e) => handleDragOver(e)}
-                                    // onDrop={(e) => handleFileDrop(e)}
+                                         //onDragOver={(e) => handleDragOver(e)}
+                                         //onDrop={(e) => handleFileDrop(e)}
                                     >
 
                                         <FiUpload className="text-base mr-2 inline-block" />
