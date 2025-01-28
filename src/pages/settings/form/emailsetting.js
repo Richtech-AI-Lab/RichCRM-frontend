@@ -19,6 +19,7 @@ export const EmailSetting = ({ title }) => {
     const profileData = useSelector((state) => state.auth.user);
     const fileInputRef = useRef(null);
     const [uploadedImage, setUploadedImage] = useState(null);
+    const [selectedTemplate, setSelectedTemplate] = useState("");
     const [notes, setNotes] = useState("");
     
     const [formData, setFormData] = useState({
@@ -67,6 +68,10 @@ export const EmailSetting = ({ title }) => {
             };
             reader.readAsDataURL(file);
         }
+    };
+
+    const removeImage = () => {
+        setUploadedImage(null);
     };
 
     return (
@@ -296,41 +301,66 @@ export const EmailSetting = ({ title }) => {
                         <div className={`items-dropdown single-select gray-btn`}  >
                             <NewCaseDropdown
                                 defaultLabel="Select Template"
-                                name="state"
-                                // value={values.state}
-                                onChange={() => { }}
+                                name="template"
+                                value={selectedTemplate}
+                                onChange={(option) => {setSelectedTemplate(option.target.value || "");}}
                                 // onBlur={handleBlur}
-                                options={[{ "id": "1", "value": "1", "label": "Minimalistic" }]}
+                                options={[
+                                          { id: "1", value: "1", label: "Minimalistic" },
+                                          { "id": "2", "value": "2", "label": "None" }
+                                        ]}
                             // field={{ name: "state" }}
                             // form={{ errors, touched }}
                             />
                         </div>
                     </div>
 
-                    <div className="grid gap-1 bg-gray chat-box rounded-2xl p-4">
-                        <div className="mb-4">
-                            <span className={`left-txt flex items-center mb-2`}><img src={IMAGES.richAiLogo} width={'50px'} height={'50px'}></img></span>
+                    {selectedTemplate === "1" && (
+                        <div className="grid gap-1 bg-gray chat-box rounded-2xl p-4">
+                            <div className="mb-4">
+                                <span className={`left-txt flex items-center mb-2`}>
+                                    <img 
+                                        src={IMAGES.richAiLogo} 
+                                        width={'50px'} 
+                                        height={'50px'}>
+                                    </img>
+                                </span>
                             <p>{formData.company}</p>
-                            <p>{formData.firstName} {formData.lastName}</p>
+                            <p>
+                                {formData.firstName} {formData.lastName}
+                            </p>
                             <p>{formData.title}</p>
                         </div>
                         <div>
                             <div className="flex gap-4 mb-1">
-                                <p className="text-secondary-800 text-sm"><strong>Phone: </strong>{formData.workPhone}</p>
-                                <p className="text-secondary-800 text-sm"><strong>Mobile: </strong>{formData.cellPhone}</p>
+                                <p className="text-secondary-800 text-sm">
+                                    <strong>Phone: </strong>
+                                    {formData.workPhone}
+                                </p>
+                                <p className="text-secondary-800 text-sm">
+                                    <strong>Mobile: </strong>
+                                    {formData.cellPhone}
+                                </p>
                             </div>
                             <div className="flex gap-4 mb-1">
                                 <p className="text-secondary-800 text-sm">
                                     <strong>Email: </strong>
                                     {isAutoFill ? profileData.data[0].emailAddress : ''}
                                 </p>
-                                <p className="text-secondary-800 text-sm"><strong>Website: </strong>{formData.website}</p>
+                                <p className="text-secondary-800 text-sm">
+                                    <strong>Website: </strong>
+                                    {formData.website}
+                                </p>
                             </div>
-                            <p className="text-secondary-800 text-sm"><strong>Address: </strong>{formData.mailingAddress}</p>
+                            <p className="text-secondary-800 text-sm">
+                                <strong>Address: </strong>
+                                {formData.mailingAddress}
+                            </p>
                         </div>
-                    </div>
+                    </div> )}
                 </div>
             </div>
+                
 
 
             <div className="bg-white p-4 rounded-2xl mb-5 shadow-card">
