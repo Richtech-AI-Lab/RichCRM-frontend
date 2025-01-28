@@ -36,22 +36,25 @@ export const EmailSetting = ({ title }) => {
     
     const autoFillData = () => {
         setIsAutoFill(!isAutoFill);
-        // console.log("auto file process begin")
-        // if (isAutoFill && profileData) {
-        //     setFormData({
-        //         firstName: profileData.firstName || '',
-        //         lastName: profileData.lastName || '',
-        //         title: profileData.title || '',
-        //         company: profileData.company || '',
-        //         email: profileData.email || '',
-        //         cellPhone: profileData.cellPhone || '',
-        //         workPhone: profileData.workPhone || '',
-        //         website: profileData.website || '',
-        //         mailingAddress: profileData.mailingAddress || '',
-        //     });
-        // }
-        // console.log(profileData);
-        // console.log("auto-fill process finish");
+        
+        console.log("auto file process begin")
+        if (!isAutoFill && profileData) {
+            setFormData((prevData) => ({
+                ...prevData,
+                firstName: profileData.firstName || prevData.firstName || '',
+                lastName: profileData.lastName || prevData.lastName || '',
+                title: profileData.title || prevData.title || '',
+                company: profileData.company || prevData.company || '',
+                email: profileData.email || prevData.email || '',
+                cellPhone: profileData.cellPhone || prevData.cellPhone || '',
+                workPhone: profileData.workPhone || prevData.workPhone || '',
+                website: profileData.website || prevData.website || '',
+                mailingAddress: profileData.mailingAddress || prevData.mailingAddress || '',
+            }));
+            console.log("Auto-fill applied");
+        }
+        console.log(profileData);
+        console.log("auto-fill process finish");
     };
 
     const handleBrowseFiles = () => {
@@ -97,7 +100,7 @@ export const EmailSetting = ({ title }) => {
                                         name="clientfirstName"
                                         //type="text"
                                         value={formData.firstName}
-                                        onChange={(e) => setFormData({...formData, firstName: e.target.value})}
+                                        onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                                     // placeholder="First Name"
                                     // value={values.clientfirstName}
                                     // onChange={handleChange}
@@ -112,7 +115,7 @@ export const EmailSetting = ({ title }) => {
                                         name="clientLastName"
                                         //type="text"
                                         value={formData.lastName}
-                                        onChange={(e) => setFormData({...formData, lastName: e.target.value})}
+                                        onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                                     // placeholder="Last Name"
                                     // value={values.clientLastName}
                                     // onChange={handleChange}
@@ -131,7 +134,7 @@ export const EmailSetting = ({ title }) => {
                                         name="Title"
                                         //type="text"
                                         value={formData.title}
-                                        onChange={(e) => setFormData({...formData, title: e.target.value})}
+                                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                                     // placeholder="First Name"
                                     // value={values.clientfirstName}
                                     // onChange={handleChange}
@@ -148,9 +151,8 @@ export const EmailSetting = ({ title }) => {
                                 <div className="mb-2 flex-1 mr-4">
                                     <TextInput
                                         name="Company"
-                                        //type="text"
                                         value={formData.company}
-                                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                                        onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                                     // placeholder="First Name"
                                     // value={values.clientfirstName}
                                     // onChange={handleChange}
@@ -169,7 +171,7 @@ export const EmailSetting = ({ title }) => {
                                         name="Email"
                                         //type="text"
                                         value={formData.email}
-                                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                     // placeholder="First Name"
                                     // value={values.clientfirstName}
                                     // onChange={handleChange}
@@ -189,7 +191,7 @@ export const EmailSetting = ({ title }) => {
                                         name="CellPhone"
                                         //type="text"
                                         value={formData.cellPhone}
-                                        onChange={(e) => setFormData({...formData, cellPhone: e.target.value})}
+                                        onChange={(e) => setFormData({ ...formData, cellPhone: e.target.value })}
                                     // placeholder="First Name"
                                     // value={values.clientfirstName}
                                     // onChange={handleChange}
@@ -204,7 +206,7 @@ export const EmailSetting = ({ title }) => {
                                         name="WorkPhone"
                                         //type="text"
                                         value={formData.workPhone}
-                                        onChange={(e) => setFormData({...formData, workPhone: e.target.value})}
+                                        onChange={(e) => setFormData({ ...formData, workPhone: e.target.value })}
                                     // placeholder="Last Name"
                                     // value={values.clientLastName}
                                     // onChange={handleChange}
@@ -223,7 +225,7 @@ export const EmailSetting = ({ title }) => {
                                         name="Website"
                                         //type="text"
                                         value={formData.website}
-                                        onChange={(e) => setFormData({...formData, website: e.target.value})}
+                                        onChange={(e) => setFormData({ ...formData, website: e.target.value })}
                                     // placeholder="First Name"
                                     // value={values.clientfirstName}
                                     // onChange={handleChange}
@@ -242,7 +244,7 @@ export const EmailSetting = ({ title }) => {
                                         name="MailingAddress"
                                         //type="text"
                                         value={formData.mailingAddress}
-                                        onChange={(e) => setFormData({...formData, mailingAddress: e.target.value})}
+                                        onChange={(e) => setFormData({ ...formData, mailingAddress: e.target.value })}
                                     // placeholder="First Name"
                                     // value={values.clientfirstName}
                                     // onChange={handleChange}
@@ -307,7 +309,7 @@ export const EmailSetting = ({ title }) => {
                                 // onBlur={handleBlur}
                                 options={[
                                           { id: "1", value: "1", label: "Minimalistic" },
-                                          { "id": "2", "value": "2", "label": "None" }
+                                          { id: "2", value: "2", label: "None" }
                                         ]}
                             // field={{ name: "state" }}
                             // form={{ errors, touched }}
