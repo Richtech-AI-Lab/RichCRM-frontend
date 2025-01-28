@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState, useRef} from 'react'
 import NewCaseDropdown from '../../../components/newcasedropdown'
 import { TextInput, XButton, XSpinnerLoader } from '../../../components'
 import language from "../../../constants/language.json";
@@ -16,9 +16,69 @@ import { IMAGES } from '../../../constants/imagePath';
 export const EmailSetting = ({ title }) => {
     const [isAutoFill, setIsAutoFill] = useState(false);
     const [isBrandingImage, setIsBrandingImage] = useState(false);
+    const profileData = useSelector((state) => state.auth.user);
+    const fileInputRef = useRef(null);
+    const [uploadedImage, setUploadedImage] = useState(null);
+    const [selectedTemplate, setSelectedTemplate] = useState("");
+    const [notes, setNotes] = useState("");
+    
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        title: '',
+        company: '',
+        email: '',
+        cellPhone: '',
+        workPhone: '',
+        website: '',
+        mailingAddress: '',
+    });
+    
+    const autoFillData = () => {
+        setIsAutoFill(!isAutoFill);
+        
+        console.log("auto file process begin")
+        if (!isAutoFill && profileData) {
+            setFormData((prevData) => ({
+                ...prevData,
+                firstName: profileData.firstName || prevData.firstName || '',
+                lastName: profileData.lastName || prevData.lastName || '',
+                title: profileData.title || prevData.title || '',
+                company: profileData.company || prevData.company || '',
+                email: profileData.email || prevData.email || '',
+                cellPhone: profileData.cellPhone || prevData.cellPhone || '',
+                workPhone: profileData.workPhone || prevData.workPhone || '',
+                website: profileData.website || prevData.website || '',
+                mailingAddress: profileData.mailingAddress || prevData.mailingAddress || '',
+            }));
+            console.log("Auto-fill applied");
+        }
+        console.log(profileData);
+        console.log("auto-fill process finish");
+    };
+
+    const handleBrowseFiles = () => {
+       //document.getElementById("fileUploadControl").click();
+       fileInputRef.current.click();
+    }; 
+
+    const handleFileChange = (e) => {
+        const file = e.target.file[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                setUploadedImage(event.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const removeImage = () => {
+        setUploadedImage(null);
+    };
+
     return (
         <>
-
             <div className="bg-white p-4 rounded-2xl mb-5 shadow-card">
                 {title && <div className="flex flex-col justify-center items-start gap-2 self-stretch">
                     <span className="text-base font-bold">Email Signature</span>
@@ -27,8 +87,9 @@ export const EmailSetting = ({ title }) => {
                 <div className='grid gap-5 mt-5'>
                     <div className="flex justify-between items-center border-b border-badge-gray pb-3 mb-3">
                         <span className={`left-txt flex items-center`}>Auto-fill from Profile</span>
-                        <ToggleSwitch checked={isAutoFill} onChange={setIsAutoFill} />
+                        <ToggleSwitch checked={isAutoFill} onChange={autoFillData} />
                     </div>
+
                     {!isAutoFill ? <>
 
                         <div className="border-b border-badge-gray">
@@ -37,7 +98,9 @@ export const EmailSetting = ({ title }) => {
                                     <span className={`left-txt flex items-center`}>First Name</span>
                                     <TextInput
                                         name="clientfirstName"
-                                        type="text"
+                                        //type="text"
+                                        value={formData.firstName}
+                                        onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                                     // placeholder="First Name"
                                     // value={values.clientfirstName}
                                     // onChange={handleChange}
@@ -50,7 +113,9 @@ export const EmailSetting = ({ title }) => {
                                     <span className={`left-txt flex items-center`}>Last Name</span>
                                     <TextInput
                                         name="clientLastName"
-                                        type="text"
+                                        //type="text"
+                                        value={formData.lastName}
+                                        onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                                     // placeholder="Last Name"
                                     // value={values.clientLastName}
                                     // onChange={handleChange}
@@ -66,8 +131,10 @@ export const EmailSetting = ({ title }) => {
                             <div className="flex items-center">
                                 <div className="mb-2 flex-1 mr-4">
                                     <TextInput
-                                        name="Email"
-                                        type="text"
+                                        name="Title"
+                                        //type="text"
+                                        value={formData.title}
+                                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                                     // placeholder="First Name"
                                     // value={values.clientfirstName}
                                     // onChange={handleChange}
@@ -83,8 +150,9 @@ export const EmailSetting = ({ title }) => {
                             <div className="flex items-center">
                                 <div className="mb-2 flex-1 mr-4">
                                     <TextInput
-                                        name="Email"
-                                        type="text"
+                                        name="Company"
+                                        value={formData.company}
+                                        onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                                     // placeholder="First Name"
                                     // value={values.clientfirstName}
                                     // onChange={handleChange}
@@ -101,7 +169,9 @@ export const EmailSetting = ({ title }) => {
                                 <div className="mb-2 flex-1 mr-4">
                                     <TextInput
                                         name="Email"
-                                        type="text"
+                                        //type="text"
+                                        value={formData.email}
+                                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                     // placeholder="First Name"
                                     // value={values.clientfirstName}
                                     // onChange={handleChange}
@@ -118,8 +188,10 @@ export const EmailSetting = ({ title }) => {
                                 <div className="mb-2 block">
                                     <span className={`left-txt flex items-center`}>Cell Phone</span>
                                     <TextInput
-                                        name="clientfirstName"
-                                        type="text"
+                                        name="CellPhone"
+                                        //type="text"
+                                        value={formData.cellPhone}
+                                        onChange={(e) => setFormData({ ...formData, cellPhone: e.target.value })}
                                     // placeholder="First Name"
                                     // value={values.clientfirstName}
                                     // onChange={handleChange}
@@ -131,8 +203,10 @@ export const EmailSetting = ({ title }) => {
                                 <div className="mb-2 block">
                                     <span className={`left-txt flex items-center`}>Work Phone</span>
                                     <TextInput
-                                        name="clientLastName"
-                                        type="text"
+                                        name="WorkPhone"
+                                        //type="text"
+                                        value={formData.workPhone}
+                                        onChange={(e) => setFormData({ ...formData, workPhone: e.target.value })}
                                     // placeholder="Last Name"
                                     // value={values.clientLastName}
                                     // onChange={handleChange}
@@ -148,8 +222,10 @@ export const EmailSetting = ({ title }) => {
                             <div className="flex items-center">
                                 <div className="mb-2 flex-1 mr-4">
                                     <TextInput
-                                        name="Email"
-                                        type="text"
+                                        name="Website"
+                                        //type="text"
+                                        value={formData.website}
+                                        onChange={(e) => setFormData({ ...formData, website: e.target.value })}
                                     // placeholder="First Name"
                                     // value={values.clientfirstName}
                                     // onChange={handleChange}
@@ -165,8 +241,10 @@ export const EmailSetting = ({ title }) => {
                             <div className="flex items-center">
                                 <div className="mb-2 flex-1 mr-4">
                                     <TextInput
-                                        name="Email"
-                                        type="text"
+                                        name="MailingAddress"
+                                        //type="text"
+                                        value={formData.mailingAddress}
+                                        onChange={(e) => setFormData({ ...formData, mailingAddress: e.target.value })}
                                     // placeholder="First Name"
                                     // value={values.clientfirstName}
                                     // onChange={handleChange}
@@ -190,8 +268,8 @@ export const EmailSetting = ({ title }) => {
                             <>
                                 <div>
                                     <div className="text-center mt-4 border-dashed border-2 border-border-line-100 p-6 rounded-md"
-                                    // onDragOver={(e) => handleDragOver(e)}
-                                    // onDrop={(e) => handleFileDrop(e)}
+                                         //onDragOver={(e) => handleDragOver(e)}
+                                         //onDrop={(e) => handleFileDrop(e)}
                                     >
 
                                         <FiUpload className="text-base mr-2 inline-block" />
@@ -205,16 +283,16 @@ export const EmailSetting = ({ title }) => {
                                         <XButton
                                             type="button"
                                             text={"Browse Files"}
-                                            // onClick={handleBrowseFiles}
+                                            onClick={handleBrowseFiles}
                                             className="bg-active-blue text-sm text-active-blue-text py-[10px] px-6 rounded-[100px]"
                                         />
                                         <input
                                             id="fileUploadControl"
                                             type="file"
-                                            // ref={fileInputRef}
+                                            ref={fileInputRef}
                                             multiple
                                             style={{ display: "none" }}
-                                        // onChange={handleFileChange}
+                                            onChange={handleFileChange}
                                         />
                                     </div>
                                 </div></> : ""}
@@ -225,44 +303,66 @@ export const EmailSetting = ({ title }) => {
                         <div className={`items-dropdown single-select gray-btn`}  >
                             <NewCaseDropdown
                                 defaultLabel="Select Template"
-                                name="state"
-                                // value={values.state}
-                                onChange={() => { }}
+                                name="template"
+                                value={selectedTemplate}
+                                onChange={(option) => {setSelectedTemplate(option.target.value || "");}}
                                 // onBlur={handleBlur}
-                                options={[{ "id": "1", "value": "1", "label": "Minimalistic" }]}
+                                options={[
+                                          { id: "1", value: "1", label: "Minimalistic" },
+                                          { id: "2", value: "2", label: "None" }
+                                        ]}
                             // field={{ name: "state" }}
                             // form={{ errors, touched }}
                             />
                         </div>
                     </div>
 
-                    <div className="grid gap-1 bg-gray chat-box rounded-2xl p-4">
-                        <div className="mb-4">
-                            <span className={`left-txt flex items-center mb-2`}><img src={IMAGES.richAiLogo} width={'50px'} height={'50px'}></img></span>
-                            <p className="text-secondary-800 text-base font-semibold mb-1">
-                                Rich CRM
+                    {selectedTemplate === "1" && (
+                        <div className="grid gap-1 bg-gray chat-box rounded-2xl p-4">
+                            <div className="mb-4">
+                                <span className={`left-txt flex items-center mb-2`}>
+                                    <img 
+                                        src={IMAGES.richAiLogo} 
+                                        width={'50px'} 
+                                        height={'50px'}>
+                                    </img>
+                                </span>
+                            <p>{formData.company}</p>
+                            <p>
+                                {formData.firstName} {formData.lastName}
                             </p>
-                            <p className="text-secondary-800 text-xl font-semibold mb-1">
-                                Jessica Lee
-                            </p>
-                            <p className="text-text-gray-100 text-sm font-semibold">
-                                MANAGER
-                            </p>
+                            <p>{formData.title}</p>
                         </div>
                         <div>
                             <div className="flex gap-4 mb-1">
-                                <p className="text-secondary-800 text-sm"><strong>Phone: </strong>929-988-3993</p>
-                                <p className="text-secondary-800 text-sm"><strong>Mobile: </strong>929-988-3993</p>
+                                <p className="text-secondary-800 text-sm">
+                                    <strong>Phone: </strong>
+                                    {formData.workPhone}
+                                </p>
+                                <p className="text-secondary-800 text-sm">
+                                    <strong>Mobile: </strong>
+                                    {formData.cellPhone}
+                                </p>
                             </div>
                             <div className="flex gap-4 mb-1">
-                                <p className="text-secondary-800 text-sm"><strong>Email: </strong>jessicalee@gmail.com</p>
-                                <p className="text-secondary-800 text-sm"><strong>Website: </strong>jlee.com</p>
+                                <p className="text-secondary-800 text-sm">
+                                    <strong>Email: </strong>
+                                    {isAutoFill ? profileData.data[0].emailAddress : ''}
+                                </p>
+                                <p className="text-secondary-800 text-sm">
+                                    <strong>Website: </strong>
+                                    {formData.website}
+                                </p>
                             </div>
-                            <p className="text-secondary-800 text-sm"><strong>Address: </strong>1234 Main St, Flushing, NY 11354</p>
+                            <p className="text-secondary-800 text-sm">
+                                <strong>Address: </strong>
+                                {formData.mailingAddress}
+                            </p>
                         </div>
-                    </div>
+                    </div> )}
                 </div>
             </div>
+                
 
 
             <div className="bg-white p-4 rounded-2xl mb-5 shadow-card">

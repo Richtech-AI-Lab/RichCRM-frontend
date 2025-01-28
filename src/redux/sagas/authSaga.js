@@ -1,7 +1,7 @@
 import { takeLatest, put, call } from "redux-saga/effects";
-import { forgotPasswordFailure, forgotPasswordSuccess, loginFailure, loginSuccess, registerFailure, registerSuccess, deleteUserSuccess, deleteUserFailure, updateUserFailure, updateUserSuccess } from "../actions/authActions";
-import { DELETE_USER_REQUEST, FORGOT_PASSWORD_REQUEST, LOGIN_REQUEST, REGISTER_REQUEST, UPDATE_USER_REQUEST } from "../type";
-import { postRequest } from "../../axios/interceptor";
+import { forgotPasswordFailure, forgotPasswordSuccess, loginFailure, loginSuccess, registerFailure, registerSuccess, deleteUserSuccess, deleteUserFailure, updateUserFailure, updateUserSuccess, getAuthUserSuccess, getAuthUserFailure} from "../actions/authActions";
+import { DELETE_USER_REQUEST, FORGOT_PASSWORD_REQUEST, GET_AUTH_USER_REQUEST, LOGIN_REQUEST, REGISTER_REQUEST, UPDATE_USER_REQUEST} from "../type";
+import { postRequest, getRequest } from "../../axios/interceptor";
 import { API_ENDPOINTS } from "../../constants/api";
 import { handleError } from "../../utils/eventHandler";
 import { toast } from "react-toastify";
@@ -81,10 +81,24 @@ function* deleteUser(action) {
   }
 }
 
+// GET Auth-user Saga
+function* getUserMe(action) {
+  try {
+    const { payload } = action;
+    const response = yield call(() => getRequest(API_ENDPOINTS.ME));
+    yield put(getAuthUserSuccess(response?.data));
+  } catch (error) {
+    handleError(error)
+    // console.log("nono: ->", error);
+    yield put(getAuthUserFailure(error.response?.data || error));
+  }
+}
+
 export function* authSaga() {
   yield takeLatest(LOGIN_REQUEST, login);
   yield takeLatest(UPDATE_USER_REQUEST, updateUser);
   yield takeLatest(REGISTER_REQUEST, register);
   yield takeLatest(FORGOT_PASSWORD_REQUEST, forgotPassword);
   yield takeLatest(DELETE_USER_REQUEST, deleteUser);
+  yield takeLatest(GET_AUTH_USER_REQUEST, getUserMe);
 }
